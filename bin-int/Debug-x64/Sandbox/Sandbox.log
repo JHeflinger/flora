@@ -1,0 +1,3 @@
+﻿  application.cpp
+C:\Dev\Flora\Sandbox\src\application.cpp(5,13): warning C4326: return type of 'main' should be 'int' instead of 'void'
+  Sandbox.vcxproj -> C:\Dev\Flora\bin\Debug-x64\Sandbox\Sandbox.exe
