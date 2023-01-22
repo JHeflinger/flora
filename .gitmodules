@@ -1,0 +1,3 @@
+[submodule "Flora/vendor/spdlog"]
+	path = Flora/vendor/spdlog
+	url = https://github.com/gabime/spdlog.git
