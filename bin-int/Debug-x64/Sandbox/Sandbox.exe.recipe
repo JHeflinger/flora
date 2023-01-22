@@ -2,10 +2,10 @@
 <Project>
   <ProjectOutputs>
     <ProjectOutput>
-      <FullPath>C:\Dev\Flora\bin\Debug-x64\Flora\Flora.dll</FullPath>
+      <FullPath>D:\Dev\Flora\bin\Debug-x64\Flora\Flora.dll</FullPath>
     </ProjectOutput>
     <ProjectOutput>
-      <FullPath>C:\Dev\Flora\bin\Debug-x64\Sandbox\Sandbox.exe</FullPath>
+      <FullPath>D:\Dev\Flora\bin\Debug-x64\Sandbox\Sandbox.exe</FullPath>
     </ProjectOutput>
   </ProjectOutputs>
   <ContentFiles />

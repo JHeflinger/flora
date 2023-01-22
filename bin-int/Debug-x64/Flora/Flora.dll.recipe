@@ -2,7 +2,7 @@
 <Project>
   <ProjectOutputs>
     <ProjectOutput>
-      <FullPath>C:\Dev\Flora\bin\Debug-x64\Flora\Flora.dll</FullPath>
+      <FullPath>D:\Dev\Flora\bin\Debug-x64\Flora\Flora.dll</FullPath>
     </ProjectOutput>
   </ProjectOutputs>
   <ContentFiles />
