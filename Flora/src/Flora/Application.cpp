@@ -1,3 +1,4 @@
+#include "flpch.h"
 #include "Application.h"
 #include "Flora/Events/ApplicationEvent.h"
 #include "Flora/Log.h"

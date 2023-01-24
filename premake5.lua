@@ -17,6 +17,9 @@ project "Flora"
     targetdir ("bin/" .. outputdir .. "/%{prj.name}")
     objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
 
+    pchheader "flpch.h"
+    pchsource "Flora/src/flpch.cpp"
+
     files
     {
         "%{prj.name}/src/**.h",

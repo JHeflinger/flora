@@ -1,3 +1,4 @@
+#include "flpch.h"
 #include "Log.h"
 
 namespace Flora {

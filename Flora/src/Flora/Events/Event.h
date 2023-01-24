@@ -1,7 +1,6 @@
 #pragma once
+#include "flpch.h"
 #include "Flora/Core.h"
-#include <string>
-#include <functional>
 
 namespace Flora {
 	//Events are currently blocking, meaning that when
