@@ -3,16 +3,14 @@
     <head>
         <title>Video Series Progress</title>
     </head>
-    <body>
-        <div style="display:flex; justify-content: center; align-items: center">
-        <iframe id="video" width="1050" height="600"
-        src="">
-        </iframe>
-        </div> 
-        <a id="link" href="https://www.youtube.com/watch?v=xnopUoZbMEk&list=PLlrATfBNZ98dC-V-N3m0Go4deliWHPFwT&index=9">playlist</a> 
+    <body style="position: fixed; z-index: -1; width: 100vw; height: 100vh; background: black">
+        <iframe style="position: absolute; left: 0; top: 0; margin: 0; padding: 0" id="video" width="1050" height="600" src=""></iframe>
+        <a style="position: fixed; bottom: 0; left: 0;" id="link" href="">playlist</a> 
     </body>
     <script>
-        let id = "5mlziHwq90k";
+        let id = "UQ718BrbQ5E";
+        let link = "https://www.youtube.com/watch?v=UQ718BrbQ5E&list=PLlrATfBNZ98dC-V-N3m0Go4deliWHPFwT&index=10";
         document.getElementById("video").src = `https://www.youtube.com/embed/${id}`;
+        document.getElementById("link").href = link;
     </script>
 </html>
