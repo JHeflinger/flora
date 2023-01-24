@@ -1,3 +1,9 @@
 [submodule "Flora/vendor/spdlog"]
 	path = Flora/vendor/spdlog
 	url = https://github.com/gabime/spdlog.git
+[submodule "Flora/vendor/GFLW"]
+	path = Flora/vendor/GFLW
+	url = https://github.com/JHeflinger/glfw
+[submodule "Flora/vendor/GLFW"]
+	path = Flora/vendor/GLFW
+	url = https://github.com/JHeflinger/glfw

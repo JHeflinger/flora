@@ -1,25 +1,37 @@
 #include "flpch.h"
 #include "Application.h"
-#include "Flora/Events/ApplicationEvent.h"
 #include "Flora/Log.h"
+#include <GLFW/glfw3.h>
 
 namespace Flora {
-	Application::Application() {
 
+#define BIND_EVENT_FN(x) std::bind(&Application::x, this, std::placeholders::_1)
+
+	Application::Application() {
+		m_Window = std::unique_ptr<Window>(Window::Create());
+		m_Window->SetEventCallback(BIND_EVENT_FN(OnEvent));
 	}
 
 	Application::~Application() {
 
 	}
 
+	void Application::OnEvent(Event& e) {
+		FL_CORE_TRACE("{0}", e);
+		EventDispacher dispacher(e);
+		dispacher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(OnWindowClosed));
+	}
+
 	void Application::Run() {
-		WindowResizeEvent e(1280, 720);
-		if (e.IsInCategory(EventCategoryApplication)) {
-			FL_TRACE(e);
+		while (m_Running) {
+			glClearColor(1, 1, 1, 0);
+			glClear(GL_COLOR_BUFFER_BIT);
+			m_Window->OnUpdate();
 		}
-		if (e.IsInCategory(EventCategoryInput)) {
-			FL_TRACE(e);
-		}
-		while (true);
+	}
+
+	bool Application::OnWindowClosed(WindowCloseEvent& e) {
+		m_Running = false;
+		return true;
 	}
 }
