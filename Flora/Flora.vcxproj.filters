@@ -37,6 +37,12 @@
     <ClInclude Include="src\Flora\Events\MouseEvent.h">
       <Filter>Flora\Events</Filter>
     </ClInclude>
+    <ClInclude Include="src\Flora\Layer.h">
+      <Filter>Flora</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Flora\LayerStack.h">
+      <Filter>Flora</Filter>
+    </ClInclude>
     <ClInclude Include="src\Flora\Log.h">
       <Filter>Flora</Filter>
     </ClInclude>
@@ -50,6 +56,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Flora\Application.cpp">
+      <Filter>Flora</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Flora\Layer.cpp">
+      <Filter>Flora</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Flora\LayerStack.cpp">
       <Filter>Flora</Filter>
     </ClCompile>
     <ClCompile Include="src\Flora\Log.cpp">

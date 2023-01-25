@@ -16,16 +16,31 @@ namespace Flora {
 
 	}
 
+	void Application::PushLayer(Layer* layer) {
+		m_LayerStack.PushLayer(layer);
+	}
+
+	void Application::PushOverlay(Layer* layer) {
+		m_LayerStack.PushOverlay(layer);
+	}
+
 	void Application::OnEvent(Event& e) {
 		FL_CORE_TRACE("{0}", e);
 		EventDispacher dispacher(e);
 		dispacher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(OnWindowClosed));
+		for (auto it = m_LayerStack.end(); it != m_LayerStack.begin(); ) {
+			(*--it)->OnEvent(e);
+			if (e.Handled)
+				break;
+		}
 	}
 
 	void Application::Run() {
 		while (m_Running) {
 			glClearColor(1, 1, 1, 0);
 			glClear(GL_COLOR_BUFFER_BIT);
+			for (Layer* layer : m_LayerStack)
+				layer->OnUpdate();
 			m_Window->OnUpdate();
 		}
 	}
