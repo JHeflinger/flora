@@ -6,7 +6,7 @@ public:
 	}
 
 	void OnUpdate() override {
-		FL_INFO("ExmapleLayer::Update");
+		//FL_INFO("ExmapleLayer::Update");
 	}
 
 	void OnEvent(Flora::Event& event) override {

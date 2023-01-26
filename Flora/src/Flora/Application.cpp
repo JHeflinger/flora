@@ -31,7 +31,6 @@ namespace Flora {
 	}
 
 	void Application::OnEvent(Event& e) {
-		FL_CORE_TRACE("{0}", e);
 		EventDispacher dispacher(e);
 		dispacher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(OnWindowClosed));
 		for (auto it = m_LayerStack.end(); it != m_LayerStack.begin(); ) {
