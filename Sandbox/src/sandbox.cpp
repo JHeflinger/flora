@@ -18,6 +18,7 @@ class Sandbox : public Flora::Application {
 public:
 	Sandbox() {
 		PushLayer(new ExampleLayer());
+		PushOverlay(new Flora::ImGuiLayer());
 	}
 	~Sandbox() {
 

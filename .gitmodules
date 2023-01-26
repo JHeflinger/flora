@@ -7,3 +7,6 @@
 [submodule "Flora/vendor/GLFW"]
 	path = Flora/vendor/GLFW
 	url = https://github.com/JHeflinger/glfw
+[submodule "Flora/vendor/imgui"]
+	path = Flora/vendor/imgui
+	url = https://github.com/JHeflinger/imgui.git
