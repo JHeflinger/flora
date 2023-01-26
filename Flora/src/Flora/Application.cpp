@@ -1,7 +1,7 @@
 #include "flpch.h"
 #include "Application.h"
 #include "Flora/Log.h"
-#include <GLFW/glfw3.h>
+#include <glad/glad.h>
 
 namespace Flora {
 
