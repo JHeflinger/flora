@@ -5,3 +5,6 @@ bin-int/
 
 #files
 *.user
+
+#html
+*.html
