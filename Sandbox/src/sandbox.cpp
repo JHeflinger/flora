@@ -6,7 +6,8 @@ public:
 	}
 
 	void OnUpdate() override {
-		//FL_INFO("ExmapleLayer::Update");
+		if (Flora::Input::IsKeyPressed(FL_KEY_TAB))
+			FL_INFO("Tab key is being pressed");
 	}
 
 	void OnEvent(Flora::Event& event) override {

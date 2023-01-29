@@ -159,9 +159,11 @@
     <ClInclude Include="src\Flora\Events\MouseEvent.h" />
     <ClInclude Include="src\Flora\ImGui\ImGuiLayer.h" />
     <ClInclude Include="src\Flora\Input.h" />
+    <ClInclude Include="src\Flora\KeyCodes.h" />
     <ClInclude Include="src\Flora\Layer.h" />
     <ClInclude Include="src\Flora\LayerStack.h" />
     <ClInclude Include="src\Flora\Log.h" />
+    <ClInclude Include="src\Flora\MouseButtonCodes.h" />
     <ClInclude Include="src\Flora\Window.h" />
     <ClInclude Include="src\Platform\OpenGL\ImGuiOpenGLRenderer.h" />
     <ClInclude Include="src\Platform\Windows\WindowsWindow.h" />
