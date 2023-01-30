@@ -109,7 +109,8 @@ project "Sandbox"
 	{
 		"Flora/vendor/spdlog/include",
 		"Flora/src",
-		"%{IncludeDir.glm}"
+		"%{IncludeDir.glm}",
+		"Flora/vendor"
 	}
 
 	links

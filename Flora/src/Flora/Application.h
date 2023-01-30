@@ -4,6 +4,7 @@
 #include "Flora/Events/ApplicationEvent.h"
 #include "Window.h"
 #include "Flora/LayerStack.h"
+#include "Flora/ImGui/ImGuiLayer.h"
 
 namespace Flora {
 	class FLORA_API Application {
@@ -19,6 +20,7 @@ namespace Flora {
 	private:
 		bool OnWindowClosed(WindowCloseEvent& e);
 		std::unique_ptr<Window> m_Window;
+		ImGuiLayer* m_ImGuiLayer;
 		bool m_Running = true;
 		LayerStack m_LayerStack;
 	private:
