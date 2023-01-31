@@ -12,7 +12,7 @@ public:
 	}
 
 	void OnEvent(Flora::Event& event) override {
-		FL_TRACE("{0}", event);
+		//FL_TRACE("{0}", event);
 	}
 
 	virtual void OnImGuiRender() override {

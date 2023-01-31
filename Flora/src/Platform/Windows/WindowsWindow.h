@@ -1,5 +1,6 @@
 #pragma once
 #include "Flora/Window.h"
+#include "Flora/Renderer/GraphicsContext.h"
 #include <GLFW/glfw3.h>
 
 namespace Flora {
@@ -20,6 +21,7 @@ namespace Flora {
 		virtual void Shutdown();
 	private:
 		GLFWwindow* m_Window;
+		GraphicsContext* m_Context;
 		struct WindowData {
 			std::string Title;
 			unsigned int Width, Height;
