@@ -8,6 +8,7 @@
 #include "Flora/Renderer/Shader.h"
 #include "Flora/Renderer/Buffer.h"
 #include "Flora/Renderer/VertexArray.h"
+#include "Flora/Renderer/OrthographicCamera.h"
 
 namespace Flora {
 	class FLORA_API Application {
@@ -31,6 +32,7 @@ namespace Flora {
 
 		std::shared_ptr<VertexArray> m_SquareVA;
 		std::shared_ptr<Shader> m_SquareSH;
+		OrthographicCamera m_Camera;
 	private:
 		static Application* s_Instance;
 	};

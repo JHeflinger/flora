@@ -141,6 +141,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\Flora\Renderer\Buffer.h" />
+    <ClInclude Include="src\Flora\Renderer\OrthographicCamera.h" />
     <ClInclude Include="src\Flora\Renderer\RenderCommand.h" />
     <ClInclude Include="src\Flora\Renderer\Renderer.h" />
     <ClInclude Include="src\Flora\Renderer\RendererAPI.h" />
@@ -589,6 +590,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Flora\Renderer\Buffer.cpp" />
+    <ClCompile Include="src\Flora\Renderer\OrthographicCamera.cpp" />
     <ClCompile Include="src\Flora\Renderer\RenderCommand.cpp" />
     <ClCompile Include="src\Flora\Renderer\Renderer.cpp" />
     <ClCompile Include="src\Flora\Renderer\RendererAPI.cpp" />
