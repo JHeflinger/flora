@@ -112,21 +112,23 @@ public:
 
 	}
 
-	void OnUpdate() override {
+	void OnUpdate(Flora::Timestep ts) override {
+		FL_TRACE("Delta time: {0}s ({1}ms)", ts.GetSeconds(), ts.GetMilliseconds());
+
 		if (Flora::Input::IsKeyPressed(FL_KEY_LEFT)) {
-			m_CameraPosition.x -= m_CameraMoveSpeed;
+			m_CameraPosition.x -= m_CameraMoveSpeed * ts;
 		}else if (Flora::Input::IsKeyPressed(FL_KEY_RIGHT)) {
-			m_CameraPosition.x += m_CameraMoveSpeed;
+			m_CameraPosition.x += m_CameraMoveSpeed * ts;
 		}
 		if (Flora::Input::IsKeyPressed(FL_KEY_DOWN)) {
-			m_CameraPosition.y -= m_CameraMoveSpeed;
+			m_CameraPosition.y -= m_CameraMoveSpeed * ts;
 		}else if (Flora::Input::IsKeyPressed(FL_KEY_UP)) {
-			m_CameraPosition.y += m_CameraMoveSpeed;
+			m_CameraPosition.y += m_CameraMoveSpeed * ts;
 		}
 		if (Flora::Input::IsKeyPressed(FL_KEY_A)) {
-			m_CameraRotation += m_CameraRotationSpeed;
+			m_CameraRotation += m_CameraRotationSpeed * ts;
 		}else if (Flora::Input::IsKeyPressed(FL_KEY_D)) {
-			m_CameraRotation -= m_CameraRotationSpeed;
+			m_CameraRotation -= m_CameraRotationSpeed * ts;
 		}
 
 		Flora::RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1 });
@@ -157,8 +159,8 @@ private:
 
 	Flora::OrthographicCamera m_Camera;
 	glm::vec3 m_CameraPosition;
-	float m_CameraMoveSpeed = 0.1f;
-	float m_CameraRotationSpeed = 2.0f;
+	float m_CameraMoveSpeed = 5.0f;
+	float m_CameraRotationSpeed = 180.0f;
 	float m_CameraRotation = 0.0f;
 };
 

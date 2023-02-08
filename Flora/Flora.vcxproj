@@ -140,6 +140,7 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Flora\Core\Timestep.h" />
     <ClInclude Include="src\Flora\Renderer\Buffer.h" />
     <ClInclude Include="src\Flora\Renderer\OrthographicCamera.h" />
     <ClInclude Include="src\Flora\Renderer\RenderCommand.h" />

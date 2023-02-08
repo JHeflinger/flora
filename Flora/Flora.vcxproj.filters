@@ -1359,6 +1359,7 @@
     <ClInclude Include="src\Flora\Renderer\RenderCommand.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLRendererAPI.h" />
     <ClInclude Include="src\Flora\Renderer\OrthographicCamera.h" />
+    <ClInclude Include="src\Flora\Core\Timestep.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Flora\Application.cpp">

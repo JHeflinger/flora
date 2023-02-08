@@ -7,6 +7,7 @@
 #include "Flora/MouseButtonCodes.h"
 #include "Flora/Log.h"
 #include "Flora/Layer.h"
+#include "Flora/Core/Timestep.h"
 
 #include "Flora/ImGui/ImGuiLayer.h"
 
