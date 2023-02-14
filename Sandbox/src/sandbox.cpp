@@ -1,6 +1,8 @@
 #include <Flora.h>
 #include "imgui/imgui.h"
 #include <glm/gtc/matrix_transform.hpp>
+#include "Platform/OpenGL/OpenGLShader.h"
+#include <glm/gtc/type_ptr.hpp>
 
 class ExampleLayer : public Flora::Layer {
 public:
@@ -106,13 +108,15 @@ public:
 
 			in vec3 v_Position;
 
+			uniform vec3 u_Color;
+
 			void main() {
-				color = vec4(0.2, 0.3, 0.8, 1.0);
+				color = vec4(u_Color, 1.0);
 			}
 		)";
 
-		m_Shader.reset(new Flora::Shader(vertexSrc, fragmentSrc));
-		m_SquareSH.reset(new Flora::Shader(vertexSrc2, fragmentSrc2));
+		m_Shader.reset(Flora::Shader::Create(vertexSrc, fragmentSrc));
+		m_SquareSH.reset(Flora::Shader::Create(vertexSrc2, fragmentSrc2));
 
 	}
 
@@ -158,8 +162,12 @@ public:
 		Flora::Renderer::BeginScene(m_Camera);
 
 		glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1f));
-		for (int i = 0; i < 5; i++) {
-			for (int j = 0; j < 5; j++) {
+
+		std::dynamic_pointer_cast<Flora::OpenGLShader>(m_SquareSH)->Bind();
+		std::dynamic_pointer_cast<Flora::OpenGLShader>(m_SquareSH)->UploadUniformFloat3("u_Color", m_SquareColor);
+
+		for (int i = 0; i < 20; i++) {
+			for (int j = 0; j < 20; j++) {
 				glm::vec3 pos(j * 0.11f, i * 0.11f, 0.0f);
 				glm::mat4 transform = glm::translate(glm::mat4(1.0f), pos) * scale;
 				Flora::Renderer::Submit(m_SquareSH, m_SquareVA, transform);
@@ -176,6 +184,9 @@ public:
 	}
 
 	virtual void OnImGuiRender() override {
+		ImGui::Begin("Settings");
+		ImGui::ColorEdit3("Square Color", glm::value_ptr(m_SquareColor));
+		ImGui::End();
 	}
 private:
 	std::shared_ptr<Flora::Shader> m_Shader;
@@ -193,6 +204,8 @@ private:
 
 	glm::vec3 m_SquarePosition;
 	float m_SquareMoveSpeed = 1.0f;
+
+	glm::vec3 m_SquareColor = { 0.2f, 0.3f, 0.8f };
 };
 
 class Sandbox : public Flora::Application {
