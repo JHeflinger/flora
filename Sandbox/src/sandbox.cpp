@@ -19,7 +19,7 @@ public:
 			 0.0f,  0.5f,  0.0f, 0.8f, 0.8f, 0.2f, 1.0f
 		};
 
-		std::shared_ptr<Flora::VertexBuffer> vertexBuffer;
+		Flora::Ref<Flora::VertexBuffer> vertexBuffer;
 		vertexBuffer.reset(Flora::VertexBuffer::Create(verticies, sizeof(verticies)));
 		Flora::BufferLayout layout = {
 			{ Flora::ShaderDataType::Float3, "a_Position" },
@@ -29,7 +29,7 @@ public:
 		m_VertexArray->AddVertexBuffer(vertexBuffer);
 
 		uint32_t indicies[3] = { 0, 1, 2 };
-		std::shared_ptr<Flora::IndexBuffer> indexBuffer;
+		Flora::Ref<Flora::IndexBuffer> indexBuffer;
 		indexBuffer.reset(Flora::IndexBuffer::Create(indicies, sizeof(indicies) / sizeof(uint32_t)));
 		m_VertexArray->SetIndexBuffer(indexBuffer);
 
@@ -40,7 +40,7 @@ public:
 			 0.5f,  0.5f,  0.0f,
 			-0.5f,  0.5f,  0.0f
 		};
-		std::shared_ptr<Flora::VertexBuffer> squareVB;
+		Flora::Ref<Flora::VertexBuffer> squareVB;
 		squareVB.reset((Flora::VertexBuffer::Create(squareVertices, sizeof(squareVertices))));
 		squareVB->SetLayout({
 			{ Flora::ShaderDataType::Float3, "a_Position" }
@@ -48,7 +48,7 @@ public:
 		m_SquareVA->AddVertexBuffer(squareVB);
 
 		uint32_t squareIndices[6] = { 0, 1, 2, 2, 3, 0 };
-		std::shared_ptr<Flora::IndexBuffer> squareIB;
+		Flora::Ref<Flora::IndexBuffer> squareIB;
 		squareIB.reset(Flora::IndexBuffer::Create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t)));
 		m_SquareVA->SetIndexBuffer(squareIB);
 
@@ -189,11 +189,11 @@ public:
 		ImGui::End();
 	}
 private:
-	std::shared_ptr<Flora::Shader> m_Shader;
-	std::shared_ptr<Flora::VertexArray> m_VertexArray;
+	Flora::Ref<Flora::Shader> m_Shader;
+	Flora::Ref<Flora::VertexArray> m_VertexArray;
 
-	std::shared_ptr<Flora::VertexArray> m_SquareVA;
-	std::shared_ptr<Flora::Shader> m_SquareSH;
+	Flora::Ref<Flora::VertexArray> m_SquareVA;
+	Flora::Ref<Flora::Shader> m_SquareSH;
 
 	Flora::OrthographicCamera m_Camera;
 	glm::vec3 m_CameraPosition;
