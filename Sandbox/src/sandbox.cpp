@@ -152,6 +152,7 @@ public:
 		m_TextureShader.reset(Flora::Shader::Create(textureShaderVertexSrc, textureShaderFragmentSrc));
 
 		m_Texture = Flora::Texture2D::Create("assets/textures/test.png");
+		m_AlphaTexture = Flora::Texture2D::Create("assets/textures/testalpha.png");
 	
 		std::dynamic_pointer_cast<Flora::OpenGLShader>(m_TextureShader)->Bind();
 		std::dynamic_pointer_cast<Flora::OpenGLShader>(m_TextureShader)->UploadUniformInt("u_Texture", 0);
@@ -213,6 +214,9 @@ public:
 
 		m_Texture->Bind();
 		Flora::Renderer::Submit(m_TextureShader, m_SquareVA, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
+		m_AlphaTexture->Bind();
+		Flora::Renderer::Submit(m_TextureShader, m_SquareVA, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
+		//9:34
 
 		glm::mat4 triangleTransform = glm::translate(glm::mat4(1.0f), m_SquarePosition);
 		//Flora::Renderer::Submit(m_Shader, m_VertexArray, triangleTransform);
@@ -235,7 +239,7 @@ private:
 	Flora::Ref<Flora::VertexArray> m_SquareVA;
 	Flora::Ref<Flora::Shader> m_SquareSH, m_TextureShader;
 
-	Flora::Ref<Flora::Texture2D> m_Texture;
+	Flora::Ref<Flora::Texture2D> m_Texture, m_AlphaTexture;
 
 	Flora::OrthographicCamera m_Camera;
 	glm::vec3 m_CameraPosition;
