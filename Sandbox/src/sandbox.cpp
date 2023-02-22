@@ -8,30 +8,7 @@ class ExampleLayer : public Flora::Layer {
 public:
 	ExampleLayer() 
 		: Layer("Example"), 
-		m_Camera(-1.6f, 1.6f, -0.9f, 0.9f),
-		m_CameraPosition(0.0f),
-		m_TrianglePosition(0.0f) {
-		m_TriangleVA.reset(Flora::VertexArray::Create());
-
-		float verticies[3 * 7] = {
-			-0.5f, -0.5f,  0.0f, 0.8f, 0.2f, 0.8f, 1.0f,
-			 0.5f, -0.5f,  0.0f, 0.2f, 0.2f, 0.8f, 1.0f,
-			 0.0f,  0.5f,  0.0f, 0.8f, 0.8f, 0.2f, 1.0f
-		};
-
-		Flora::Ref<Flora::VertexBuffer> vertexBuffer;
-		vertexBuffer.reset(Flora::VertexBuffer::Create(verticies, sizeof(verticies)));
-		Flora::BufferLayout layout = {
-			{ Flora::ShaderDataType::Float3, "a_Position" },
-			{ Flora::ShaderDataType::Float4, "a_Color" }
-		};
-		vertexBuffer->SetLayout(layout);
-		m_TriangleVA->AddVertexBuffer(vertexBuffer);
-
-		uint32_t indicies[3] = { 0, 1, 2 };
-		Flora::Ref<Flora::IndexBuffer> indexBuffer;
-		indexBuffer.reset(Flora::IndexBuffer::Create(indicies, sizeof(indicies) / sizeof(uint32_t)));
-		m_TriangleVA->SetIndexBuffer(indexBuffer);
+		m_CameraController(1280.0f / 720.0f, true) {
 
 		m_SquareVA.reset(Flora::VertexArray::Create());
 		float squareVertices[5 * 4] = {
@@ -54,7 +31,6 @@ public:
 		m_SquareVA->SetIndexBuffer(squareIB);
 
 		auto textureShader = m_ShaderLibrary.Load("assets/shaders/Texture.glsl");
-		auto triangleShader = m_ShaderLibrary.Load("assets/shaders/Triangle.glsl");
 		auto squareShader = m_ShaderLibrary.Load("assets/shaders/Square.glsl");
 
 		m_Texture = Flora::Texture2D::Create("assets/textures/test.png");
@@ -65,49 +41,18 @@ public:
 	}
 
 	void OnUpdate(Flora::Timestep ts) override {
+		// UPDATE
+		m_CameraController.OnUpdate(ts);
 
-		if (Flora::Input::IsKeyPressed(FL_KEY_LEFT)) {
-			m_CameraPosition.x -= m_CameraMoveSpeed * ts;
-		}else if (Flora::Input::IsKeyPressed(FL_KEY_RIGHT)) {
-			m_CameraPosition.x += m_CameraMoveSpeed * ts;
-		}
-		if (Flora::Input::IsKeyPressed(FL_KEY_DOWN)) {
-			m_CameraPosition.y -= m_CameraMoveSpeed * ts;
-		}else if (Flora::Input::IsKeyPressed(FL_KEY_UP)) {
-			m_CameraPosition.y += m_CameraMoveSpeed * ts;
-		}
-
-		if (Flora::Input::IsKeyPressed(FL_KEY_Q)) {
-			m_CameraRotation += m_CameraRotationSpeed * ts;
-		}else if (Flora::Input::IsKeyPressed(FL_KEY_E)) {
-			m_CameraRotation -= m_CameraRotationSpeed * ts;
-		}
-
-		if (Flora::Input::IsKeyPressed(FL_KEY_A)) {
-			m_TrianglePosition.x -= m_TriangleMoveSpeed * ts;
-		}
-		else if (Flora::Input::IsKeyPressed(FL_KEY_D)) {
-			m_TrianglePosition.x += m_TriangleMoveSpeed * ts;
-		}
-		if (Flora::Input::IsKeyPressed(FL_KEY_S)) {
-			m_TrianglePosition.y -= m_TriangleMoveSpeed * ts;
-		}
-		else if (Flora::Input::IsKeyPressed(FL_KEY_W)) {
-			m_TrianglePosition.y += m_TriangleMoveSpeed * ts;
-		}
-
+		// RENDERING
 		Flora::RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1 });
 		Flora::RenderCommand::Clear();
 
-		m_Camera.SetPosition(m_CameraPosition);
-		m_Camera.SetRotation(m_CameraRotation);
-
-		Flora::Renderer::BeginScene(m_Camera);
+		Flora::Renderer::BeginScene(m_CameraController.GetCamera());
 
 		glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1f));
 
 		auto textureShader = m_ShaderLibrary.Get("Texture");
-		auto triangleShader = m_ShaderLibrary.Get("Triangle");
 		auto squareShader = m_ShaderLibrary.Get("Square");
 
 		std::dynamic_pointer_cast<Flora::OpenGLShader>(squareShader)->Bind();
@@ -126,13 +71,12 @@ public:
 		m_AlphaTexture->Bind();
 		Flora::Renderer::Submit(textureShader, m_SquareVA, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
 
-		glm::mat4 triangleTransform = glm::translate(glm::mat4(1.0f), m_TrianglePosition);
-		Flora::Renderer::Submit(triangleShader, m_TriangleVA, triangleTransform);
-
 		Flora::Renderer::EndScene();
 	}
 
-	void OnEvent(Flora::Event& event) override { }
+	void OnEvent(Flora::Event& e) override { 
+		m_CameraController.OnEvent(e);
+	}
 
 	virtual void OnImGuiRender() override {
 		ImGui::Begin("Settings");
@@ -141,19 +85,12 @@ public:
 	}
 private:
 	Flora::ShaderLibrary m_ShaderLibrary;
-	Flora::Ref<Flora::VertexArray> m_TriangleVA, m_SquareVA;
+	Flora::Ref<Flora::VertexArray> m_SquareVA;
 	Flora::Ref<Flora::Texture2D> m_Texture, m_AlphaTexture;
 
-	Flora::OrthographicCamera m_Camera;
-	glm::vec3 m_CameraPosition;
-	float m_CameraMoveSpeed = 5.0f;
-	float m_CameraRotationSpeed = 180.0f;
-	float m_CameraRotation = 0.0f;
+	Flora::OrthographicCameraController m_CameraController;
 
-	glm::vec3 m_TrianglePosition;
-	float m_TriangleMoveSpeed = 1.0f;
-
-	glm::vec3 m_SquareColor = { 0.2f, 0.3f, 0.8f };
+	glm::vec3 m_SquareColor = { 0.2f, 0.8f, 0.4f };
 };
 
 class Sandbox : public Flora::Application {

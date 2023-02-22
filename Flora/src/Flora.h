@@ -8,6 +8,7 @@
 #include "Flora/Log.h"
 #include "Flora/Layer.h"
 #include "Flora/Core/Timestep.h"
+#include "Flora/OrthographicCameraController.h"
 
 #include "Flora/ImGui/ImGuiLayer.h"
 
