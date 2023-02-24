@@ -1,5 +1,5 @@
 #pragma once
-#include "Flora/Window.h"
+#include "Flora/Core/Window.h"
 #include "Flora/Renderer/GraphicsContext.h"
 #include <GLFW/glfw3.h>
 

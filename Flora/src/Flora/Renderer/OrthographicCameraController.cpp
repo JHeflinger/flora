@@ -1,7 +1,7 @@
 #include "flpch.h"
 #include "OrthographicCameraController.h"
-#include "Flora/Input.h"
-#include "Flora/KeyCodes.h"
+#include "Flora/Core/Input.h"
+#include "Flora/Core/KeyCodes.h"
 
 namespace Flora {
 	OrthographicCameraController::OrthographicCameraController(float aspectRatio, bool rotation)

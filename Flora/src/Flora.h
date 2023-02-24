@@ -1,14 +1,14 @@
 #pragma once
 
 // For use by Flora applications
-#include "Flora/Application.h"
-#include "Flora/Input.h"
-#include "Flora/KeyCodes.h"
-#include "Flora/MouseButtonCodes.h"
-#include "Flora/Log.h"
-#include "Flora/Layer.h"
+#include "Flora/Core/Application.h"
+#include "Flora/Core/Input.h"
+#include "Flora/Core/KeyCodes.h"
+#include "Flora/Core/MouseButtonCodes.h"
+#include "Flora/Core/Log.h"
+#include "Flora/Core/Layer.h"
 #include "Flora/Core/Timestep.h"
-#include "Flora/OrthographicCameraController.h"
+#include "Flora/Renderer/OrthographicCameraController.h"
 
 #include "Flora/ImGui/ImGuiLayer.h"
 
@@ -24,4 +24,4 @@
 #include "Flora/Renderer/OrthographicCamera.h"
 
 // ---------ENTRY POINT---------
-#include "Flora/EntryPoint.h"
+#include "Flora/Core/EntryPoint.h"

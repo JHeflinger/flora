@@ -1,5 +1,5 @@
 #pragma once
-#include "Flora/Input.h"
+#include "Flora/Core/Input.h"
 
 namespace Flora {
 	class WindowsInput : public Input {

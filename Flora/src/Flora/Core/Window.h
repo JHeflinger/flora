@@ -1,6 +1,6 @@
 #pragma once
 #include "flpch.h"
-#include "Flora/Core.h"
+#include "Flora/Core/Core.h"
 #include "Flora/Events/Event.h"
 
 namespace Flora {

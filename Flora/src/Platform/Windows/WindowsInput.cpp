@@ -1,7 +1,7 @@
 #include "flpch.h"
 #include "WindowsInput.h"
 #include <GLFW/glfw3.h>
-#include "Flora/Application.h"
+#include "Flora/Core/Application.h"
 
 namespace Flora {
 

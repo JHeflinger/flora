@@ -12,7 +12,7 @@
 #include <unordered_map>
 #include <unordered_set>
 
-#include "Flora/Log.h"
+#include "Flora/Core/Log.h"
 
 #ifdef FL_PLATFORM_WINDOWS
 	#include <Windows.h>

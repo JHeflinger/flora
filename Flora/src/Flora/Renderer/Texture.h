@@ -1,6 +1,6 @@
 #pragma once
 #include <string>
-#include "Flora/Core.h"
+#include "Flora/Core/Core.h"
 
 namespace Flora {
 	class Texture {

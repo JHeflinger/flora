@@ -141,32 +141,32 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\Flora.h" />
-    <ClInclude Include="src\Flora\Application.h" />
-    <ClInclude Include="src\Flora\Core.h" />
+    <ClInclude Include="src\Flora\Core\Application.h" />
+    <ClInclude Include="src\Flora\Core\Core.h" />
+    <ClInclude Include="src\Flora\Core\EntryPoint.h" />
+    <ClInclude Include="src\Flora\Core\Input.h" />
+    <ClInclude Include="src\Flora\Core\KeyCodes.h" />
+    <ClInclude Include="src\Flora\Core\Layer.h" />
+    <ClInclude Include="src\Flora\Core\LayerStack.h" />
+    <ClInclude Include="src\Flora\Core\Log.h" />
+    <ClInclude Include="src\Flora\Core\MouseButtonCodes.h" />
     <ClInclude Include="src\Flora\Core\Timestep.h" />
-    <ClInclude Include="src\Flora\EntryPoint.h" />
+    <ClInclude Include="src\Flora\Core\Window.h" />
     <ClInclude Include="src\Flora\Events\ApplicationEvent.h" />
     <ClInclude Include="src\Flora\Events\Event.h" />
     <ClInclude Include="src\Flora\Events\KeyEvent.h" />
     <ClInclude Include="src\Flora\Events\MouseEvent.h" />
     <ClInclude Include="src\Flora\ImGui\ImGuiLayer.h" />
-    <ClInclude Include="src\Flora\Input.h" />
-    <ClInclude Include="src\Flora\KeyCodes.h" />
-    <ClInclude Include="src\Flora\Layer.h" />
-    <ClInclude Include="src\Flora\LayerStack.h" />
-    <ClInclude Include="src\Flora\Log.h" />
-    <ClInclude Include="src\Flora\MouseButtonCodes.h" />
-    <ClInclude Include="src\Flora\OrthographicCameraController.h" />
     <ClInclude Include="src\Flora\Renderer\Buffer.h" />
     <ClInclude Include="src\Flora\Renderer\GraphicsContext.h" />
     <ClInclude Include="src\Flora\Renderer\OrthographicCamera.h" />
+    <ClInclude Include="src\Flora\Renderer\OrthographicCameraController.h" />
     <ClInclude Include="src\Flora\Renderer\RenderCommand.h" />
     <ClInclude Include="src\Flora\Renderer\Renderer.h" />
     <ClInclude Include="src\Flora\Renderer\RendererAPI.h" />
     <ClInclude Include="src\Flora\Renderer\Shader.h" />
     <ClInclude Include="src\Flora\Renderer\Texture.h" />
     <ClInclude Include="src\Flora\Renderer\VertexArray.h" />
-    <ClInclude Include="src\Flora\Window.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLBuffer.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLContext.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLRendererAPI.h" />
@@ -595,15 +595,15 @@
     <ClInclude Include="vendor\stb_image\stb_image.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Flora\Application.cpp" />
+    <ClCompile Include="src\Flora\Core\Application.cpp" />
+    <ClCompile Include="src\Flora\Core\Layer.cpp" />
+    <ClCompile Include="src\Flora\Core\LayerStack.cpp" />
+    <ClCompile Include="src\Flora\Core\Log.cpp" />
     <ClCompile Include="src\Flora\ImGui\ImGuiBuild.cpp" />
     <ClCompile Include="src\Flora\ImGui\ImGuiLayer.cpp" />
-    <ClCompile Include="src\Flora\Layer.cpp" />
-    <ClCompile Include="src\Flora\LayerStack.cpp" />
-    <ClCompile Include="src\Flora\Log.cpp" />
-    <ClCompile Include="src\Flora\OrthographicCameraController.cpp" />
     <ClCompile Include="src\Flora\Renderer\Buffer.cpp" />
     <ClCompile Include="src\Flora\Renderer\OrthographicCamera.cpp" />
+    <ClCompile Include="src\Flora\Renderer\OrthographicCameraController.cpp" />
     <ClCompile Include="src\Flora\Renderer\RenderCommand.cpp" />
     <ClCompile Include="src\Flora\Renderer\Renderer.cpp" />
     <ClCompile Include="src\Flora\Renderer\RendererAPI.cpp" />
