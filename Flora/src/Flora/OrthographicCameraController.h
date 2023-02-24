@@ -12,6 +12,8 @@ namespace Flora {
 		void OnEvent(Event& e);
 		OrthographicCamera& GetCamera() { return m_Camera; }
 		const OrthographicCamera& GetCamera() const { return m_Camera; }
+		void SetZoomLevel(float level) { m_ZoomLevel = level; }
+		float GetZoomLevel() { return m_ZoomLevel; }
 	private:
 		bool OnMouseScrolled(MouseScrolledEvent& e);
 		bool OnWindowResized(WindowResizeEvent& e);
