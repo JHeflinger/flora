@@ -74,7 +74,6 @@ project "Flora"
 
 		defines
 		{
-			"FL_PLATFORM_WINDOWS",
 			"FL_BUILD_DLL",
 			"GLFW_INCLUDE_NONE"
 		}
@@ -125,11 +124,6 @@ project "Sandbox"
 
 	filter "system:windows"
 		systemversion "latest"
-
-		defines
-		{
-			"FL_PLATFORM_WINDOWS"
-		}
 
 	filter "configurations:Debug"
 		defines "FL_DEBUG"

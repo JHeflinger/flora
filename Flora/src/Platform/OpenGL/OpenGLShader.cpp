@@ -64,6 +64,7 @@ namespace Flora {
 			std::string type = source.substr(begin, eol - begin);
 			FL_CORE_ASSERT(type == "vertex" || type == "fragment" || type == "pixel", "Invalid shader type specified");
 			size_t nextLinePos = source.find_first_not_of("\r\n", eol);
+			FL_CORE_ASSERT(nextLinePos != std::string::npos, "Syntax error");
 			pos = source.find(typeToken, nextLinePos);
 			shaderSources[ShaderTypeFromString(type)] = source.substr(nextLinePos, pos - (nextLinePos == std::string::npos ? source.size() - 1 : nextLinePos));
 		}
@@ -127,7 +128,10 @@ namespace Flora {
 			return;
 		}
 
-		for (auto id : glShaderIDs) glDetachShader(program, id);
+		for (auto id : glShaderIDs) {
+			glDetachShader(program, id);
+			glDeleteShader(id);
+		}
 
 		m_RendererID = program;
 	}

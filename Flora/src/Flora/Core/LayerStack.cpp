@@ -6,8 +6,10 @@ namespace Flora {
 	}
 
 	LayerStack::~LayerStack() {
-		for (Layer* layer : m_Layers)
+		for (Layer* layer : m_Layers) {
+			layer->OnDetatch();
 			delete layer;
+		}
 	}
 
 	void LayerStack::PushLayer(Layer* layer) {
