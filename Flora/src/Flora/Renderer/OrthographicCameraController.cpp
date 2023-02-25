@@ -2,7 +2,7 @@
 #include "OrthographicCameraController.h"
 #include "Flora/Core/Input.h"
 #include "Flora/Core/KeyCodes.h"
-//12:59
+
 namespace Flora {
 	OrthographicCameraController::OrthographicCameraController(float aspectRatio, bool rotation)
 		: m_Camera(-aspectRatio * m_ZoomLevel, aspectRatio* m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel),

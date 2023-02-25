@@ -22,6 +22,3 @@
 #include "Flora/Renderer/VertexArray.h"
 
 #include "Flora/Renderer/OrthographicCamera.h"
-
-// ---------ENTRY POINT---------
-#include "Flora/Core/EntryPoint.h"
