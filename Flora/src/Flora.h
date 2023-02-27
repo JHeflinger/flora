@@ -14,6 +14,7 @@
 
 // --------RENDERER----------
 #include "Flora/Renderer/Renderer.h"
+#include "Flora/Renderer/Renderer2D.h"
 #include "Flora/Renderer/RenderCommand.h"
 
 #include "Flora/Renderer/Buffer.h"
