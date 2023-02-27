@@ -11,7 +11,7 @@ Sandbox2D::Sandbox2D()
 }
 
 void Sandbox2D::OnAttatch() {
-	
+	m_CheckerboardTexture = Flora::Texture2D::Create("assets/textures/test.png");
 }
 
 void Sandbox2D::OnDetatch() {
@@ -28,6 +28,7 @@ void Sandbox2D::OnUpdate(Flora::Timestep ts) {
 
 	Flora::Renderer2D::DrawQuad({ -1.0f, 0.0f }, { 0.8f, 0.8f }, m_SquareColor, 20.0f);
 	Flora::Renderer2D::DrawQuad({ 0.5f, -0.5f }, { 0.5f, 0.75f }, m_SquareColor * 0.7f, 90.0f);
+	Flora::Renderer2D::DrawQuad({ 0.0f, 0.0f, 0.1f }, { 5.0f, 5.0f }, m_CheckerboardTexture, { m_SquareColor.x * 0.5f, m_SquareColor.y * 0.9f, m_SquareColor.z * 0.2f, m_SquareColor.w * 0.2f }, 45.0f);
 
 	Flora::Renderer2D::EndScene();
 }
