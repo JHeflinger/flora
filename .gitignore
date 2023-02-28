@@ -12,3 +12,6 @@ bin-int/
 # personal 
 **.html
 *.ini
+
+# debug
+Sandbox/debug_log/
