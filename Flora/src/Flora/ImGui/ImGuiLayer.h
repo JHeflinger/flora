@@ -11,7 +11,6 @@ namespace Flora {
 		~ImGuiLayer();
 		virtual void OnAttatch() override;
 		virtual void OnDetatch() override;
-		virtual void OnImGuiRender() override;
 		void Begin();
 		void End();
 	private:

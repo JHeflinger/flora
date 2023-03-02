@@ -13,6 +13,7 @@
 #include <unordered_set>
 
 #include "Flora/Core/Log.h"
+#include "Flora/Debug/Instrumentor.h"
 
 #ifdef FL_PLATFORM_WINDOWS
 	#include <Windows.h>

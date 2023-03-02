@@ -13,6 +13,8 @@ namespace Flora {
 	}
 
 	OpenGLShader::OpenGLShader(const std::string& filepath) {
+		FL_PROFILE_FUNCTION();
+
 		std::string source = ReadFile(filepath);
 		auto shaderSources = PreProcess(source);
 		Compile(shaderSources);
@@ -26,6 +28,8 @@ namespace Flora {
 
 	OpenGLShader::OpenGLShader(const std::string& name, const std::string& vertexSrc, const std::string& fragmentSrc) 
 		: m_Name(name) {
+		FL_PROFILE_FUNCTION();
+
 		std::unordered_map<GLenum, std::string> sources;
 		sources[GL_VERTEX_SHADER] = vertexSrc;
 		sources[GL_FRAGMENT_SHADER] = fragmentSrc;
@@ -33,10 +37,14 @@ namespace Flora {
 	}
 
 	OpenGLShader::~OpenGLShader() {
+		FL_PROFILE_FUNCTION();
+
 		glDeleteProgram(m_RendererID);
 	}
 
 	std::string OpenGLShader::ReadFile(const std::string& filepath) {
+		FL_PROFILE_FUNCTION();
+
 		std::string result;
 		std::ifstream in(filepath, std::ios::in | std::ios::binary);
 		if (in) {
@@ -53,6 +61,8 @@ namespace Flora {
 	}
 
 	std::unordered_map<GLenum, std::string> OpenGLShader::PreProcess(const std::string& source) {
+		FL_PROFILE_FUNCTION();
+
 		std::unordered_map<GLenum, std::string> shaderSources;
 		const char* typeToken = "#type";
 		size_t typeTokenLength = strlen(typeToken);
@@ -72,6 +82,8 @@ namespace Flora {
 	}
 
 	void OpenGLShader::Compile(const std::unordered_map<GLenum, std::string>& shaderSources) {
+		FL_PROFILE_FUNCTION();
+
 		GLuint program = glCreateProgram();
 		FL_CORE_ASSERT(shaderSources.size() <= 5, "Flora only allows 5 shaders currently");
 		std::array<GLenum, 2> glShaderIDs;
@@ -137,10 +149,14 @@ namespace Flora {
 	}
 
 	void OpenGLShader::Bind() const {
+		FL_PROFILE_FUNCTION();
+
 		glUseProgram(m_RendererID);
 	}
 
 	void OpenGLShader::Unbind() const {
+		FL_PROFILE_FUNCTION();
+
 		glUseProgram(0);
 	}
 
@@ -150,6 +166,10 @@ namespace Flora {
 
 	void OpenGLShader::SetMat4(const std::string& name, const glm::mat4& value) {
 		UploadUniformMat4(name, value);
+	}
+
+	void OpenGLShader::SetFloat(const std::string& name, float value) {
+		UploadUniformFloat(name, value);
 	}
 
 	void OpenGLShader::SetFloat3(const std::string& name, const glm::vec3& value) {

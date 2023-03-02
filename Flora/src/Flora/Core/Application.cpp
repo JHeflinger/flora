@@ -13,6 +13,8 @@ namespace Flora {
 	Application* Application::s_Instance = nullptr;
 
 	Application::Application() {
+		FL_PROFILE_FUNCTION();
+
 		FL_CORE_ASSERT(!s_Instance, "Application already exists!");
 		s_Instance = this;
 
@@ -30,16 +32,22 @@ namespace Flora {
 	}
 
 	void Application::PushLayer(Layer* layer) {
+		FL_PROFILE_FUNCTION();
+
 		m_LayerStack.PushLayer(layer);
 		layer->OnAttatch();
 	}
 
 	void Application::PushOverlay(Layer* layer) {
+		FL_PROFILE_FUNCTION();
+
 		m_LayerStack.PushOverlay(layer);
 		layer->OnAttatch();
 	}
 
 	void Application::OnEvent(Event& e) {
+		FL_PROFILE_FUNCTION();
+
 		EventDispacher dispatcher(e);
 		dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(OnWindowClosed));
 		dispatcher.Dispatch<WindowResizeEvent>(BIND_EVENT_FN(OnWindowResize));
@@ -51,20 +59,30 @@ namespace Flora {
 	}
 
 	void Application::Run() {
+		FL_PROFILE_FUNCTION();
+
 		while (m_Running) {
-			float time = (float)glfwGetTime(); //Platform::GetTime
-			Timestep timestep = time - m_LastFrameTime;// -m_LastFrameTime;
+			FL_PROFILE_SCOPE("Runloop");
+
+			float time = (float)glfwGetTime();
+			Timestep timestep = time - m_LastFrameTime;
 			m_LastFrameTime = time;
 
 			if (!m_Minimized) {
-				for (Layer* layer : m_LayerStack)
-					layer->OnUpdate(timestep);
+				{
+					FL_PROFILE_SCOPE("LayerStack OnUpdate");
+					for (Layer* layer : m_LayerStack)
+						layer->OnUpdate(timestep);
+				}
 			}
 
-			m_ImGuiLayer->Begin();
-			for (Layer* layer : m_LayerStack)
-				layer->OnImGuiRender();
-			m_ImGuiLayer->End();
+			{
+				FL_PROFILE_SCOPE("ImguiLayer OnUpdate");
+				m_ImGuiLayer->Begin();
+				for (Layer* layer : m_LayerStack)
+					layer->OnImGuiRender();
+				m_ImGuiLayer->End();
+			}
 
 			m_Window->OnUpdate();
 		}
@@ -76,6 +94,8 @@ namespace Flora {
 	}
 
 	bool Application::OnWindowResize(WindowResizeEvent& e) {
+		FL_PROFILE_FUNCTION();
+
 		if (e.GetWidth() == 0 || e.GetHeight() == 0) {
 			m_Minimized = true;
 			return false;

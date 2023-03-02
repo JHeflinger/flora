@@ -12,6 +12,8 @@ namespace Flora {
 	}
 
 	void OrthographicCameraController::OnUpdate(Timestep ts) {
+		FL_PROFILE_FUNCTION();
+
 		if (Input::IsKeyPressed(FL_KEY_A)) {
 			m_CameraPosition.x -= cos(glm::radians(m_CameraRotation)) * m_CameraTranslationSpeed * ts;
 			m_CameraPosition.y -= sin(glm::radians(m_CameraRotation)) * m_CameraTranslationSpeed * ts;
@@ -46,12 +48,16 @@ namespace Flora {
 	}
 
 	void OrthographicCameraController::OnEvent(Event& e) {
+		FL_PROFILE_FUNCTION();
+
 		EventDispacher dispatcher(e);
 		dispatcher.Dispatch<MouseScrolledEvent>(FL_BIND_EVENT_FN(OrthographicCameraController::OnMouseScrolled));
 		dispatcher.Dispatch<WindowResizeEvent>(FL_BIND_EVENT_FN(OrthographicCameraController::OnWindowResized));
 	}
 
 	bool OrthographicCameraController::OnMouseScrolled(MouseScrolledEvent& e) {
+		FL_PROFILE_FUNCTION();
+
 		m_ZoomLevel -= e.GetYOffset() * m_CameraZoomSpeed;
 		m_ZoomLevel = std::max(m_ZoomLevel, 0.02f);
 		m_Camera.SetProjection(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel);
@@ -59,6 +65,8 @@ namespace Flora {
 	}
 
 	bool OrthographicCameraController::OnWindowResized(WindowResizeEvent& e) {
+		FL_PROFILE_FUNCTION();
+
 		m_AspectRatio = (float)e.GetWidth() / (float)e.GetHeight();
 		m_Camera.SetProjection(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel);
 		return false;

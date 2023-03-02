@@ -11,6 +11,8 @@ namespace Flora {
 	}
 
 	void OpenGLContext::Init() {
+		FL_PROFILE_FUNCTION();
+
 		glfwMakeContextCurrent(m_WindowHandle);
 		int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
 		FL_CORE_ASSERT(status, "Failed to initialize Glad!");
@@ -27,6 +29,8 @@ namespace Flora {
 	}
 
 	void OpenGLContext::SwapBuffers() {
+		FL_PROFILE_FUNCTION();
+
 		glfwSwapBuffers(m_WindowHandle);
 	}
 }

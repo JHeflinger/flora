@@ -19,6 +19,8 @@ namespace Flora {
 	}
 
 	void ImGuiLayer::OnAttatch() {
+		FL_PROFILE_FUNCTION();
+
 		//setup dear imgui context
 		IMGUI_CHECKVERSION();
 		ImGui::CreateContext();
@@ -50,18 +52,24 @@ namespace Flora {
 	}
 
 	void ImGuiLayer::OnDetatch() {
+		FL_PROFILE_FUNCTION();
+
 		ImGui_ImplOpenGL3_Shutdown();
 		ImGui_ImplGlfw_Shutdown();
 		ImGui::DestroyContext();
 	}
 
 	void ImGuiLayer::Begin() {
+		FL_PROFILE_FUNCTION();
+
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
 	}
 
 	void ImGuiLayer::End() {
+		FL_PROFILE_FUNCTION();
+
 		ImGuiIO& io = ImGui::GetIO();
 		Application& app = Application::Get();
 		io.DisplaySize = ImVec2((float)app.GetWindow().GetWidth(), (float)app.GetWindow().GetHeight());
@@ -76,10 +84,5 @@ namespace Flora {
 			ImGui::RenderPlatformWindowsDefault();
 			glfwMakeContextCurrent(backup_current_context);
 		}
-	}
-
-	void ImGuiLayer::OnImGuiRender() {
-		static bool show = true;
-		ImGui::ShowDemoWindow(&show);
 	}
 }
