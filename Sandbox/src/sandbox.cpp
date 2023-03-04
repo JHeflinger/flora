@@ -20,7 +20,7 @@ public:
 			-0.5f,  0.5f,  0.0f,  0.0f,  1.0f
 		};
 		Flora::Ref<Flora::VertexBuffer> squareVB;
-		squareVB.reset((Flora::VertexBuffer::Create(squareVertices, sizeof(squareVertices))));
+		squareVB = Flora::VertexBuffer::Create(squareVertices, sizeof(squareVertices));
 		squareVB->SetLayout({
 			{ Flora::ShaderDataType::Float3, "a_Position" },
 			{ Flora::ShaderDataType::Float2, "a_TexCoord" }
@@ -29,7 +29,7 @@ public:
 
 		uint32_t squareIndices[6] = { 0, 1, 2, 2, 3, 0 };
 		Flora::Ref<Flora::IndexBuffer> squareIB;
-		squareIB.reset(Flora::IndexBuffer::Create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t)));
+		squareIB = Flora::IndexBuffer::Create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t));
 		m_SquareVA->SetIndexBuffer(squareIB);
 
 		auto textureShader = m_ShaderLibrary.Load("assets/shaders/Texture.glsl");

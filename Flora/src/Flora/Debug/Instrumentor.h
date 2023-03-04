@@ -107,7 +107,7 @@ namespace Flora {
     };
 }
 
-#define FL_PROFILE 1
+#define FL_PROFILE 0
 #if FL_PROFILE
     #define FL_PROFILE_BEGIN_SESSION(name, filepath) ::Flora::Instrumentor::Get().BeginSession(name, filepath)
     #define FL_PROFILE_END_SESSION() ::Flora::Instrumentor::Get().EndSession()
