@@ -12,6 +12,7 @@ Sandbox2D::Sandbox2D()
 
 void Sandbox2D::OnAttatch() {
 	m_CheckerboardTexture = Flora::Texture2D::Create("assets/textures/test.png");
+	m_DumbTexture = Flora::Texture2D::Create("assets/textures/testalpha.png");
 }
 
 void Sandbox2D::OnDetatch() {
@@ -37,21 +38,31 @@ void Sandbox2D::OnUpdate(Flora::Timestep ts) {
 		Flora::Renderer2D::BeginScene(m_CameraController.GetCamera());
 
 		static float rotation = 0.0f;
+		static float rotation2 = 0.0f;
+		static float rotation3 = 0.0f;
 		rotation += ts * 20.0f;
+		rotation2 += ts * 190.0f;
+		rotation3 -= ts * 360.0f;
 
-		Flora::Renderer2D::DrawQuad({ -1.0f, 0.0f },
+		Flora::Renderer2D::DrawQuad({ 0.0f, 0.0f, -0.9f },
 			{ 0.8f, 0.8f },
-			{ 0.8f, 0.2f, 0.3f, 1.0f },
+			{ m_SquareColor.y, m_SquareColor.z, m_SquareColor.x, m_SquareColor.w },
 			nullptr,
 			rotation,
 			 1.0f);
 
-		Flora::Renderer2D::DrawQuad({ 1.0f, 0.0f },
+		Flora::Renderer2D::DrawQuad({ 0.0f, 0.0f, -0.8f },
 			{ 0.5f, 0.5f },
-			{ 0.8f, 0.2f, 0.3f, 1.0f },
+			{ m_SquareColor.x, m_SquareColor.y, m_SquareColor.z, m_SquareColor.w },
 			m_CheckerboardTexture,
-			rotation,
-			10.0f);
+			rotation2,
+			5.0f);
+
+		Flora::Renderer2D::DrawQuad({ 0.0f, 0.0f, -0.7f },
+			{ 0.6f, 0.6f },
+			{ 1.0f - m_SquareColor.x, 1.0f - m_SquareColor.y, 1.0f - m_SquareColor.z, m_SquareColor.w },
+			m_DumbTexture,
+			rotation3);
 
 		Flora::Renderer2D::EndScene();
 	}

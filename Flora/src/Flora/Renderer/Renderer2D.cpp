@@ -33,6 +33,10 @@ namespace Flora {
 		uint32_t TextureSlotIndex = 1; // 0 is the white texture
 
 		glm::vec4 QuadVertexPositions[4];
+
+		struct Statistics {
+			uint32_t DrawCalls; //6:20
+		};
 	}; 
 
 	static Renderer2DData s_Data;
