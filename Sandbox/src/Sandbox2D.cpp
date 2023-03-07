@@ -48,7 +48,7 @@ void Sandbox2D::OnUpdate(Flora::Timestep ts) {
 		static float red = 1.0f;
 		static float green = 0.0f;
 		static float blue = 0.0f;
-		static float colorspeed = 0.5f;
+		static float colorspeed = 1.5f;
 
 		if (red >= 1.0f && blue <= 0.0f && green < 1.0f) {
 			green += ts * colorspeed;
