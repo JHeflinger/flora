@@ -24,4 +24,8 @@ private:
 
 	ParticleSystem m_ParticleSystem;
 	ParticleProps m_Particle;
+
+	glm::vec4 m_ParticleStartColor = { 255 / 255.0f, 255 / 255.0f, 0 / 143.0f, 1.0f };
+	glm::vec4 m_ParticleEndColor = { 255 / 255.0f, 0 / 255.0f, 0 / 255.0f, 0.0f };
+	float m_ParticleLifetime = 0.5f;
 };

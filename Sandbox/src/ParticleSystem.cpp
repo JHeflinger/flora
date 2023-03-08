@@ -5,6 +5,7 @@
 #include <glm/gtx/compatibility.hpp>
 
 #include <random>
+#include <cstdlib>
 
 class Random
 {
@@ -45,6 +46,11 @@ void ParticleSystem::OnUpdate(Flora::Timestep ts)
 			continue;
 		}
 
+		float dir = -1.0f;
+		if (rand() % 10 >= 5) {
+			particle.Velocity.x *= dir;
+		}
+
 		particle.LifeRemaining -= ts;
 		particle.Position += particle.Velocity * (float)ts;
 		particle.Rotation += 0.01f * ts;
@@ -62,7 +68,7 @@ void ParticleSystem::OnRender(Flora::OrthographicCamera& camera)
 		// Fade away particles
 		float life = particle.LifeRemaining / particle.LifeTime;
 		glm::vec4 color = glm::lerp(particle.ColorEnd, particle.ColorBegin, life);
-		//color.a = color.a * life;
+		color.a = color.a * life;
 
 		float size = glm::lerp(particle.SizeEnd, particle.SizeBegin, life);
 

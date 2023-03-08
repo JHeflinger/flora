@@ -14,12 +14,12 @@ void Sandbox2D::OnAttatch() {
 	m_CheckerboardTexture = Flora::Texture2D::Create("assets/textures/test.png");
 	m_DumbTexture = Flora::Texture2D::Create("assets/textures/testalpha.png");
 
-	m_Particle.ColorBegin = { 254 / 255.0f, 212 / 255.0f, 123 / 255.0f, 1.0f };
-	m_Particle.ColorEnd = { 254 / 255.0f, 109 / 255.0f, 41 / 255.0f, 1.0f };
+	m_Particle.ColorBegin = m_ParticleStartColor;
+	m_Particle.ColorEnd = m_ParticleEndColor;
 	m_Particle.SizeBegin = 0.5f, m_Particle.SizeVariation = 0.3f, m_Particle.SizeEnd = 0.0f;
-	m_Particle.LifeTime = 0.75f;
-	m_Particle.Velocity = { 0.0f, 0.0f };
-	m_Particle.VelocityVariation = { 3.0f, 1.0f };
+	m_Particle.LifeTime = m_ParticleLifetime;
+	m_Particle.Velocity = { 0.0f, 6.0f };
+	m_Particle.VelocityVariation = { 6.0f, 3.0f };
 	m_Particle.Position = { 0.0f, 0.0f };
 }
 
@@ -77,9 +77,9 @@ void Sandbox2D::OnUpdate(Flora::Timestep ts) {
 			blue -= ts * colorspeed;
 		}
 
-		m_SquareColor.x = red;
-		m_SquareColor.y = green;
-		m_SquareColor.z = blue;
+		//m_SquareColor.x = red;
+		//m_SquareColor.y = green;
+		//m_SquareColor.z = blue;
 
 		//commented out until able to debug
 		/*
@@ -117,38 +117,48 @@ void Sandbox2D::OnUpdate(Flora::Timestep ts) {
 		Flora::Renderer2D::EndScene();*/
 	}
 
-	if (Flora::Input::IsMouseButtonPressed(FL_MOUSE_BUTTON_LEFT))
 	{
-		auto [x, y] = Flora::Input::GetMousePosition();
-		auto width = Flora::Application::Get().GetWindow().GetWidth();
-		auto height = Flora::Application::Get().GetWindow().GetHeight();
+		FL_PROFILE_SCOPE("PARTICLE RENDER TEST");
+		m_Particle.ColorBegin = m_ParticleStartColor;
+		m_Particle.ColorEnd = m_ParticleEndColor;
+		m_Particle.LifeTime = m_ParticleLifetime;
+		if (Flora::Input::IsMouseButtonPressed(FL_MOUSE_BUTTON_LEFT))
+		{
+			auto [x, y] = Flora::Input::GetMousePosition();
+			auto width = Flora::Application::Get().GetWindow().GetWidth();
+			auto height = Flora::Application::Get().GetWindow().GetHeight();
 
-		auto bounds = m_CameraController.GetBounds();
-		auto pos = m_CameraController.GetCamera().GetPosition();
-		x = (x / width) * bounds.GetWidth() - bounds.GetWidth() * 0.5f;
-		y = bounds.GetHeight() * 0.5f - (y / height) * bounds.GetHeight();
-		m_Particle.Position = { x + pos.x, y + pos.y };
-		for (int i = 0; i < 20; i++)
-			m_ParticleSystem.Emit(m_Particle);
+			auto bounds = m_CameraController.GetBounds();
+			auto pos = m_CameraController.GetCamera().GetPosition();
+			x = (x / width) * bounds.GetWidth() - bounds.GetWidth() * 0.5f;
+			y = bounds.GetHeight() * 0.5f - (y / height) * bounds.GetHeight();
+			m_Particle.Position = { x + pos.x, y + pos.y };
+			for (int i = 0; i < 20; i++)
+				m_ParticleSystem.Emit(m_Particle);
+		}
+
+		m_ParticleSystem.OnUpdate(ts);
+		m_ParticleSystem.OnRender(m_CameraController.GetCamera());
 	}
-
-	m_ParticleSystem.OnUpdate(ts);
-	m_ParticleSystem.OnRender(m_CameraController.GetCamera());
 }
 
 void Sandbox2D::OnImGuiRender() {
 	FL_PROFILE_FUNCTION();
 
-	ImGui::Begin("Settings");
-
+	ImGui::Begin("Renderer Stats");
 	auto stats = Flora::Renderer2D::GetStats();
-	ImGui::Text("Renderer2D Stats:");
 	ImGui::Text("Draw Calls: %d", stats.DrawCalls);
 	ImGui::Text("Quads: %d", stats.QuadCount);
 	ImGui::Text("Vertices: %d", stats.GetTotalVertexCount());
 	ImGui::Text("Indices: %d", stats.GetTotalIndexCount());
+	ImGui::End();
 
-	ImGui::ColorEdit4("Square Color", glm::value_ptr(m_SquareColor));
+	//ImGui::ColorEdit4("Square Color", glm::value_ptr(m_SquareColor));
+
+	ImGui::Begin("Particle Settings");
+	ImGui::ColorEdit4("Core", glm::value_ptr(m_ParticleStartColor));
+	ImGui::ColorEdit4("Tail", glm::value_ptr(m_ParticleEndColor));
+	ImGui::DragFloat("Lifetime", &m_ParticleLifetime, 0.0f, 10.0f);
 	ImGui::End();
 }
 
