@@ -12,7 +12,15 @@ Sandbox2D::Sandbox2D()
 
 void Sandbox2D::OnAttatch() {
 	m_CheckerboardTexture = Flora::Texture2D::Create("assets/textures/test.png");
-	m_DumbTexture = Flora::Texture2D::Create("assets/textures/test.png");
+	m_DumbTexture = Flora::Texture2D::Create("assets/textures/testalpha.png");
+
+	m_Particle.ColorBegin = { 254 / 255.0f, 212 / 255.0f, 123 / 255.0f, 1.0f };
+	m_Particle.ColorEnd = { 254 / 255.0f, 109 / 255.0f, 41 / 255.0f, 1.0f };
+	m_Particle.SizeBegin = 0.5f, m_Particle.SizeVariation = 0.3f, m_Particle.SizeEnd = 0.0f;
+	m_Particle.LifeTime = 0.75f;
+	m_Particle.Velocity = { 0.0f, 0.0f };
+	m_Particle.VelocityVariation = { 3.0f, 1.0f };
+	m_Particle.Position = { 0.0f, 0.0f };
 }
 
 void Sandbox2D::OnDetatch() {
@@ -73,38 +81,59 @@ void Sandbox2D::OnUpdate(Flora::Timestep ts) {
 		m_SquareColor.y = green;
 		m_SquareColor.z = blue;
 
+		//commented out until able to debug
+		/*
 		//15 quads
 		//Flora::Renderer2D::DrawQuad({ 0.0f, 0.0f, -0.9f }, { 0.8f, 0.8f }, { m_SquareColor.y, m_SquareColor.z, m_SquareColor.x, m_SquareColor.w }, nullptr, rotation, 1.0f);
-		Flora::Renderer2D::DrawQuad({ 0.0f, 0.0f, -0.8f }, { 0.5f, 0.5f }, { m_SquareColor.x, m_SquareColor.y, m_SquareColor.z, m_SquareColor.w }, m_CheckerboardTexture, rotation2, 5.0f);
+		Flora::Renderer2D::DrawQuad({ 0.0f, 0.0f, -0.8f }, { 0.5f, 0.5f }, { m_SquareColor.x, m_SquareColor.y, m_SquareColor.z, m_SquareColor.w }, m_CheckerboardTexture, glm::radians(rotation2), 5.0f);
 		//Flora::Renderer2D::DrawQuad({ 0.0f, 0.0f, -0.7f }, { 0.6f, 0.6f }, { 1.0f - m_SquareColor.x, 1.0f - m_SquareColor.y, 1.0f - m_SquareColor.z, m_SquareColor.w }, m_DumbTexture, rotation3);
 
 		//Flora::Renderer2D::DrawQuad({ -1.0f, 0.0f, -0.9f }, { 0.4f, 0.4f }, { m_SquareColor.x, m_SquareColor.y, m_SquareColor.z, m_SquareColor.w }, nullptr, rotation * -3.8, 1.0f);
-		Flora::Renderer2D::DrawQuad({ -1.0f, 0.0f, -0.8f }, { 0.25f, 0.25f }, { m_SquareColor.y, m_SquareColor.z, m_SquareColor.z, m_SquareColor.w }, m_CheckerboardTexture, rotation2 * -3.8, 5.0f);
+		Flora::Renderer2D::DrawQuad({ -1.0f, 0.0f, -0.8f }, { 0.25f, 0.25f }, { m_SquareColor.y, m_SquareColor.z, m_SquareColor.z, m_SquareColor.w }, m_CheckerboardTexture, glm::radians(rotation2 * -3.8), 5.0f);
 		//Flora::Renderer2D::DrawQuad({ -1.0f, 0.0f, -0.7f }, { 0.3f, 0.3f }, { 1.0f - m_SquareColor.y, 1.0f - m_SquareColor.z, 1.0f - m_SquareColor.x, m_SquareColor.w }, m_DumbTexture, rotation3 * -3.8);
 
 		//Flora::Renderer2D::DrawQuad({ 1.0f, 0.0f, -0.9f }, { 0.4f, 0.4f }, { m_SquareColor.x, m_SquareColor.z, m_SquareColor.y, m_SquareColor.w }, nullptr, rotation * 0.5, 1.0f);
-		Flora::Renderer2D::DrawQuad({ 1.0f, 0.0f, -0.8f }, { 0.25f, 0.25f }, { m_SquareColor.z, m_SquareColor.y, m_SquareColor.x, m_SquareColor.w }, m_CheckerboardTexture, rotation2 * 0.5, 5.0f);
+		Flora::Renderer2D::DrawQuad({ 1.0f, 0.0f, -0.8f }, { 0.25f, 0.25f }, { m_SquareColor.z, m_SquareColor.y, m_SquareColor.x, m_SquareColor.w }, m_CheckerboardTexture, glm::radians(rotation2 * 0.5), 5.0f);
 		//Flora::Renderer2D::DrawQuad({ 1.0f, 0.0f, -0.7f }, { 0.3f, 0.3f }, { 1.0f - m_SquareColor.z, 1.0f - m_SquareColor.y, 1.0f - m_SquareColor.x, m_SquareColor.w }, m_DumbTexture, rotation3 * 0.5);
 
 		//Flora::Renderer2D::DrawQuad({ 0.0f, -1.0f, -0.9f }, { 0.4f, 0.4f }, { m_SquareColor.z, m_SquareColor.y, m_SquareColor.x, m_SquareColor.w }, nullptr, rotation * 8.5, 1.0f);
-		Flora::Renderer2D::DrawQuad({ 0.0f, -1.0f, -0.8f }, { 0.25f, 0.25f }, { m_SquareColor.z, m_SquareColor.x, m_SquareColor.y, m_SquareColor.w }, m_CheckerboardTexture, rotation2 * 7.5, 5.0f);
+		Flora::Renderer2D::DrawQuad({ 0.0f, -1.0f, -0.8f }, { 0.25f, 0.25f }, { m_SquareColor.z, m_SquareColor.x, m_SquareColor.y, m_SquareColor.w }, m_CheckerboardTexture, glm::radians(rotation2 * 7.5), 5.0f);
 		//Flora::Renderer2D::DrawQuad({ 0.0f, -1.0f, -0.7f }, { 0.3f, 0.3f }, { 1.0f - m_SquareColor.x, 1.0f - m_SquareColor.z, 1.0f - m_SquareColor.y, m_SquareColor.w }, m_DumbTexture, rotation3 * 0.5);
 
 		//Flora::Renderer2D::DrawQuad({ 0.0f, 1.0f, -0.9f }, { 0.4f, 0.4f }, { m_SquareColor.x, m_SquareColor.z, m_SquareColor.x, m_SquareColor.w }, nullptr, rotation * 9.5, 1.0f);
-		Flora::Renderer2D::DrawQuad({ 0.0f, 1.0f, -0.8f }, { 0.25f, 0.25f }, { m_SquareColor.y, m_SquareColor.y, m_SquareColor.z, m_SquareColor.w }, m_CheckerboardTexture, rotation2 * 2.5, 5.0f);
+		Flora::Renderer2D::DrawQuad({ 0.0f, 1.0f, -0.8f }, { 0.25f, 0.25f }, { m_SquareColor.y, m_SquareColor.y, m_SquareColor.z, m_SquareColor.w }, m_CheckerboardTexture, glm::radians(rotation2 * 2.5), 5.0f);
 		//Flora::Renderer2D::DrawQuad({ 0.0f, 1.0f, -0.7f }, { 0.3f, 0.3f }, { 1.0f - m_SquareColor.z, 1.0f - m_SquareColor.x, 1.0f - m_SquareColor.y, m_SquareColor.w }, m_DumbTexture, rotation3 * 3.5);
 
+		Flora::Renderer2D::DrawQuad({ 0.0f, 0.0f, -0.999f }, { 40.0f, 40.0f }, {1.0f, 1.0f, 1.0f, 1.0f}, m_CheckerboardTexture, 0.0f, 20.0f);
 		float bounds = 10.0f;
 		float stepsize = 0.5f;
 		float spacing = 0.05f;
 		for (float y = -bounds; y < bounds; y += stepsize) {
 			for (float x = -bounds; x < bounds; x += stepsize) {
-				glm::vec4 color = { (x + bounds) / bounds * 2, 0.4f, (y + bounds) / bounds * 2, 1.0f };
+				glm::vec4 color = { (x + bounds) / bounds * 2, 0.4f, (y + bounds) / bounds * 2, 0.5f };
 				Flora::Renderer2D::DrawQuad({ x, y, -0.99f }, { stepsize - spacing, stepsize - spacing }, color);
 			}
 		}
-		Flora::Renderer2D::EndScene();
+		Flora::Renderer2D::EndScene();*/
 	}
+
+	if (Flora::Input::IsMouseButtonPressed(FL_MOUSE_BUTTON_LEFT))
+	{
+		auto [x, y] = Flora::Input::GetMousePosition();
+		auto width = Flora::Application::Get().GetWindow().GetWidth();
+		auto height = Flora::Application::Get().GetWindow().GetHeight();
+
+		auto bounds = m_CameraController.GetBounds();
+		auto pos = m_CameraController.GetCamera().GetPosition();
+		x = (x / width) * bounds.GetWidth() - bounds.GetWidth() * 0.5f;
+		y = bounds.GetHeight() * 0.5f - (y / height) * bounds.GetHeight();
+		m_Particle.Position = { x + pos.x, y + pos.y };
+		for (int i = 0; i < 20; i++)
+			m_ParticleSystem.Emit(m_Particle);
+	}
+
+	m_ParticleSystem.OnUpdate(ts);
+	m_ParticleSystem.OnRender(m_CameraController.GetCamera());
 }
 
 void Sandbox2D::OnImGuiRender() {

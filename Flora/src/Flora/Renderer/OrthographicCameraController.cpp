@@ -60,6 +60,7 @@ namespace Flora {
 
 		m_ZoomLevel -= e.GetYOffset() * m_CameraZoomSpeed;
 		m_ZoomLevel = std::max(m_ZoomLevel, 0.02f);
+		m_Bounds = { -m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel };
 		m_Camera.SetProjection(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel);
 		return false;
 	}
@@ -68,6 +69,7 @@ namespace Flora {
 		FL_PROFILE_FUNCTION();
 
 		m_AspectRatio = (float)e.GetWidth() / (float)e.GetHeight();
+		m_Bounds = { -m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel };
 		m_Camera.SetProjection(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel);
 		return false;
 	}

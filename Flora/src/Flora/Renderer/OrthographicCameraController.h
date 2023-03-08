@@ -5,6 +5,12 @@
 #include "Flora/Events/MouseEvent.h"
 
 namespace Flora {
+	struct OrthographicCameraBounds {
+		float Left, Right, Bottom, Top;
+		float GetWidth() { return Right - Left; }
+		float GetHeight() { return Top - Bottom; }
+	};
+
 	class OrthographicCameraController {
 	public:
 		OrthographicCameraController(float aspectRatio, bool rotation = false);
@@ -14,6 +20,7 @@ namespace Flora {
 		const OrthographicCamera& GetCamera() const { return m_Camera; }
 		void SetZoomLevel(float level) { m_ZoomLevel = level; }
 		float GetZoomLevel() { return m_ZoomLevel; }
+		const OrthographicCameraBounds& GetBounds() const { return m_Bounds; }
 	private:
 		bool OnMouseScrolled(MouseScrolledEvent& e);
 		bool OnWindowResized(WindowResizeEvent& e);
@@ -21,6 +28,7 @@ namespace Flora {
 		float m_AspectRatio;
 		float m_ZoomLevel = 1.0f;
 		OrthographicCamera m_Camera;
+		OrthographicCameraBounds m_Bounds;
 		bool m_Rotation;
 		glm::vec3 m_CameraPosition = { 0.0f, 0.0f, 0.0f };
 		float m_CameraRotation = 0.0f;

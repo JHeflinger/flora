@@ -1,5 +1,6 @@
 #pragma once
 #include "Flora.h"
+#include "ParticleSystem.h"
 
 class Sandbox2D : public Flora::Layer {
 public:
@@ -20,4 +21,7 @@ private:
 	glm::vec4 m_SquareColor = { 0.2f, 0.3f, 0.8f, 1.0f };
 	Flora::Ref<Flora::Texture2D> m_CheckerboardTexture;
 	Flora::Ref<Flora::Texture2D> m_DumbTexture;
+
+	ParticleSystem m_ParticleSystem;
+	ParticleProps m_Particle;
 };
