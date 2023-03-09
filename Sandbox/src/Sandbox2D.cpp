@@ -119,9 +119,9 @@ void Sandbox2D::OnUpdate(Flora::Timestep ts) {
 
 	{
 		FL_PROFILE_SCOPE("PARTICLE RENDER TEST");
-		//m_Particle.ColorBegin = m_ParticleStartColor;
-		//m_Particle.ColorEnd = m_ParticleEndColor;
-		//m_Particle.LifeTime = m_ParticleLifetime;
+		m_Particle.ColorBegin = m_ParticleStartColor;
+		m_Particle.ColorEnd = m_ParticleEndColor;
+		m_Particle.LifeTime = m_ParticleLifetime;
 		if (Flora::Input::IsMouseButtonPressed(FL_MOUSE_BUTTON_LEFT))
 		{
 			auto [x, y] = Flora::Input::GetMousePosition();
