@@ -13,14 +13,18 @@ Sandbox2D::Sandbox2D()
 void Sandbox2D::OnAttatch() {
 	m_CheckerboardTexture = Flora::Texture2D::Create("assets/textures/test.png");
 	m_DumbTexture = Flora::Texture2D::Create("assets/textures/testalpha.png");
+	m_SpriteSheet = Flora::Texture2D::Create("assets/game/textures/tilemap.png");
 
-	m_Particle.ColorBegin = m_ParticleStartColor;
-	m_Particle.ColorEnd = m_ParticleEndColor;
+	m_Particle.ColorBegin = { 255 / 255.0f, 255 / 255.0f, 0 / 143.0f, 1.0f };
+	m_Particle.ColorEnd = { 255 / 255.0f, 0 / 255.0f, 0 / 255.0f, 0.0f };
+	m_Particle.ColorVariation = { 0.0f, 0.0f, 0.0f, 0.0f };
 	m_Particle.SizeBegin = 0.5f, m_Particle.SizeVariation = 0.3f, m_Particle.SizeEnd = 0.0f;
-	m_Particle.LifeTime = m_ParticleLifetime;
+	m_Particle.LifeTime = 0.75f;
+	m_Particle.LifeTimeVariation = 0.0f;
 	m_Particle.Velocity = { 0.0f, 6.0f };
 	m_Particle.VelocityVariation = { 6.0f, 3.0f };
 	m_Particle.Position = { 0.0f, 0.0f };
+	m_Particle.PositionVariation = { 0.5f, 0.5f };
 }
 
 void Sandbox2D::OnDetatch() {
@@ -41,7 +45,7 @@ void Sandbox2D::OnUpdate(Flora::Timestep ts) {
 		Flora::RenderCommand::Clear();
 		Flora::Renderer2D::ResetStats();
 	}
-
+	/*
 	{
 		FL_PROFILE_SCOPE("Renderer Draw");
 		Flora::Renderer2D::BeginScene(m_CameraController.GetCamera());
@@ -77,32 +81,32 @@ void Sandbox2D::OnUpdate(Flora::Timestep ts) {
 			blue -= ts * colorspeed;
 		}
 
-		//m_SquareColor.x = red;
-		//m_SquareColor.y = green;
-		//m_SquareColor.z = blue;
+		m_SquareColor.x = red;
+		m_SquareColor.y = green;
+		m_SquareColor.z = blue;
 
 		//commented out until able to debug
-		/*
+		
 		//15 quads
-		//Flora::Renderer2D::DrawQuad({ 0.0f, 0.0f, -0.9f }, { 0.8f, 0.8f }, { m_SquareColor.y, m_SquareColor.z, m_SquareColor.x, m_SquareColor.w }, nullptr, rotation, 1.0f);
+		Flora::Renderer2D::DrawQuad({0.0f, 0.0f, -0.9f}, {0.8f, 0.8f}, {m_SquareColor.y, m_SquareColor.z, m_SquareColor.x, m_SquareColor.w}, nullptr, rotation, 1.0f);
 		Flora::Renderer2D::DrawQuad({ 0.0f, 0.0f, -0.8f }, { 0.5f, 0.5f }, { m_SquareColor.x, m_SquareColor.y, m_SquareColor.z, m_SquareColor.w }, m_CheckerboardTexture, glm::radians(rotation2), 5.0f);
-		//Flora::Renderer2D::DrawQuad({ 0.0f, 0.0f, -0.7f }, { 0.6f, 0.6f }, { 1.0f - m_SquareColor.x, 1.0f - m_SquareColor.y, 1.0f - m_SquareColor.z, m_SquareColor.w }, m_DumbTexture, rotation3);
+		Flora::Renderer2D::DrawQuad({ 0.0f, 0.0f, -0.7f }, { 0.6f, 0.6f }, { 1.0f - m_SquareColor.x, 1.0f - m_SquareColor.y, 1.0f - m_SquareColor.z, m_SquareColor.w }, m_DumbTexture, rotation3);
 
-		//Flora::Renderer2D::DrawQuad({ -1.0f, 0.0f, -0.9f }, { 0.4f, 0.4f }, { m_SquareColor.x, m_SquareColor.y, m_SquareColor.z, m_SquareColor.w }, nullptr, rotation * -3.8, 1.0f);
+		Flora::Renderer2D::DrawQuad({ -1.0f, 0.0f, -0.9f }, { 0.4f, 0.4f }, { m_SquareColor.x, m_SquareColor.y, m_SquareColor.z, m_SquareColor.w }, nullptr, rotation * -3.8, 1.0f);
 		Flora::Renderer2D::DrawQuad({ -1.0f, 0.0f, -0.8f }, { 0.25f, 0.25f }, { m_SquareColor.y, m_SquareColor.z, m_SquareColor.z, m_SquareColor.w }, m_CheckerboardTexture, glm::radians(rotation2 * -3.8), 5.0f);
-		//Flora::Renderer2D::DrawQuad({ -1.0f, 0.0f, -0.7f }, { 0.3f, 0.3f }, { 1.0f - m_SquareColor.y, 1.0f - m_SquareColor.z, 1.0f - m_SquareColor.x, m_SquareColor.w }, m_DumbTexture, rotation3 * -3.8);
+		Flora::Renderer2D::DrawQuad({ -1.0f, 0.0f, -0.7f }, { 0.3f, 0.3f }, { 1.0f - m_SquareColor.y, 1.0f - m_SquareColor.z, 1.0f - m_SquareColor.x, m_SquareColor.w }, m_DumbTexture, rotation3 * -3.8);
 
-		//Flora::Renderer2D::DrawQuad({ 1.0f, 0.0f, -0.9f }, { 0.4f, 0.4f }, { m_SquareColor.x, m_SquareColor.z, m_SquareColor.y, m_SquareColor.w }, nullptr, rotation * 0.5, 1.0f);
+		Flora::Renderer2D::DrawQuad({ 1.0f, 0.0f, -0.9f }, { 0.4f, 0.4f }, { m_SquareColor.x, m_SquareColor.z, m_SquareColor.y, m_SquareColor.w }, nullptr, rotation * 0.5, 1.0f);
 		Flora::Renderer2D::DrawQuad({ 1.0f, 0.0f, -0.8f }, { 0.25f, 0.25f }, { m_SquareColor.z, m_SquareColor.y, m_SquareColor.x, m_SquareColor.w }, m_CheckerboardTexture, glm::radians(rotation2 * 0.5), 5.0f);
-		//Flora::Renderer2D::DrawQuad({ 1.0f, 0.0f, -0.7f }, { 0.3f, 0.3f }, { 1.0f - m_SquareColor.z, 1.0f - m_SquareColor.y, 1.0f - m_SquareColor.x, m_SquareColor.w }, m_DumbTexture, rotation3 * 0.5);
+		Flora::Renderer2D::DrawQuad({ 1.0f, 0.0f, -0.7f }, { 0.3f, 0.3f }, { 1.0f - m_SquareColor.z, 1.0f - m_SquareColor.y, 1.0f - m_SquareColor.x, m_SquareColor.w }, m_DumbTexture, rotation3 * 0.5);
 
-		//Flora::Renderer2D::DrawQuad({ 0.0f, -1.0f, -0.9f }, { 0.4f, 0.4f }, { m_SquareColor.z, m_SquareColor.y, m_SquareColor.x, m_SquareColor.w }, nullptr, rotation * 8.5, 1.0f);
+		Flora::Renderer2D::DrawQuad({ 0.0f, -1.0f, -0.9f }, { 0.4f, 0.4f }, { m_SquareColor.z, m_SquareColor.y, m_SquareColor.x, m_SquareColor.w }, nullptr, rotation * 8.5, 1.0f);
 		Flora::Renderer2D::DrawQuad({ 0.0f, -1.0f, -0.8f }, { 0.25f, 0.25f }, { m_SquareColor.z, m_SquareColor.x, m_SquareColor.y, m_SquareColor.w }, m_CheckerboardTexture, glm::radians(rotation2 * 7.5), 5.0f);
-		//Flora::Renderer2D::DrawQuad({ 0.0f, -1.0f, -0.7f }, { 0.3f, 0.3f }, { 1.0f - m_SquareColor.x, 1.0f - m_SquareColor.z, 1.0f - m_SquareColor.y, m_SquareColor.w }, m_DumbTexture, rotation3 * 0.5);
+		Flora::Renderer2D::DrawQuad({ 0.0f, -1.0f, -0.7f }, { 0.3f, 0.3f }, { 1.0f - m_SquareColor.x, 1.0f - m_SquareColor.z, 1.0f - m_SquareColor.y, m_SquareColor.w }, m_DumbTexture, rotation3 * 0.5);
 
-		//Flora::Renderer2D::DrawQuad({ 0.0f, 1.0f, -0.9f }, { 0.4f, 0.4f }, { m_SquareColor.x, m_SquareColor.z, m_SquareColor.x, m_SquareColor.w }, nullptr, rotation * 9.5, 1.0f);
+		Flora::Renderer2D::DrawQuad({ 0.0f, 1.0f, -0.9f }, { 0.4f, 0.4f }, { m_SquareColor.x, m_SquareColor.z, m_SquareColor.x, m_SquareColor.w }, nullptr, rotation * 9.5, 1.0f);
 		Flora::Renderer2D::DrawQuad({ 0.0f, 1.0f, -0.8f }, { 0.25f, 0.25f }, { m_SquareColor.y, m_SquareColor.y, m_SquareColor.z, m_SquareColor.w }, m_CheckerboardTexture, glm::radians(rotation2 * 2.5), 5.0f);
-		//Flora::Renderer2D::DrawQuad({ 0.0f, 1.0f, -0.7f }, { 0.3f, 0.3f }, { 1.0f - m_SquareColor.z, 1.0f - m_SquareColor.x, 1.0f - m_SquareColor.y, m_SquareColor.w }, m_DumbTexture, rotation3 * 3.5);
+		Flora::Renderer2D::DrawQuad({ 0.0f, 1.0f, -0.7f }, { 0.3f, 0.3f }, { 1.0f - m_SquareColor.z, 1.0f - m_SquareColor.x, 1.0f - m_SquareColor.y, m_SquareColor.w }, m_DumbTexture, rotation3 * 3.5);
 
 		Flora::Renderer2D::DrawQuad({ 0.0f, 0.0f, -0.999f }, { 40.0f, 40.0f }, {1.0f, 1.0f, 1.0f, 1.0f}, m_CheckerboardTexture, 0.0f, 20.0f);
 		float bounds = 10.0f;
@@ -114,14 +118,20 @@ void Sandbox2D::OnUpdate(Flora::Timestep ts) {
 				Flora::Renderer2D::DrawQuad({ x, y, -0.99f }, { stepsize - spacing, stepsize - spacing }, color);
 			}
 		}
-		Flora::Renderer2D::EndScene();*/
+		Flora::Renderer2D::EndScene();
 	}
-
+	*/
+	{
+		FL_PROFILE_SCOPE("TILEMAP TEST");
+		Flora::Renderer2D::BeginScene(m_CameraController.GetCamera());
+		Flora::Renderer2D::DrawQuad({ 0.0f, 0.0f }, { 1.0f, 1.0f }, m_SpriteSheet);
+		Flora::Renderer2D::EndScene();
+	}
+	
 	{
 		FL_PROFILE_SCOPE("PARTICLE RENDER TEST");
-		m_Particle.ColorBegin = m_ParticleStartColor;
-		m_Particle.ColorEnd = m_ParticleEndColor;
-		m_Particle.LifeTime = m_ParticleLifetime;
+
+		Flora::Renderer2D::BeginScene(m_CameraController.GetCamera());
 		if (Flora::Input::IsMouseButtonPressed(FL_MOUSE_BUTTON_LEFT))
 		{
 			auto [x, y] = Flora::Input::GetMousePosition();
@@ -139,6 +149,7 @@ void Sandbox2D::OnUpdate(Flora::Timestep ts) {
 
 		m_ParticleSystem.OnUpdate(ts);
 		m_ParticleSystem.OnRender(m_CameraController.GetCamera());
+		Flora::Renderer2D::EndScene();
 	}
 }
 
@@ -155,11 +166,23 @@ void Sandbox2D::OnImGuiRender() {
 
 	//ImGui::ColorEdit4("Square Color", glm::value_ptr(m_SquareColor));
 
-	ImGui::Begin("Particle Settings");
-	ImGui::ColorEdit4("Core", glm::value_ptr(m_ParticleStartColor));
-	ImGui::ColorEdit4("Tail", glm::value_ptr(m_ParticleEndColor));
-	ImGui::DragFloat("Lifetime", &m_ParticleLifetime, 0.0f, 10.0f);
-	ImGui::End();
+	/*ImGui::Begin("Particle Settings");
+	ImGui::SliderFloat("X Variation", &m_Particle.PositionVariation.x, 0, 10, "%.3f", 0);
+	ImGui::SliderFloat("Y Variation", &m_Particle.PositionVariation.y, 0, 10, "%.3f", 0);
+	ImGui::SliderFloat("X Velocity", &m_Particle.Velocity.x, 0, 100, "%.3f", 0);
+	ImGui::SliderFloat("Y Velocity", &m_Particle.Velocity.y, 0, 100, "%.3f", 0);
+	ImGui::SliderFloat("X Velocity Variation", &m_Particle.VelocityVariation.x, 0, 100, "%.3f", 0);
+	ImGui::SliderFloat("Y Velocity Variation", &m_Particle.VelocityVariation.y, 0, 100, "%.3f", 0);
+	ImGui::SliderFloat("RED Variation", &m_Particle.ColorVariation.x, 0, 10, "%.3f", 0);
+	ImGui::SliderFloat("GREEN Variation", &m_Particle.ColorVariation.y, 0, 1, "%.3f", 0);
+	ImGui::SliderFloat("BLUE Variation", &m_Particle.ColorVariation.z, 0, 1, "%.3f", 0);
+	ImGui::SliderFloat("ALPHA Variation", &m_Particle.ColorVariation.w, 0, 1, "%.3f", 0);
+	ImGui::SliderFloat("Size Variation", &m_Particle.SizeVariation, 0, 20, "%.3f", 0);
+	ImGui::SliderFloat("Start Size", &m_Particle.SizeBegin, 0, 20, "%.3f", 0);
+	ImGui::SliderFloat("End Size", &m_Particle.SizeEnd, 0, 20, "%.3f", 0);
+	ImGui::SliderFloat("Lifetime", &m_Particle.LifeTime, 0, 2, "%.3f", 0);
+	ImGui::SliderFloat("Lifetime Variation", &m_Particle.LifeTimeVariation, 0, 2, "%.3f", 0);
+	ImGui::End();*/
 }
 
 void Sandbox2D::OnEvent(Flora::Event& e) {

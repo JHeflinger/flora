@@ -73,7 +73,7 @@ void ParticleSystem::OnRender(Flora::OrthographicCamera& camera)
 		float size = glm::lerp(particle.SizeEnd, particle.SizeBegin, life);
 
 		glm::vec3 pos = {particle.Position.x, particle.Position.y, 0.2f};
-		Flora::Renderer2D::DrawQuad(pos, { size, size }, color, nullptr, particle.Rotation);
+		Flora::Renderer2D::DrawQuad(pos, { size, size }, nullptr, color, particle.Rotation);
 	}
 	Flora::Renderer2D::EndScene();
 }
@@ -83,6 +83,8 @@ void ParticleSystem::Emit(const ParticleProps& particleProps)
 	Particle& particle = m_ParticlePool[m_PoolIndex];
 	particle.Active = true;
 	particle.Position = particleProps.Position;
+	particle.Position.x += particleProps.PositionVariation.x * (Random::Float() - 0.5f);
+	particle.Position.y += particleProps.PositionVariation.y * (Random::Float() - 0.5f);
 	particle.Rotation = Random::Float() * 2.0f * glm::pi<float>();
 
 	// Velocity
@@ -92,9 +94,17 @@ void ParticleSystem::Emit(const ParticleProps& particleProps)
 
 	// Color
 	particle.ColorBegin = particleProps.ColorBegin;
+	particle.ColorBegin.x += particleProps.ColorVariation.x * (Random::Float() - 0.5f);
+	particle.ColorBegin.y += particleProps.ColorVariation.y * (Random::Float() - 0.5f);
+	particle.ColorBegin.z += particleProps.ColorVariation.z * (Random::Float() - 0.5f);
+	particle.ColorBegin.w += particleProps.ColorVariation.w * (Random::Float() - 0.5f);
 	particle.ColorEnd = particleProps.ColorEnd;
+	particle.ColorEnd.x += particleProps.ColorVariation.x * (Random::Float() - 0.5f);
+	particle.ColorEnd.y += particleProps.ColorVariation.y * (Random::Float() - 0.5f);
+	particle.ColorEnd.z += particleProps.ColorVariation.z * (Random::Float() - 0.5f);
+	particle.ColorEnd.w += particleProps.ColorVariation.w * (Random::Float() - 0.5f);
 
-	particle.LifeTime = particleProps.LifeTime;
+	particle.LifeTime = particleProps.LifeTime + particleProps.LifeTimeVariation * (Random::Float() - 0.5f);
 	particle.LifeRemaining = particleProps.LifeTime;
 	particle.SizeBegin = particleProps.SizeBegin + particleProps.SizeVariation * (Random::Float() - 0.5f);
 	particle.SizeEnd = particleProps.SizeEnd;

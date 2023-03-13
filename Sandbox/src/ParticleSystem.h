@@ -4,17 +4,19 @@
 
 struct ParticleProps
 {
-	glm::vec2 Position;
+	glm::vec2 Position, PositionVariation;
 	glm::vec2 Velocity, VelocityVariation;
 	glm::vec4 ColorBegin, ColorEnd;
+	glm::vec4 ColorVariation;
 	float SizeBegin, SizeEnd, SizeVariation;
 	float LifeTime = 1.0f;
+	float LifeTimeVariation = 0.0f;
 };
 
 class ParticleSystem
 {
 public:
-	ParticleSystem(uint32_t maxParticles = 10000);
+	ParticleSystem(uint32_t maxParticles = 100000);
 
 	void OnUpdate(Flora::Timestep ts);
 	void OnRender(Flora::OrthographicCamera& camera);
