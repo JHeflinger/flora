@@ -1,6 +1,7 @@
 #pragma once
 #include "OrthographicCamera.h"
 #include "Texture.h"
+#include "SubTexture2D.h"
 
 namespace Flora {
 	class Renderer2D {
@@ -19,6 +20,18 @@ namespace Flora {
 		static void DrawQuad(const glm::vec3& position, 
 							 const glm::vec2& size,
 							 const Ref<Texture2D>& texture = nullptr,
+							 const glm::vec4& color = { 1.0f, 1.0f, 1.0f, 1.0f },
+							 float rotation = 0.0f,
+							 float tilingFactor = 1.0f);
+		static void DrawQuad(const glm::vec2& position, 
+							 const glm::vec2& size,
+							 const Ref<SubTexture2D>& subtexture,
+							 const glm::vec4& color = { 1.0f, 1.0f, 1.0f, 1.0f },
+							 float rotation = 0.0f,
+							 float tilingFactor = 1.0f);
+		static void DrawQuad(const glm::vec3& position, 
+							 const glm::vec2& size,
+							 const Ref<SubTexture2D>& subtexture,
 							 const glm::vec4& color = { 1.0f, 1.0f, 1.0f, 1.0f },
 							 float rotation = 0.0f,
 							 float tilingFactor = 1.0f);

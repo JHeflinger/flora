@@ -12,8 +12,8 @@ Sandbox2D::Sandbox2D()
 
 void Sandbox2D::OnAttatch() {
 	m_CheckerboardTexture = Flora::Texture2D::Create("assets/textures/test.png");
-	m_DumbTexture = Flora::Texture2D::Create("assets/textures/testalpha.png");
 	m_SpriteSheet = Flora::Texture2D::Create("assets/game/textures/tilemap.png");
+	m_WizardTexture = Flora::SubTexture2D::CreateFromCoords(m_SpriteSheet, { 0, 3 }, { 17, 17 });
 
 	m_Particle.ColorBegin = { 255 / 255.0f, 255 / 255.0f, 0 / 143.0f, 1.0f };
 	m_Particle.ColorEnd = { 255 / 255.0f, 0 / 255.0f, 0 / 255.0f, 0.0f };
@@ -124,7 +124,7 @@ void Sandbox2D::OnUpdate(Flora::Timestep ts) {
 	{
 		FL_PROFILE_SCOPE("TILEMAP TEST");
 		Flora::Renderer2D::BeginScene(m_CameraController.GetCamera());
-		Flora::Renderer2D::DrawQuad({ 0.0f, 0.0f }, { 1.0f, 1.0f }, m_SpriteSheet);
+		Flora::Renderer2D::DrawQuad({ 0.0f, 0.0f }, { 1.0f, 1.0f }, m_WizardTexture);
 		Flora::Renderer2D::EndScene();
 	}
 	
@@ -155,7 +155,7 @@ void Sandbox2D::OnUpdate(Flora::Timestep ts) {
 
 void Sandbox2D::OnImGuiRender() {
 	FL_PROFILE_FUNCTION();
-
+	/*
 	ImGui::Begin("Renderer Stats");
 	auto stats = Flora::Renderer2D::GetStats();
 	ImGui::Text("Draw Calls: %d", stats.DrawCalls);
@@ -166,7 +166,7 @@ void Sandbox2D::OnImGuiRender() {
 
 	//ImGui::ColorEdit4("Square Color", glm::value_ptr(m_SquareColor));
 
-	/*ImGui::Begin("Particle Settings");
+	ImGui::Begin("Particle Settings");
 	ImGui::SliderFloat("X Variation", &m_Particle.PositionVariation.x, 0, 10, "%.3f", 0);
 	ImGui::SliderFloat("Y Variation", &m_Particle.PositionVariation.y, 0, 10, "%.3f", 0);
 	ImGui::SliderFloat("X Velocity", &m_Particle.Velocity.x, 0, 100, "%.3f", 0);

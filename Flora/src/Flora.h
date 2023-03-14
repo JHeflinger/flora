@@ -20,6 +20,7 @@
 #include "Flora/Renderer/Buffer.h"
 #include "Flora/Renderer/Shader.h"
 #include "Flora/Renderer/Texture.h"
+#include "Flora/Renderer/SubTexture2D.h"
 #include "Flora/Renderer/VertexArray.h"
 
 #include "Flora/Renderer/OrthographicCamera.h"

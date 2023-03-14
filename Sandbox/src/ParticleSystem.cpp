@@ -73,7 +73,8 @@ void ParticleSystem::OnRender(Flora::OrthographicCamera& camera)
 		float size = glm::lerp(particle.SizeEnd, particle.SizeBegin, life);
 
 		glm::vec3 pos = {particle.Position.x, particle.Position.y, 0.2f};
-		Flora::Renderer2D::DrawQuad(pos, { size, size }, nullptr, color, particle.Rotation);
+		const Flora::Ref<Flora::Texture2D>& texture = nullptr;
+		Flora::Renderer2D::DrawQuad(pos, { size, size }, texture, color, particle.Rotation);
 	}
 	Flora::Renderer2D::EndScene();
 }
