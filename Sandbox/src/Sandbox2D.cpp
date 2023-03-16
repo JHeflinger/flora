@@ -4,6 +4,25 @@
 #include <glm/gtc/type_ptr.hpp>
 #include "Platform/OpenGL/OpenGLShader.h"
 
+static const uint32_t s_MapWidth = 24;
+static const uint32_t s_MapHeight = 16;
+static const char* s_MapTiles = "DDDDDDDDDDDDDDDDDDDDDDDD"
+                                "DDDDDDDDDDDDDDDDDDDDDDDD"
+                                "DDDDDDDDDDDDDDDDDDDDDDDD"
+                                "DDDDDDDDDDDDDDDDDDDDDDDD"
+                                "DDDDDDDDDDDDDDDDDDDDDDDD"
+                                "DDDDDDDDDDDDDDDDDDDDDDDD"
+                                "DDDDDRRRRRRRRRRDDDDDDDDD"
+                                "DDDDDDDDDDDDDDRDDDDDDDDD"
+                                "DDDDDDDDDDDDDDRDDDDDDDDD"
+                                "DDDDDDDDDDDRRRRDDDDDDDDD"
+                                "DDDDDDDDDDDRDDDDDDDDDDDD"
+                                "DDDDDDDDDDDRDDDDDDDDDDDD"
+                                "DDDDDDDDDDDRDDDDDDDDDDDD"
+                                "DDDDDDDDDDDRRRRDDDDDDDDD"
+                                "DDDDDDDDDDDDDDDDDDDDDDDD"
+                                "DDDDDDDDDDDDDDDDDDDDDDDD";
+
 Sandbox2D::Sandbox2D() 
 	: Layer("Example"), 
 	m_CameraController(1280.0f / 720.0f, true) {
@@ -15,6 +34,9 @@ void Sandbox2D::OnAttatch() {
 	m_SpriteSheet = Flora::Texture2D::Create("assets/game/textures/tilemap.png");
 	m_WizardTexture = Flora::SubTexture2D::CreateFromCoords(m_SpriteSheet, { 0, 3 }, { 17, 17 });
 
+	s_TextureMap['D'] = Flora::SubTexture2D::CreateFromCoords(m_SpriteSheet, { 0, 6 }, { 17, 17 });
+	s_TextureMap['R'] = Flora::SubTexture2D::CreateFromCoords(m_SpriteSheet, { 10, 3 }, { 17, 17 });
+
 	m_Particle.ColorBegin = { 255 / 255.0f, 255 / 255.0f, 0 / 143.0f, 1.0f };
 	m_Particle.ColorEnd = { 255 / 255.0f, 0 / 255.0f, 0 / 255.0f, 0.0f };
 	m_Particle.ColorVariation = { 0.0f, 0.0f, 0.0f, 0.0f };
@@ -25,6 +47,8 @@ void Sandbox2D::OnAttatch() {
 	m_Particle.VelocityVariation = { 6.0f, 3.0f };
 	m_Particle.Position = { 0.0f, 0.0f };
 	m_Particle.PositionVariation = { 0.5f, 0.5f };
+
+	m_CameraController.SetZoomLevel(5.0f);
 }
 
 void Sandbox2D::OnDetatch() {
@@ -124,7 +148,20 @@ void Sandbox2D::OnUpdate(Flora::Timestep ts) {
 	{
 		FL_PROFILE_SCOPE("TILEMAP TEST");
 		Flora::Renderer2D::BeginScene(m_CameraController.GetCamera());
-		Flora::Renderer2D::DrawQuad({ 0.0f, 0.0f }, { 1.0f, 1.0f }, m_WizardTexture);
+		//Flora::Renderer2D::DrawQuad({ 0.0f, 0.0f }, { 1.0f, 1.0f }, m_WizardTexture);
+
+		for (uint32_t y = 0; y < s_MapHeight; y++) {
+			for (uint32_t x = 0; x < s_MapWidth; x++) {
+				char tileType = s_MapTiles[x + y * s_MapWidth];
+				Flora::Ref<Flora::SubTexture2D> texture;
+				if (s_TextureMap.find(tileType) != s_TextureMap.end())
+					texture = s_TextureMap[tileType];
+				else
+					texture = m_WizardTexture;
+				Flora::Renderer2D::DrawQuad({ x - s_MapWidth / 2.0f, y - s_MapHeight / 2.0f }, { 1.0f, 1.0f }, texture);
+			}
+		}
+
 		Flora::Renderer2D::EndScene();
 	}
 	

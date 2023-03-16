@@ -25,4 +25,6 @@ private:
 
 	ParticleSystem m_ParticleSystem;
 	ParticleProps m_Particle;
+
+	std::unordered_map<char, Flora::Ref<Flora::SubTexture2D>> s_TextureMap;
 };
