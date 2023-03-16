@@ -1,6 +1,6 @@
 #pragma once
-#include "Flora/Core/Core.h"
-#include "Layer.h"
+#include "Flora/Core/Base.h"
+#include "Flora/Core/Layer.h"
 #include <vector>
 
 namespace Flora {

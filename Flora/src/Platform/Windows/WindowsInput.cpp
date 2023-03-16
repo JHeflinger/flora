@@ -1,5 +1,5 @@
 #include "flpch.h"
-#include "WindowsInput.h"
+#include "Platform/Windows/WindowsInput.h"
 #include <GLFW/glfw3.h>
 #include "Flora/Core/Application.h"
 

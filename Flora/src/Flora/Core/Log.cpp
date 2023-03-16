@@ -1,5 +1,5 @@
 #include "flpch.h"
-#include "Log.h"
+#include "Flora/Core/Log.h"
 
 namespace Flora {
 	std::shared_ptr<spdlog::logger> Log::s_CoreLogger;

@@ -1,6 +1,6 @@
 #pragma once
 #include <glm/glm.hpp>
-#include "VertexArray.h"
+#include "Flora/Renderer/VertexArray.h"
 
 namespace Flora {
 	class RendererAPI {

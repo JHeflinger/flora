@@ -1,5 +1,5 @@
 #pragma once
-#include "Texture.h"
+#include "Flora/Renderer/Texture.h"
 #include <glm/glm.hpp>
 
 namespace Flora {

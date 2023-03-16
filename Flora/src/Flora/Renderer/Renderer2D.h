@@ -1,7 +1,7 @@
 #pragma once
-#include "OrthographicCamera.h"
-#include "Texture.h"
-#include "SubTexture2D.h"
+#include "Flora/Renderer/OrthographicCamera.h"
+#include "Flora/Renderer/Texture.h"
+#include "Flora/Renderer/SubTexture2D.h"
 
 namespace Flora {
 	class Renderer2D {

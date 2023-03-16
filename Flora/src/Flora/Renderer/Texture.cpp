@@ -1,6 +1,6 @@
 #include "flpch.h"
-#include "Texture.h"
-#include "Renderer.h"
+#include "Flora/Renderer/Texture.h"
+#include "Flora/Renderer/Renderer.h"
 #include "Platform/OpenGL/OpenGLTexture.h"
 
 namespace Flora {

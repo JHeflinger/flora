@@ -1,6 +1,6 @@
 #include "flpch.h"
-#include "VertexArray.h"
-#include "Renderer.h"
+#include "Flora/Renderer/VertexArray.h"
+#include "Flora/Renderer/Renderer.h"
 #include "Platform/OpenGL/OpenGLVertexArray.h"
 
 namespace Flora {

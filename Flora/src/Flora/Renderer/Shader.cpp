@@ -1,6 +1,6 @@
 #include "flpch.h"
-#include "Shader.h"
-#include "Renderer.h"
+#include "Flora/Renderer/Shader.h"
+#include "Flora/Renderer/Renderer.h"
 #include "Platform/OpenGL/OpenGLShader.h"
 
 namespace Flora {

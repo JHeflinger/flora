@@ -1,5 +1,5 @@
 #pragma once
-#include "Flora/Core/Core.h"
+#include "Flora/Core/Base.h"
 
 namespace Flora {
 	class FLORA_API Input {

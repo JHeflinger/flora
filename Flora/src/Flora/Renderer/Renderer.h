@@ -1,7 +1,7 @@
 #pragma once
-#include "RenderCommand.h"
-#include "Shader.h"
-#include "OrthographicCamera.h"
+#include "Flora/Renderer/RenderCommand.h"
+#include "Flora/Renderer/Shader.h"
+#include "Flora/Renderer/OrthographicCamera.h"
 
 namespace Flora {
 	class Renderer {

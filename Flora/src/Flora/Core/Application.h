@@ -1,8 +1,8 @@
 #pragma once
-#include "Core.h"
+#include "Flora/Core/Base.h"
 #include "Flora/Events/Event.h"
 #include "Flora/Events/ApplicationEvent.h"
-#include "Window.h"
+#include "Flora/Core/Window.h"
 #include "Flora/Core/LayerStack.h"
 #include "Flora/ImGui/ImGuiLayer.h"
 #include "Flora/Core/Timestep.h"

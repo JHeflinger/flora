@@ -1,8 +1,8 @@
 #include "flpch.h"
-#include "Renderer2D.h"
-#include "VertexArray.h"
-#include "Shader.h"
-#include "RenderCommand.h"
+#include "Flora/Renderer/Renderer2D.h"
+#include "Flora/Renderer/VertexArray.h"
+#include "Flora/Renderer/Shader.h"
+#include "Flora/Renderer/RenderCommand.h"
 #include <glm/gtc/matrix_transform.hpp>
 
 namespace Flora {
@@ -119,6 +119,7 @@ namespace Flora {
 	}
 
 	void Renderer2D::Flush() {
+		if (s_Data.QuadIndexCount == 0) return;
 		for (uint32_t i = 0; i < s_Data.TextureSlotIndex; i++)
 			s_Data.TextureSlots[i]->Bind(i);
 		RenderCommand::DrawIndexed(s_Data.QuadVertexArray, s_Data.QuadIndexCount);
@@ -163,6 +164,9 @@ namespace Flora {
 			}
 
 			if (textureIndex == 0.0f) {
+				if (s_Data.TextureSlotIndex >= Renderer2DData::MaxTextureSlots)
+					FlushAndReset();
+
 				textureIndex = (float)s_Data.TextureSlotIndex;
 				s_Data.TextureSlots[s_Data.TextureSlotIndex] = texture;
 				s_Data.TextureSlotIndex++;

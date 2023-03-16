@@ -1,5 +1,5 @@
 #pragma once
-#include "Event.h"
+#include "Flora/Events/Event.h"
 
 namespace Flora {
 	class FLORA_API MouseMovedEvent : public Event {

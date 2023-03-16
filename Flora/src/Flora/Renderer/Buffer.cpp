@@ -1,6 +1,6 @@
 #include "flpch.h"
-#include "Buffer.h"
-#include "Renderer.h"
+#include "Flora/Renderer/Buffer.h"
+#include "Flora/Renderer/Renderer.h"
 #include "Platform/OpenGL/OpenGLBuffer.h"
 
 namespace Flora {

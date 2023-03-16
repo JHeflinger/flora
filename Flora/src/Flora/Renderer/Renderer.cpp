@@ -1,7 +1,7 @@
 #include "flpch.h"
-#include "Renderer.h"
+#include "Flora/Renderer/Renderer.h"
 #include "Platform/OpenGL/OpenGLShader.h"
-#include "Renderer2D.h"
+#include "Flora/Renderer/Renderer2D.h"
 
 namespace Flora {
 	Scope<Renderer::SceneData> Renderer::m_SceneData = CreateScope<Renderer::SceneData>();

@@ -1,7 +1,7 @@
 #include "flpch.h"
-#include "Application.h"
+#include "Flora/Core/Application.h"
 #include "Flora/Core/Log.h"
-#include "Input.h"
+#include "Flora/Core/Input.h"
 #include "Flora/Renderer/Renderer.h"
 
 #include <glfw/glfw3.h> //remove later
