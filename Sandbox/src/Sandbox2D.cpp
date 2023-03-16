@@ -193,13 +193,7 @@ void Sandbox2D::OnUpdate(Flora::Timestep ts) {
 void Sandbox2D::OnImGuiRender() {
 	FL_PROFILE_FUNCTION();
 	/*
-	ImGui::Begin("Renderer Stats");
-	auto stats = Flora::Renderer2D::GetStats();
-	ImGui::Text("Draw Calls: %d", stats.DrawCalls);
-	ImGui::Text("Quads: %d", stats.QuadCount);
-	ImGui::Text("Vertices: %d", stats.GetTotalVertexCount());
-	ImGui::Text("Indices: %d", stats.GetTotalIndexCount());
-	ImGui::End();
+
 
 	//ImGui::ColorEdit4("Square Color", glm::value_ptr(m_SquareColor));
 
@@ -273,27 +267,26 @@ void Sandbox2D::OnImGuiRender() {
 
 	if (ImGui::BeginMenuBar())
 	{
-		if (ImGui::BeginMenu("Options"))
+		if (ImGui::BeginMenu("File"))
 		{
-			// Disabling fullscreen would allow the window to be moved to the front of other windows,
-			// which we can't undo at the moment without finer window depth/z control.
-			ImGui::MenuItem("Fullscreen", NULL, &opt_fullscreen);
-			ImGui::MenuItem("Padding", NULL, &opt_padding);
-			ImGui::Separator();
-
-			if (ImGui::MenuItem("Flag: NoSplit", "", (dockspace_flags & ImGuiDockNodeFlags_NoSplit) != 0)) { dockspace_flags ^= ImGuiDockNodeFlags_NoSplit; }
-			if (ImGui::MenuItem("Flag: NoResize", "", (dockspace_flags & ImGuiDockNodeFlags_NoResize) != 0)) { dockspace_flags ^= ImGuiDockNodeFlags_NoResize; }
-			if (ImGui::MenuItem("Flag: NoDockingInCentralNode", "", (dockspace_flags & ImGuiDockNodeFlags_NoDockingInCentralNode) != 0)) { dockspace_flags ^= ImGuiDockNodeFlags_NoDockingInCentralNode; }
-			if (ImGui::MenuItem("Flag: AutoHideTabBar", "", (dockspace_flags & ImGuiDockNodeFlags_AutoHideTabBar) != 0)) { dockspace_flags ^= ImGuiDockNodeFlags_AutoHideTabBar; }
-			if (ImGui::MenuItem("Flag: PassthruCentralNode", "", (dockspace_flags & ImGuiDockNodeFlags_PassthruCentralNode) != 0, opt_fullscreen)) { dockspace_flags ^= ImGuiDockNodeFlags_PassthruCentralNode; }
-			ImGui::Separator();
-
-			if (ImGui::MenuItem("Close", NULL))
-				dockspace_open = false;
+			if (ImGui::MenuItem("EXIT")) Flora::Application::Get().Close();
 			ImGui::EndMenu();
 		}
 		ImGui::EndMenuBar();
 	}
+
+	//put dockable imgui panels here
+	ImGui::Begin("Renderer Stats");
+	auto stats = Flora::Renderer2D::GetStats();
+	ImGui::Text("Draw Calls: %d", stats.DrawCalls);
+	ImGui::Text("Quads: %d", stats.QuadCount);
+	ImGui::Text("Vertices: %d", stats.GetTotalVertexCount());
+	ImGui::Text("Indices: %d", stats.GetTotalIndexCount());
+
+	uint32_t textureID = m_CheckerboardTexture->GetRendererID();
+	ImGui::Image((void*)textureID, ImVec2{ 64.0f, 64.0f });
+
+	ImGui::End();
 
 	ImGui::End();
 }
