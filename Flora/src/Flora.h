@@ -18,6 +18,7 @@
 #include "Flora/Renderer/RenderCommand.h"
 
 #include "Flora/Renderer/Buffer.h"
+#include "Flora/Renderer/Framebuffer.h"
 #include "Flora/Renderer/Shader.h"
 #include "Flora/Renderer/Texture.h"
 #include "Flora/Renderer/SubTexture2D.h"
