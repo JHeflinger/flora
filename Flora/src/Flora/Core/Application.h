@@ -10,7 +10,7 @@
 namespace Flora {
 	class Application {
 	public:
-		Application();
+		Application(const std::string& name = "Flora App");
 		virtual ~Application();
 		void Run();
 		void OnEvent(Event& e);

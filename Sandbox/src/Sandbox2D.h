@@ -22,7 +22,6 @@ private:
 	Flora::Ref<Flora::Texture2D> m_CheckerboardTexture;
 	Flora::Ref<Flora::Texture2D> m_SpriteSheet;
 	Flora::Ref<Flora::SubTexture2D> m_WizardTexture;
-	Flora::Ref<Flora::Framebuffer> m_Framebuffer;
 
 	ParticleSystem m_ParticleSystem;
 	ParticleProps m_Particle;

@@ -11,10 +11,6 @@ namespace Flora {
 		FL_CORE_ERROR("GLFW Error ({0}): {1}", error, desc);
 	}
 
-	Window* Window::Create(const WindowProps& props) {
-		return new WindowsWindow(props);
-	}
-
 	WindowsWindow::WindowsWindow(const WindowProps& props) {
 		FL_PROFILE_FUNCTION();
 
