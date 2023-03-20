@@ -12,17 +12,20 @@ namespace Flora {
 		virtual void OnImGuiRender() override;
 		void OnEvent(Event& e) override;
 	private:
+		// Camera controller
 		OrthographicCameraController m_CameraController;
+
+		// Viewport framebuffer
+		Ref<Framebuffer> m_Framebuffer;
+		glm::vec2 m_ViewportSize = { 0, 0 };
 
 		//temp 
 		Ref<VertexArray> m_SquareVA;
 		Ref<Shader> m_FlatColorShader;
-
 		glm::vec4 m_SquareColor = { 0.2f, 0.3f, 0.8f, 1.0f };
 		Ref<Texture2D> m_CheckerboardTexture;
 		Ref<Texture2D> m_SpriteSheet;
 		Ref<SubTexture2D> m_WizardTexture;
-		Ref<Framebuffer> m_Framebuffer;
 
 		std::unordered_map<char, Ref<SubTexture2D>> s_TextureMap;
 	};
