@@ -38,6 +38,7 @@ namespace Flora {
 			: Name(name), Type(type), Size(ShaderDataTypeSize(type)), Offset(0), Normalized(normalized) {
 
 		}
+		virtual ~BufferElement() = default;
 		uint32_t GetComponentCount() const {
 			switch (Type) {
 			case ShaderDataType::Float:    return 1;
@@ -64,6 +65,7 @@ namespace Flora {
 			: m_Elements(elements) {
 			CalculateOffsetsAndStride();
 		}
+		virtual ~BufferLayout() = default;
 		inline uint32_t GetStride() const { return m_Stride; }
 		inline const std::vector<BufferElement>& GetElements() const { return m_Elements; }
 		std::vector<BufferElement>::iterator begin() { return m_Elements.begin(); }

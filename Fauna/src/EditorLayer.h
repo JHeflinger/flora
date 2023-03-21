@@ -18,6 +18,7 @@ namespace Flora {
 		// Viewport framebuffer
 		Ref<Framebuffer> m_Framebuffer;
 		glm::vec2 m_ViewportSize = { 0, 0 };
+		bool m_ViewportFocused, m_ViewportHovered = false;
 
 		//temp 
 		Ref<VertexArray> m_SquareVA;

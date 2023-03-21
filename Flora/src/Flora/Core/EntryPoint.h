@@ -20,4 +20,4 @@ int main(int argc, char** argv) {
 	FL_PROFILE_END_SESSION();
 }
 
-#endif //7:00
+#endif

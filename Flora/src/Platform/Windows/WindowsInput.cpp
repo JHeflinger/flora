@@ -1,35 +1,32 @@
 #include "flpch.h"
-#include "Platform/Windows/WindowsInput.h"
+#include "Flora/Core/Input.h"
 #include <GLFW/glfw3.h>
 #include "Flora/Core/Application.h"
 
 namespace Flora {
-
-	Scope<Input> Input::s_Instance = CreateScope<WindowsInput>();
-
-	bool WindowsInput::IsKeyPressedImpl(int keycode) {
+	bool Input::IsKeyPressed(KeyCode key) {
 		auto window = static_cast<GLFWwindow*>(Application::Get().GetWindow().GetNativeWindow());
-		auto state = glfwGetKey(window, keycode);
+		auto state = glfwGetKey(window, static_cast<int32_t>(key));
 		return state == GLFW_PRESS || state == GLFW_REPEAT;
 	}
 
-	bool WindowsInput::IsMouseButtonPressedImpl(int button) {
+	bool Input::IsMouseButtonPressed(MouseCode button) {
 		auto window = static_cast<GLFWwindow*>(Application::Get().GetWindow().GetNativeWindow());
-		auto state = glfwGetMouseButton(window, button);
+		auto state = glfwGetMouseButton(window, static_cast<int32_t>(button));
 		return state == GLFW_PRESS;
 	}
 
-	float WindowsInput::GetMouseXImpl() {
-		auto [x, y] = GetMousePositionImpl();
+	float Input::GetMouseX() {
+		auto [x, y] = GetMousePosition();
 		return x;
 	}
 
-	float WindowsInput::GetMouseYImpl() {
-		auto [x, y] = GetMousePositionImpl();
+	float Input::GetMouseY() {
+		auto [x, y] = GetMousePosition();
 		return y;
 	}
 
-	std::pair<float, float> WindowsInput::GetMousePositionImpl() {
+	std::pair<float, float> Input::GetMousePosition() {
 		auto window = static_cast<GLFWwindow*>(Application::Get().GetWindow().GetNativeWindow());
 		double xpos, ypos;
 		glfwGetCursorPos(window, &xpos, &ypos);
