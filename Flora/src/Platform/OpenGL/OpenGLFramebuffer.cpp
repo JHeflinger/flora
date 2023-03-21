@@ -4,6 +4,8 @@
 
 namespace Flora {
 
+	static const uint32_t s_MaxFrameBufferSize = 8196;
+
 	OpenGLFramebuffer::OpenGLFramebuffer(const FramebufferSpecification& spec)
 		: m_Specification(spec) {
 		Invalidate();
@@ -53,6 +55,10 @@ namespace Flora {
 	}
 
 	void OpenGLFramebuffer::Resize(uint32_t width, uint32_t height) {
+		if (width == 0 || height == 0 || width > s_MaxFrameBufferSize || height > s_MaxFrameBufferSize) {
+			FL_CORE_WARN("Attempt to resize framebuffer to an unreasonable size detected");
+			return;
+		}
 		m_Specification.Width = width;
 		m_Specification.Height = height;
 		Invalidate();

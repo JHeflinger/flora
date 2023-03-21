@@ -12,6 +12,7 @@
 #include <unordered_map>
 #include <unordered_set>
 
+#include "Flora/Core/Base.h"
 #include "Flora/Core/Log.h"
 #include "Flora/Debug/Instrumentor.h"
 
