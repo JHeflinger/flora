@@ -20,6 +20,9 @@ namespace Flora {
 		glm::vec2 m_ViewportSize = { 0, 0 };
 		bool m_ViewportFocused, m_ViewportHovered = false;
 
+		// Scene
+		Ref<Scene> m_ActiveScene;
+
 		//temp 
 		Ref<VertexArray> m_SquareVA;
 		Ref<Shader> m_FlatColorShader;

@@ -12,12 +12,20 @@ namespace Flora {
 	}
 
 	void EditorLayer::OnAttatch() {
-		m_CheckerboardTexture = Texture2D::Create("assets/textures/test.png");
-
+		//framebuffer creation
 		FramebufferSpecification fbSpec;
 		fbSpec.Width = 1280;
 		fbSpec.Height = 720;
 		m_Framebuffer = Framebuffer::Create(fbSpec);
+
+		//scene creation
+		m_ActiveScene = CreateRef<Scene>();
+
+		// temp
+		m_CheckerboardTexture = Texture2D::Create("assets/textures/test.png");
+		auto square = m_ActiveScene->CreateEntity();
+		m_ActiveScene->Reg().emplace<TransformComponent>(square);
+		m_ActiveScene->Reg().emplace<SpriteRendererComponent>(square, glm::vec4{ 0.2f, 0.8f, 0.3f, 1.0f });
 	}
 
 	void EditorLayer::OnDetatch() {
@@ -25,35 +33,27 @@ namespace Flora {
 	}
 
 	void EditorLayer::OnUpdate(Timestep ts) {
-		FL_PROFILE_FUNCTION();
 
-		{
-			FL_PROFILE_SCOPE("CameraController::OnUpdate");
-			if (m_ViewportFocused) m_CameraController.OnUpdate(ts);
-		}
+		// Camera controller update
+		if (m_ViewportFocused) m_CameraController.OnUpdate(ts);
 
-		{
-			FL_PROFILE_SCOPE("Renderer Prep");
-			m_Framebuffer->Bind();
-			RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1 });
-			RenderCommand::Clear();
-			Renderer2D::ResetStats();
-		}
+		// renderer setup, move later
+		m_Framebuffer->Bind();
+		RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1 });
+		RenderCommand::Clear();
+		Renderer2D::ResetStats();
+		
+		Renderer2D::BeginScene(m_CameraController.GetCamera());
 
-		{
-			FL_PROFILE_SCOPE("Rendering!");
-			Renderer2D::BeginScene(m_CameraController.GetCamera());
-			static float rotation = 0.0f;
-			rotation += ts * 20.0f;
-			Renderer2D::DrawQuad({ 0, 0 }, { 1, 1 }, m_CheckerboardTexture, { 0.8f, 0.3f, 0.2f, 1.0f }, glm::radians(rotation));
-			Renderer2D::EndScene();
-			m_Framebuffer->Unbind();
-		}
+		// Scene update
+		m_ActiveScene->OnUpdate(ts);
+
+		Renderer2D::EndScene();
+
+		m_Framebuffer->Unbind();
 	}
 
 	void EditorLayer::OnImGuiRender() {
-		FL_PROFILE_FUNCTION();
-
 		static bool dockspace_open = true;
 		static bool opt_fullscreen = true;
 		static bool opt_padding = false;
@@ -109,7 +109,7 @@ namespace Flora {
 		ImGui::Begin("Viewport");
 		m_ViewportFocused = ImGui::IsWindowFocused();
 		m_ViewportHovered = ImGui::IsWindowHovered();
-		Application::Get().GetImGuiLayer()->BlockEvents(!m_ViewportFocused || !m_ViewportFocused);
+		Application::Get().GetImGuiLayer()->BlockEvents(!m_ViewportFocused || !m_ViewportHovered);
 		ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
 		if (m_ViewportSize != *((glm::vec2*)&viewportPanelSize)) {
 			m_ViewportSize = { viewportPanelSize.x, viewportPanelSize.y };

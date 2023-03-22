@@ -43,6 +43,12 @@ namespace Flora {
 							 const glm::vec4& color = { 1.0f, 1.0f, 1.0f, 1.0f },
 							 float rotation = 0.0f,
 							 float tilingFactor = 1.0f);
+		static void DrawQuad(const glm::mat4& transform,
+							 const glm::vec4& color = { 1.0f, 1.0f, 1.0f, 1.0f });
+		static void DrawQuad(const glm::mat4& transform,
+							 const Ref<Texture2D>& texture,
+							 const glm::vec4& color = { 1.0f, 1.0f, 1.0f, 1.0f },
+							 float tilingFactor = 1.0f);
 
 		// Stats
 		struct Statistics {

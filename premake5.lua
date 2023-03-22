@@ -18,6 +18,7 @@ IncludeDir["Glad"] = "Flora/vendor/Glad/include"
 IncludeDir["ImGui"] = "Flora/vendor/imgui"
 IncludeDir["glm"] = "Flora/vendor/glm"
 IncludeDir["stb_image"] = "Flora/vendor/stb_image"
+IncludeDir["entt"] = "Flora/vendor/entt/include"
 
 include "Flora/vendor/GLFW"
 include "Flora/vendor/Glad"
@@ -59,7 +60,8 @@ project "Flora"
 		"%{IncludeDir.Glad}",
 		"%{IncludeDir.ImGui}",
 		"%{IncludeDir.glm}",
-		"%{IncludeDir.stb_image}"
+		"%{IncludeDir.stb_image}",
+		"%{IncludeDir.entt}"
 	}
 
 	links 
@@ -115,7 +117,8 @@ project "Sandbox"
 		"Flora/vendor/spdlog/include",
 		"Flora/src",
 		"%{IncludeDir.glm}",
-		"Flora/vendor"
+		"Flora/vendor",
+		"%{IncludeDir.entt}"
 	}
 
 	links
@@ -162,7 +165,8 @@ project "Fauna"
 		"Flora/vendor/spdlog/include",
 		"Flora/src",
 		"%{IncludeDir.glm}",
-		"Flora/vendor"
+		"Flora/vendor",
+		"%{IncludeDir.entt}"
 	}
 
 	links
