@@ -23,9 +23,8 @@ namespace Flora {
 
 		// temp
 		m_CheckerboardTexture = Texture2D::Create("assets/textures/test.png");
-		auto square = m_ActiveScene->CreateEntity();
-		m_ActiveScene->Reg().emplace<TransformComponent>(square);
-		m_ActiveScene->Reg().emplace<SpriteRendererComponent>(square, glm::vec4{ 0.2f, 0.8f, 0.3f, 1.0f });
+		m_SquareEntity = m_ActiveScene->CreateEntity("Square");
+		m_SquareEntity.AddComponent<SpriteRendererComponent>(glm::vec4{ 0.2f, 0.8f, 0.3f, 1.0f });
 	}
 
 	void EditorLayer::OnDetatch() {
@@ -96,7 +95,17 @@ namespace Flora {
 			ImGui::EndMenuBar();
 		}
 
-		//put dockable imgui panels here
+		//===================put dockable imgui panels here=====================
+
+		// Square Color changer
+		if (m_SquareEntity) {
+			ImGui::Begin("Color Picker");
+			auto& squareColor = m_SquareEntity.GetComponent<SpriteRendererComponent>().Color;
+			ImGui::ColorEdit4("Color", glm::value_ptr(squareColor));
+			ImGui::End();
+		}
+
+		// Renderer Stats
 		ImGui::Begin("Renderer Stats");
 		auto stats = Renderer2D::GetStats();
 		ImGui::Text("Draw Calls: %d", stats.DrawCalls);
@@ -105,6 +114,7 @@ namespace Flora {
 		ImGui::Text("Indices: %d", stats.GetTotalIndexCount());
 		ImGui::End();
 
+		// Viewport
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 0, 0 });
 		ImGui::Begin("Viewport");
 		m_ViewportFocused = ImGui::IsWindowFocused();
