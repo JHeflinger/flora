@@ -32,13 +32,10 @@ namespace Flora {
 			m_Scene->m_Registry.remove<T>(m_EntityHandle);
 		}
 
-		operator bool() const {
-			uint32_t beeboo = (uint32_t)m_EntityHandle;
-			bool crap = (beeboo != 0);
-			return crap; 
-		}
+		operator bool() const { return m_Initialized; }
 	private:
-		entt::entity m_EntityHandle{ 0 };
+		entt::entity m_EntityHandle;
+		bool m_Initialized = false;
 		Scene* m_Scene;
 	};
 }
