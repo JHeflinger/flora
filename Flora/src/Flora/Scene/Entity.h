@@ -34,7 +34,7 @@ namespace Flora {
 
 		operator bool() const { return m_Initialized; }
 	private:
-		entt::entity m_EntityHandle;
+		entt::entity m_EntityHandle{ entt::null };
 		bool m_Initialized = false;
 		Scene* m_Scene;
 	};

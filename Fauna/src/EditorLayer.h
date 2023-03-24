@@ -22,9 +22,11 @@ namespace Flora {
 
 		// Scene
 		Ref<Scene> m_ActiveScene;
+		
 
 		//temp 
 		Entity m_SquareEntity;
+		Entity m_CameraEntity;
 		Ref<VertexArray> m_SquareVA;
 		Ref<Shader> m_FlatColorShader;
 		glm::vec4 m_SquareColor = { 0.2f, 0.3f, 0.8f, 1.0f };

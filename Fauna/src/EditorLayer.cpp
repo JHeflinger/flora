@@ -25,6 +25,8 @@ namespace Flora {
 		m_CheckerboardTexture = Texture2D::Create("assets/textures/test.png");
 		m_SquareEntity = m_ActiveScene->CreateEntity("Square");
 		m_SquareEntity.AddComponent<SpriteRendererComponent>(glm::vec4{ 0.2f, 0.8f, 0.3f, 1.0f });
+		m_CameraEntity = m_ActiveScene->CreateEntity("Camera");
+		m_CameraEntity.AddComponent<CameraComponent>(glm::ortho(-16.0f, 16.0f, -9.0f, 9.0f, -1.0f, 1.0f));
 	}
 
 	void EditorLayer::OnDetatch() {
@@ -41,14 +43,11 @@ namespace Flora {
 		RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1 });
 		RenderCommand::Clear();
 		Renderer2D::ResetStats();
-		
-		Renderer2D::BeginScene(m_CameraController.GetCamera());
 
 		// Scene update
 		m_ActiveScene->OnUpdate(ts);
 
-		Renderer2D::EndScene();
-
+		// renderer "unsetup", move later
 		m_Framebuffer->Unbind();
 	}
 

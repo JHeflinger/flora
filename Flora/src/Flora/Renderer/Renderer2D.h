@@ -2,6 +2,7 @@
 #include "Flora/Renderer/OrthographicCamera.h"
 #include "Flora/Renderer/Texture.h"
 #include "Flora/Renderer/SubTexture2D.h"
+#include "Flora/Renderer/Camera.h"
 
 namespace Flora {
 	class Renderer2D {
@@ -9,6 +10,7 @@ namespace Flora {
 		static void Init();
 		static void Shutdown();
 		static void BeginScene(const OrthographicCamera& camera);
+		static void BeginScene(const Camera& camera, const glm::mat4& transform);
 		static void EndScene();
 		static void Flush();
 		static void DrawQuad(const glm::vec2& position, 
