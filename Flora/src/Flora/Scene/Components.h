@@ -1,6 +1,6 @@
 #pragma once
 #include <glm/glm.hpp>
-#include "Flora/Renderer/Camera.h"
+#include "Flora/Scene/SceneCamera.h"
 
 namespace Flora {
 	struct TagComponent {
@@ -27,10 +27,10 @@ namespace Flora {
 	};
 
 	struct CameraComponent {
-		Camera Camera;
+		SceneCamera Camera;
 		bool Primary = true; // TODO: think about moving to scene
+		bool FixedAspectRatio = false;
 		CameraComponent() = default;
 		CameraComponent(const CameraComponent&) = default;
-		CameraComponent(const glm::mat4& projection) : Camera(projection) {}
 	};
 }
