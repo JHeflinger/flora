@@ -23,26 +23,40 @@ namespace Flora {
 	}
 
 	void Scene::OnUpdate(Timestep ts) {
-		// Render 2D Sprites
-		Camera* primaryCamera = nullptr;
-		glm::mat4* cameraTransform = nullptr;
-		auto view = m_Registry.view<TransformComponent, CameraComponent>();
-		for (auto entity : view) {
-			auto& [transform, camera] = view.get<TransformComponent, CameraComponent>(entity);
-			if (camera.Primary) {
-				primaryCamera = &camera.Camera;
-				cameraTransform = &transform.Transform;
-				break;
-			}
+		// Update Scripts
+		{
+			m_Registry.view<NativeScriptComponent>().each([=](auto entity, auto& nsc) {
+				if (!nsc.Instance) {
+					nsc.InstantiateFunction();
+					nsc.Instance->m_Entity = Entity{ entity, this };
+					nsc.OnCreateFunction(nsc.Instance);
+				}
+				nsc.OnUpdateFunction(nsc.Instance, ts);
+			});
 		}
-		if (primaryCamera) {
-			Renderer2D::BeginScene(primaryCamera->GetProjection(), *cameraTransform);
-			auto group = m_Registry.group<TransformComponent>(entt::get<SpriteRendererComponent>);
-			for (auto entity : group) {
-				auto& [transform, sprite] = group.get<TransformComponent, SpriteRendererComponent>(entity);
-				Renderer2D::DrawQuad(transform.Transform, sprite.Color);
+
+		// Render 2D Sprites
+		{
+			Camera* primaryCamera = nullptr;
+			glm::mat4* cameraTransform = nullptr;
+			auto view = m_Registry.view<TransformComponent, CameraComponent>();
+			for (auto entity : view) {
+				auto& [transform, camera] = view.get<TransformComponent, CameraComponent>(entity);
+				if (camera.Primary) {
+					primaryCamera = &camera.Camera;
+					cameraTransform = &transform.Transform;
+					break;
+				}
 			}
-			Renderer2D::EndScene();
+			if (primaryCamera) {
+				Renderer2D::BeginScene(primaryCamera->GetProjection(), *cameraTransform);
+				auto group = m_Registry.group<TransformComponent>(entt::get<SpriteRendererComponent>);
+				for (auto entity : group) {
+					auto& [transform, sprite] = group.get<TransformComponent, SpriteRendererComponent>(entity);
+					Renderer2D::DrawQuad(transform.Transform, sprite.Color);
+				}
+				Renderer2D::EndScene();
+			}
 		}
 	}
 

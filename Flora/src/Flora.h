@@ -27,5 +27,6 @@
 
 // ----------SCENE------------
 #include "Flora/Scene/Scene.h"
-#include "Flora/Scene/Components.h"
 #include "Flora/Scene/Entity.h"
+#include "Flora/Scene/ScriptableEntity.h"
+#include "Flora/Scene/Components.h"
