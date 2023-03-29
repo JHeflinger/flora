@@ -27,11 +27,11 @@ namespace Flora {
 		{
 			m_Registry.view<NativeScriptComponent>().each([=](auto entity, auto& nsc) {
 				if (!nsc.Instance) {
-					nsc.InstantiateFunction();
+					nsc.Instance = nsc.InstantiateScript();
 					nsc.Instance->m_Entity = Entity{ entity, this };
-					nsc.OnCreateFunction(nsc.Instance);
+					nsc.Instance->OnCreate();
 				}
-				nsc.OnUpdateFunction(nsc.Instance, ts);
+				nsc.Instance->OnUpdate(ts);
 			});
 		}
 
@@ -41,7 +41,7 @@ namespace Flora {
 			glm::mat4* cameraTransform = nullptr;
 			auto view = m_Registry.view<TransformComponent, CameraComponent>();
 			for (auto entity : view) {
-				auto& [transform, camera] = view.get<TransformComponent, CameraComponent>(entity);
+				auto [transform, camera] = view.get<TransformComponent, CameraComponent>(entity);
 				if (camera.Primary) {
 					primaryCamera = &camera.Camera;
 					cameraTransform = &transform.Transform;
@@ -52,7 +52,7 @@ namespace Flora {
 				Renderer2D::BeginScene(primaryCamera->GetProjection(), *cameraTransform);
 				auto group = m_Registry.group<TransformComponent>(entt::get<SpriteRendererComponent>);
 				for (auto entity : group) {
-					auto& [transform, sprite] = group.get<TransformComponent, SpriteRendererComponent>(entity);
+					auto [transform, sprite] = group.get<TransformComponent, SpriteRendererComponent>(entity);
 					Renderer2D::DrawQuad(transform.Transform, sprite.Color);
 				}
 				Renderer2D::EndScene();
