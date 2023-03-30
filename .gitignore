@@ -9,9 +9,5 @@ bin-int/
 **.vcxproj.filters
 **.vcxproj.user
 
-# personal 
-**.html
+# personal
 *.ini
-
-# debug
-Sandbox/debug_log/
