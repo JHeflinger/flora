@@ -21,6 +21,9 @@ namespace Flora {
 		//scene creation
 		m_ActiveScene = CreateRef<Scene>();
 
+		//panel creation
+		m_SceneHierarchyPanel.SetContext(m_ActiveScene);
+
 		// temp
 		m_CheckerboardTexture = Texture2D::Create("assets/textures/test.png");
 		m_SquareEntity = m_ActiveScene->CreateEntity("Square");
@@ -125,6 +128,8 @@ namespace Flora {
 		}
 
 		//===================put dockable imgui panels here=====================
+
+		m_SceneHierarchyPanel.OnImGuiRender();
 
 		// Square Color changer
 		if (m_SquareEntity) {

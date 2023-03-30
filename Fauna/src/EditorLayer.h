@@ -1,5 +1,6 @@
 #pragma once
 #include "Flora.h"
+#include "Panels/SceneHierarchyPanel.h"
 
 namespace Flora {
 	class EditorLayer : public Layer {
@@ -22,7 +23,9 @@ namespace Flora {
 
 		// Scene
 		Ref<Scene> m_ActiveScene;
-		
+
+		// Panels
+		SceneHierarchyPanel m_SceneHierarchyPanel;
 
 		//temp 
 		Entity m_SquareEntity;
