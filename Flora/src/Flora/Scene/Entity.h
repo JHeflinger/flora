@@ -23,7 +23,7 @@ namespace Flora {
 
 		template<typename T>
 		bool HasComponent() {
-			return m_Scene->m_Registry.has<T>(m_EntityHandle);
+			return m_Scene->m_Registry.all_of<T>(m_EntityHandle);
 		}
 
 		template<typename T>
