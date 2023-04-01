@@ -31,6 +31,14 @@ namespace Flora {
 		m_CameraEntity = m_ActiveScene->CreateEntity("Camera");
 		m_CameraEntity.AddComponent<CameraComponent>();
 
+		//extra testing components
+		Entity secondSquare = m_ActiveScene->CreateEntity("Second Square");
+		secondSquare.AddComponent<SpriteRendererComponent>(glm::vec4{ 0.7f, 0.8f, 0.3f, 1.0f });
+		Entity untitledSquare = m_ActiveScene->CreateEntity();
+		untitledSquare.AddComponent<SpriteRendererComponent>(glm::vec4{ 0.9f, 0.0f, 0.9f, 0.1f });
+		Entity extraCamera = m_ActiveScene->CreateEntity("Second Camera");
+		extraCamera.AddComponent<CameraComponent>();
+
 		class CameraController : public ScriptableEntity {
 		public:
 			void OnCreate() {}
