@@ -38,22 +38,22 @@ namespace Flora {
 		// Render 2D Sprites
 		{
 			Camera* primaryCamera = nullptr;
-			glm::mat4* cameraTransform = nullptr;
+			glm::mat4 cameraTransform;
 			auto view = m_Registry.view<TransformComponent, CameraComponent>();
 			for (auto entity : view) {
 				auto [transform, camera] = view.get<TransformComponent, CameraComponent>(entity);
 				if (camera.Primary) {
 					primaryCamera = &camera.Camera;
-					cameraTransform = &transform.Transform;
+					cameraTransform = transform.GetTransform();
 					break;
 				}
 			}
 			if (primaryCamera) {
-				Renderer2D::BeginScene(primaryCamera->GetProjection(), *cameraTransform);
+				Renderer2D::BeginScene(primaryCamera->GetProjection(), cameraTransform);
 				auto group = m_Registry.group<TransformComponent>(entt::get<SpriteRendererComponent>);
 				for (auto entity : group) {
 					auto [transform, sprite] = group.get<TransformComponent, SpriteRendererComponent>(entity);
-					Renderer2D::DrawQuad(transform.Transform, sprite.Color);
+					Renderer2D::DrawQuad(transform.GetTransform(), sprite.Color);
 				}
 				Renderer2D::EndScene();
 			}

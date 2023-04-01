@@ -46,16 +46,16 @@ namespace Flora {
 			void OnDestroy() {}
 
 			void OnUpdate(Timestep ts) {
-				auto& transform = GetComponent<TransformComponent>().Transform;
+				auto& translation = GetComponent<TransformComponent>().Translation;
 				float speed = 5.0f;
 				if (Input::IsKeyPressed(KeyCode::W))
-					transform[3][1] += speed * ts;
+					translation.x += speed * ts;
 				if (Input::IsKeyPressed(KeyCode::A))
-					transform[3][0] -= speed * ts;
+					translation.x -= speed * ts;
 				if (Input::IsKeyPressed(KeyCode::S))
-					transform[3][1] -= speed * ts;
+					translation.y -= speed * ts;
 				if (Input::IsKeyPressed(KeyCode::D))
-					transform[3][0] += speed * ts;
+					translation.y += speed * ts;
 			} 
 		};
 
@@ -137,15 +137,8 @@ namespace Flora {
 
 		//===================put dockable imgui panels here=====================
 
+		// Scene Hierarchy Panel
 		m_SceneHierarchyPanel.OnImGuiRender();
-
-		// Square Color changer
-		if (m_SquareEntity) {
-			ImGui::Begin("Color Picker");
-			auto& squareColor = m_SquareEntity.GetComponent<SpriteRendererComponent>().Color;
-			ImGui::ColorEdit4("Color", glm::value_ptr(squareColor));
-			ImGui::End();
-		}
 
 		// Renderer Stats
 		ImGui::Begin("Renderer Stats");
@@ -154,15 +147,6 @@ namespace Flora {
 		ImGui::Text("Quads: %d", stats.QuadCount);
 		ImGui::Text("Vertices: %d", stats.GetTotalVertexCount());
 		ImGui::Text("Indices: %d", stats.GetTotalIndexCount());
-		ImGui::End();
-
-		// Camera Testing
-		ImGui::Begin("Camera Testing");
-		auto& camera = m_CameraEntity.GetComponent<CameraComponent>().Camera;
-		float orthoSize = camera.GetOrthographicSize();
-		if (ImGui::DragFloat("Modify Orthoraphic Size", &orthoSize)) {
-			camera.SetOrthographicSize(orthoSize);
-		}
 		ImGui::End();
 
 		// Viewport
