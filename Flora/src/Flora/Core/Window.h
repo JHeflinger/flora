@@ -9,8 +9,8 @@ namespace Flora {
 		uint32_t Width;
 		uint32_t Height;
 		WindowProps(const std::string& title = "Flora Engine",
-			uint32_t width = 1280,
-			uint32_t height = 720)
+			uint32_t width = 1600,
+			uint32_t height = 900)
 			:Title(title), Width(width), Height(height) {
 		}
 	};

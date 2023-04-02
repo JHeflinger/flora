@@ -24,42 +24,9 @@ namespace Flora {
 		//panel creation
 		m_SceneHierarchyPanel.SetContext(m_ActiveScene);
 
-		// temp
-		m_CheckerboardTexture = Texture2D::Create("assets/textures/test.png");
-		m_SquareEntity = m_ActiveScene->CreateEntity("Square");
-		m_SquareEntity.AddComponent<SpriteRendererComponent>(glm::vec4{ 0.2f, 0.8f, 0.3f, 1.0f });
-		m_CameraEntity = m_ActiveScene->CreateEntity("Camera");
-		m_CameraEntity.AddComponent<CameraComponent>();
-
-		//extra testing components
-		Entity secondSquare = m_ActiveScene->CreateEntity("Second Square");
-		secondSquare.AddComponent<SpriteRendererComponent>(glm::vec4{ 0.7f, 0.8f, 0.3f, 1.0f });
-		Entity untitledSquare = m_ActiveScene->CreateEntity();
-		untitledSquare.AddComponent<SpriteRendererComponent>(glm::vec4{ 0.9f, 0.0f, 0.9f, 0.1f });
-		Entity extraCamera = m_ActiveScene->CreateEntity("Second Camera");
-		extraCamera.AddComponent<CameraComponent>();
-
-		class CameraController : public ScriptableEntity {
-		public:
-			void OnCreate() {}
-
-			void OnDestroy() {}
-
-			void OnUpdate(Timestep ts) {
-				auto& translation = GetComponent<TransformComponent>().Translation;
-				float speed = 5.0f;
-				if (Input::IsKeyPressed(KeyCode::W))
-					translation.x += speed * ts;
-				if (Input::IsKeyPressed(KeyCode::A))
-					translation.x -= speed * ts;
-				if (Input::IsKeyPressed(KeyCode::S))
-					translation.y -= speed * ts;
-				if (Input::IsKeyPressed(KeyCode::D))
-					translation.y += speed * ts;
-			} 
-		};
-
-		m_CameraEntity.AddComponent<NativeScriptComponent>().Bind<CameraController>();
+		// Camera
+		m_SceneCamera = m_ActiveScene->CreateEntity("Camera");
+		m_SceneCamera.AddComponent<CameraComponent>();
 	}
 
 	void EditorLayer::OnDetatch() {
@@ -122,10 +89,14 @@ namespace Flora {
 		if (opt_fullscreen) ImGui::PopStyleVar(2);
 
 		ImGuiIO& io = ImGui::GetIO();
+		ImGuiStyle& style = ImGui::GetStyle();
+		style.WindowMinSize.x = 330.0f;
 		if (io.ConfigFlags & ImGuiConfigFlags_DockingEnable) {
 			ImGuiID dockspace_id = ImGui::GetID("MyDockSpace");
 			ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), dockspace_flags);
 		}
+
+		style.WindowMinSize.x = 32.0f;
 
 		if (ImGui::BeginMenuBar()) {
 			if (ImGui::BeginMenu("File")) {
