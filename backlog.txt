@@ -1,0 +1,4 @@
+BUGS:
+	- sometimes when deleting all renderable objects from a scene, then adding a new renderable object the most previously removed renderable object will now be visible? This bug may or may not be magically fixed as of 4/3/23
+
+	- Can only use the editor layer events like key commands when clicked into the viewport window. This is because imgui blocks all events when clicked in the viewport layer. Possible solution to this would be to give layers an "override" attribute that can allow them to override the imgui blocking, or just do that for the editor layer in particular. 
