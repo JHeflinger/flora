@@ -198,7 +198,7 @@ namespace Flora {
 			DrawVec3Control("Rotation", rotation);
 			component.Rotation = glm::radians(rotation);
 			DrawVec3Control("Scale", component.Scale);
-		});
+		}, false);
 
 		DrawComponent<CameraComponent>("Camera", entity, [](auto& component) {
 			const char* projectionTypeStrings[] = { "Perspective", "Orthographic" };

@@ -26,8 +26,5 @@ namespace Flora {
 
 		// Panels
 		SceneHierarchyPanel m_SceneHierarchyPanel;
-
-		// Camera 
-		Entity m_SceneCamera;
 	};
 }

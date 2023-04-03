@@ -3,6 +3,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include "Platform/OpenGL/OpenGLShader.h"
+#include "Flora/Scene/SceneSerializer.h"
 
 namespace Flora {
 	EditorLayer::EditorLayer()
@@ -23,10 +24,6 @@ namespace Flora {
 
 		//panel creation
 		m_SceneHierarchyPanel.SetContext(m_ActiveScene);
-
-		// Camera
-		m_SceneCamera = m_ActiveScene->CreateEntity("Camera");
-		m_SceneCamera.AddComponent<CameraComponent>();
 	}
 
 	void EditorLayer::OnDetatch() {
@@ -100,7 +97,17 @@ namespace Flora {
 
 		if (ImGui::BeginMenuBar()) {
 			if (ImGui::BeginMenu("File")) {
-				if (ImGui::MenuItem("EXIT")) Application::Get().Close();
+				if (ImGui::MenuItem("Serialize")) {
+					SceneSerializer serializer(m_ActiveScene);
+					serializer.Serialize("assets/scenes/Example.flora");
+				}
+
+				if (ImGui::MenuItem("Deserialize")) {
+					SceneSerializer serializer(m_ActiveScene);
+					serializer.Deserialize("assets/scenes/Example.flora");
+				}
+
+				if (ImGui::MenuItem("Exit")) Application::Get().Close();
 				ImGui::EndMenu();
 			}
 			ImGui::EndMenuBar();
