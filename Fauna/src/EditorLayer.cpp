@@ -4,6 +4,7 @@
 #include <glm/gtc/type_ptr.hpp>
 #include "Platform/OpenGL/OpenGLShader.h"
 #include "Flora/Scene/SceneSerializer.h"
+#include "Flora/Utils/PlatformUtils.h"
 
 namespace Flora {
 	EditorLayer::EditorLayer()
@@ -96,20 +97,27 @@ namespace Flora {
 		style.WindowMinSize.x = 32.0f;
 
 		if (ImGui::BeginMenuBar()) {
-			if (ImGui::BeginMenu("File")) {
-				if (ImGui::MenuItem("Serialize")) {
-					SceneSerializer serializer(m_ActiveScene);
-					serializer.Serialize("assets/scenes/Example.flora");
+			if (ImGui::BeginMenu("Scene")) {
+				if (ImGui::MenuItem("New", "Ctrl+N")) {
+					NewScene();
 				}
 
-				if (ImGui::MenuItem("Deserialize")) {
-					SceneSerializer serializer(m_ActiveScene);
-					serializer.Deserialize("assets/scenes/Example.flora");
+				if (ImGui::MenuItem("Open...", "Ctrl+O")) {
+					OpenScene();
 				}
 
+				if (ImGui::MenuItem("Save As...", "Ctrl+Shift+S	")) {
+					SaveSceneAs();
+				}
+
+				ImGui::EndMenu();
+			}
+
+			if (ImGui::BeginMenu("Application")) {
 				if (ImGui::MenuItem("Exit")) Application::Get().Close();
 				ImGui::EndMenu();
 			}
+
 			ImGui::EndMenuBar();
 		}
 
@@ -145,5 +153,50 @@ namespace Flora {
 
 	void EditorLayer::OnEvent(Event& e) {
 		m_CameraController.OnEvent(e);
+		EventDispacher dispatcher(e);
+		dispatcher.Dispatch<KeyPressedEvent>(FL_BIND_EVENT_FN(EditorLayer::OnKeyPressed));
+	}
+
+	bool EditorLayer::OnKeyPressed(KeyPressedEvent& e) {
+		// Shortcuts
+		if (e.GetRepeatCount() > 0) return false;
+		bool control = Input::IsKeyPressed(Key::LeftControl) || Input::IsKeyPressed(Key::RightControl);
+		bool shift = Input::IsKeyPressed(Key::LeftShift) || Input::IsKeyPressed(Key::RightShift);
+		switch (e.GetKeyCode()) {
+		case Key::S:
+			if (control && shift) SaveSceneAs();
+			break;
+		case Key::N:
+			if (control) NewScene();
+			break;
+		case Key::O:
+			if (control) OpenScene();
+			break;
+		default:
+			break;
+		}
+	}
+
+	void EditorLayer::SaveSceneAs() {
+		std::string filepath = FileDialogs::SaveFile("Flora Scene (*.flora)\0*.flora\0");
+		if (!filepath.empty()) {
+			SceneSerializer serializer(m_ActiveScene);
+			serializer.Serialize(filepath);
+		}
+	}
+
+	void EditorLayer::OpenScene() {
+		std::string filepath = FileDialogs::OpenFile("Flora Scene (*.flora)\0*.flora\0");
+		if (!filepath.empty()) {
+			NewScene();
+			SceneSerializer serializer(m_ActiveScene);
+			serializer.Deserialize(filepath);
+		}
+	}
+
+	void EditorLayer::NewScene() {
+		m_ActiveScene = CreateRef<Scene>();
+		m_ActiveScene->OnViewportResize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
+		m_SceneHierarchyPanel.SetContext(m_ActiveScene);
 	}
 }

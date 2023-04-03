@@ -13,6 +13,11 @@ namespace Flora {
 		virtual void OnImGuiRender() override;
 		void OnEvent(Event& e) override;
 	private:
+		bool OnKeyPressed(KeyPressedEvent& e);
+		void SaveSceneAs();
+		void OpenScene();
+		void NewScene();
+	private:
 		// Camera controller
 		OrthographicCameraController m_CameraController;
 
