@@ -1,6 +1,8 @@
+include "./vendor/premake/premake_customization/solution_items.lua"
+
 workspace "Flora"
-	architecture "x64"
-	startproject "Sandbox"
+	architecture "x86_64"
+	startproject "Fauna"
 
 	configurations
 	{
@@ -9,185 +11,36 @@ workspace "Flora"
 		"Dist"
 	}
 
+	solution_items
+	{
+		".editorconfig"
+	}
+
+	flags
+	{
+		"MultiProcessorCompile"
+	}
+
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
 -- Include directories relative to root folder (solution directory)
 IncludeDir = {}
-IncludeDir["GLFW"] = "Flora/vendor/GLFW/include"
-IncludeDir["Glad"] = "Flora/vendor/Glad/include"
-IncludeDir["ImGui"] = "Flora/vendor/imgui"
-IncludeDir["glm"] = "Flora/vendor/glm"
-IncludeDir["stb_image"] = "Flora/vendor/stb_image"
-IncludeDir["entt"] = "Flora/vendor/entt/include"
+IncludeDir["GLFW"] = "%{wks.location}/Flora/vendor/GLFW/include"
+IncludeDir["Glad"] = "%{wks.location}/Flora/vendor/Glad/include"
+IncludeDir["ImGui"] = "%{wks.location}/Flora/vendor/imgui"
+IncludeDir["glm"] = "%{wks.location}/Flora/vendor/glm"
+IncludeDir["stb_image"] = "%{wks.location}/Flora/vendor/stb_image"
+IncludeDir["entt"] = "%{wks.location}/Flora/vendor/entt/include"
+IncludeDir["yaml_cpp"] = "%{wks.location}/Flora/vendor/yaml-cpp/include"
 
-include "Flora/vendor/GLFW"
-include "Flora/vendor/Glad"
-include "Flora/vendor/imgui"
+group "Dependencies"
+	include "vendor/premake"
+	include "Flora/vendor/GLFW"
+	include "Flora/vendor/Glad"
+	include "Flora/vendor/imgui"
+	include "Flora/vendor/yaml-cpp"
+group ""
 
-project "Flora"
-	location "Flora"
-	kind "StaticLib"
-	language "C++"
-	cppdialect "C++17"
-	staticruntime "on"
-
-	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
-	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
-
-	pchheader "flpch.h"
-	pchsource "Flora/src/flpch.cpp"
-
-	files
-	{
-		"%{prj.name}/src/**.h",
-		"%{prj.name}/src/**.cpp",
-		"%{prj.name}/vendor/stb_image/**.h",
-		"%{prj.name}/vendor/stb_image/**.cpp",
-		"%{prj.name}/vendor/glm/glm/**.hpp",
-		"%{prj.name}/vendor/glm/glm/**.inl"
-	}
-
-	defines
-	{
-		"_CRT_SECURE_NO_WARNINGS"
-	}
-
-	includedirs
-	{
-		"%{prj.name}/src",
-		"%{prj.name}/vendor/spdlog/include",
-		"%{IncludeDir.GLFW}",
-		"%{IncludeDir.Glad}",
-		"%{IncludeDir.ImGui}",
-		"%{IncludeDir.glm}",
-		"%{IncludeDir.stb_image}",
-		"%{IncludeDir.entt}"
-	}
-
-	links 
-	{ 
-		"GLFW",
-		"Glad",
-		"ImGui",
-		"opengl32.lib"
-	}
-
-	filter "system:windows"
-		systemversion "latest"
-
-		defines
-		{
-			"FL_BUILD_DLL",
-			"GLFW_INCLUDE_NONE"
-		}
-
-	filter "configurations:Debug"
-		defines "FL_DEBUG"
-		runtime "Debug"
-		symbols "on"
-
-	filter "configurations:Release"
-		defines "FL_RELEASE"
-		runtime "Release"
-		optimize "on"
-
-	filter "configurations:Dist"
-		defines "FL_DIST"
-		runtime "Release"
-		optimize "on"
-
-project "Sandbox"
-	location "Sandbox"
-	kind "ConsoleApp"
-	language "C++"
-	cppdialect "C++17"
-	staticruntime "on"
-
-	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
-	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
-
-	files
-	{
-		"%{prj.name}/src/**.h",
-		"%{prj.name}/src/**.cpp"
-	}
-
-	includedirs
-	{
-		"Flora/vendor/spdlog/include",
-		"Flora/src",
-		"%{IncludeDir.glm}",
-		"Flora/vendor",
-		"%{IncludeDir.entt}"
-	}
-
-	links
-	{
-		"Flora"
-	}
-
-	filter "system:windows"
-		systemversion "latest"
-
-	filter "configurations:Debug"
-		defines "FL_DEBUG"
-		runtime "Debug"
-		symbols "on"
-
-	filter "configurations:Release"
-		defines "FL_RELEASE"
-		runtime "Release"
-		optimize "on"
-
-	filter "configurations:Dist"
-		defines "FL_DIST"
-		runtime "Release"
-		optimize "on"
-
-project "Fauna"
-	location "Fauna"
-	kind "ConsoleApp"
-	language "C++"
-	cppdialect "C++17"
-	staticruntime "on"
-
-	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
-	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
-
-	files
-	{
-		"%{prj.name}/src/**.h",
-		"%{prj.name}/src/**.cpp"
-	}
-
-	includedirs
-	{
-		"Flora/vendor/spdlog/include",
-		"Flora/src",
-		"%{IncludeDir.glm}",
-		"Flora/vendor",
-		"%{IncludeDir.entt}"
-	}
-
-	links
-	{
-		"Flora"
-	}
-
-	filter "system:windows"
-		systemversion "latest"
-
-	filter "configurations:Debug"
-		defines "FL_DEBUG"
-		runtime "Debug"
-		symbols "on"
-
-	filter "configurations:Release"
-		defines "FL_RELEASE"
-		runtime "Release"
-		optimize "on"
-
-	filter "configurations:Dist"
-		defines "FL_DIST"
-		runtime "Release"
-		optimize "on"
+include "Flora"
+include "Sandbox"
+include "Fauna"
