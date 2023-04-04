@@ -50,7 +50,7 @@ namespace Flora {
 	void OrthographicCameraController::OnEvent(Event& e) {
 		FL_PROFILE_FUNCTION();
 
-		EventDispacher dispatcher(e);
+		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<MouseScrolledEvent>(FL_BIND_EVENT_FN(OrthographicCameraController::OnMouseScrolled));
 		dispatcher.Dispatch<WindowResizeEvent>(FL_BIND_EVENT_FN(OrthographicCameraController::OnWindowResized));
 	}

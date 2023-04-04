@@ -3,13 +3,15 @@
 #include "Flora/Renderer/Texture.h"
 #include "Flora/Renderer/SubTexture2D.h"
 #include "Flora/Renderer/Camera.h"
+#include "Flora/Renderer/EditorCamera.h"
 
 namespace Flora {
 	class Renderer2D {
 	public:
 		static void Init();
 		static void Shutdown();
-		static void BeginScene(const OrthographicCamera& camera);
+		static void BeginScene(const OrthographicCamera& camera); //TODO: REMOVE
+		static void BeginScene(const EditorCamera& camera);
 		static void BeginScene(const Camera& camera, const glm::mat4& transform);
 		static void EndScene();
 		static void Flush();
@@ -63,6 +65,7 @@ namespace Flora {
 		static Statistics GetStats();
 		static void ResetStats();
 	private:
-		static void FlushAndReset();
+		static void StartBatch();
+		static void NextBatch();
 	};
 }

@@ -1,6 +1,7 @@
 #pragma once
 #include "entt.hpp"
 #include "Flora/Core/Timestep.h"
+#include "Flora/Renderer/EditorCamera.h"
 
 namespace Flora {
 	class Entity;
@@ -11,7 +12,8 @@ namespace Flora {
 		~Scene();
 		Entity CreateEntity(const std::string& name = std::string());
 		void DestroyEntity(Entity entity);
-		void OnUpdate(Timestep ts);
+		void OnUpdateRuntime(Timestep ts);
+		void OnUpdateEditor(Timestep ts, EditorCamera& Camera);
 		void OnViewportResize(uint32_t width, uint32_t height);
 		Entity GetPrimaryCameraEntity();
 	private:

@@ -4,3 +4,5 @@ BUGS:
 	- theres like 80 warnings, maybe fixing those will help the bugs first
 
 	- tweak imguizmos settings
+
+	- make editor camera toggleable between orthographic camera and perspective

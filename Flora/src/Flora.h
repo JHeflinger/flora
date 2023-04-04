@@ -4,7 +4,7 @@
 #include "Flora/Core/Application.h"
 #include "Flora/Core/Input.h"
 #include "Flora/Core/KeyCodes.h"
-#include "Flora/Core/MouseButtonCodes.h"
+#include "Flora/Core/MouseCodes.h"
 #include "Flora/Core/Log.h"
 #include "Flora/Core/Layer.h"
 #include "Flora/Core/Timestep.h"

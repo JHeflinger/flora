@@ -1,6 +1,7 @@
 #pragma once
 #include "Flora.h"
 #include "Panels/SceneHierarchyPanel.h"
+#include "Flora/Renderer/EditorCamera.h"
 
 namespace Flora {
 	class EditorLayer : public Layer {
@@ -18,8 +19,8 @@ namespace Flora {
 		void OpenScene();
 		void NewScene();
 	private:
-		// Camera controller
-		OrthographicCameraController m_CameraController;
+		// Editor Camera
+		EditorCamera m_EditorCamera;
 
 		// Viewport framebuffer
 		Ref<Framebuffer> m_Framebuffer;

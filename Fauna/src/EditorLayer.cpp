@@ -10,8 +10,7 @@
 
 namespace Flora {
 	EditorLayer::EditorLayer()
-		: Layer("Example"),
-		m_CameraController(1280.0f / 720.0f, true) {
+		: Layer("Editor") {
 
 	}
 
@@ -27,6 +26,9 @@ namespace Flora {
 
 		//panel creation
 		m_SceneHierarchyPanel.SetContext(m_ActiveScene);
+
+		//editor camera
+		m_EditorCamera = EditorCamera(30.0f, 1.7778f, 0.1f, 1000.0f);
 	}
 
 	void EditorLayer::OnDetatch() {
@@ -39,12 +41,12 @@ namespace Flora {
 			m_ViewportSize.x > 0.0f && m_ViewportSize.y > 0.0f &&
 			(spec.Width != m_ViewportSize.x || spec.Height != m_ViewportSize.y)) {
 			m_Framebuffer->Resize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
-			m_CameraController.OnResize(m_ViewportSize.x, m_ViewportSize.y);
+			m_EditorCamera.SetViewportSize(m_ViewportSize.x, m_ViewportSize.y);
 			m_ActiveScene->OnViewportResize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
 		}
 
-		// Camera controller update
-		if (m_ViewportFocused) m_CameraController.OnUpdate(ts);
+		// Camera update
+		m_EditorCamera.OnUpdate(ts);
 
 		// renderer setup, move later
 		Renderer2D::ResetStats();	
@@ -53,7 +55,7 @@ namespace Flora {
 		RenderCommand::Clear();
 
 		// Scene update
-		m_ActiveScene->OnUpdate(ts);
+		m_ActiveScene->OnUpdateEditor(ts, m_EditorCamera);
 
 		// renderer "unsetup", move later
 		m_Framebuffer->Unbind();
@@ -157,11 +159,15 @@ namespace Flora {
 			float windowHeight = (float)ImGui::GetWindowHeight();
 			ImGuizmo::SetRect(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y, windowWidth, windowHeight);
 			
-			// Camera
-			auto cameraEntity = m_ActiveScene->GetPrimaryCameraEntity();
+			// Editor Camera
+			const glm::mat4& cameraProjection = m_EditorCamera.GetProjection();
+			glm::mat4 cameraView = m_EditorCamera.GetViewMatrix();
+
+			// Runtime Camera
+			/*auto cameraEntity = m_ActiveScene->GetPrimaryCameraEntity();
 			const auto& camera = cameraEntity.GetComponent<CameraComponent>().Camera;
 			const glm::mat4& cameraProjection = camera.GetProjection();
-			glm::mat4 cameraView = glm::inverse(cameraEntity.GetComponent<TransformComponent>().GetTransform());
+			glm::mat4 cameraView = glm::inverse(cameraEntity.GetComponent<TransformComponent>().GetTransform());*/
 
 			// Entity transform
 			auto& tc = selectedEntity.GetComponent<TransformComponent>();
@@ -195,8 +201,8 @@ namespace Flora {
 	}
 
 	void EditorLayer::OnEvent(Event& e) {
-		m_CameraController.OnEvent(e);
-		EventDispacher dispatcher(e);
+		m_EditorCamera.OnEvent(e);
+		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<KeyPressedEvent>(FL_BIND_EVENT_FN(EditorLayer::OnKeyPressed));
 	}
 

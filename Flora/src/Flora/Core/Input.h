@@ -1,7 +1,7 @@
 #pragma once
 #include "Flora/Core/Base.h"
 #include "Flora/Core/KeyCodes.h"
-#include "Flora/Core/MouseButtonCodes.h"
+#include "Flora/Core/MouseCodes.h"
 
 namespace Flora {
 	class FLORA_API Input {

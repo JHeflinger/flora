@@ -48,7 +48,7 @@ namespace Flora {
 	void Application::OnEvent(Event& e) {
 		FL_PROFILE_FUNCTION();
 
-		EventDispacher dispatcher(e);
+		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(OnWindowClosed));
 		dispatcher.Dispatch<WindowResizeEvent>(BIND_EVENT_FN(OnWindowResize));
 		for (auto it = m_LayerStack.end(); it != m_LayerStack.begin(); ) {
