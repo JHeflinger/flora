@@ -61,6 +61,11 @@ namespace Flora {
 				MouseRotate(delta);
 			else if (Input::IsMouseButtonPressed(Mouse::ButtonMiddle))
 				MouseZoom(delta.y);
+			
+			if (Input::IsKeyPressed(Key::GraveAccent)) {
+				m_Distance = 10.0f;
+				m_Pitch = 0.0f, m_Yaw = 0.0f;
+			}
 		}
 		UpdateView();
 	}
