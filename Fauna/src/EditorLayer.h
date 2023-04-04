@@ -31,5 +31,8 @@ namespace Flora {
 
 		// Panels
 		SceneHierarchyPanel m_SceneHierarchyPanel;
+
+		// Gizmos
+		int m_GizmoType = -1;
 	};
 }

@@ -17,3 +17,6 @@
 [submodule "Flora/vendor/yaml-cpp"]
 	path = Flora/vendor/yaml-cpp
 	url = https://github.com/JHeflinger/yaml-cpp.git
+[submodule "Flora/vendor/ImGuizmo"]
+	path = Flora/vendor/ImGuizmo
+	url = https://github.com/JHeflinger/ImGuizmo.git

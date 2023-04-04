@@ -19,7 +19,8 @@ project "Fauna"
 		"%{wks.location}/Flora/src",
 		"%{wks.location}/Flora/vendor",
 		"%{IncludeDir.glm}",
-		"%{IncludeDir.entt}"
+		"%{IncludeDir.entt}",
+		"%{IncludeDir.ImGuizmo}",
 	}
 
 	links
