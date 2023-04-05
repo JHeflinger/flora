@@ -11,7 +11,6 @@
 namespace Flora {
 	EditorLayer::EditorLayer()
 		: Layer("Editor") {
-
 	}
 
 	void EditorLayer::OnAttatch() {

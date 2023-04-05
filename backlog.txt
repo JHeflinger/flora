@@ -1,7 +1,4 @@
 BUGS:
-	- sometimes when deleting all renderable objects from a scene, then adding a new renderable object the most previously removed renderable object will now be visible? This bug may or may not be magically fixed as of 4/3/23
-
-	- theres like 80 warnings, maybe fixing those will help the bugs first
 
 	- tweak imguizmos settings
 

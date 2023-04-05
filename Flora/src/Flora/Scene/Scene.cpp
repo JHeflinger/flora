@@ -5,6 +5,8 @@
 #include "Flora/Scene/Entity.h"
 #include <glm/glm.hpp>
 
+#include "Flora/Core/Input.h"
+
 namespace Flora {
 	Scene::Scene() {
 	}
