@@ -5,14 +5,11 @@
 #include "Flora/Scene/Entity.h"
 #include <glm/glm.hpp>
 
-#include "Flora/Core/Input.h"
-
 namespace Flora {
 	Scene::Scene() {
 	}
 
 	Scene::~Scene() {
-
 	}
 
 	Entity Scene::CreateEntity(const std::string& name) {
