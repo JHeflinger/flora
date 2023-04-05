@@ -8,6 +8,8 @@
 namespace Flora {
 	class EditorCamera : public Camera {
 	public:
+		enum class ProjectionType { Perspective = 0, Orthographic = 1 };
+	public:
 		EditorCamera() = default;
 		EditorCamera(float fov, float aspectRatio, float nearClip, float farClip);
 		void OnUpdate(Timestep ts);
@@ -44,5 +46,10 @@ namespace Flora {
 		float m_Distance = 10.0f;
 		float m_Pitch = 0.0f, m_Yaw = 0.0f;
 		float m_ViewportWidth = 1280, m_ViewportHeight = 720;
+		ProjectionType m_ProjectionType = ProjectionType::Perspective;
+		float m_OrthographicSize = 10.0f;
+		//change later to something modular/dynamic
+		float m_OrthographicNear = -1000.0f;
+		float m_OrthographicFar = 1000.0f;
 	};
 }

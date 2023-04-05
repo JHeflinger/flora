@@ -5,3 +5,5 @@ BUGS:
 	- make editor camera toggleable between orthographic camera and perspective
 
 	- keycommand sonly work on viewport atm, this is due to imgui override in event handling, fix later
+
+	- auto save general settings like camera settings

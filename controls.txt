@@ -1,0 +1,9 @@
+currently:
+ctrl+o to open scene file
+ctrl+n to make new scene file
+ctrl+shift+s to save scene file as
+space+leftclick to pan editor camera
+space+rightclick to rotate editor camera
+space+middleclick to zoom editor camera
+scrollwheel to zoom editor camera
+space+~ to reset editor camera
