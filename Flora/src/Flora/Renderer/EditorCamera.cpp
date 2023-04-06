@@ -134,6 +134,19 @@ namespace Flora {
 		}
 	}
 
+	void EditorCamera::SetCameraTypeWithString(const std::string cameraType) {
+		if (cameraType == "Orthographic")
+			m_ProjectionType = ProjectionType::Orthographic;
+		else
+			m_ProjectionType = ProjectionType::Perspective;
+	}
+
+	std::string EditorCamera::GetCameraTypeString() {
+		if (m_ProjectionType == ProjectionType::Orthographic)
+			return "Orthographic";
+		return "Perspective";
+	}
+
 	glm::vec3 EditorCamera::GetUpDirection() const {
 		return glm::rotate(GetOrientation(), glm::vec3(0.0f, 1.0f, 0.0f));
 	}

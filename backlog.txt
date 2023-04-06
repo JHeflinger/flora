@@ -1,4 +1,6 @@
-BUGS:
+TODO:
 	- tweak imguizmos settings
 
 	- auto save general settings like camera settings and most recent scene, etc
+
+	- save general editor settings on window close

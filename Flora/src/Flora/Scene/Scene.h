@@ -16,12 +16,15 @@ namespace Flora {
 		void OnUpdateEditor(Timestep ts, EditorCamera& Camera);
 		void OnViewportResize(uint32_t width, uint32_t height);
 		Entity GetPrimaryCameraEntity();
+		void SetSceneFilepath(const std::string& filepath) { m_SceneFilepath = filepath; }
+		std::string GetSceneFilepath() { return m_SceneFilepath; }
 	private:
 		template<typename T>
 		void OnComponentAdded(Entity entity, T& component);
 	private:
 		entt::registry m_Registry;
 		uint32_t m_ViewportWidth, m_ViewportHeight = 0;
+		std::string m_SceneFilepath = "NULL";
 		friend class Entity;
 		friend class SceneHierarchyPanel;
 		friend class SceneSerializer;

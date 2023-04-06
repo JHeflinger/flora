@@ -26,6 +26,15 @@ namespace Flora {
 		glm::quat GetOrientation() const;
 		float GetPitch() const { return m_Pitch; }
 		float GetYaw() const { return m_Yaw; }
+		std::string GetCameraTypeString();
+		void SetCameraTypeWithString(const std::string cameraType);
+		void SetPosition(glm::vec3 position) { m_Position = position; }
+		void SetPitch(float pitch) { m_Pitch = pitch; }
+		void SetYaw(float yaw) { m_Yaw = yaw; }
+		void SetOrthographicSize(float size) { m_OrthographicSize = size; }
+		float GetOrthographicSize() const { return m_OrthographicSize; }
+		glm::vec3 GetFocalPoint() const { return m_FocalPoint; }
+		void SetFocalPoint(glm::vec3 focalPoint) { m_FocalPoint = focalPoint; }
 	private:
 		void UpdateProjection();
 		void UpdateView();

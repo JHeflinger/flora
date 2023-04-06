@@ -29,6 +29,10 @@ namespace Flora {
 
 		//editor camera
 		m_EditorCamera = EditorCamera(30.0f, 1.7778f, 0.1f, 1000.0f);
+
+		//load editor settings
+		SceneSerializer serializer(m_ActiveScene);
+		serializer.DeserializeEditor(m_EditorCamera);
 	}
 
 	void EditorLayer::OnDetatch() {
@@ -71,7 +75,7 @@ namespace Flora {
 			int mouseY = (int)my;
 			if (mouseX >= 0 && mouseY >= 0 && mouseX < (int)viewportSize.x && mouseY < (int)viewportSize.y) {
 				int pixelData = m_Framebuffer->ReadPixel(1, mouseX, mouseY);
-				FL_CORE_WARN("data: {0}", pixelData);
+				//FL_CORE_WARN("data: {0}", pixelData);
 			}
 		}
 
@@ -80,6 +84,16 @@ namespace Flora {
 
 		// renderer "unsetup", move later
 		m_Framebuffer->Unbind();
+
+		// Periodically serialize
+		static float time = 0.0f;
+		time += ts;
+		if (time > 30) {
+			time = 0.0f;
+			SceneSerializer serializer(m_ActiveScene);
+			serializer.SerializeEditor(m_EditorCamera);
+			FL_CORE_INFO("Saved editor settings");
+		}
 	}
 
 	void EditorLayer::OnImGuiRender() {
@@ -270,8 +284,10 @@ namespace Flora {
 		std::string filepath = FileDialogs::OpenFile("Flora Scene (*.flora)\0*.flora\0");
 		if (!filepath.empty()) {
 			NewScene();
+			m_ActiveScene->SetSceneFilepath(filepath);
 			SceneSerializer serializer(m_ActiveScene);
 			serializer.Deserialize(filepath);
+			serializer.SerializeEditor(m_EditorCamera);
 		}
 	}
 
@@ -279,6 +295,7 @@ namespace Flora {
 		m_ActiveScene = CreateRef<Scene>();
 		m_ActiveScene->OnViewportResize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
 		m_SceneHierarchyPanel.SetContext(m_ActiveScene);
+		m_ActiveScene->SetSceneFilepath("NULL");
 	}
 
 	void EditorLayer::OnOverrideEvent() {

@@ -141,6 +141,36 @@ namespace Flora {
 		FL_CORE_ASSERT(false);
 	}
 
+	void SceneSerializer::SerializeEditor(EditorCamera& editorCamera, const std::string& filepath) {
+		YAML::Emitter out;
+		out << YAML::BeginMap;
+		out << YAML::Key << "Scene Filepath" << YAML::Value << m_Scene->GetSceneFilepath();
+		out << YAML::Key << "Selected Entity" << YAML::Value << "-1";
+		out << YAML::Key << "Editor Camera Type" << YAML::Value << editorCamera.GetCameraTypeString();
+
+		out << YAML::Key << "General Camera Settings" << YAML::Value;
+		out << YAML::BeginMap;
+		out << YAML::Key << "Position" << YAML::Value << editorCamera.GetPosition();
+		out << YAML::Key << "Focal Point" << YAML::Value << editorCamera.GetFocalPoint();
+		out << YAML::EndMap;
+
+		out << YAML::Key << "Perspective Camera Settings" << YAML::Value;
+		out << YAML::BeginMap;
+		out << YAML::Key << "Distance" << YAML::Value << editorCamera.GetDistance();
+		out << YAML::Key << "Pitch" << YAML::Value << editorCamera.GetPitch();
+		out << YAML::Key << "Yaw" << YAML::Value << editorCamera.GetYaw();
+		out << YAML::EndMap;
+
+		out << YAML::Key << "Orthographic Camera Settings" << YAML::Value;
+		out << YAML::BeginMap;
+		out << YAML::Key << "Size" << YAML::Value << editorCamera.GetOrthographicSize();
+		out << YAML::EndMap;
+
+		out << YAML::EndMap;
+		std::ofstream fout(filepath);
+		fout << out.c_str();
+	}
+
 	bool SceneSerializer::Deserialize(const std::string& filepath) {
 		std::ifstream stream(filepath);
 		std::stringstream strStream;
@@ -209,5 +239,31 @@ namespace Flora {
 		// not implemented yet!
 		FL_CORE_ASSERT(false);
 		return false;
+	}
+
+	bool SceneSerializer::DeserializeEditor(EditorCamera& editorCamera, const std::string& filepath) {
+		std::ifstream stream(filepath);
+		std::stringstream strStream;
+		strStream << stream.rdbuf();
+
+		YAML::Node data = YAML::Load(strStream.str());
+		if (!data["Scene Filepath"])
+			return false;
+
+		// set up saved scene
+		std::string sceneFilepath = data["Scene Filepath"].as<std::string>();
+		m_Scene->SetSceneFilepath(sceneFilepath);
+		bool success = Deserialize(sceneFilepath);
+
+		// set camera settings
+		editorCamera.SetCameraTypeWithString(data["Editor Camera Type"].as<std::string>());
+		editorCamera.SetPosition(data["General Camera Settings"]["Position"].as<glm::vec3>());
+		editorCamera.SetFocalPoint(data["General Camera Settings"]["Focal Point"].as<glm::vec3>());
+		editorCamera.SetDistance(data["Perspective Camera Settings"]["Distance"].as<float>());
+		editorCamera.SetPitch(data["Perspective Camera Settings"]["Pitch"].as<float>());
+		editorCamera.SetYaw(data["Perspective Camera Settings"]["Yaw"].as<float>());
+		editorCamera.SetOrthographicSize(data["Orthographic Camera Settings"]["Size"].as<float>());
+
+		return success;
 	}
 }
