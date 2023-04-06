@@ -1,4 +1,4 @@
 BUGS:
 	- tweak imguizmos settings
 
-	- auto save general settings like camera settings
+	- auto save general settings like camera settings and most recent scene, etc

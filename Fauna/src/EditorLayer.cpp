@@ -54,6 +54,9 @@ namespace Flora {
 		RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1 });
 		RenderCommand::Clear();
 
+		// clear entity ID attachment to -1
+		m_Framebuffer->ClearAttachment(1, -1);
+
 		// Scene update
 		m_ActiveScene->OnUpdateEditor(ts, m_EditorCamera);
 
@@ -61,7 +64,7 @@ namespace Flora {
 		{
 			auto [mx, my] = ImGui::GetMousePos();
 			mx -= m_ViewportBounds[0].x;
-			my -= m_ViewportBounds[0].y;
+			my -= m_ViewportBounds[0].y - 25;
 			glm::vec2 viewportSize = m_ViewportBounds[1] - m_ViewportBounds[0];
 			my = viewportSize.y - my;
 			int mouseX = (int)mx;
