@@ -247,7 +247,11 @@ namespace Flora {
 		strStream << stream.rdbuf();
 
 		YAML::Node data = YAML::Load(strStream.str());
-		if (!data["Scene Filepath"])
+		if (!data["Scene Filepath"] ||
+			!data["Editor Camera Type"] ||
+			!data["General Camera Settings"] ||
+			!data["Perspective Camera Settings"] ||
+			!data["Orthographic Camera Settings"])
 			return false;
 
 		// set up saved scene
