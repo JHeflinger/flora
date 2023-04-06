@@ -51,5 +51,7 @@ namespace Flora {
 		//change later to something modular/dynamic
 		float m_OrthographicNear = -1000.0f;
 		float m_OrthographicFar = 1000.0f;
+		//temp
+		bool m_ToggleEnable = true;
 	};
 }

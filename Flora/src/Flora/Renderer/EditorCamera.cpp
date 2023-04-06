@@ -77,6 +77,20 @@ namespace Flora {
 				m_Distance = 10.0f;
 				m_Pitch = 0.0f, m_Yaw = 0.0f;
 			}
+
+			if (Input::IsKeyPressed(Key::LeftAlt)) {
+				if (m_ToggleEnable) {
+					if (m_ProjectionType == ProjectionType::Perspective)
+						m_ProjectionType = ProjectionType::Orthographic;
+					else
+						m_ProjectionType = ProjectionType::Perspective;
+					m_ToggleEnable = false;
+					UpdateProjection();
+				}
+			}
+			else {
+				m_ToggleEnable = true;
+			}
 		}
 		UpdateView();
 	}
@@ -106,10 +120,15 @@ namespace Flora {
 	}
 
 	void EditorCamera::MouseZoom(float delta) {
-		m_Distance -= delta * ZoomSpeed();
-		if (m_Distance < 1.0f) {
-			m_FocalPoint += GetForwardDirection();
-			m_Distance = 1.0f;
+		if (m_ProjectionType == ProjectionType::Perspective) {
+			m_Distance -= delta * ZoomSpeed();
+			if (m_Distance < 1.0f) {
+				m_FocalPoint += GetForwardDirection();
+				m_Distance = 1.0f;
+			}
+		} else {
+			m_OrthographicSize -= delta* ZoomSpeed();
+			UpdateProjection();
 		}
 	}
 
