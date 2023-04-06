@@ -16,7 +16,7 @@ namespace Flora {
 	void EditorLayer::OnAttatch() {
 		//framebuffer creation
 		FramebufferSpecification fbSpec;
-		fbSpec.Attachments = { FramebufferTextureFormat::RGBA8, FramebufferTextureFormat::Depth };
+		fbSpec.Attachments = { FramebufferTextureFormat::RGBA8, FramebufferTextureFormat::RED_INTEGER, FramebufferTextureFormat::Depth };
 		fbSpec.Width = 1280;
 		fbSpec.Height = 720;
 		m_Framebuffer = Framebuffer::Create(fbSpec);
@@ -56,6 +56,24 @@ namespace Flora {
 
 		// Scene update
 		m_ActiveScene->OnUpdateEditor(ts, m_EditorCamera);
+
+		// Temp
+		{
+			auto [mx, my] = ImGui::GetMousePos();
+			mx -= m_ViewportBounds[0].x;
+			my -= m_ViewportBounds[0].y;
+			glm::vec2 viewportSize = m_ViewportBounds[1] - m_ViewportBounds[0];
+			my = viewportSize.y - my;
+			int mouseX = (int)mx;
+			int mouseY = (int)my;
+			if (mouseX >= 0 && mouseY >= 0 && mouseX < (int)viewportSize.x && mouseY < (int)viewportSize.y) {
+				int pixelData = m_Framebuffer->ReadPixel(1, mouseX, mouseY);
+				FL_CORE_WARN("data: {0}", pixelData);
+			}
+		}
+
+		// Editor override events
+		OnOverrideEvent();
 
 		// renderer "unsetup", move later
 		m_Framebuffer->Unbind();
@@ -142,6 +160,7 @@ namespace Flora {
 		// Viewport
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 0, 0 });
 		ImGui::Begin("Viewport");
+		auto viewportOffset = ImGui::GetCursorPos(); // includes tab bar!
 		m_ViewportFocused = ImGui::IsWindowFocused();
 		m_ViewportHovered = ImGui::IsWindowHovered();
 		Application::Get().GetImGuiLayer()->BlockEvents(!m_ViewportFocused && !m_ViewportHovered);
@@ -149,6 +168,15 @@ namespace Flora {
 		m_ViewportSize = { viewportPanelSize.x, viewportPanelSize.y };
 		uint32_t textureID = m_Framebuffer->GetColorAttachmentRendererID();
 		ImGui::Image(reinterpret_cast<void*>(textureID), ImVec2{ m_ViewportSize.x, m_ViewportSize.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
+
+		auto windowSize = ImGui::GetWindowSize();
+		ImVec2 minBound = ImGui::GetWindowPos();
+		minBound.x += viewportOffset.x;
+		minBound.y += viewportOffset.y;
+
+		ImVec2 maxBound = { minBound.x + windowSize.y, minBound.y + windowSize.y };
+		m_ViewportBounds[0] = { minBound.x, minBound.y };
+		m_ViewportBounds[1] = { maxBound.x, maxBound.y };
 
 		// Viewport Gizmos
 		Entity selectedEntity = m_SceneHierarchyPanel.GetSelectedEntity();
@@ -207,20 +235,9 @@ namespace Flora {
 	}
 
 	bool EditorLayer::OnKeyPressed(KeyPressedEvent& e) {
-		// Shortcuts
+		// some shortcuts moved to OnOverrideEvent
 		if (e.GetRepeatCount() > 0) return false;
-		bool control = Input::IsKeyPressed(Key::LeftControl) || Input::IsKeyPressed(Key::RightControl);
-		bool shift = Input::IsKeyPressed(Key::LeftShift) || Input::IsKeyPressed(Key::RightShift);
 		switch (e.GetKeyCode()) {
-		case Key::S:
-			if (control && shift) SaveSceneAs();
-			break;
-		case Key::N:
-			if (control) NewScene();
-			break;
-		case Key::O:
-			if (control) OpenScene();
-			break;
 		case Key::Q:
 			m_GizmoType = -1;
 			break;
@@ -259,5 +276,55 @@ namespace Flora {
 		m_ActiveScene = CreateRef<Scene>();
 		m_ActiveScene->OnViewportResize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
 		m_SceneHierarchyPanel.SetContext(m_ActiveScene);
+	}
+
+	void EditorLayer::OnOverrideEvent() {
+		// Shortcuts
+		/* old shortcut code
+		if (e.GetRepeatCount() > 0) return false;
+		bool control = Input::IsKeyPressed(Key::LeftControl) || Input::IsKeyPressed(Key::RightControl);
+		bool shift = Input::IsKeyPressed(Key::LeftShift) || Input::IsKeyPressed(Key::RightShift);
+		switch (e.GetKeyCode()) {
+		case Key::S:
+			if (control && shift) SaveSceneAs();
+			break;
+		case Key::N:
+			if (control) NewScene();
+			break;
+		case Key::O:
+			if (control) OpenScene();
+			break;
+		case Key::Q:
+			m_GizmoType = -1;
+			break;
+		case Key::W:
+			m_GizmoType = ImGuizmo::OPERATION::TRANSLATE;
+			break;
+		case Key::E:
+			m_GizmoType = ImGuizmo::OPERATION::ROTATE;
+			break;
+		case Key::R:
+			m_GizmoType = ImGuizmo::OPERATION::SCALE;
+			break;
+		default:
+			break;
+		}*/
+
+		if (m_OverrideEventReady) {
+			m_OverrideEventReady = false;
+			bool control = Input::IsKeyPressed(Key::LeftControl) || Input::IsKeyPressed(Key::RightControl);
+			bool shift = Input::IsKeyPressed(Key::LeftShift) || Input::IsKeyPressed(Key::RightShift);
+			if (control && shift && Input::IsKeyPressed(Key::S)) {
+				SaveSceneAs();
+			} else if (control && Input::IsKeyPressed(Key::N)) {
+				NewScene();
+			} else if (control && Input::IsKeyPressed(Key::O)) {
+				OpenScene();
+			} else {
+				m_OverrideEventReady = true;
+			}
+		} else {
+			m_OverrideEventReady = true;
+		}
 	}
 }

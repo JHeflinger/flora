@@ -18,13 +18,15 @@ namespace Flora {
 		void SaveSceneAs();
 		void OpenScene();
 		void NewScene();
+		void OnOverrideEvent();
 	private:
 		// Editor Camera
 		EditorCamera m_EditorCamera;
 
-		// Viewport framebuffer
+		// Viewport
 		Ref<Framebuffer> m_Framebuffer;
 		glm::vec2 m_ViewportSize = { 0, 0 };
+		glm::vec2 m_ViewportBounds[2];
 		bool m_ViewportFocused, m_ViewportHovered = false;
 
 		// Scene
@@ -35,5 +37,8 @@ namespace Flora {
 
 		// Gizmos
 		int m_GizmoType = -1;
+
+		// OverrideEvent
+		bool m_OverrideEventReady = true;
 	};
 }

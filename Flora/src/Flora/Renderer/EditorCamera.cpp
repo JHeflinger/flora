@@ -73,12 +73,14 @@ namespace Flora {
 			else if (Input::IsMouseButtonPressed(Mouse::ButtonMiddle))
 				MouseZoom(delta.y);
 			
-			if (Input::IsKeyPressed(Key::GraveAccent)) {
+			if (Input::IsKeyPressed(Key::GraveAccent)) { // reset camera position
 				m_Distance = 10.0f;
 				m_Pitch = 0.0f, m_Yaw = 0.0f;
+				m_Position = { 0.0f, 0.0f, 0.0f };
+				m_FocalPoint = { 0.0f, 0.0f, 0.0f };
 			}
 
-			if (Input::IsKeyPressed(Key::LeftAlt)) {
+			if (Input::IsKeyPressed(Key::LeftAlt)) { // toggle camera type
 				if (m_ToggleEnable) {
 					if (m_ProjectionType == ProjectionType::Perspective)
 						m_ProjectionType = ProjectionType::Orthographic;

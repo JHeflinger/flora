@@ -1,6 +1,4 @@
 BUGS:
 	- tweak imguizmos settings
 
-	- keycommand sonly work on viewport atm, this is due to imgui override in event handling, fix later
-
 	- auto save general settings like camera settings
