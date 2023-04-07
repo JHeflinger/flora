@@ -36,7 +36,9 @@ namespace Flora {
 	}
 
 	void EditorLayer::OnDetatch() {
-
+		SceneSerializer serializer(m_ActiveScene);
+		serializer.SerializeEditor(m_EditorCamera);
+		FL_CORE_INFO("Saved editor settings");
 	}
 
 	void EditorLayer::OnUpdate(Timestep ts) {
@@ -88,11 +90,11 @@ namespace Flora {
 		// Periodically serialize
 		static float time = 0.0f;
 		time += ts;
-		if (time > 30) {
+		if (time > 300) { // save settings every 5 minutes
 			time = 0.0f;
 			SceneSerializer serializer(m_ActiveScene);
 			serializer.SerializeEditor(m_EditorCamera);
-			FL_CORE_INFO("Saved editor settings");
+			FL_CORE_INFO("Automatically saved editor settings");
 		}
 	}
 
