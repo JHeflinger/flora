@@ -46,11 +46,10 @@ cloned Flora normally, you can also run the following to download submodules:
 git submodule update --init --recursive
 ```
 
-Once everything is properly cloned, run the respective build script in the scripts folder for your operating system. For example, for windows, run
+Once everything is properly cloned, run the build script in the scripts folder!
 
 ```
-cd scripts
-./WIN_GenerateProj.bat
+./scripts/Setup.bat
 ```
 
 Note that this builds project files for **Visual Studio 2019**. If you use a different version of visual studio, you may need to use a different version of premake

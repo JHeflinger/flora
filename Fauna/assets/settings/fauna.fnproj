@@ -2,11 +2,11 @@ Scene Filepath: D:\Dev\Flora\Fauna\assets\scenes\Example.flora
 Selected Entity: -1
 Editor Camera Type: Perspective
 General Camera Settings:
-  Position: [-9.62373352, 11.1125717, -9.7001133]
-  Focal Point: [1.22411871, 0.357227236, -0.526334822]
+  Position: [-9.79840851, 10.6291161, -12.4366608]
+  Focal Point: [0.374758005, 0.857599735, 0.414497197]
 Perspective Camera Settings:
-  Distance: 17.8188553
-  Pitch: 0.648000598
-  Yaw: -10.2935953
+  Distance: 19.08214
+  Pitch: 0.537600517
+  Yaw: -3.81119967
 Orthographic Camera Settings:
-  Size: 7.41046476
+  Size: 12.4669371

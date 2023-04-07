@@ -24,6 +24,15 @@ namespace Flora {
 		//scene creation
 		m_ActiveScene = CreateRef<Scene>();
 
+		// command like argument creation
+		auto commandLineArgs = Application::Get().GetCommandLineArgs();
+		if (commandLineArgs.Count > 1)
+		{
+			auto sceneFilePath = commandLineArgs[1];
+			SceneSerializer serializer(m_ActiveScene);
+			serializer.Deserialize(sceneFilePath);
+		}
+
 		//panel creation
 		m_SceneHierarchyPanel.SetContext(m_ActiveScene);
 

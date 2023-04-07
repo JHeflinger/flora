@@ -11,3 +11,9 @@ bin-int/
 
 # personal
 *.ini
+
+# Directories
+vendor/VulkanSDK/VulkanSDK.exe
+Fauna/assets/cache
+Flora/vendor/VulkanSDK
+scripts/__pycache__

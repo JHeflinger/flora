@@ -5,8 +5,8 @@
 namespace Flora {
 	class Fauna : public Application {
 	public:
-		Fauna()
-			: Application("Fauna") {
+		Fauna(ApplicationCommandLineArgs args)
+			: Application("Fauna", args) {
 			PushLayer(new EditorLayer());
 		}
 
@@ -15,7 +15,7 @@ namespace Flora {
 		}
 	};
 
-	Application* CreateApplication() {
-		return new Fauna();
+	Application* CreateApplication(ApplicationCommandLineArgs args) {
+		return new Fauna(args);
 	}
 }

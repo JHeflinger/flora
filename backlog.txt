@@ -4,3 +4,7 @@ TODO:
 	- make the QWER settings saved in editor settings as well
 
 	- implement save scene (not save as)
+
+	- convert all console messages into an editor console
+
+	- move all saveable editor settings into a struct to pass in

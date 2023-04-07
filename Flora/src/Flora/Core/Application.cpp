@@ -12,7 +12,8 @@ namespace Flora {
 
 	Application* Application::s_Instance = nullptr;
 
-	Application::Application(const std::string& name) {
+	Application::Application(const std::string& name, ApplicationCommandLineArgs args)
+		: m_CommandLineArgs(args) {
 		FL_PROFILE_FUNCTION();
 
 		FL_CORE_ASSERT(!s_Instance, "Application already exists!");

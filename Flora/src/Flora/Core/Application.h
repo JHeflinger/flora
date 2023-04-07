@@ -8,9 +8,19 @@
 #include "Flora/Core/Timestep.h"
 
 namespace Flora {
+	struct ApplicationCommandLineArgs {
+		int Count = 0;
+		char** Args = nullptr;
+
+		const char* operator[](int index) const {
+			FL_CORE_ASSERT(index < Count);
+			return Args[index];
+		}
+	};
+
 	class Application {
 	public:
-		Application(const std::string& name = "Flora App");
+		Application(const std::string& name = "Flora App", ApplicationCommandLineArgs args = ApplicationCommandLineArgs());
 		virtual ~Application();
 		void Run();
 		void OnEvent(Event& e);
@@ -19,11 +29,13 @@ namespace Flora {
 		void Close();
 		ImGuiLayer* GetImGuiLayer() { return m_ImGuiLayer; }
 		inline static Application& Get() { return *s_Instance; }
+		ApplicationCommandLineArgs GetCommandLineArgs() const { return m_CommandLineArgs; }
 		inline Window& GetWindow() { return *m_Window; }
 	private:
 		bool OnWindowClosed(WindowCloseEvent& e);
 		bool OnWindowResize(WindowResizeEvent& e);
 	private:
+		ApplicationCommandLineArgs m_CommandLineArgs;
 		std::unique_ptr<Window> m_Window;
 		ImGuiLayer* m_ImGuiLayer;
 		bool m_Running = true;
@@ -35,6 +47,6 @@ namespace Flora {
 	};
 
 	//To be defined in CLIENT
-	Application* CreateApplication();
+	Application* CreateApplication(ApplicationCommandLineArgs args);
 }
 
