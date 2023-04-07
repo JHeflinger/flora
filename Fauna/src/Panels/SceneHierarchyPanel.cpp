@@ -14,6 +14,10 @@ namespace Flora {
 		m_SelectionContext = {};
 	}
 
+	void SceneHierarchyPanel::SetSelectedEntity(Entity entity) {
+		m_SelectionContext = entity;
+	}
+
 	void SceneHierarchyPanel::OnImGuiRender() {
 		ImGui::Begin("Scene Hierarchy");
 		m_Context->m_Registry.each([&](auto entityID) {

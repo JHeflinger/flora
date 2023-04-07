@@ -8,3 +8,7 @@ space+middleclick to zoom editor camera
 scrollwheel to zoom editor camera
 space+~ to reset editor camera
 space+leftalt to toggle perspective vs orthographic camera for editor camera
+Q to disable modifying with mouse in scene
+W to enable moving entity position in scene gizmo
+E to enable rotation gizmo
+R to enable scale gizmo

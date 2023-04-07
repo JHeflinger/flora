@@ -1,2 +1,6 @@
 TODO:
 	- tweak imguizmos settings
+
+	- make the QWER settings saved in editor settings as well
+
+	- implement save scene (not save as)
