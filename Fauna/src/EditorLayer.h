@@ -28,6 +28,7 @@ namespace Flora {
 		glm::vec2 m_ViewportSize = { 0, 0 };
 		glm::vec2 m_ViewportBounds[2];
 		bool m_ViewportFocused, m_ViewportHovered = false;
+		Entity m_HoveredEntity;
 
 		// Scene
 		Ref<Scene> m_ActiveScene;
