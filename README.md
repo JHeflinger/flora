@@ -24,7 +24,7 @@ an editor, but as an API in their own standalone solutions!
 Flora refers to the actual API reference. This includes all the capabilities of the game engine, meaning developers can easily
 take just Flora itself and use it to develop without a graphical editor, or make one on their own!
 
-## Fauna
+### Fauna
 Fauna refers to the provided graphical editor that implements Flora. New developers are recommended to utilize this editor themselves
 for their projects! Fauna offers all the basic capabilities of Flora, and make managing your project much eaiser.
 
