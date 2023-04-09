@@ -1,6 +1,7 @@
 #pragma once
 #include "Flora.h"
 #include "Panels/SceneHierarchyPanel.h"
+#include "Panels/ContentBrowserPanel.h"
 #include "Flora/Renderer/EditorCamera.h"
 
 namespace Flora {
@@ -36,6 +37,7 @@ namespace Flora {
 
 		// Panels
 		SceneHierarchyPanel m_SceneHierarchyPanel;
+		ContentBrowserPanel m_ContentBrowserPanel;
 
 		// Gizmos
 		int m_GizmoType = -1;

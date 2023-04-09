@@ -173,8 +173,9 @@ namespace Flora {
 
 		//===================put dockable imgui panels here=====================
 
-		// Scene Hierarchy Panel
+		// Panels
 		m_SceneHierarchyPanel.OnImGuiRender();
+		m_ContentBrowserPanel.OnImGuiRender();
 
 		// Renderer Stats
 		ImGui::Begin("Stats");

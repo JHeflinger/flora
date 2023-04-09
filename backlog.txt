@@ -8,3 +8,11 @@ TODO:
 	- convert all console messages into an editor console
 
 	- move all saveable editor settings into a struct to pass in
+
+	- integrate SPIR-V shaders
+
+	- move some editor settings to scene settings (like editor camera) or separate it into a sceneEditorSetting file specific to scene
+
+	- move editor serializer to separate editor serializer class
+
+	- implement projects so we should have editor settings, scene settings, and project settings
