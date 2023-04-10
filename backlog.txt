@@ -16,3 +16,23 @@ TODO:
 	- move editor serializer to separate editor serializer class
 
 	- implement projects so we should have editor settings, scene settings, and project settings
+
+	- make it so you can double click scenes in content browser to open them
+	
+	- clean up content browser (center text, make proper back button, etc)
+
+	- add more stats to the stat panel, maybe put it in a separate panel class even
+
+	- make sprite renderer component take in all possibe parameters like tiling factor, etc
+
+	- separate scenehierarchy panel and properties panel
+
+	- spitecomponent should support subtextures or make that a separate component
+
+	- refactor texture setting in spritecomponent to look better and show filepath using
+
+	- texture button in sprite component should also bring up a file selector
+
+	- refactor scene serializer to serialize new spritecomponent settings
+
+	- save scene prompt on close

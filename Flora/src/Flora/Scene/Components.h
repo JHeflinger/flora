@@ -3,6 +3,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include "Flora/Scene/SceneCamera.h"
 #include "Flora/Scene/ScriptableEntity.h"
+#include "Flora/Renderer/Texture.h"
 #include <glm/gtx/quaternion.hpp>
 
 namespace Flora {
@@ -30,6 +31,8 @@ namespace Flora {
 
 	struct SpriteRendererComponent {
 		glm::vec4 Color{1.0f, 1.0f, 1.0f, 1.0f};
+		Ref<Texture2D> Texture;
+		float TilingFactor = 1.0f;
 		SpriteRendererComponent() = default;
 		SpriteRendererComponent(const SpriteRendererComponent&) = default;
 		SpriteRendererComponent(const glm::vec4& color) : Color(color) {}
