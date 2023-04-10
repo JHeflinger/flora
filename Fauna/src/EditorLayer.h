@@ -19,6 +19,7 @@ namespace Flora {
 		bool OnMouseButtonPressed(MouseButtonPressedEvent& e);
 		void SaveSceneAs();
 		void OpenScene();
+		void OpenScene(const std::filesystem::path& path);
 		void NewScene();
 		void OnOverrideEvent();
 	private:
