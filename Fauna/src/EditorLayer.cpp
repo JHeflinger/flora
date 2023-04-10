@@ -163,6 +163,10 @@ namespace Flora {
 					SaveSceneAs();
 				}
 
+				if (ImGui::MenuItem("Save", "Ctrl+S")) {
+					SaveScene();
+				}
+
 				ImGui::EndMenu();
 			}
 
@@ -301,6 +305,16 @@ namespace Flora {
 		return false;
 	}
 
+	void EditorLayer::SaveScene() {
+		std::string sceneFilepath = m_ActiveScene->GetSceneFilepath();
+		if (sceneFilepath != "NULL") {
+			SceneSerializer serializer(m_ActiveScene);
+			serializer.Serialize(sceneFilepath);
+		} else {
+			SaveSceneAs();
+		}
+	}
+
 	void EditorLayer::SaveSceneAs() {
 		std::string filepath = FileDialogs::SaveFile("Flora Scene (*.flora)\0*.flora\0");
 		if (!filepath.empty()) {
@@ -369,6 +383,8 @@ namespace Flora {
 			bool shift = Input::IsKeyPressed(Key::LeftShift) || Input::IsKeyPressed(Key::RightShift);
 			if (control && shift && Input::IsKeyPressed(Key::S)) {
 				SaveSceneAs();
+			} else if (control && Input::IsKeyPressed(Key::S)) {
+				SaveScene();
 			} else if (control && Input::IsKeyPressed(Key::N)) {
 				NewScene();
 			} else if (control && Input::IsKeyPressed(Key::O)) {

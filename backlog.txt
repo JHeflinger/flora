@@ -1,11 +1,10 @@
 TODO:
-	- tweak imguizmos settings
 
 	- make the QWER settings saved in editor settings as well
+	
+	- indicate if scene is saved or not
 
-	- implement save scene (not save as)
-
-	- convert all console messages into an editor console
+	- convert all console messages into an editor console panel
 
 	- move all saveable editor settings into a struct to pass in
 
@@ -36,3 +35,7 @@ TODO:
 	- refactor scene serializer to serialize new spritecomponent settings
 
 	- save scene prompt on close
+
+IMPLEMENTED TICKETS:
+
+	- implement save scene (not save as)
