@@ -68,6 +68,34 @@ TODO:
 
 	- sprite renderer component full makeover to include single textures, subtextures, and animations
 
+	- asset manager so a new texture won't be used for every entity that uses that texture
+
+	- drag and drop stuff should check if it's the valid filetype, and should pop up an error popup otherwise
+
+	- text rendering!
+
+	- layout system?
+
+	- menu screens
+
+	- standalone runtime and standalone serialization
+
+	- refactor camera component properties layout
+
+	- audio
+
+	- networking
+
+	- tilemap component?
+
+	- optimization for multithreading!
+
+	- subentities (scene hierarhcy doesn't really h"have" hierarchy atm)
+
+	- optick profiler
+
+	- support distrubution (custom formats)
+
 IMPLEMENTED TICKETS:
 
 	- implement save scene (not save as)

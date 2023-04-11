@@ -162,7 +162,9 @@ namespace Flora {
 
 			if (open) {
 				auto& src = entity.GetComponent<T>();
+				ImGui::Dummy(ImVec2(0, 5.0f));
 				uifunction(component);
+				ImGui::Dummy(ImVec2(0, 5.0f));
 				ImGui::TreePop();
 			}
 
@@ -256,7 +258,19 @@ namespace Flora {
 		DrawComponent<SpriteRendererComponent>("Sprite", entity, [](auto& component) {
 			const char* spriteTypeStrings[] = { "Single Texture", "Subtexture", "Animation" };
 			const char* currentSpriteTypeString = spriteTypeStrings[(int)component.Type];
-			if (ImGui::BeginCombo("Type", currentSpriteTypeString)) {
+			float lineHeight = GImGui->Font->FontSize + GImGui->Style.FramePadding.y * 2.0f;
+			ImVec2 smallButtonSize = { lineHeight + 3.0f, lineHeight };
+			ImVec2 largeButtonSize = { 0, lineHeight };
+			ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2{ 0, 0 });
+
+			//==============================================Sprite type
+
+			ImGui::Columns(2);
+			ImGui::SetColumnWidth(0, 100.0f);
+			ImGui::Text("Type");
+			ImGui::NextColumn();
+			ImGui::SameLine(0, 80);
+			if (ImGui::BeginCombo("##Type", currentSpriteTypeString)) {
 				for (int i = 0; i < 3; i++) {
 					bool isSelected = currentSpriteTypeString == spriteTypeStrings[i];
 					if (ImGui::Selectable(spriteTypeStrings[i], isSelected)) {
@@ -268,9 +282,62 @@ namespace Flora {
 				}
 				ImGui::EndCombo();
 			}
+			ImGui::Columns(1);
+
+			ImGui::Dummy(ImVec2(0, 10.0f));
+			ImGui::Separator(); //===========================separator
+			ImGui::Dummy(ImVec2(0, 10.0f));
 
 			if (component.Type == SpriteRendererComponent::SpriteType::SINGLE) {
-				ImGui::Button("Texture", ImVec2(100.0f, 0.0f));
+				ImGui::Columns(2);
+				ImGui::SetColumnWidth(0, 100.0f);
+				ImGui::Text("Texture");
+				ImGui::NextColumn();
+				ImGui::SameLine(0, 60);
+				ImGui::Button("Texture", largeButtonSize);
+				if (ImGui::BeginDragDropTarget()) {
+					if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM")) {
+						const wchar_t* path = (const wchar_t*)payload->Data;
+						std::filesystem::path texturePath = std::filesystem::path(g_AssetPath) / path;
+						component.Texture = Texture2D::Create(texturePath.string());
+					}	
+					ImGui::EndDragDropTarget();
+				}
+				ImGui::Columns(1);
+
+				ImGui::Dummy(ImVec2(0, 10.0f));
+				const ImGuiTreeNodeFlags treeNodeFlags = ImGuiTreeNodeFlags_SpanAvailWidth | ImGuiTreeNodeFlags_AllowItemOverlap | ImGuiTreeNodeFlags_FramePadding;
+				bool open = ImGui::TreeNodeEx((void*)typeid(SpriteRendererComponent).hash_code(), treeNodeFlags, "Advanced Settings");
+				if (open) {
+					ImGui::Dummy(ImVec2(0, 5.0f));
+					ImGui::Columns(2);
+					ImGui::SetColumnWidth(0, 100.0f);
+					ImGui::Dummy(ImVec2(0, 8.0f));
+					ImGui::Text("Tint");
+					ImGui::Dummy(ImVec2(0, 10.0f));
+					ImGui::Text("Tiling Factor");
+					ImGui::NextColumn();
+					ImGui::Dummy(ImVec2(0, 5.0f));
+					ImGui::ColorEdit4("##Tint", glm::value_ptr(component.Color));
+					ImGui::Dummy(ImVec2(0, 5.0f));
+					ImGui::DragFloat("##Tiling Factor", &component.TilingFactor, 0.1, 0.0f, 100.0f);
+					ImGui::Columns(1);
+					ImGui::TreePop();
+				}
+			}
+
+			if (component.Type == SpriteRendererComponent::SpriteType::SUBTEXTURE) {
+				ImGui::Columns(2);
+				ImGui::SetColumnWidth(0, 100.0f);
+				ImGui::Text("Texture");
+				ImGui::Dummy(ImVec2(0, 10.0f));
+				ImGui::Text("Rows");
+				ImGui::Dummy(ImVec2(0, 10.0f));
+				ImGui::Text("Columns");
+				ImGui::Dummy(ImVec2(0, 10.0f));
+				ImGui::Text("Coordinate");
+				ImGui::NextColumn();
+				ImGui::Button("Subtexture", largeButtonSize);
 				if (ImGui::BeginDragDropTarget()) {
 					if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM")) {
 						const wchar_t* path = (const wchar_t*)payload->Data;
@@ -279,20 +346,37 @@ namespace Flora {
 					}
 					ImGui::EndDragDropTarget();
 				}
-			}
+				ImGui::Dummy(ImVec2(0, 5.0f));
+				// rows, columns, subtexture row/col
+				ImGui::DragInt("##Rows", &component.Rows, 0.1, 0, 1000);
+				ImGui::DragInt("##Columns", &component.Columns, 0.1, 0, 1000);
 
-			if (component.Type == SpriteRendererComponent::SpriteType::SUBTEXTURE) {
+				ImGui::DragInt("##RowCoord", &component.RowCoordinate, 0.1, 0, 1000);
+				ImGui::DragInt("##ColCoord", &component.ColumnCoordinate, 0.1, 0, 1000);
 
+				ImGui::Columns(1);
+
+				const ImGuiTreeNodeFlags treeNodeFlags = ImGuiTreeNodeFlags_SpanAvailWidth | ImGuiTreeNodeFlags_AllowItemOverlap | ImGuiTreeNodeFlags_FramePadding;
+				bool open = ImGui::TreeNodeEx((void*)typeid(SpriteRendererComponent).hash_code(), treeNodeFlags, "Advanced Settings");
+				if (open) {
+					// subtexture width/height
+					ImGui::Columns(2);
+					ImGui::SetColumnWidth(0, 100.0f);
+					ImGui::Text("Tint");
+					ImGui::Text("Tiling Factor");
+					ImGui::NextColumn();
+					ImGui::ColorEdit4("##Tint", glm::value_ptr(component.Color));
+					ImGui::DragFloat("##Tiling Factor", &component.TilingFactor, 0.1, 0.0f, 100.0f);
+					ImGui::Columns(1);
+					ImGui::TreePop();
+				}
 			}
 
 			if (component.Type == SpriteRendererComponent::SpriteType::ANIMATION) {
 
 			}
 
-			ImGui::Separator();
-
-			ImGui::ColorEdit4("Tint", glm::value_ptr(component.Color));
-			ImGui::DragFloat("Tiling Factor", &component.TilingFactor, 0.1, 0.0f, 100.0f);
+			ImGui::PopStyleVar();
 		});
 	}
 }
