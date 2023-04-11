@@ -20,9 +20,9 @@ TODO:
 	
 	- clean up content browser (center text, make proper back button, etc)
 
-	- add more stats to the stat panel, maybe put it in a separate panel class even
-
 	- make sprite renderer component take in all possibe parameters like tiling factor, etc
+
+	- custom shaders, post processing, materials
 
 	- separate scenehierarchy panel and properties panel
 
@@ -36,6 +36,40 @@ TODO:
 
 	- save scene prompt on close
 
+	- implement layers
+
+	- move viewport into separate layer too
+
+	- implement animations
+
+	- panels should be able to be closed and reopened via a task bar section called "windows"
+
+	- maybe even make a panel manager class
+
+	- runtime performance in stats panel
+	
+	- c# scripting
+
+	- reflection system (serialize values and show them in properties panel!)
+
+	- physics
+
+	- box2D
+
+	- particle system
+
+	- gravity
+
+	- vfx graph
+
+	- undo and redo
+
+	- modify imgui styles on the properties panel to have more padding
+
+	- sprite renderer component full makeover to include single textures, subtextures, and animations
+
 IMPLEMENTED TICKETS:
 
 	- implement save scene (not save as)
+
+	- add more stats to the stat panel, maybe put it in a separate panel class even

@@ -183,18 +183,7 @@ namespace Flora {
 		// Panels
 		m_SceneHierarchyPanel.OnImGuiRender();
 		m_ContentBrowserPanel.OnImGuiRender();
-
-		// Renderer Stats
-		ImGui::Begin("Stats");
-		std::string name = "None";
-		if (m_HoveredEntity) name = m_HoveredEntity.GetComponent<TagComponent>().Tag;
-		ImGui::Text("Hovered Entity: %s", name.c_str());
-		auto stats = Renderer2D::GetStats();
-		ImGui::Text("Draw Calls: %d", stats.DrawCalls);
-		ImGui::Text("Quads: %d", stats.QuadCount);
-		ImGui::Text("Vertices: %d", stats.GetTotalVertexCount());
-		ImGui::Text("Indices: %d", stats.GetTotalIndexCount());
-		ImGui::End();
+		m_StatsPanel.OnImGuiRender();
 
 		// Viewport
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 0, 0 });
@@ -347,36 +336,6 @@ namespace Flora {
 
 	void EditorLayer::OnOverrideEvent() {
 		// Shortcuts
-		/* old shortcut code
-		if (e.GetRepeatCount() > 0) return false;
-		bool control = Input::IsKeyPressed(Key::LeftControl) || Input::IsKeyPressed(Key::RightControl);
-		bool shift = Input::IsKeyPressed(Key::LeftShift) || Input::IsKeyPressed(Key::RightShift);
-		switch (e.GetKeyCode()) {
-		case Key::S:
-			if (control && shift) SaveSceneAs();
-			break;
-		case Key::N:
-			if (control) NewScene();
-			break;
-		case Key::O:
-			if (control) OpenScene();
-			break;
-		case Key::Q:
-			m_GizmoType = -1;
-			break;
-		case Key::W:
-			m_GizmoType = ImGuizmo::OPERATION::TRANSLATE;
-			break;
-		case Key::E:
-			m_GizmoType = ImGuizmo::OPERATION::ROTATE;
-			break;
-		case Key::R:
-			m_GizmoType = ImGuizmo::OPERATION::SCALE;
-			break;
-		default:
-			break;
-		}*/
-
 		if (m_OverrideEventReady) {
 			m_OverrideEventReady = false;
 			bool control = Input::IsKeyPressed(Key::LeftControl) || Input::IsKeyPressed(Key::RightControl);

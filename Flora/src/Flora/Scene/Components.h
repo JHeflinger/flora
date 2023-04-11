@@ -30,8 +30,10 @@ namespace Flora {
 	};
 
 	struct SpriteRendererComponent {
+		enum class SpriteType {SINGLE = 0, SUBTEXTURE = 1, ANIMATION = 2};
 		glm::vec4 Color{1.0f, 1.0f, 1.0f, 1.0f};
 		Ref<Texture2D> Texture;
+		SpriteType Type = SpriteType::SINGLE;
 		float TilingFactor = 1.0f;
 		SpriteRendererComponent() = default;
 		SpriteRendererComponent(const SpriteRendererComponent&) = default;

@@ -2,40 +2,13 @@ Scene: Untitled
 Entities:
   - Entity: 123456
     TagComponent:
-      Tag: RED
+      Tag: ORANGE
     TransformComponent:
-      Translation: [0, 0, 0.5]
+      Translation: [0, 0, -0.5]
       Rotation: [0, 0, 0]
       Scale: [1, 1, 1]
     SpriteRendererComponent:
-      Color: [1, 0, 0, 1]
-  - Entity: 123456
-    TagComponent:
-      Tag: BLUE
-    TransformComponent:
-      Translation: [0, -0.5, 0]
-      Rotation: [1.57079637, 0, 0]
-      Scale: [1, 1, 1]
-    SpriteRendererComponent:
-      Color: [0, 0.0506329536, 1, 1]
-  - Entity: 123456
-    TagComponent:
-      Tag: GREEN
-    TransformComponent:
-      Translation: [0, 2.38406038, -1.12298757e-07]
-      Rotation: [1.57079637, 0, 0]
-      Scale: [1, 0.999998629, 0.999998629]
-    SpriteRendererComponent:
-      Color: [0.126582384, 1, 0, 1]
-  - Entity: 123456
-    TagComponent:
-      Tag: YELLOW
-    TransformComponent:
-      Translation: [0.5, 0, 0]
-      Rotation: [0, 1.57079637, 0]
-      Scale: [1, 1, 1]
-    SpriteRendererComponent:
-      Color: [0.987341762, 1, 0, 1]
+      Color: [1, 0.683544278, 0, 1]
   - Entity: 123456
     TagComponent:
       Tag: PURPLE
@@ -47,10 +20,37 @@ Entities:
       Color: [0.708860397, 0, 1, 1]
   - Entity: 123456
     TagComponent:
-      Tag: ORANGE
+      Tag: YELLOW
     TransformComponent:
-      Translation: [0, 0, -0.5]
+      Translation: [0.5, 0, 0]
+      Rotation: [0, 1.57079637, 0]
+      Scale: [1, 1, 1]
+    SpriteRendererComponent:
+      Color: [0.987341762, 1, 0, 1]
+  - Entity: 123456
+    TagComponent:
+      Tag: GREEN
+    TransformComponent:
+      Translation: [-1.33370197, -5.02639103, 1.09025741]
+      Rotation: [1.5707972, 2.98023224e-08, -0.889541149]
+      Scale: [1, 0.999993086, 0.999995589]
+    SpriteRendererComponent:
+      Color: [0.126582384, 1, 0, 1]
+  - Entity: 123456
+    TagComponent:
+      Tag: BLUE
+    TransformComponent:
+      Translation: [0, -0.5, 0]
+      Rotation: [1.57079637, 0, 0]
+      Scale: [1, 1, 1]
+    SpriteRendererComponent:
+      Color: [0, 0.0506329536, 1, 1]
+  - Entity: 123456
+    TagComponent:
+      Tag: RED
+    TransformComponent:
+      Translation: [0, 0, 0.5]
       Rotation: [0, 0, 0]
       Scale: [1, 1, 1]
     SpriteRendererComponent:
-      Color: [1, 0.683544278, 0, 1]
+      Color: [1, 0, 0, 1]

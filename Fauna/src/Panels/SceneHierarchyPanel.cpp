@@ -254,18 +254,44 @@ namespace Flora {
 		});
 
 		DrawComponent<SpriteRendererComponent>("Sprite", entity, [](auto& component) {
-			ImGui::ColorEdit4("Color", glm::value_ptr(component.Color));
-
-			ImGui::Button("Texture", ImVec2(100.0f, 0.0f));
-			if (ImGui::BeginDragDropTarget()) {
-				if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM")) {
-					const wchar_t* path = (const wchar_t*)payload->Data;
-					std::filesystem::path texturePath = std::filesystem::path(g_AssetPath) / path;
-					component.Texture = Texture2D::Create(texturePath.string());
+			const char* spriteTypeStrings[] = { "Single Texture", "Subtexture", "Animation" };
+			const char* currentSpriteTypeString = spriteTypeStrings[(int)component.Type];
+			if (ImGui::BeginCombo("Type", currentSpriteTypeString)) {
+				for (int i = 0; i < 3; i++) {
+					bool isSelected = currentSpriteTypeString == spriteTypeStrings[i];
+					if (ImGui::Selectable(spriteTypeStrings[i], isSelected)) {
+						currentSpriteTypeString = spriteTypeStrings[i];
+						component.Type = (SpriteRendererComponent::SpriteType)i;
+					}
+					if (isSelected)
+						ImGui::SetItemDefaultFocus();
 				}
-				ImGui::EndDragDropTarget();
+				ImGui::EndCombo();
 			}
 
+			if (component.Type == SpriteRendererComponent::SpriteType::SINGLE) {
+				ImGui::Button("Texture", ImVec2(100.0f, 0.0f));
+				if (ImGui::BeginDragDropTarget()) {
+					if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM")) {
+						const wchar_t* path = (const wchar_t*)payload->Data;
+						std::filesystem::path texturePath = std::filesystem::path(g_AssetPath) / path;
+						component.Texture = Texture2D::Create(texturePath.string());
+					}
+					ImGui::EndDragDropTarget();
+				}
+			}
+
+			if (component.Type == SpriteRendererComponent::SpriteType::SUBTEXTURE) {
+
+			}
+
+			if (component.Type == SpriteRendererComponent::SpriteType::ANIMATION) {
+
+			}
+
+			ImGui::Separator();
+
+			ImGui::ColorEdit4("Tint", glm::value_ptr(component.Color));
 			ImGui::DragFloat("Tiling Factor", &component.TilingFactor, 0.1, 0.0f, 100.0f);
 		});
 	}

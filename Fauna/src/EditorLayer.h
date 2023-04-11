@@ -2,6 +2,7 @@
 #include "Flora.h"
 #include "Panels/SceneHierarchyPanel.h"
 #include "Panels/ContentBrowserPanel.h"
+#include "Panels/StatsPanel.h"
 #include "Flora/Renderer/EditorCamera.h"
 
 namespace Flora {
@@ -40,6 +41,7 @@ namespace Flora {
 		// Panels
 		SceneHierarchyPanel m_SceneHierarchyPanel;
 		ContentBrowserPanel m_ContentBrowserPanel;
+		StatsPanel m_StatsPanel;
 
 		// Gizmos
 		int m_GizmoType = -1;
