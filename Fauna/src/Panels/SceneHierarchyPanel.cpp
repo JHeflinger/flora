@@ -230,6 +230,10 @@ namespace Flora {
 		}
 		ImGui::PopItemWidth();
 
+		ImGuiStyle& style = ImGui::GetStyle();
+		style.ItemSpacing = ImVec2(8.0f, 4.0f); // Add spacing between items in the column
+		style.ColumnsMinSpacing = 20.0f;
+
 		DrawComponent<TransformComponent>("Transform", entity, [](auto& component) {
 			DrawVec3Control("Translation", component.Translation);
 			glm::vec3 rotation = glm::degrees(component.Rotation);
@@ -508,6 +512,39 @@ namespace Flora {
 			}
 
 			ImGui::PopStyleVar();
+		});
+	
+		DrawComponent<NativeScriptComponent>("Native Script", entity, [](auto& component) {
+			float lineHeight = GImGui->Font->FontSize + GImGui->Style.FramePadding.y * 2.0f;
+			ImVec2 smallButtonSize = { lineHeight + 3.0f, lineHeight };
+			ImVec2 largeButtonSize = { 100, lineHeight };
+
+			ImGui::Columns(2);
+			ImGui::SetColumnWidth(0, 100.0f);
+			ImGui::Text("Script");
+			ImGui::NextColumn();
+
+			if (ImGui::Button("Native Script", largeButtonSize)) {
+				std::string filepath = FileDialogs::OpenFile("Native Script (*.h)\0*.h\0");
+				if (!filepath.empty()) {
+					std::filesystem::path scriptPath = std::filesystem::path(filepath); // warning this is not relative
+					component.Filename = scriptPath.filename().string();
+					component.Path = scriptPath.string();
+				}
+			}
+			if (ImGui::BeginDragDropTarget()) {
+				if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM")) {
+					const wchar_t* path = (const wchar_t*)payload->Data;
+					std::filesystem::path scriptPath = std::filesystem::path(g_AssetPath) / path;
+					component.Filename = scriptPath.filename().string();
+					component.Path = scriptPath.string();
+				}
+				ImGui::EndDragDropTarget();
+			}
+			ImGui::SameLine();
+			ImGui::Text(component.Filename.c_str());
+
+			ImGui::Columns(1);
 		});
 	}
 }

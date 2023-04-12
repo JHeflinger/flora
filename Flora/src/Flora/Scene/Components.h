@@ -67,6 +67,9 @@ namespace Flora {
 		ScriptableEntity*(*InstantiateScript)();
 		void (*DestroyScript)(NativeScriptComponent*);
 
+		std::string Path = "NULL";
+		std::string Filename = "None Selected";
+
 		template<typename T>
 		void Bind() {
 			InstantiateScript = []() { return static_cast<ScriptableEntity*>(new T()); };
