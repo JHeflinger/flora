@@ -159,6 +159,16 @@ namespace Flora {
 		ImGui::Text(component.Filename.c_str());
 	}
 
+	template<typename T>
+	static void DrawAddComponentItem(std::string label, Entity entity) {
+		if (!entity.HasComponent<T>()) {
+			if (ImGui::MenuItem(label.c_str())) {
+				entity.AddComponent<T>();
+				ImGui::CloseCurrentPopup();
+			}
+		}
+	}
+
 	template<typename T, typename UIFunction>
 	static void DrawComponent(const std::string& name, Entity entity, UIFunction uifunction, bool removeable = true) {
 		const ImGuiTreeNodeFlags treeNodeFlags = ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_Framed | ImGuiTreeNodeFlags_SpanAvailWidth | ImGuiTreeNodeFlags_AllowItemOverlap | ImGuiTreeNodeFlags_FramePadding;
@@ -213,16 +223,9 @@ namespace Flora {
 		if (ImGui::Button("Add Component"))
 			ImGui::OpenPopup("Add Component");
 		if (ImGui::BeginPopup("Add Component")) {
-			if (ImGui::MenuItem("Camera")) {
-				m_SelectionContext.AddComponent<CameraComponent>();
-				ImGui::CloseCurrentPopup();
-			}
-
-			if (ImGui::MenuItem("Sprite Renderer")) {
-				m_SelectionContext.AddComponent<SpriteRendererComponent>();
-				ImGui::CloseCurrentPopup();
-			}
-
+			DrawAddComponentItem<CameraComponent>("Camera", m_SelectionContext);
+			DrawAddComponentItem<SpriteRendererComponent>("Sprite Renderer", m_SelectionContext);
+			DrawAddComponentItem<NativeScriptComponent>("Native Script", m_SelectionContext);
 			ImGui::EndPopup();
 		}
 		ImGui::PopItemWidth();
