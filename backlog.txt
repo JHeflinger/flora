@@ -26,8 +26,6 @@ TODO:
 
 	- refactor texture setting in spritecomponent to look better and show filepath using
 
-	- refactor scene serializer to serialize new spritecomponent settings
-
 	- save scene prompt on close
 
 	- implement layers
@@ -90,6 +88,10 @@ IN PROGRESS:
 
 	- texture button in sprite component should also bring up a file selector
 
+	- refactor scene serializer to serialize new spritecomponent settings
+
+	- add in native scripting component and update serializer for it
+
 
 IMPLEMENTED TICKETS:
 
@@ -106,3 +108,5 @@ IMPLEMENTED TICKETS:
 	- make sprite renderer component take in all possibe parameters like tiling factor, etc
 
 	- modify imgui styles on the properties panel to have more padding
+
+	- refactor cameracomponent UI

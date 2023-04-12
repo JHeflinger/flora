@@ -213,10 +213,14 @@ namespace Flora {
 		DrawComponent<CameraComponent>("Camera", entity, [](auto& component) {
 			const char* projectionTypeStrings[] = { "Perspective", "Orthographic" };
 			const char* currentProjectionTypeString = projectionTypeStrings[(int)component.Camera.GetProjectionType()];
-
-			ImGui::Checkbox("Primary", &component.Primary);
-
-			if (ImGui::BeginCombo("Projection", currentProjectionTypeString)) {
+			float linespacing = 2.0f;
+			ImGui::Columns(2);
+			ImGui::SetColumnWidth(0, 150.0f);
+			ImGui::Text("Projection Type");
+			ImGui::Dummy(ImVec2(0, linespacing));
+			ImGui::Text("Primary Camera");
+			ImGui::NextColumn();
+			if (ImGui::BeginCombo("##Projection", currentProjectionTypeString)) {
 				for (int i = 0; i < 2; i++) {
 					bool isSelected = currentProjectionTypeString == projectionTypeStrings[i];
 					if (ImGui::Selectable(projectionTypeStrings[i], isSelected)) {
@@ -228,30 +232,56 @@ namespace Flora {
 				}
 				ImGui::EndCombo();
 			}
+			ImGui::Checkbox("##Primary", &component.Primary);
+			ImGui::Columns(1);
+
+			ImGui::Dummy(ImVec2(0, 10));
+			ImGui::Separator();
+			ImGui::Dummy(ImVec2(0, 10));
 
 			if (component.Camera.GetProjectionType() == SceneCamera::ProjectionType::Perspective) {
+				ImGui::Columns(2);
+				ImGui::SetColumnWidth(0, 150.0f);
+				ImGui::Text("Vertical FOV");
+				ImGui::Dummy(ImVec2(0, linespacing));
+				ImGui::Text("Near Clip");
+				ImGui::Dummy(ImVec2(0, linespacing));
+				ImGui::Text("Far Clip");
+				ImGui::NextColumn();
 				float perspectiveFOV = glm::degrees(component.Camera.GetPerspectiveVerticalFOV());
-				if (ImGui::DragFloat("Vertical FOV", &perspectiveFOV))
+				if (ImGui::DragFloat("##VerticalFOV", &perspectiveFOV))
 					component.Camera.SetPerspectiveVerticalFOV(glm::radians(perspectiveFOV));
 				float perspectiveNear = component.Camera.GetPerspectiveNearClip();
-				if (ImGui::DragFloat("Near", &perspectiveNear))
+				if (ImGui::DragFloat("##Near", &perspectiveNear))
 					component.Camera.SetPerspectiveNearClip(perspectiveNear);
 				float perspectiveFar = component.Camera.GetPerspectiveFarClip();
-				if (ImGui::DragFloat("Far", &perspectiveFar))
+				if (ImGui::DragFloat("##Far", &perspectiveFar))
 					component.Camera.SetPerspectiveFarClip(perspectiveFar);
+				ImGui::Columns(1);
 			}
 
 			if (component.Camera.GetProjectionType() == SceneCamera::ProjectionType::Orthographic) {
+				ImGui::Columns(2);
+				ImGui::SetColumnWidth(0, 150.0f);
+				ImGui::Text("Orthographic Size");
+				ImGui::Dummy(ImVec2(0, linespacing));
+				ImGui::Text("Near Clip");
+				ImGui::Dummy(ImVec2(0, linespacing));
+				ImGui::Text("Far Clip");
+				ImGui::Dummy(ImVec2(0, linespacing));
+				ImGui::Text("Fixed Aspect Ratio");
+				ImGui::NextColumn();
 				float orthoSize = component.Camera.GetOrthographicSize();
-				if (ImGui::DragFloat("Size", &orthoSize))
+				if (ImGui::DragFloat("##Size", &orthoSize))
 					component.Camera.SetOrthographicSize(orthoSize);
 				float orthoNear = component.Camera.GetOrthographicNearClip();
-				if (ImGui::DragFloat("Near", &orthoNear))
+				if (ImGui::DragFloat("##Near", &orthoNear))
 					component.Camera.SetOrthographicNearClip(orthoNear);
 				float orthoFar = component.Camera.GetOrthographicFarClip();
-				if (ImGui::DragFloat("Far", &orthoFar))
+				if (ImGui::DragFloat("##Far", &orthoFar))
 					component.Camera.SetOrthographicFarClip(orthoFar);
-				ImGui::Checkbox("Fixed Aspect Ratio", &component.FixedAspectRatio);
+				ImGui::Checkbox("##FixedAspectRatio", &component.FixedAspectRatio);
+				ImGui::Columns(1);
 			}
 		});
 
