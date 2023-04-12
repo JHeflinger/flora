@@ -4,6 +4,7 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <filesystem>
 #include "Flora/Scene/Components.h"
+#include "Flora/Utils/PlatformUtils.h"
 
 namespace Flora {
 	extern const std::filesystem::path g_AssetPath;
@@ -132,6 +133,30 @@ namespace Flora {
 		ImGui::PopStyleVar();
 		ImGui::Columns(1);
 		ImGui::PopID();
+	}
+
+	static void DrawTextureDropbox(const std::string& label, SpriteRendererComponent& component, ImVec2 buttonSize) {
+		if (ImGui::Button(label.c_str(), buttonSize)) {
+			std::string filepath = FileDialogs::OpenFile("Texture Asset (*.png)\0*.png\0");
+			if (!filepath.empty()) {
+				std::filesystem::path texturePath = std::filesystem::path(filepath); // warning this is not relative
+				component.Filename = texturePath.filename().string();
+				component.Path = texturePath.string();
+				component.Texture = Texture2D::Create(texturePath.string());
+			}
+		}
+		if (ImGui::BeginDragDropTarget()) {
+			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM")) {
+				const wchar_t* path = (const wchar_t*)payload->Data;
+				std::filesystem::path texturePath = std::filesystem::path(g_AssetPath) / path;
+				component.Filename = texturePath.filename().string();
+				component.Path = texturePath.string();
+				component.Texture = Texture2D::Create(texturePath.string());
+			}
+			ImGui::EndDragDropTarget();
+		}
+		ImGui::SameLine();
+		ImGui::Text(component.Filename.c_str());
 	}
 
 	template<typename T, typename UIFunction>
@@ -292,7 +317,7 @@ namespace Flora {
 			const char* currentSpriteTypeString = spriteTypeStrings[(int)component.Type];
 			float lineHeight = GImGui->Font->FontSize + GImGui->Style.FramePadding.y * 2.0f;
 			ImVec2 smallButtonSize = { lineHeight + 3.0f, lineHeight };
-			ImVec2 largeButtonSize = { 200, lineHeight };
+			ImVec2 largeButtonSize = { 100, lineHeight };
 			ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2{ 0, 0 });
 			ImGuiStyle& style = ImGui::GetStyle();
 			style.ItemSpacing = ImVec2(8.0f, 4.0f); // Add spacing between items in the column
@@ -327,15 +352,7 @@ namespace Flora {
 				ImGui::SetColumnWidth(0, 100.0f);
 				ImGui::Text("Texture");
 				ImGui::NextColumn();
-				ImGui::Button("Texture", largeButtonSize);
-				if (ImGui::BeginDragDropTarget()) {
-					if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM")) {
-						const wchar_t* path = (const wchar_t*)payload->Data;
-						std::filesystem::path texturePath = std::filesystem::path(g_AssetPath) / path;
-						component.Texture = Texture2D::Create(texturePath.string());
-					}	
-					ImGui::EndDragDropTarget();
-				}
+				DrawTextureDropbox("Texture", component, largeButtonSize);
 				ImGui::Columns(1);
 
 				ImGui::Dummy(ImVec2(0, 10.0f));
@@ -371,15 +388,7 @@ namespace Flora {
 				ImGui::Text("Coordinate");
 				ImGui::NextColumn();
 				ImGui::PushItemWidth(60 + smallButtonSize.x * 2);
-				ImGui::Button("Subtexture", largeButtonSize);
-				if (ImGui::BeginDragDropTarget()) {
-					if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM")) {
-						const wchar_t* path = (const wchar_t*)payload->Data;
-						std::filesystem::path texturePath = std::filesystem::path(g_AssetPath) / path;
-						component.Texture = Texture2D::Create(texturePath.string());
-					}
-					ImGui::EndDragDropTarget();
-				}
+				DrawTextureDropbox("Subtexture", component, largeButtonSize);
 				ImGui::Dummy(ImVec2(0, 5.0f));
 				// rows, columns, subtexture row/col
 				ImGui::DragInt("##Rows", &component.Rows, 0.1, 1, 1000);
@@ -455,15 +464,7 @@ namespace Flora {
 				ImGui::Text("Columns");
 				ImGui::NextColumn();
 				ImGui::PushItemWidth(60 + smallButtonSize.x * 2);
-				ImGui::Button("Sprite Sheet", largeButtonSize);
-				if (ImGui::BeginDragDropTarget()) {
-					if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM")) {
-						const wchar_t* path = (const wchar_t*)payload->Data;
-						std::filesystem::path texturePath = std::filesystem::path(g_AssetPath) / path;
-						component.Texture = Texture2D::Create(texturePath.string());
-					}
-					ImGui::EndDragDropTarget();
-				}
+				DrawTextureDropbox("Sprite Sheet", component, largeButtonSize);
 				ImGui::Dummy(ImVec2(0, 5.0f));
 				// rows, columns, subtexture row/col
 				ImGui::DragInt("##Rows", &component.Rows, 0.1, 1, 1000);

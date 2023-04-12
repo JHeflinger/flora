@@ -47,6 +47,8 @@ namespace Flora {
 		int CurrentFrame = 1;
 		int FPS = 1;
 		int FrameCounter = 0;
+		std::string Path = "NULL";
+		std::string Filename = "None Selected";
 		SpriteRendererComponent() = default;
 		SpriteRendererComponent(const SpriteRendererComponent&) = default;
 		SpriteRendererComponent(const glm::vec4& color) : Color(color) {}

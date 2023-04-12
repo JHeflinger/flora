@@ -4,6 +4,7 @@
 #include "Flora/Scene/Components.h"
 #include <fstream>
 #include <yaml-cpp/yaml.h>
+#include <filesystem>
 
 namespace YAML {
 	template<>
@@ -113,6 +114,21 @@ namespace Flora {
 			out << YAML::BeginMap;
 			auto& spriteRendererComponent = entity.GetComponent<SpriteRendererComponent>();
 			out << YAML::Key << "Color" << YAML::Value << spriteRendererComponent.Color;
+			out << YAML::Key << "Path" << YAML::Value << spriteRendererComponent.Path;
+			out << YAML::Key << "Filename" << YAML::Value << spriteRendererComponent.Filename;
+			out << YAML::Key << "Type" << YAML::Value << (int)spriteRendererComponent.Type;
+			out << YAML::Key << "TilingFactor" << YAML::Value << spriteRendererComponent.TilingFactor;
+			out << YAML::Key << "Rows" << YAML::Value << spriteRendererComponent.Rows;
+			out << YAML::Key << "Columns" << YAML::Value << spriteRendererComponent.Columns;
+			out << YAML::Key << "RowCoordinate" << YAML::Value << spriteRendererComponent.RowCoordinate;
+			out << YAML::Key << "ColumnCoordinate" << YAML::Value << spriteRendererComponent.ColumnCoordinate;
+			out << YAML::Key << "SubtextureWidth" << YAML::Value << spriteRendererComponent.SubtextureWidth;
+			out << YAML::Key << "SubtextureHeight" << YAML::Value << spriteRendererComponent.SubtextureHeight;
+			out << YAML::Key << "Frames" << YAML::Value << spriteRendererComponent.Frames;
+			out << YAML::Key << "StartFrame" << YAML::Value << spriteRendererComponent.StartFrame;
+			out << YAML::Key << "EndFrame" << YAML::Value << spriteRendererComponent.EndFrame;
+			out << YAML::Key << "CurrentFrame" << YAML::Value << spriteRendererComponent.CurrentFrame;
+			out << YAML::Key << "FPS" << YAML::Value << spriteRendererComponent.FPS;
 			out << YAML::EndMap;
 		}
 
@@ -228,6 +244,24 @@ namespace Flora {
 				if (spriteRendererComponent) {
 					auto& src = deserializedEntity.AddComponent<SpriteRendererComponent>();
 					src.Color = spriteRendererComponent["Color"].as<glm::vec4>();
+					std::string texturePath = spriteRendererComponent["Path"].as<std::string>();
+					if (texturePath != "NULL")
+						src.Texture = Texture2D::Create(spriteRendererComponent["Path"].as<std::string>());
+					src.Type = (SpriteRendererComponent::SpriteType)spriteRendererComponent["Type"].as<int>();
+					src.TilingFactor = spriteRendererComponent["TilingFactor"].as<float>();
+					src.Rows = spriteRendererComponent["Rows"].as<int>();
+					src.Columns = spriteRendererComponent["Columns"].as<int>();
+					src.RowCoordinate = spriteRendererComponent["RowCoordinate"].as<int>();
+					src.ColumnCoordinate = spriteRendererComponent["ColumnCoordinate"].as<int>();
+					src.SubtextureWidth = spriteRendererComponent["SubtextureWidth"].as<float>();
+					src.SubtextureHeight = spriteRendererComponent["SubtextureHeight"].as<float>();
+					src.Frames = spriteRendererComponent["Frames"].as<int>();
+					src.StartFrame = spriteRendererComponent["StartFrame"].as<int>();
+					src.EndFrame = spriteRendererComponent["EndFrame"].as<int>();
+					src.CurrentFrame = spriteRendererComponent["CurrentFrame"].as<int>();
+					src.FPS = spriteRendererComponent["FPS"].as<int>();
+					src.Path = spriteRendererComponent["Path"].as<std::string>();
+					src.Filename = spriteRendererComponent["Filename"].as<std::string>();
 				}
 			}
 		}

@@ -1,4 +1,4 @@
-TODO:
+FTODO:
 
 	- make the QWER settings saved in editor settings as well
 	
@@ -86,14 +86,14 @@ TODO:
 
 IN PROGRESS:
 
-	- texture button in sprite component should also bring up a file selector
-
-	- refactor scene serializer to serialize new spritecomponent settings
-
 	- add in native scripting component and update serializer for it
 
 
 IMPLEMENTED TICKETS:
+
+	- texture button in sprite component should also bring up a file selector
+
+	- refactor scene serializer to serialize new spritecomponent settings
 
 	- implement save scene (not save as)
 
