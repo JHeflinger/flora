@@ -256,12 +256,17 @@ namespace Flora {
 		});
 
 		DrawComponent<SpriteRendererComponent>("Sprite", entity, [](auto& component) {
+			ImGuiIO& io = ImGui::GetIO();
+			auto boldFont = io.Fonts->Fonts[0];
 			const char* spriteTypeStrings[] = { "Single Texture", "Subtexture", "Animation" };
 			const char* currentSpriteTypeString = spriteTypeStrings[(int)component.Type];
 			float lineHeight = GImGui->Font->FontSize + GImGui->Style.FramePadding.y * 2.0f;
 			ImVec2 smallButtonSize = { lineHeight + 3.0f, lineHeight };
-			ImVec2 largeButtonSize = { 0, lineHeight };
+			ImVec2 largeButtonSize = { 200, lineHeight };
 			ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2{ 0, 0 });
+			ImGuiStyle& style = ImGui::GetStyle();
+			style.ItemSpacing = ImVec2(8.0f, 4.0f); // Add spacing between items in the column
+			style.ColumnsMinSpacing = 20.0f;
 
 			//==============================================Sprite type
 
@@ -269,7 +274,6 @@ namespace Flora {
 			ImGui::SetColumnWidth(0, 100.0f);
 			ImGui::Text("Type");
 			ImGui::NextColumn();
-			ImGui::SameLine(0, 80);
 			if (ImGui::BeginCombo("##Type", currentSpriteTypeString)) {
 				for (int i = 0; i < 3; i++) {
 					bool isSelected = currentSpriteTypeString == spriteTypeStrings[i];
@@ -293,7 +297,6 @@ namespace Flora {
 				ImGui::SetColumnWidth(0, 100.0f);
 				ImGui::Text("Texture");
 				ImGui::NextColumn();
-				ImGui::SameLine(0, 60);
 				ImGui::Button("Texture", largeButtonSize);
 				if (ImGui::BeginDragDropTarget()) {
 					if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM")) {
@@ -320,7 +323,7 @@ namespace Flora {
 					ImGui::Dummy(ImVec2(0, 5.0f));
 					ImGui::ColorEdit4("##Tint", glm::value_ptr(component.Color));
 					ImGui::Dummy(ImVec2(0, 5.0f));
-					ImGui::DragFloat("##Tiling Factor", &component.TilingFactor, 0.1, 0.0f, 100.0f);
+					ImGui::DragFloat("##Tiling Factor", &component.TilingFactor, 0.1, 0.0f, 100.0f, "%.2f");
 					ImGui::Columns(1);
 					ImGui::TreePop();
 				}
@@ -330,13 +333,14 @@ namespace Flora {
 				ImGui::Columns(2);
 				ImGui::SetColumnWidth(0, 100.0f);
 				ImGui::Text("Texture");
-				ImGui::Dummy(ImVec2(0, 10.0f));
+				ImGui::Dummy(ImVec2(0, 15.0f));
 				ImGui::Text("Rows");
-				ImGui::Dummy(ImVec2(0, 10.0f));
+				ImGui::Dummy(ImVec2(0, 2.0f));
 				ImGui::Text("Columns");
-				ImGui::Dummy(ImVec2(0, 10.0f));
+				ImGui::Dummy(ImVec2(0, 2.0f));
 				ImGui::Text("Coordinate");
 				ImGui::NextColumn();
+				ImGui::PushItemWidth(60 + smallButtonSize.x * 2);
 				ImGui::Button("Subtexture", largeButtonSize);
 				if (ImGui::BeginDragDropTarget()) {
 					if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM")) {
@@ -351,29 +355,119 @@ namespace Flora {
 				ImGui::DragInt("##Rows", &component.Rows, 0.1, 0, 1000);
 				ImGui::DragInt("##Columns", &component.Columns, 0.1, 0, 1000);
 
-				ImGui::DragInt("##RowCoord", &component.RowCoordinate, 0.1, 0, 1000);
-				ImGui::DragInt("##ColCoord", &component.ColumnCoordinate, 0.1, 0, 1000);
+				ImGui::PushItemWidth(30);
+				style.ItemSpacing = ImVec2(0, 0); // remove spacing
 
+				ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.8f, 0.2f, 0.3f, 1.0f });
+				ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.9f, 0.2f, 0.2f, 1.0f });
+				ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.7f, 0.1f, 0.1f, 1.0f });
+				ImGui::PushFont(boldFont);
+				if (ImGui::Button("R", smallButtonSize))
+					component.RowCoordinate = 0;
+				ImGui::PopStyleColor(3);
+				ImGui::PopFont();
+
+				ImGui::SameLine();
+				ImGui::DragInt("##R", &component.RowCoordinate, 0.1f, 0, 10000);
+				ImGui::SameLine();
+
+				ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.2f, 0.3f, 0.8f, 1.0f });
+				ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.2f, 0.2f, 0.9f, 1.0f });
+				ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.1f, 0.1f, 0.7f, 1.0f });
+				ImGui::PushFont(boldFont);
+				if (ImGui::Button("C", smallButtonSize))
+					component.ColumnCoordinate = 0;
+				ImGui::PopStyleColor(3);
+				ImGui::PopFont();
+
+				ImGui::SameLine();
+				ImGui::DragInt("##C", &component.ColumnCoordinate, 0.1f, 0, 10000);
+
+				ImGui::PopItemWidth();
+				style.ItemSpacing = ImVec2(8.0f, 4.0f); // Add back spacing
+
+				ImGui::PopItemWidth();
 				ImGui::Columns(1);
 
+				ImGui::Dummy(ImVec2(0, 10.0f));
 				const ImGuiTreeNodeFlags treeNodeFlags = ImGuiTreeNodeFlags_SpanAvailWidth | ImGuiTreeNodeFlags_AllowItemOverlap | ImGuiTreeNodeFlags_FramePadding;
 				bool open = ImGui::TreeNodeEx((void*)typeid(SpriteRendererComponent).hash_code(), treeNodeFlags, "Advanced Settings");
 				if (open) {
 					// subtexture width/height
+					float linespacing = 2.0f;
 					ImGui::Columns(2);
 					ImGui::SetColumnWidth(0, 100.0f);
+					ImGui::Dummy(ImVec2(0, linespacing));
+					ImGui::Text("Width");
+					ImGui::Dummy(ImVec2(0, linespacing));
+					ImGui::Text("Height");
+					ImGui::Dummy(ImVec2(0, linespacing));
 					ImGui::Text("Tint");
+					ImGui::Dummy(ImVec2(0, linespacing));
 					ImGui::Text("Tiling Factor");
 					ImGui::NextColumn();
+					ImGui::DragInt("##Width", &component.SubtextureWidth, 0.1, 0, 10000);
+					ImGui::DragInt("##Height", &component.SubtextureHeight, 0.1, 0, 10000);
 					ImGui::ColorEdit4("##Tint", glm::value_ptr(component.Color));
-					ImGui::DragFloat("##Tiling Factor", &component.TilingFactor, 0.1, 0.0f, 100.0f);
+					ImGui::DragFloat("##Tiling Factor", &component.TilingFactor, 0.1, 0.0f, 100.0f, "%.2f");
 					ImGui::Columns(1);
 					ImGui::TreePop();
 				}
 			}
 
 			if (component.Type == SpriteRendererComponent::SpriteType::ANIMATION) {
+				ImGui::Columns(2);
+				ImGui::SetColumnWidth(0, 100.0f);
+				ImGui::Text("Texture");
+				ImGui::Dummy(ImVec2(0, 15.0f));
+				ImGui::Text("Rows");
+				ImGui::Dummy(ImVec2(0, 2.0f));
+				ImGui::Text("Columns");
+				ImGui::NextColumn();
+				ImGui::PushItemWidth(60 + smallButtonSize.x * 2);
+				ImGui::Button("Sprite Sheet", largeButtonSize);
+				if (ImGui::BeginDragDropTarget()) {
+					if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM")) {
+						const wchar_t* path = (const wchar_t*)payload->Data;
+						std::filesystem::path texturePath = std::filesystem::path(g_AssetPath) / path;
+						component.Texture = Texture2D::Create(texturePath.string());
+					}
+					ImGui::EndDragDropTarget();
+				}
+				ImGui::Dummy(ImVec2(0, 5.0f));
+				// rows, columns, subtexture row/col
+				ImGui::DragInt("##Rows", &component.Rows, 0.1, 0, 1000);
+				ImGui::DragInt("##Columns", &component.Columns, 0.1, 0, 1000);
+				ImGui::PopItemWidth();
+				ImGui::Columns(1);
 
+				ImGui::Dummy(ImVec2(0, 10.0f));
+				const ImGuiTreeNodeFlags treeNodeFlags = ImGuiTreeNodeFlags_SpanAvailWidth | ImGuiTreeNodeFlags_AllowItemOverlap | ImGuiTreeNodeFlags_FramePadding;
+				bool open = ImGui::TreeNodeEx((void*)typeid(SpriteRendererComponent).hash_code(), treeNodeFlags, "Advanced Settings");
+				if (open) {
+					// subtexture width/height
+					float linespacing = 2.0f;
+					ImGui::Columns(2);
+					ImGui::SetColumnWidth(0, 100.0f);
+					ImGui::Dummy(ImVec2(0, linespacing));
+					ImGui::Text("Frames");
+					ImGui::Dummy(ImVec2(0, linespacing));
+					ImGui::Text("Start Frame");
+					ImGui::Dummy(ImVec2(0, linespacing));
+					ImGui::Text("End Frame");
+					ImGui::Dummy(ImVec2(0, linespacing));
+					ImGui::Text("FPS");
+					ImGui::Dummy(ImVec2(0, linespacing));
+					ImGui::Text("Tiling Factor");
+					ImGui::NextColumn();
+					ImGui::DragInt("##Frames", &component.Frames, 0.1, 0, 10000);
+					ImGui::DragInt("##StartFrame", &component.StartFrame, 0.1, 0, 10000);
+					ImGui::DragInt("##EndFrame", &component.EndFrame, 0.1, 0, 10000);
+					ImGui::DragFloat("##FPS", &component.FPS, 0.1, 0.0f, 10000.0f, "%.2f");
+					ImGui::DragFloat("##TilingFactor", &component.TilingFactor, 0.1, 0.0f, 10000.0f, "%.2f");
+					ImGui::Columns(1);
+					ImGui::TreePop();
+				}
 			}
 
 			ImGui::PopStyleVar();
