@@ -26,8 +26,6 @@ TODO:
 
 	- refactor texture setting in spritecomponent to look better and show filepath using
 
-	- texture button in sprite component should also bring up a file selector
-
 	- refactor scene serializer to serialize new spritecomponent settings
 
 	- save scene prompt on close
@@ -57,8 +55,6 @@ TODO:
 	- vfx graph
 
 	- undo and redo
-
-	- modify imgui styles on the properties panel to have more padding
 
 	- asset manager so a new texture won't be used for every entity that uses that texture
 
@@ -92,6 +88,15 @@ TODO:
 
 IN PROGRESS:
 
+	- texture button in sprite component should also bring up a file selector
+
+
+IMPLEMENTED TICKETS:
+
+	- implement save scene (not save as)
+
+	- add more stats to the stat panel, maybe put it in a separate panel class even
+
 	- sprite renderer component full makeover to include single textures, subtextures, and animations
 
 	- implement animations
@@ -100,9 +105,4 @@ IN PROGRESS:
 
 	- make sprite renderer component take in all possibe parameters like tiling factor, etc
 
-
-IMPLEMENTED TICKETS:
-
-	- implement save scene (not save as)
-
-	- add more stats to the stat panel, maybe put it in a separate panel class even
+	- modify imgui styles on the properties panel to have more padding

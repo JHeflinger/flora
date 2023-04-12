@@ -352,8 +352,8 @@ namespace Flora {
 				}
 				ImGui::Dummy(ImVec2(0, 5.0f));
 				// rows, columns, subtexture row/col
-				ImGui::DragInt("##Rows", &component.Rows, 0.1, 0, 1000);
-				ImGui::DragInt("##Columns", &component.Columns, 0.1, 0, 1000);
+				ImGui::DragInt("##Rows", &component.Rows, 0.1, 1, 1000);
+				ImGui::DragInt("##Columns", &component.Columns, 0.1, 1, 1000);
 
 				ImGui::PushItemWidth(30);
 				style.ItemSpacing = ImVec2(0, 0); // remove spacing
@@ -368,7 +368,7 @@ namespace Flora {
 				ImGui::PopFont();
 
 				ImGui::SameLine();
-				ImGui::DragInt("##R", &component.RowCoordinate, 0.1f, 0, 10000);
+				ImGui::DragInt("##R", &component.RowCoordinate, 0.1f, 1, 10000);
 				ImGui::SameLine();
 
 				ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.2f, 0.3f, 0.8f, 1.0f });
@@ -381,7 +381,7 @@ namespace Flora {
 				ImGui::PopFont();
 
 				ImGui::SameLine();
-				ImGui::DragInt("##C", &component.ColumnCoordinate, 0.1f, 0, 10000);
+				ImGui::DragInt("##C", &component.ColumnCoordinate, 0.1f, 1, 10000);
 
 				ImGui::PopItemWidth();
 				style.ItemSpacing = ImVec2(8.0f, 4.0f); // Add back spacing
@@ -436,8 +436,8 @@ namespace Flora {
 				}
 				ImGui::Dummy(ImVec2(0, 5.0f));
 				// rows, columns, subtexture row/col
-				ImGui::DragInt("##Rows", &component.Rows, 0.1, 0, 1000);
-				ImGui::DragInt("##Columns", &component.Columns, 0.1, 0, 1000);
+				ImGui::DragInt("##Rows", &component.Rows, 0.1, 1, 1000);
+				ImGui::DragInt("##Columns", &component.Columns, 0.1, 1, 1000);
 				ImGui::PopItemWidth();
 				ImGui::Columns(1);
 
@@ -458,12 +458,15 @@ namespace Flora {
 					ImGui::Dummy(ImVec2(0, linespacing));
 					ImGui::Text("FPS");
 					ImGui::Dummy(ImVec2(0, linespacing));
+					ImGui::Text("Tint");
+					ImGui::Dummy(ImVec2(0, linespacing));
 					ImGui::Text("Tiling Factor");
 					ImGui::NextColumn();
-					ImGui::DragInt("##Frames", &component.Frames, 0.1, 0, 10000);
-					ImGui::DragInt("##StartFrame", &component.StartFrame, 0.1, 0, 10000);
-					ImGui::DragInt("##EndFrame", &component.EndFrame, 0.1, 0, 10000);
-					ImGui::DragFloat("##FPS", &component.FPS, 0.1, 0.0f, 10000.0f, "%.2f");
+					ImGui::DragInt("##Frames", &component.Frames, 0.1, 1, 1 + (component.Rows * component.Columns));
+					ImGui::DragInt("##StartFrame", &component.StartFrame, 0.1, 1, 1 + component.Frames);
+					ImGui::DragInt("##EndFrame", &component.EndFrame, 0.1, 1, 1 + component.Frames);
+					ImGui::DragInt("##FPS", &component.FPS, 0.1, 1, 60);
+					ImGui::ColorEdit4("##Tint", glm::value_ptr(component.Color));
 					ImGui::DragFloat("##TilingFactor", &component.TilingFactor, 0.1, 0.0f, 10000.0f, "%.2f");
 					ImGui::Columns(1);
 					ImGui::TreePop();

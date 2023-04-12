@@ -35,17 +35,18 @@ namespace Flora {
 		Ref<Texture2D> Texture;
 		SpriteType Type = SpriteType::SINGLE;
 		float TilingFactor = 1.0f;
-		int Rows = 0;
-		int Columns = 0;
-		int RowCoordinate = 0;
-		int ColumnCoordinate = 0;
+		int Rows = 1;
+		int Columns = 1;
+		int RowCoordinate = 1;
+		int ColumnCoordinate = 1;
 		float SubtextureWidth = 1.0f;
 		float SubtextureHeight = 1.0f;
-		int Frames = 0;
-		int StartFrame = 0;
-		int EndFrame = 0;
-		int CurrentFrame = 0;
-		float FPS = 0;
+		int Frames = 1;
+		int StartFrame = 1;
+		int EndFrame = 1;
+		int CurrentFrame = 1;
+		int FPS = 1;
+		int FrameCounter = 0;
 		SpriteRendererComponent() = default;
 		SpriteRendererComponent(const SpriteRendererComponent&) = default;
 		SpriteRendererComponent(const glm::vec4& color) : Color(color) {}

@@ -384,17 +384,33 @@ namespace Flora {
 				DrawQuad(transform, src.Color, entityID);
 		} else if (src.Type == SpriteRendererComponent::SpriteType::SUBTEXTURE) {
 			if (src.Texture) {
-				glm::vec2 coords = { src.RowCoordinate, src.ColumnCoordinate };
-				glm::vec2 cellSize = { src.Texture->GetWidth() / (src.Rows + 1), src.Texture->GetHeight() / (src.Columns + 1) };
+				glm::vec2 coords = { src.ColumnCoordinate - 1, (src.Rows - 1) - (src.RowCoordinate - 1) };
+				glm::vec2 cellSize = { src.Texture->GetWidth() / src.Columns, src.Texture->GetHeight() / src.Rows };
 				glm::vec2 spriteSize = { src.SubtextureWidth, src.SubtextureHeight };
 				Ref<SubTexture2D> subtexture = SubTexture2D::CreateFromCoords(src.Texture, coords, cellSize, spriteSize);
 				DrawQuad(transform, subtexture, src.Color, src.TilingFactor, entityID);
 			} else DrawQuad(transform, src.Color, entityID);
 		} else if (src.Type == SpriteRendererComponent::SpriteType::ANIMATION) {
-			if (src.Texture)
-				DrawQuad(transform, src.Texture, src.Color, src.TilingFactor, entityID);
-			else
-				DrawQuad(transform, src.Color, entityID);
+			if (src.Texture) {
+				if (src.CurrentFrame > src.EndFrame) src.CurrentFrame = src.StartFrame;
+				else if (src.CurrentFrame < src.StartFrame) src.CurrentFrame = src.StartFrame;
+
+				src.ColumnCoordinate = (src.CurrentFrame % src.Columns);
+				if (src.ColumnCoordinate == 0) src.ColumnCoordinate = src.Columns;
+				src.RowCoordinate = ((src.CurrentFrame - 1) / src.Columns) + 1;
+				
+				glm::vec2 coords = { src.ColumnCoordinate - 1, (src.Rows - 1) - (src.RowCoordinate - 1) };
+				glm::vec2 cellSize = { src.Texture->GetWidth() / src.Columns, src.Texture->GetHeight() / src.Rows };
+				Ref<SubTexture2D> subtexture = SubTexture2D::CreateFromCoords(src.Texture, coords, cellSize);
+				DrawQuad(transform, subtexture, src.Color, src.TilingFactor, entityID);
+
+				// this assumes running game at 60 fps
+				src.FrameCounter++;
+				if (src.FrameCounter >= 60 / src.FPS) {
+					src.CurrentFrame++;
+					src.FrameCounter = 0;
+				}
+			} else DrawQuad(transform, src.Color, entityID);
 		} else FL_CORE_ASSERT(false, "Sprite type not supported!");
 	}
 
