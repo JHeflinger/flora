@@ -20,13 +20,9 @@ TODO:
 	
 	- clean up content browser (center text, make proper back button, etc)
 
-	- make sprite renderer component take in all possibe parameters like tiling factor, etc
-
 	- custom shaders, post processing, materials
 
 	- separate scenehierarchy panel and properties panel
-
-	- spitecomponent should support subtextures or make that a separate component
 
 	- refactor texture setting in spritecomponent to look better and show filepath using
 
@@ -39,8 +35,6 @@ TODO:
 	- implement layers
 
 	- move viewport into separate layer too
-
-	- implement animations
 
 	- panels should be able to be closed and reopened via a task bar section called "windows"
 
@@ -65,8 +59,6 @@ TODO:
 	- undo and redo
 
 	- modify imgui styles on the properties panel to have more padding
-
-	- sprite renderer component full makeover to include single textures, subtextures, and animations
 
 	- asset manager so a new texture won't be used for every entity that uses that texture
 
@@ -95,6 +87,19 @@ TODO:
 	- optick profiler
 
 	- support distrubution (custom formats)
+
+	- overhaul animations to include things like flags and extra functionality, or even calling functions on certain frames
+
+IN PROGRESS:
+
+	- sprite renderer component full makeover to include single textures, subtextures, and animations
+
+	- implement animations
+
+	- spitecomponent should support subtextures or make that a separate component
+
+	- make sprite renderer component take in all possibe parameters like tiling factor, etc
+
 
 IMPLEMENTED TICKETS:
 

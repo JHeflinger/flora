@@ -8,6 +8,8 @@ namespace Flora {
 		SubTexture2D(const Ref<Texture2D>& texture, const glm::vec2& min, const glm::vec2& max);
 		const Ref<Texture2D> GetTexture() const { return m_Texture; }
 		const glm::vec2* GetTexCoords() const { return m_TexCoords; }
+		const uint32_t GetMasterTextureWidth() const { return m_Texture->GetWidth(); }
+		const uint32_t GetMasterTextureHeight() const { return m_Texture->GetHeight(); }
 		static Ref<SubTexture2D> CreateFromCoords(const Ref<Texture2D>& texture, const glm::vec2& coords, const glm::vec2& cellSize, const glm::vec2& spriteSize = { 1, 1 });
 	private:
 		Ref<Texture2D> m_Texture;

@@ -39,11 +39,12 @@ namespace Flora {
 		int Columns = 0;
 		int RowCoordinate = 0;
 		int ColumnCoordinate = 0;
-		int SubtextureWidth = 0;
-		int SubtextureHeight = 0;
+		float SubtextureWidth = 1.0f;
+		float SubtextureHeight = 1.0f;
 		int Frames = 0;
 		int StartFrame = 0;
 		int EndFrame = 0;
+		int CurrentFrame = 0;
 		float FPS = 0;
 		SpriteRendererComponent() = default;
 		SpriteRendererComponent(const SpriteRendererComponent&) = default;

@@ -333,11 +333,69 @@ namespace Flora {
 		s_Data.Stats.QuadCount++;
 	}
 
+	void Renderer2D::DrawQuad(const glm::mat4& transform, const Ref<SubTexture2D>& subtexture, const glm::vec4& color, float tilingFactor, int entityID) {
+		FL_PROFILE_FUNCTION();
+
+		if (s_Data.QuadIndexCount >= Renderer2DData::MaxIndices) NextBatch();
+
+		const Ref<Texture2D> texture = subtexture->GetTexture();
+		const glm::vec2* textureCoords = subtexture->GetTexCoords();
+
+		float textureIndex = 0.0f;
+		if (texture != nullptr) {
+			for (uint32_t i = 1; i < s_Data.TextureSlotIndex; i++) {
+				if (*s_Data.TextureSlots[i] == *texture) {
+					textureIndex = (float)i;
+					break;
+				}
+			}
+
+			if (textureIndex == 0.0f) {
+				if (s_Data.QuadIndexCount >= Renderer2DData::MaxIndices) NextBatch();
+
+				textureIndex = (float)s_Data.TextureSlotIndex;
+				s_Data.TextureSlots[s_Data.TextureSlotIndex] = texture;
+				s_Data.TextureSlotIndex++;
+			}
+		}
+
+		constexpr size_t quadVertexCount = 4;
+
+		for (size_t i = 0; i < quadVertexCount; i++) {
+			s_Data.QuadVertexBufferPtr->Position = transform * s_Data.QuadVertexPositions[i];
+			s_Data.QuadVertexBufferPtr->Color = color;
+			s_Data.QuadVertexBufferPtr->TexCoord = textureCoords[i];
+			s_Data.QuadVertexBufferPtr->TexIndex = textureIndex;
+			s_Data.QuadVertexBufferPtr->TilingFactor = tilingFactor;
+			s_Data.QuadVertexBufferPtr->EntityID = entityID;
+			s_Data.QuadVertexBufferPtr++;
+		}
+
+		s_Data.QuadIndexCount += 6;
+
+		s_Data.Stats.QuadCount++;
+	}
+
 	void Renderer2D::DrawSprite(const glm::mat4& transform, SpriteRendererComponent& src, int entityID) {
-		if (src.Texture)
-			DrawQuad(transform, src.Texture, src.Color, src.TilingFactor, entityID);
-		else
-			DrawQuad(transform, src.Color, entityID);
+		if (src.Type == SpriteRendererComponent::SpriteType::SINGLE) {
+			if (src.Texture)
+				DrawQuad(transform, src.Texture, src.Color, src.TilingFactor, entityID);
+			else
+				DrawQuad(transform, src.Color, entityID);
+		} else if (src.Type == SpriteRendererComponent::SpriteType::SUBTEXTURE) {
+			if (src.Texture) {
+				glm::vec2 coords = { src.RowCoordinate, src.ColumnCoordinate };
+				glm::vec2 cellSize = { src.Texture->GetWidth() / (src.Rows + 1), src.Texture->GetHeight() / (src.Columns + 1) };
+				glm::vec2 spriteSize = { src.SubtextureWidth, src.SubtextureHeight };
+				Ref<SubTexture2D> subtexture = SubTexture2D::CreateFromCoords(src.Texture, coords, cellSize, spriteSize);
+				DrawQuad(transform, subtexture, src.Color, src.TilingFactor, entityID);
+			} else DrawQuad(transform, src.Color, entityID);
+		} else if (src.Type == SpriteRendererComponent::SpriteType::ANIMATION) {
+			if (src.Texture)
+				DrawQuad(transform, src.Texture, src.Color, src.TilingFactor, entityID);
+			else
+				DrawQuad(transform, src.Color, entityID);
+		} else FL_CORE_ASSERT(false, "Sprite type not supported!");
 	}
 
 	Renderer2D::Statistics Renderer2D::GetStats() {

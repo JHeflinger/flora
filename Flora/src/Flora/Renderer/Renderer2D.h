@@ -56,6 +56,11 @@ namespace Flora {
 							 const glm::vec4& color = { 1.0f, 1.0f, 1.0f, 1.0f },
 							 float tilingFactor = 1.0f,
 							 int entityID = -1);
+		static void DrawQuad(const glm::mat4& transform,
+							 const Ref<SubTexture2D>& subtexture,
+							 const glm::vec4& color = { 1.0f, 1.0f, 1.0f, 1.0f },
+							 float tilingFactor = 1.0f,
+							 int entityID = -1);
 		static void DrawSprite(const glm::mat4& transform, SpriteRendererComponent& src, int entityID = -1);
 
 		// Stats
