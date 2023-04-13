@@ -17,6 +17,7 @@ namespace Flora {
 		void OnViewportResize(uint32_t width, uint32_t height);
 		Entity GetPrimaryCameraEntity();
 		void SetSceneFilepath(const std::string& filepath) { m_SceneFilepath = filepath; }
+		void SetViewportHovered(bool hovered) { m_ViewportHovered = hovered; }
 		std::string GetSceneFilepath() { return m_SceneFilepath; }
 	private:
 		template<typename T>
@@ -24,6 +25,7 @@ namespace Flora {
 	private:
 		entt::registry m_Registry;
 		uint32_t m_ViewportWidth, m_ViewportHeight = 0;
+		bool m_ViewportHovered = false; // temporary solution
 		std::string m_SceneFilepath = "NULL";
 		friend class Entity;
 		friend class SceneHierarchyPanel;

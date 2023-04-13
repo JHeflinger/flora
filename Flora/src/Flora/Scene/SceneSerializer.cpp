@@ -6,6 +6,9 @@
 #include <yaml-cpp/yaml.h>
 #include <filesystem>
 
+// temp until better native scripting system
+#include "../../Fauna/assets/scripts/MasterNativeScript.h"
+
 namespace YAML {
 	template<>
 	struct convert<glm::vec3> {
@@ -129,6 +132,15 @@ namespace Flora {
 			out << YAML::Key << "EndFrame" << YAML::Value << spriteRendererComponent.EndFrame;
 			out << YAML::Key << "CurrentFrame" << YAML::Value << spriteRendererComponent.CurrentFrame;
 			out << YAML::Key << "FPS" << YAML::Value << spriteRendererComponent.FPS;
+			out << YAML::EndMap;
+		}
+
+		if (entity.HasComponent<NativeScriptComponent>()) {
+			out << YAML::Key << "NativeScriptComponent";
+			out << YAML::BeginMap;
+			auto& nativeScriptComponent = entity.GetComponent<NativeScriptComponent>();
+			out << YAML::Key << "Path" << YAML::Value << nativeScriptComponent.Path;
+			out << YAML::Key << "Filename" << YAML::Value << nativeScriptComponent.Filename;
 			out << YAML::EndMap;
 		}
 
@@ -262,6 +274,14 @@ namespace Flora {
 					src.FPS = spriteRendererComponent["FPS"].as<int>();
 					src.Path = spriteRendererComponent["Path"].as<std::string>();
 					src.Filename = spriteRendererComponent["Filename"].as<std::string>();
+				}
+
+				auto nativeScriptComponent = entity["NativeScriptComponent"];
+				if (nativeScriptComponent) {
+					auto& nsc = deserializedEntity.AddComponent<NativeScriptComponent>();
+					nsc.Path = nativeScriptComponent["Path"].as<std::string>();
+					nsc.Filename = nativeScriptComponent["Filename"].as<std::string>();
+					BindScriptToComponent(nsc, std::filesystem::path(nsc.Path).filename().stem().string());
 				}
 			}
 		}

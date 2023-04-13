@@ -84,12 +84,20 @@ FTODO:
 
 	- overhaul animations to include things like flags and extra functionality, or even calling functions on certain frames
 
-IN PROGRESS:
+	- make native scripting more stable
 
-	- add in native scripting component and update serializer for it
+	- some sort of generate new native script button
+
+IN PROGRESS:
 
 
 IMPLEMENTED TICKETS:
+
+	- add in native scripting component and update serializer for it
+
+	- add in warnings for unstable parts of code
+
+	- native scripts should only run if viewport is focused
 
 	- texture button in sprite component should also bring up a file selector
 

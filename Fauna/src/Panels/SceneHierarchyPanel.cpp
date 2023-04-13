@@ -6,6 +6,9 @@
 #include "Flora/Scene/Components.h"
 #include "Flora/Utils/PlatformUtils.h"
 
+// temp until stable alternative is implemented
+#include "../../assets/scripts/MasterNativeScript.h"
+
 namespace Flora {
 	extern const std::filesystem::path g_AssetPath;
 
@@ -530,6 +533,7 @@ namespace Flora {
 					std::filesystem::path scriptPath = std::filesystem::path(filepath); // warning this is not relative
 					component.Filename = scriptPath.filename().string();
 					component.Path = scriptPath.string();
+					BindScriptToComponent(component, scriptPath.filename().stem().string());
 				}
 			}
 			if (ImGui::BeginDragDropTarget()) {
@@ -538,6 +542,7 @@ namespace Flora {
 					std::filesystem::path scriptPath = std::filesystem::path(g_AssetPath) / path;
 					component.Filename = scriptPath.filename().string();
 					component.Path = scriptPath.string();
+					BindScriptToComponent(component, scriptPath.filename().stem().string());
 				}
 				ImGui::EndDragDropTarget();
 			}

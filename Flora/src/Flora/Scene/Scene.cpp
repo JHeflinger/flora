@@ -25,13 +25,30 @@ namespace Flora {
 	}
 
 	void Scene::OnUpdateEditor(Timestep ts, EditorCamera& camera) {
-		Renderer2D::BeginScene(camera);
-		auto group = m_Registry.group<TransformComponent>(entt::get<SpriteRendererComponent>);
-		for (auto entity : group) {
-			auto [transform, sprite] = group.get<TransformComponent, SpriteRendererComponent>(entity);
-			Renderer2D::DrawSprite(transform.GetTransform(), sprite, (int)entity);
+		// Update Scripts
+		if (m_ViewportHovered) {
+			m_Registry.view<NativeScriptComponent>().each([=](auto entity, auto& nsc) {
+				if (nsc.Bound) {
+					if (!nsc.Instance) {
+						nsc.Instance = nsc.InstantiateScript();
+						nsc.Instance->m_Entity = Entity{ entity, this };
+						nsc.Instance->OnCreate();
+					}
+					nsc.Instance->OnUpdate(ts);
+				}
+			});
 		}
-		Renderer2D::EndScene();
+
+		// Render 2D Sprites
+		{
+			Renderer2D::BeginScene(camera);
+			auto group = m_Registry.group<TransformComponent>(entt::get<SpriteRendererComponent>);
+			for (auto entity : group) {
+				auto [transform, sprite] = group.get<TransformComponent, SpriteRendererComponent>(entity);
+				Renderer2D::DrawSprite(transform.GetTransform(), sprite, (int)entity);
+			}
+			Renderer2D::EndScene();
+		}
 	}
 
 	void Scene::OnUpdateRuntime(Timestep ts) {

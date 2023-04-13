@@ -70,8 +70,11 @@ namespace Flora {
 		std::string Path = "NULL";
 		std::string Filename = "None Selected";
 
+		bool Bound = false;
+
 		template<typename T>
 		void Bind() {
+			Bound = true;
 			InstantiateScript = []() { return static_cast<ScriptableEntity*>(new T()); };
 			DestroyScript = [](NativeScriptComponent* nsc) { delete nsc->Instance; nsc->Instance = nullptr; };
 		}
