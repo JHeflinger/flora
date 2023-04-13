@@ -11,6 +11,8 @@ namespace Flora {
 		Scene();
 		~Scene();
 		Entity CreateEntity(const std::string& name = std::string());
+		Entity CreateEntity(uint32_t id, const std::string& name = std::string());
+		Entity GetEntityFromID(uint32_t id);
 		void DestroyEntity(Entity entity);
 		void OnUpdateRuntime(Timestep ts);
 		void OnUpdateEditor(Timestep ts, EditorCamera& Camera);
@@ -29,6 +31,6 @@ namespace Flora {
 		std::string m_SceneFilepath = "NULL";
 		friend class Entity;
 		friend class SceneHierarchyPanel;
-		friend class SceneSerializer;
+		friend class Serializer;
 	};
 }

@@ -20,6 +20,14 @@ namespace Flora {
 		return entity;
 	}
 
+	Entity Scene::CreateEntity(uint32_t id, const std::string& name) {
+		Entity entity(m_Registry.create((entt::entity)id), this);
+		entity.AddComponent<TransformComponent>();
+		auto& tag = entity.AddComponent<TagComponent>();
+		tag.Tag = name.empty() ? "Untitled Entity" : name;
+		return entity;
+	}
+
 	void Scene::DestroyEntity(Entity entity) {
 		m_Registry.destroy(entity);
 	}
@@ -110,6 +118,10 @@ namespace Flora {
 				return Entity{ entity, this };
 		}
 		return {};
+	}
+
+	Entity Scene::GetEntityFromID(uint32_t id) {
+		return Entity{ (entt::entity)id, this };
 	}
 
 	template<typename T>

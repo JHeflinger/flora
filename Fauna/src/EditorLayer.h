@@ -4,6 +4,7 @@
 #include "Panels/ContentBrowserPanel.h"
 #include "Panels/StatsPanel.h"
 #include "Flora/Renderer/EditorCamera.h"
+#include "Flora/Utils/Structures.h"
 
 namespace Flora {
 	class EditorLayer : public Layer {
@@ -25,9 +26,6 @@ namespace Flora {
 		void NewScene();
 		void OnOverrideEvent();
 	private:
-		// Editor Camera
-		EditorCamera m_EditorCamera;
-
 		// Viewport
 		Ref<Framebuffer> m_Framebuffer;
 		glm::vec2 m_ViewportSize = { 0, 0 };
@@ -35,18 +33,15 @@ namespace Flora {
 		bool m_ViewportFocused, m_ViewportHovered = false;
 		Entity m_HoveredEntity;
 
-		// Scene
-		Ref<Scene> m_ActiveScene;
-
 		// Panels
 		SceneHierarchyPanel m_SceneHierarchyPanel;
 		ContentBrowserPanel m_ContentBrowserPanel;
 		StatsPanel m_StatsPanel;
 
-		// Gizmos
-		int m_GizmoType = -1;
-
-		// OverrideEvent
+		// OverrideEvent - temp solution
 		bool m_OverrideEventReady = true;
+
+		// Serializer Settings
+		EditorParams m_EditorParams;
 	};
 }

@@ -1,20 +1,12 @@
 FTODO:
-
-	- make the QWER settings saved in editor settings as well
 	
 	- indicate if scene is saved or not
 
 	- convert all console messages into an editor console panel
 
-	- move all saveable editor settings into a struct to pass in
-
 	- integrate SPIR-V shaders
 
-	- move some editor settings to scene settings (like editor camera) or separate it into a sceneEditorSetting file specific to scene
-
-	- move editor serializer to separate editor serializer class
-
-	- implement projects so we should have editor settings, scene settings, and project settings
+	- implement projects
 
 	- make it so you can double click scenes in content browser to open them
 	
@@ -24,15 +16,9 @@ FTODO:
 
 	- separate scenehierarchy panel and properties panel
 
-	- refactor texture setting in spritecomponent to look better and show filepath using
-
 	- save scene prompt on close
 
 	- implement layers
-
-	- move viewport into separate layer too
-
-	- panels should be able to be closed and reopened via a task bar section called "windows"
 
 	- maybe even make a panel manager class
 
@@ -88,10 +74,29 @@ FTODO:
 
 	- some sort of generate new native script button
 
+	- project settings?
+
+	- move some editor settings to scene settings (like editor camera) or separate it into a sceneEditorSetting file specific to scene
+
+	- need to be able to get entity from id or tag
+
 IN PROGRESS:
 
+	- move viewport into separate panel too
+
+	- panels should be able to be closed and reopened via a task bar section called "windows"
 
 IMPLEMENTED TICKETS:
+
+	- serialization properly saves and opens entity IDs
+
+	- make the QWER settings saved in editor settings as well
+
+	- move all saveable editor settings into a struct to pass in
+
+	- move editor serializer to separate genertic serializer class
+
+	- refactor texture setting in spritecomponent to look better and show filepath using
 
 	- add in native scripting component and update serializer for it
 

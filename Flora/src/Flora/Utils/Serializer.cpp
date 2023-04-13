@@ -1,5 +1,5 @@
 #include "flpch.h"
-#include "Flora/Scene/SceneSerializer.h"
+#include "Flora/Utils/Serializer.h"
 #include "Flora/Scene/Entity.h"
 #include "Flora/Scene/Components.h"
 #include <fstream>
@@ -66,13 +66,9 @@ namespace Flora {
 		return out;
 	}
 
-	SceneSerializer::SceneSerializer(const Ref<Scene>& scene)
-		: m_Scene(scene) {
-	}
-
 	static void SerializeEntity(YAML::Emitter& out, Entity entity) {
 		out << YAML::BeginMap;
-		out << YAML::Key << "Entity" << YAML::Value << "123456";
+		out << YAML::Key << "Entity" << YAML::Value << (uint32_t)entity;
 
 		if (entity.HasComponent<TagComponent>()) {
 			out << YAML::Key << "TagComponent";
@@ -147,13 +143,13 @@ namespace Flora {
 		out << YAML::EndMap;
 	}
 
-	void SceneSerializer::Serialize(const std::string& filepath) {
+	void Serializer::SerializeScene(Ref<Scene>& scene, const std::string& filepath) {
 		YAML::Emitter out;
 		out << YAML::BeginMap;
 		out << YAML::Key << "Scene" << YAML::Value << "Untitled";
 		out << YAML::Key << "Entities" << YAML::Value << YAML::BeginSeq;
-		m_Scene->m_Registry.each([&](auto entityID) {
-			Entity entity = { entityID, m_Scene.get() };
+		scene->m_Registry.each([&](auto entityID) {
+			Entity entity = { entityID, scene.get() };
 			if (!entity) return;
 			SerializeEntity(out, entity);
 		});
@@ -164,34 +160,39 @@ namespace Flora {
 		fout << out.c_str();
 	}
 
-	void SceneSerializer::SerializeRuntime(const std::string& filepath) {
+	void Serializer::SerializeRuntime() {
 		// not implemented yet!
 		FL_CORE_ASSERT(false);
 	}
 
-	void SceneSerializer::SerializeEditor(EditorCamera& editorCamera, const std::string& filepath) {
+	void Serializer::SerializeEditor(EditorParams& params, const std::string& filepath) {
+		int selectedEntity = -1;
+		if (params.SelectedEntity)
+			selectedEntity = (int)(uint32_t)params.SelectedEntity;
+
 		YAML::Emitter out;
 		out << YAML::BeginMap;
-		out << YAML::Key << "Scene Filepath" << YAML::Value << m_Scene->GetSceneFilepath();
-		out << YAML::Key << "Selected Entity" << YAML::Value << "-1";
-		out << YAML::Key << "Editor Camera Type" << YAML::Value << editorCamera.GetCameraTypeString();
+		out << YAML::Key << "Scene Filepath" << YAML::Value << params.ActiveScene->GetSceneFilepath();
+		out << YAML::Key << "Selected Entity" << YAML::Value << selectedEntity;
+		out << YAML::Key << "Current Gizmo" << YAML::Value << params.GizmoType;
+		out << YAML::Key << "Editor Camera Type" << YAML::Value << params.EditorCamera.GetCameraTypeString();
 
 		out << YAML::Key << "General Camera Settings" << YAML::Value;
 		out << YAML::BeginMap;
-		out << YAML::Key << "Position" << YAML::Value << editorCamera.GetPosition();
-		out << YAML::Key << "Focal Point" << YAML::Value << editorCamera.GetFocalPoint();
+		out << YAML::Key << "Position" << YAML::Value << params.EditorCamera.GetPosition();
+		out << YAML::Key << "Focal Point" << YAML::Value << params.EditorCamera.GetFocalPoint();
 		out << YAML::EndMap;
 
 		out << YAML::Key << "Perspective Camera Settings" << YAML::Value;
 		out << YAML::BeginMap;
-		out << YAML::Key << "Distance" << YAML::Value << editorCamera.GetDistance();
-		out << YAML::Key << "Pitch" << YAML::Value << editorCamera.GetPitch();
-		out << YAML::Key << "Yaw" << YAML::Value << editorCamera.GetYaw();
+		out << YAML::Key << "Distance" << YAML::Value << params.EditorCamera.GetDistance();
+		out << YAML::Key << "Pitch" << YAML::Value << params.EditorCamera.GetPitch();
+		out << YAML::Key << "Yaw" << YAML::Value << params.EditorCamera.GetYaw();
 		out << YAML::EndMap;
 
 		out << YAML::Key << "Orthographic Camera Settings" << YAML::Value;
 		out << YAML::BeginMap;
-		out << YAML::Key << "Size" << YAML::Value << editorCamera.GetOrthographicSize();
+		out << YAML::Key << "Size" << YAML::Value << params.EditorCamera.GetOrthographicSize();
 		out << YAML::EndMap;
 
 		out << YAML::EndMap;
@@ -199,7 +200,7 @@ namespace Flora {
 		fout << out.c_str();
 	}
 
-	bool SceneSerializer::Deserialize(const std::string& filepath) {
+	bool Serializer::DeserializeScene(Ref<Scene>& scene, const std::string& filepath) {
 		std::ifstream stream(filepath);
 		std::stringstream strStream;
 		strStream << stream.rdbuf();
@@ -214,7 +215,7 @@ namespace Flora {
 		auto entities = data["Entities"];
 		if (entities) {
 			for (auto entity : entities) {
-				uint64_t uuid = entity["Entity"].as<uint64_t>(); // TODO
+				uint64_t uuid = entity["Entity"].as<uint32_t>(); // TODO
 
 				std::string name;
 				auto tagComponent = entity["TagComponent"];
@@ -223,7 +224,7 @@ namespace Flora {
 
 				FL_CORE_TRACE("Deserialized entity with ID = {0}, name = {1}", uuid, name);
 
-				Entity deserializedEntity = m_Scene->CreateEntity(name);
+				Entity deserializedEntity = scene->CreateEntity(uuid, name);
 
 				auto transformComponent = entity["TransformComponent"];
 				if (transformComponent)	{
@@ -289,19 +290,21 @@ namespace Flora {
 		return true;
 	}
 
-	bool SceneSerializer::DeserializeRuntime(const std::string& filepath) {
+	bool Serializer::DeserializeRuntime() {
 		// not implemented yet!
 		FL_CORE_ASSERT(false);
 		return false;
 	}
 
-	bool SceneSerializer::DeserializeEditor(EditorCamera& editorCamera, const std::string& filepath) {
+	bool Serializer::DeserializeEditor(EditorParams& params, const std::string& filepath) {
 		std::ifstream stream(filepath);
 		std::stringstream strStream;
 		strStream << stream.rdbuf();
 
 		YAML::Node data = YAML::Load(strStream.str());
 		if (!data["Scene Filepath"] ||
+			!data["Current Gizmo"] ||
+			!data["Selected Entity"] ||
 			!data["Editor Camera Type"] ||
 			!data["General Camera Settings"] ||
 			!data["Perspective Camera Settings"] ||
@@ -310,17 +313,25 @@ namespace Flora {
 
 		// set up saved scene
 		std::string sceneFilepath = data["Scene Filepath"].as<std::string>();
-		m_Scene->SetSceneFilepath(sceneFilepath);
-		bool success = Deserialize(sceneFilepath);
+		params.ActiveScene->SetSceneFilepath(sceneFilepath);
+		bool success = DeserializeScene(params.ActiveScene, sceneFilepath);
 
 		// set camera settings
-		editorCamera.SetCameraTypeWithString(data["Editor Camera Type"].as<std::string>());
-		editorCamera.SetPosition(data["General Camera Settings"]["Position"].as<glm::vec3>());
-		editorCamera.SetFocalPoint(data["General Camera Settings"]["Focal Point"].as<glm::vec3>());
-		editorCamera.SetDistance(data["Perspective Camera Settings"]["Distance"].as<float>());
-		editorCamera.SetPitch(data["Perspective Camera Settings"]["Pitch"].as<float>());
-		editorCamera.SetYaw(data["Perspective Camera Settings"]["Yaw"].as<float>());
-		editorCamera.SetOrthographicSize(data["Orthographic Camera Settings"]["Size"].as<float>());
+		params.EditorCamera.SetCameraTypeWithString(data["Editor Camera Type"].as<std::string>());
+		params.EditorCamera.SetPosition(data["General Camera Settings"]["Position"].as<glm::vec3>());
+		params.EditorCamera.SetFocalPoint(data["General Camera Settings"]["Focal Point"].as<glm::vec3>());
+		params.EditorCamera.SetDistance(data["Perspective Camera Settings"]["Distance"].as<float>());
+		params.EditorCamera.SetPitch(data["Perspective Camera Settings"]["Pitch"].as<float>());
+		params.EditorCamera.SetYaw(data["Perspective Camera Settings"]["Yaw"].as<float>());
+		params.EditorCamera.SetOrthographicSize(data["Orthographic Camera Settings"]["Size"].as<float>());
+
+		// set current gizmo
+		params.GizmoType = data["Current Gizmo"].as<int>();
+
+		// set selected entity
+		int entityID = data["Selected Entity"].as<int>();
+		if (entityID >= 0)
+			params.SelectedEntity = params.ActiveScene->GetEntityFromID((uint32_t)entityID);
 
 		return success;
 	}

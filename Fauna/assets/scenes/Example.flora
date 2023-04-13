@@ -1,147 +1,6 @@
 Scene: Untitled
 Entities:
-  - Entity: 123456
-    TagComponent:
-      Tag: Camera
-    TransformComponent:
-      Translation: [0, 0, 0]
-      Rotation: [0, 0, 0]
-      Scale: [1, 1, 1]
-    CameraComponent:
-      Camera:
-        ProjectionType: 1
-        PerspectiveFOV: 0.785398185
-        PerspectiveNear: 0.00999999978
-        PerspectiveFar: 1000
-        OrthographicSize: 10
-        OrthographicNear: -1
-        OrthographicFar: 1
-      Primary: true
-      FixedAspectRatio: false
-  - Entity: 123456
-    TagComponent:
-      Tag: ORANGE
-    TransformComponent:
-      Translation: [-0.241231918, 0.0105190277, -0.5]
-      Rotation: [0, 0, 0]
-      Scale: [1, 1, 1]
-    SpriteRendererComponent:
-      Color: [0, 1, 0.942085028, 1]
-      Path: assets\game\textures\testanim.png
-      Filename: testanim.png
-      Type: 2
-      TilingFactor: 6.5999999
-      Rows: 2
-      Columns: 6
-      RowCoordinate: 2
-      ColumnCoordinate: 4
-      SubtextureWidth: 1
-      SubtextureHeight: 1
-      Frames: 12
-      StartFrame: 1
-      EndFrame: 12
-      CurrentFrame: 11
-      FPS: 12
-    NativeScriptComponent:
-      Path: assets\scripts\BasicController.h
-      Filename: BasicController.h
-  - Entity: 123456
-    TagComponent:
-      Tag: PURPLE
-    TransformComponent:
-      Translation: [-0.5, 0, 0]
-      Rotation: [0, 1.57079637, 0]
-      Scale: [1, 1, 1]
-    SpriteRendererComponent:
-      Color: [0.708860397, 0, 1, 1]
-      Path: "NULL"
-      Filename: None Selected
-      Type: 0
-      TilingFactor: 1
-      Rows: 1
-      Columns: 1
-      RowCoordinate: 1
-      ColumnCoordinate: 1
-      SubtextureWidth: 1
-      SubtextureHeight: 1
-      Frames: 1
-      StartFrame: 1
-      EndFrame: 1
-      CurrentFrame: 1
-      FPS: 1
-  - Entity: 123456
-    TagComponent:
-      Tag: YELLOW
-    TransformComponent:
-      Translation: [0.5, 0, 0]
-      Rotation: [0, 1.57079637, 0]
-      Scale: [1, 1, 1]
-    SpriteRendererComponent:
-      Color: [0.987341762, 1, 0, 1]
-      Path: "NULL"
-      Filename: None Selected
-      Type: 0
-      TilingFactor: 1
-      Rows: 1
-      Columns: 1
-      RowCoordinate: 1
-      ColumnCoordinate: 1
-      SubtextureWidth: 1
-      SubtextureHeight: 1
-      Frames: 1
-      StartFrame: 1
-      EndFrame: 1
-      CurrentFrame: 1
-      FPS: 1
-  - Entity: 123456
-    TagComponent:
-      Tag: GREEN
-    TransformComponent:
-      Translation: [0, 0.5, 0]
-      Rotation: [1.5707972, 2.98023224e-08, 0]
-      Scale: [1, 0.999953687, 0.999956191]
-    SpriteRendererComponent:
-      Color: [0.126582384, 1, 0, 1]
-      Path: "NULL"
-      Filename: None Selected
-      Type: 0
-      TilingFactor: 1
-      Rows: 1
-      Columns: 1
-      RowCoordinate: 1
-      ColumnCoordinate: 1
-      SubtextureWidth: 1
-      SubtextureHeight: 1
-      Frames: 1
-      StartFrame: 1
-      EndFrame: 1
-      CurrentFrame: 1
-      FPS: 1
-  - Entity: 123456
-    TagComponent:
-      Tag: BLUE
-    TransformComponent:
-      Translation: [0, -0.5, 0]
-      Rotation: [1.57079637, 0, 0]
-      Scale: [1, 1, 1]
-    SpriteRendererComponent:
-      Color: [0, 0.0506329536, 1, 1]
-      Path: "NULL"
-      Filename: None Selected
-      Type: 0
-      TilingFactor: 1
-      Rows: 1
-      Columns: 1
-      RowCoordinate: 1
-      ColumnCoordinate: 1
-      SubtextureWidth: 1
-      SubtextureHeight: 1
-      Frames: 1
-      StartFrame: 1
-      EndFrame: 1
-      CurrentFrame: 1
-      FPS: 1
-  - Entity: 123456
+  - Entity: 6
     TagComponent:
       Tag: RED
     TransformComponent:
@@ -165,3 +24,126 @@ Entities:
       EndFrame: 1
       CurrentFrame: 1
       FPS: 1
+  - Entity: 5
+    TagComponent:
+      Tag: BLUE
+    TransformComponent:
+      Translation: [0, -0.5, 0]
+      Rotation: [1.57079637, 0, 0]
+      Scale: [1, 1, 1]
+    SpriteRendererComponent:
+      Color: [0, 0.0506329536, 1, 1]
+      Path: "NULL"
+      Filename: None Selected
+      Type: 0
+      TilingFactor: 1
+      Rows: 1
+      Columns: 1
+      RowCoordinate: 1
+      ColumnCoordinate: 1
+      SubtextureWidth: 1
+      SubtextureHeight: 1
+      Frames: 1
+      StartFrame: 1
+      EndFrame: 1
+      CurrentFrame: 1
+      FPS: 1
+  - Entity: 4
+    TagComponent:
+      Tag: GREEN
+    TransformComponent:
+      Translation: [0, 0.5, 0]
+      Rotation: [1.5707972, 2.98023224e-08, 0]
+      Scale: [1, 0.999953687, 0.999956191]
+    SpriteRendererComponent:
+      Color: [0.126582384, 1, 0, 1]
+      Path: "NULL"
+      Filename: None Selected
+      Type: 0
+      TilingFactor: 1
+      Rows: 1
+      Columns: 1
+      RowCoordinate: 1
+      ColumnCoordinate: 1
+      SubtextureWidth: 1
+      SubtextureHeight: 1
+      Frames: 1
+      StartFrame: 1
+      EndFrame: 1
+      CurrentFrame: 1
+      FPS: 1
+  - Entity: 3
+    TagComponent:
+      Tag: YELLOW
+    TransformComponent:
+      Translation: [0.5, 0, 0]
+      Rotation: [0, 1.57079637, 0]
+      Scale: [1, 1, 1]
+    SpriteRendererComponent:
+      Color: [0.987341762, 1, 0, 1]
+      Path: "NULL"
+      Filename: None Selected
+      Type: 0
+      TilingFactor: 1
+      Rows: 1
+      Columns: 1
+      RowCoordinate: 1
+      ColumnCoordinate: 1
+      SubtextureWidth: 1
+      SubtextureHeight: 1
+      Frames: 1
+      StartFrame: 1
+      EndFrame: 1
+      CurrentFrame: 1
+      FPS: 1
+  - Entity: 2
+    TagComponent:
+      Tag: PURPLE
+    TransformComponent:
+      Translation: [-0.5, 0, 0]
+      Rotation: [0, 1.57079637, 0]
+      Scale: [1, 1, 1]
+    SpriteRendererComponent:
+      Color: [0.708860397, 0, 1, 1]
+      Path: "NULL"
+      Filename: None Selected
+      Type: 0
+      TilingFactor: 1
+      Rows: 1
+      Columns: 1
+      RowCoordinate: 1
+      ColumnCoordinate: 1
+      SubtextureWidth: 1
+      SubtextureHeight: 1
+      Frames: 1
+      StartFrame: 1
+      EndFrame: 1
+      CurrentFrame: 1
+      FPS: 1
+  - Entity: 1
+    TagComponent:
+      Tag: ORANGE
+    TransformComponent:
+      Translation: [-0.0208294392, -0.0806665421, -0.5]
+      Rotation: [-0.724883556, 0, 0]
+      Scale: [1, 0.999999881, 0.999999881]
+    SpriteRendererComponent:
+      Color: [0, 1, 0.942085028, 1]
+      Path: assets\game\textures\testanim.png
+      Filename: testanim.png
+      Type: 2
+      TilingFactor: 6.5999999
+      Rows: 2
+      Columns: 6
+      RowCoordinate: 2
+      ColumnCoordinate: 2
+      SubtextureWidth: 1
+      SubtextureHeight: 1
+      Frames: 12
+      StartFrame: 1
+      EndFrame: 12
+      CurrentFrame: 8
+      FPS: 12
+    NativeScriptComponent:
+      Path: assets\scripts\BasicController.h
+      Filename: BasicController.h
