@@ -6,6 +6,7 @@
 #include "Panels/StatsPanel.h"
 #include "Flora/Renderer/EditorCamera.h"
 #include "Flora/Utils/Structures.h"
+#include <map>
 
 namespace Flora {
 	class EditorLayer : public Layer {
@@ -26,19 +27,19 @@ namespace Flora {
 		void OpenScene(const std::filesystem::path& path);
 		void NewScene();
 		void OnOverrideEvent();
+		void ResetEditorParams();
+		void InitializePanels();
+		void SetPanelContext();
+		void UpdatePanels();
+		void RenderImGuiPanels();
 	private:
-		// Viewport
-		Ref<Framebuffer> m_Framebuffer;
-		glm::vec2 m_ViewportSize = { 0, 0 };
-		glm::vec2 m_ViewportBounds[2];
-		bool m_ViewportFocused, m_ViewportHovered = false;
-		Entity m_HoveredEntity;
+		// Panels
+		std::map<std::string, Scope<EditorPanel>> m_Panels;
 
 		// Panels
 		SceneHierarchyPanel m_SceneHierarchyPanel;
 		ContentBrowserPanel m_ContentBrowserPanel;
 		ViewportPanel m_ViewportPanel;
-		StatsPanel m_StatsPanel;
 
 		// OverrideEvent - temp solution
 		bool m_OverrideEventReady = true;

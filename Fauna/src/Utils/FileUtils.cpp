@@ -2,9 +2,15 @@
 #include "FileUtils.h"
 
 namespace Flora {
-	void FileUtils::OpenScene(){}
-	void FileUtils::SaveSceneAs(){}
-	void FileUtils::SaveScene(){}
-	void FileUtils::OpenScene(const std::filesystem::path& path){}
-	void FileUtils::NewScene(){}
+	void FileUtils::OpenScene(Ref<EditorParams> context){}
+	void FileUtils::SaveSceneAs(Ref<EditorParams> context){}
+	void FileUtils::SaveScene(Ref<EditorParams> context){}
+
+	void FileUtils::OpenScene(Ref<EditorParams> context, const std::filesystem::path& path){
+		FL_CORE_INFO("openscene called");
+	}
+
+	void FileUtils::NewScene(Ref<EditorParams> context){
+		
+	}
 }

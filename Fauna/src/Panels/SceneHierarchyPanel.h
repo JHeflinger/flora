@@ -5,12 +5,12 @@
 #include "Flora/Scene/Entity.h"
 
 namespace Flora {
-	class SceneHierarchyPanel : EditorPanel {
+	class SceneHierarchyPanel : public EditorPanel {
 	public:
 		SceneHierarchyPanel() = default;
-		SceneHierarchyPanel(const Ref<Scene>& context);
+		SceneHierarchyPanel(const Ref<EditorParams>& params);
 		virtual void Initialize() override {};
-		virtual void SetSceneContext(const Ref<Scene>& context) override;
+		virtual void SetEditorContext(const Ref<EditorParams>& params) override;
 		virtual void OnUpdate() override {};
 		void OnImGuiRender() override;
 		Entity GetSelectedEntity() const { return m_SelectionContext; }
@@ -19,7 +19,6 @@ namespace Flora {
 		void DrawEntityNode(Entity entity);
 		void DrawComponents(Entity entity);
 	private:
-		Ref<Scene> m_Context;
 		Entity m_SelectionContext;
 	};
 }

@@ -14,18 +14,23 @@ namespace Flora {
 
 	EditorLayer::EditorLayer()
 		: Layer("Editor") {
+		m_Panels["Stats"] = CreateScope<StatsPanel>();
+		//m_Panels["Scene Hierarchy"] = CreateScope<SceneHierarchyPanel>();
+		//m_Panels["Content Browser"] = CreateScope<ContentBrowserPanel>();
+		//m_Panels["Viewport"] = CreateScope<ViewportPanel>();
 	}
 
 	void EditorLayer::OnAttatch() {
-		//setup editor params
-		m_EditorParams = CreateRef<EditorParams>();
+		// Set up editor params
+		ResetEditorParams();
 
+		// Initialize panels
+		InitializePanels();
 		m_ViewportPanel.Initialize();
 
+		// Set panel context
+		SetPanelContext();
 		m_ViewportPanel.SetEditorContext(m_EditorParams);
-
-		//scene creation
-		m_EditorParams->ActiveScene = CreateRef<Scene>();
 
 		// command like argument creation
 		auto commandLineArgs = Application::Get().GetCommandLineArgs();
@@ -36,8 +41,7 @@ namespace Flora {
 		}
 
 		//panel creation
-		m_SceneHierarchyPanel.SetSceneContext(m_EditorParams->ActiveScene);
-		m_ViewportPanel.SetSceneContext(m_EditorParams->ActiveScene);
+		m_SceneHierarchyPanel.SetEditorContext(m_EditorParams);
 
 		//editor camera
 		m_EditorParams->EditorCamera = EditorCamera(30.0f, 1.7778f, 0.1f, 1000.0f);
@@ -59,11 +63,16 @@ namespace Flora {
 
 		m_ViewportPanel.PreUpdate();
 
+		m_ViewportPanel.OnUpdate();
+
 		// Camera update
 		m_EditorParams->EditorCamera.OnUpdate(ts);
 
 		// Scene update
 		m_EditorParams->ActiveScene->OnUpdateEditor(ts, m_EditorParams->EditorCamera);
+
+		// Update Panels
+		UpdatePanels();
 
 		m_ViewportPanel.PostUpdate();
 
@@ -156,8 +165,9 @@ namespace Flora {
 		// Panels
 		m_SceneHierarchyPanel.OnImGuiRender();
 		m_ContentBrowserPanel.OnImGuiRender();
-		m_StatsPanel.OnImGuiRender();
+		RenderImGuiPanels();
 		m_ViewportPanel.OnImGuiRender();
+
 
 		ImGui::End();
 	}
@@ -227,10 +237,40 @@ namespace Flora {
 	}
 
 	void EditorLayer::NewScene() {
+		glm::vec2 viewportSize = m_ViewportPanel.GetViewportSize();
 		m_EditorParams->ActiveScene = CreateRef<Scene>();
-		m_EditorParams->ActiveScene->OnViewportResize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
-		m_SceneHierarchyPanel.SetSceneContext(m_EditorParams->ActiveScene);
+		m_EditorParams->ActiveScene->OnViewportResize((uint32_t)viewportSize.x, (uint32_t)viewportSize.y);
+		m_SceneHierarchyPanel.SetEditorContext(m_EditorParams);
 		m_EditorParams->ActiveScene->SetSceneFilepath("NULL");
+	}
+
+	void EditorLayer::ResetEditorParams() {
+		m_EditorParams = CreateRef<EditorParams>();
+		m_EditorParams->ActiveScene = CreateRef<Scene>();
+	}
+
+	void EditorLayer::InitializePanels() {
+		for (auto& panel : m_Panels) {
+			panel.second->Initialize();
+		}
+	}
+
+	void EditorLayer::SetPanelContext() {
+		for (auto& panel : m_Panels) {
+			panel.second->SetEditorContext(m_EditorParams);
+		}
+	}
+
+	void EditorLayer::UpdatePanels() {
+		for (auto& panel : m_Panels) {
+			panel.second->OnUpdate();
+		}
+	}
+
+	void EditorLayer::RenderImGuiPanels() {
+		for (auto& panel : m_Panels) {
+			panel.second->OnImGuiRender();
+		}
 	}
 
 	void EditorLayer::OnOverrideEvent() {

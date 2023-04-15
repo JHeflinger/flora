@@ -4,7 +4,7 @@
 #include "Flora/Renderer/Texture.h"
 
 namespace Flora {
-	class ContentBrowserPanel : EditorPanel {
+	class ContentBrowserPanel : public EditorPanel {
 	public:
 		ContentBrowserPanel();
 		virtual void Initialize() override {};

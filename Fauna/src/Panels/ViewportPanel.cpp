@@ -33,6 +33,14 @@ namespace Flora {
 		m_Framebuffer->ClearAttachment(1, -1);
 	}
 
+	void ViewportPanel::OnUpdate() {
+		if (ViewportResized()) {
+			m_Framebuffer->Resize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
+			m_EditorContext->EditorCamera.SetViewportSize(m_ViewportSize.x, m_ViewportSize.y);
+			m_EditorContext->ActiveScene->OnViewportResize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
+		}
+	}
+
 	bool ViewportPanel::ViewportResized() {
 		FramebufferSpecification spec = m_Framebuffer->GetSpecification();
 		return m_ViewportSize.x > 0.0f && m_ViewportSize.y > 0.0f &&
@@ -50,7 +58,7 @@ namespace Flora {
 		int mouseY = (int)my;
 		if (mouseX >= 0 && mouseY >= 0 && mouseX < (int)viewportSize.x && mouseY < (int)viewportSize.y) {
 			int pixelData = m_Framebuffer->ReadPixel(1, mouseX, mouseY);
-			m_HoveredEntity = pixelData == -1 ? Entity() : Entity((entt::entity)pixelData, m_SceneContext.get());
+			m_HoveredEntity = pixelData == -1 ? Entity() : Entity((entt::entity)pixelData, m_EditorContext->ActiveScene.get());
 		}
 
 		// renderer "unsetup", move later
@@ -68,7 +76,7 @@ namespace Flora {
 		m_ViewportBounds[1] = { viewportMaxRegion.x + viewportOffset.x , viewportMaxRegion.y + viewportOffset.y };
 		m_ViewportFocused = ImGui::IsWindowFocused();
 		m_ViewportHovered = ImGui::IsWindowHovered();
-		m_SceneContext->SetViewportHovered(m_ViewportHovered); // temporary solution
+		m_EditorContext->ActiveScene->SetViewportHovered(m_ViewportHovered); // temporary solution
 		Application::Get().GetImGuiLayer()->BlockEvents(!m_ViewportFocused && !m_ViewportHovered);
 		ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
 		m_ViewportSize = { viewportPanelSize.x, viewportPanelSize.y };
@@ -79,7 +87,7 @@ namespace Flora {
 		if (ImGui::BeginDragDropTarget()) {
 			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM")) {
 				const wchar_t* path = (const wchar_t*)payload->Data;
-				FileUtils::OpenScene(std::filesystem::path(g_AssetPath) / path);
+				FileUtils::OpenScene(m_EditorContext, std::filesystem::path(g_AssetPath) / path);
 			}
 			ImGui::EndDragDropTarget();
 		}

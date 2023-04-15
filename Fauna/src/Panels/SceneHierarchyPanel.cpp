@@ -12,12 +12,12 @@
 namespace Flora {
 	extern const std::filesystem::path g_AssetPath;
 
-	SceneHierarchyPanel::SceneHierarchyPanel(const Ref<Scene>& context) {
-		SetSceneContext(context);
+	SceneHierarchyPanel::SceneHierarchyPanel(const Ref<EditorParams>& params) {
+		SetEditorContext(params);
 	}
 
-	void SceneHierarchyPanel::SetSceneContext(const Ref<Scene>& context) {
-		m_Context = context;
+	void SceneHierarchyPanel::SetEditorContext(const Ref<EditorParams>& params) {
+		m_EditorContext = params;
 		m_SelectionContext = {};
 	}
 
@@ -27,8 +27,8 @@ namespace Flora {
 
 	void SceneHierarchyPanel::OnImGuiRender() {
 		ImGui::Begin("Scene Hierarchy");
-		m_Context->m_Registry.each([&](auto entityID) {
-			Entity entity{ entityID, m_Context.get() };
+		m_EditorContext->ActiveScene->m_Registry.each([&](auto entityID) {
+			Entity entity{ entityID, m_EditorContext->ActiveScene.get() };
 			DrawEntityNode(entity);
 		});
 		if (ImGui::IsMouseDown(0) && ImGui::IsWindowHovered())
@@ -36,7 +36,7 @@ namespace Flora {
 		
 		if (ImGui::BeginPopupContextWindow(0, 1 | ImGuiPopupFlags_NoOpenOverItems)) {
 			if (ImGui::MenuItem("Create Empty Entity")) 
-				m_Context->CreateEntity();
+				m_EditorContext->ActiveScene->CreateEntity();
 			ImGui::EndPopup();
 		}
 		
@@ -68,7 +68,7 @@ namespace Flora {
 			ImGui::TreePop();
 
 		if (entityDeleted) {
-			m_Context->DestroyEntity(entity);
+			m_EditorContext->ActiveScene->DestroyEntity(entity);
 			if (m_SelectionContext == entity) {
 				m_SelectionContext = {};
 			}

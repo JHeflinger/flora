@@ -2,11 +2,10 @@
 #include "EditorPanel.h"
 
 namespace Flora {
-	class StatsPanel : EditorPanel{
+	class StatsPanel : public EditorPanel {
 	public:
 		StatsPanel() = default;
 		virtual void Initialize() override {};
-		virtual void SetSceneContext(const Ref<Scene>& context) override {};
 		virtual void OnUpdate() override {};
 		virtual void OnImGuiRender() override;
 	private:

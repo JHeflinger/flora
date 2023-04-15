@@ -7,7 +7,7 @@ namespace Flora {
 	class ViewportPanel : public EditorPanel {
 	public:
 		virtual void Initialize() override;
-		virtual void OnUpdate() override {};
+		virtual void OnUpdate() override;
 		void PreUpdate();
 		void PostUpdate();
 		virtual void OnImGuiRender() override;
