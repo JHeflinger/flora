@@ -13,10 +13,10 @@ namespace Flora {
 	extern const std::filesystem::path g_AssetPath;
 
 	SceneHierarchyPanel::SceneHierarchyPanel(const Ref<Scene>& context) {
-		SetContext(context);
+		SetSceneContext(context);
 	}
 
-	void SceneHierarchyPanel::SetContext(const Ref<Scene>& context) {
+	void SceneHierarchyPanel::SetSceneContext(const Ref<Scene>& context) {
 		m_Context = context;
 		m_SelectionContext = {};
 	}

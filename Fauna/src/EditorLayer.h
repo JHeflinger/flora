@@ -2,6 +2,7 @@
 #include "Flora.h"
 #include "Panels/SceneHierarchyPanel.h"
 #include "Panels/ContentBrowserPanel.h"
+#include "Panels/ViewportPanel.h"
 #include "Panels/StatsPanel.h"
 #include "Flora/Renderer/EditorCamera.h"
 #include "Flora/Utils/Structures.h"
@@ -36,12 +37,13 @@ namespace Flora {
 		// Panels
 		SceneHierarchyPanel m_SceneHierarchyPanel;
 		ContentBrowserPanel m_ContentBrowserPanel;
+		ViewportPanel m_ViewportPanel;
 		StatsPanel m_StatsPanel;
 
 		// OverrideEvent - temp solution
 		bool m_OverrideEventReady = true;
 
 		// Serializer Settings
-		EditorParams m_EditorParams;
+		Ref<EditorParams> m_EditorParams;
 	};
 }
