@@ -16,15 +16,6 @@ namespace Flora {
 		SetEditorContext(params);
 	}
 
-	void SceneHierarchyPanel::SetEditorContext(const Ref<EditorParams>& params) {
-		m_EditorContext = params;
-		m_SelectionContext = {};
-	}
-
-	void SceneHierarchyPanel::SetSelectedEntity(Entity entity) {
-		m_SelectionContext = entity;
-	}
-
 	void SceneHierarchyPanel::OnImGuiRender() {
 		ImGui::Begin("Scene Hierarchy");
 		m_EditorContext->ActiveScene->m_Registry.each([&](auto entityID) {
@@ -32,7 +23,7 @@ namespace Flora {
 			DrawEntityNode(entity);
 		});
 		if (ImGui::IsMouseDown(0) && ImGui::IsWindowHovered())
-			m_SelectionContext = {};
+			m_EditorContext->SelectedEntity = {};
 		
 		if (ImGui::BeginPopupContextWindow(0, 1 | ImGuiPopupFlags_NoOpenOverItems)) {
 			if (ImGui::MenuItem("Create Empty Entity")) 
@@ -43,19 +34,20 @@ namespace Flora {
 		ImGui::End();
 
 		ImGui::Begin("Properties");
-		if (m_SelectionContext) 
-			DrawComponents(m_SelectionContext);
+		Entity selectedEntity = m_EditorContext->SelectedEntity;
+		if (selectedEntity)
+			DrawComponents(selectedEntity);
 		ImGui::End();
 	}
 
 	void SceneHierarchyPanel::DrawEntityNode(Entity entity) {
 
 		auto& tag = entity.GetComponent<TagComponent>().Tag;
-		ImGuiTreeNodeFlags flags = ((m_SelectionContext == entity) ? ImGuiTreeNodeFlags_Selected : 0) | ImGuiTreeNodeFlags_OpenOnArrow;
+		ImGuiTreeNodeFlags flags = ((m_EditorContext->SelectedEntity == entity) ? ImGuiTreeNodeFlags_Selected : 0) | ImGuiTreeNodeFlags_OpenOnArrow;
 		flags |= ImGuiTreeNodeFlags_SpanAvailWidth;
 		bool opened = ImGui::TreeNodeEx((void*)(uint64_t)(uint32_t)entity, flags, tag.c_str());
 		if (ImGui::IsItemClicked()) 
-			m_SelectionContext = entity;
+			m_EditorContext->SelectedEntity = entity;
 
 		bool entityDeleted = false;
 		if (ImGui::BeginPopupContextItem()) {
@@ -69,8 +61,8 @@ namespace Flora {
 
 		if (entityDeleted) {
 			m_EditorContext->ActiveScene->DestroyEntity(entity);
-			if (m_SelectionContext == entity) {
-				m_SelectionContext = {};
+			if (m_EditorContext->SelectedEntity == entity) {
+				m_EditorContext->SelectedEntity = {};
 			}
 		}
 	}
@@ -226,9 +218,9 @@ namespace Flora {
 		if (ImGui::Button("Add Component"))
 			ImGui::OpenPopup("Add Component");
 		if (ImGui::BeginPopup("Add Component")) {
-			DrawAddComponentItem<CameraComponent>("Camera", m_SelectionContext);
-			DrawAddComponentItem<SpriteRendererComponent>("Sprite Renderer", m_SelectionContext);
-			DrawAddComponentItem<NativeScriptComponent>("Native Script", m_SelectionContext);
+			DrawAddComponentItem<CameraComponent>("Camera", m_EditorContext->SelectedEntity);
+			DrawAddComponentItem<SpriteRendererComponent>("Sprite Renderer", m_EditorContext->SelectedEntity);
+			DrawAddComponentItem<NativeScriptComponent>("Native Script", m_EditorContext->SelectedEntity);
 			ImGui::EndPopup();
 		}
 		ImGui::PopItemWidth();

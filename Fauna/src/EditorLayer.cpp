@@ -6,6 +6,7 @@
 #include "Flora/Utils/Serializer.h"
 #include "Flora/Utils/PlatformUtils.h"
 #include "Flora/Math/Math.h"
+#include "Utils/FileUtils.h"
 #include "ImGuizmo.h"
 
 namespace Flora {
@@ -15,9 +16,9 @@ namespace Flora {
 	EditorLayer::EditorLayer()
 		: Layer("Editor") {
 		m_Panels["Stats"] = CreateScope<StatsPanel>();
-		//m_Panels["Scene Hierarchy"] = CreateScope<SceneHierarchyPanel>();
-		//m_Panels["Content Browser"] = CreateScope<ContentBrowserPanel>();
-		//m_Panels["Viewport"] = CreateScope<ViewportPanel>();
+		m_Panels["Scene Hierarchy"] = CreateScope<SceneHierarchyPanel>();
+		m_Panels["Content Browser"] = CreateScope<ContentBrowserPanel>();
+		m_Panels["Viewport"] = CreateScope<ViewportPanel>();
 	}
 
 	void EditorLayer::OnAttatch() {
@@ -26,70 +27,43 @@ namespace Flora {
 
 		// Initialize panels
 		InitializePanels();
-		m_ViewportPanel.Initialize();
 
 		// Set panel context
 		SetPanelContext();
-		m_ViewportPanel.SetEditorContext(m_EditorParams);
 
-		// command like argument creation
+		// Load editor settings
 		auto commandLineArgs = Application::Get().GetCommandLineArgs();
 		if (commandLineArgs.Count > 1)
 		{
 			auto sceneFilePath = commandLineArgs[1];
 			Serializer::DeserializeScene(m_EditorParams->ActiveScene, sceneFilePath);
-		}
-
-		//panel creation
-		m_SceneHierarchyPanel.SetEditorContext(m_EditorParams);
-
-		//editor camera
-		m_EditorParams->EditorCamera = EditorCamera(30.0f, 1.7778f, 0.1f, 1000.0f);
-
-		//update selected entity
-		m_EditorParams->SelectedEntity = m_SceneHierarchyPanel.GetSelectedEntity();
-
-		//load editor settings
-		Serializer::DeserializeEditor(m_EditorParams);
-		//m_SceneHierarchyPanel.SetSelectedEntity(m_EditorParams->SelectedEntity); //<- does not work right now, implement when doing projects later
+		} else Serializer::DeserializeEditor(m_EditorParams);
 	}
 
 	void EditorLayer::OnDetatch() {
+		// Save editor settings
 		Serializer::SerializeEditor(m_EditorParams);
 		FL_CORE_INFO("Saved editor settings");
 	}
 
 	void EditorLayer::OnUpdate(Timestep ts) {
-
-		m_ViewportPanel.PreUpdate();
-
-		m_ViewportPanel.OnUpdate();
-
-		// Camera update
-		m_EditorParams->EditorCamera.OnUpdate(ts);
-
-		// Scene update
-		m_EditorParams->ActiveScene->OnUpdateEditor(ts, m_EditorParams->EditorCamera);
+		// Prepare viewport
+		GetSpecificPanel<ViewportPanel>("Viewport")->PreUpdate();
 
 		// Update Panels
 		UpdatePanels();
 
-		m_ViewportPanel.PostUpdate();
+		// Update editor params
+		UpdateEditorParams(ts);
+
+		// Process viewport
+		GetSpecificPanel<ViewportPanel>("Viewport")->PostUpdate();
 
 		// Editor override events
 		OnOverrideEvent();
 
 		// Periodically serialize
-		static float time = 0.0f;
-		time += ts;
-		if (time > 300) { // save settings every 5 minutes
-			time = 0.0f;
-			Serializer::SerializeEditor(m_EditorParams);
-			FL_CORE_INFO("Automatically saved editor settings");
-		}
-
-		// Temporary solution, update the selected entity in the hierarchy panel
-		m_EditorParams->SelectedEntity = m_SceneHierarchyPanel.GetSelectedEntity();
+		AutoSaveEditor(ts);
 	}
 
 	void EditorLayer::OnImGuiRender() {
@@ -134,19 +108,19 @@ namespace Flora {
 		if (ImGui::BeginMenuBar()) {
 			if (ImGui::BeginMenu("Scene")) {
 				if (ImGui::MenuItem("New", "Ctrl+N")) {
-					NewScene();
+					FileUtils::NewScene(m_EditorParams);
 				}
 
 				if (ImGui::MenuItem("Open...", "Ctrl+O")) {
-					OpenScene();
+					FileUtils::OpenScene(m_EditorParams);
 				}
 
 				if (ImGui::MenuItem("Save As...", "Ctrl+Shift+S	")) {
-					SaveSceneAs();
+					FileUtils::SaveSceneAs(m_EditorParams);
 				}
 
 				if (ImGui::MenuItem("Save", "Ctrl+S")) {
-					SaveScene();
+					FileUtils::SaveScene(m_EditorParams);
 				}
 
 				ImGui::EndMenu();
@@ -163,11 +137,7 @@ namespace Flora {
 		//===================put dockable imgui panels here=====================
 
 		// Panels
-		m_SceneHierarchyPanel.OnImGuiRender();
-		m_ContentBrowserPanel.OnImGuiRender();
 		RenderImGuiPanels();
-		m_ViewportPanel.OnImGuiRender();
-
 
 		ImGui::End();
 	}
@@ -201,52 +171,19 @@ namespace Flora {
 	}
 
 	bool EditorLayer::OnMouseButtonPressed(MouseButtonPressedEvent& e) {
-		if (e.GetMouseButton() == Mouse::ButtonLeft && m_ViewportPanel.ViewportHovered() && !ImGuizmo::IsUsing() && !ImGuizmo::IsOver() && !Input::IsKeyPressed(Key::Space))
-			m_SceneHierarchyPanel.SetSelectedEntity(m_ViewportPanel.GetHoveredEntity());
+		if (e.GetMouseButton() == Mouse::ButtonLeft &&
+			GetSpecificPanel<ViewportPanel>("Viewport")->ViewportHovered() &&
+			!ImGuizmo::IsUsing() &&
+			!ImGuizmo::IsOver() &&
+			!Input::IsKeyPressed(Key::Space))
+			m_EditorParams->SelectedEntity = GetSpecificPanel<ViewportPanel>("Viewport")->GetHoveredEntity();
 		return false;
-	}
-
-	void EditorLayer::SaveScene() {
-		std::string sceneFilepath = m_EditorParams->ActiveScene->GetSceneFilepath();
-		if (sceneFilepath != "NULL") {
-			Serializer::SerializeScene(m_EditorParams->ActiveScene, sceneFilepath);
-		} else {
-			SaveSceneAs();
-		}
-	}
-
-	void EditorLayer::SaveSceneAs() {
-		std::string filepath = FileDialogs::SaveFile("Flora Scene (*.flora)\0*.flora\0");
-		if (!filepath.empty()) {
-			Serializer::SerializeScene(m_EditorParams->ActiveScene, filepath);
-		}
-	}
-
-	void EditorLayer::OpenScene() {
-		std::string filepath = FileDialogs::OpenFile("Flora Scene (*.flora)\0*.flora\0");
-		if (!filepath.empty()) {
-			OpenScene(filepath);
-		}
-	}
-
-	void EditorLayer::OpenScene(const std::filesystem::path& path) {
-		NewScene();
-		m_EditorParams->ActiveScene->SetSceneFilepath(path.string());
-		Serializer::DeserializeScene(m_EditorParams->ActiveScene, path.string());
-		Serializer::SerializeEditor(m_EditorParams);
-	}
-
-	void EditorLayer::NewScene() {
-		glm::vec2 viewportSize = m_ViewportPanel.GetViewportSize();
-		m_EditorParams->ActiveScene = CreateRef<Scene>();
-		m_EditorParams->ActiveScene->OnViewportResize((uint32_t)viewportSize.x, (uint32_t)viewportSize.y);
-		m_SceneHierarchyPanel.SetEditorContext(m_EditorParams);
-		m_EditorParams->ActiveScene->SetSceneFilepath("NULL");
 	}
 
 	void EditorLayer::ResetEditorParams() {
 		m_EditorParams = CreateRef<EditorParams>();
 		m_EditorParams->ActiveScene = CreateRef<Scene>();
+		m_EditorParams->EditorCamera = EditorCamera(30.0f, 1.7778f, 0.1f, 1000.0f);
 	}
 
 	void EditorLayer::InitializePanels() {
@@ -273,6 +210,27 @@ namespace Flora {
 		}
 	}
 
+	void EditorLayer::UpdateEditorParams(Timestep ts) {
+		if (!m_EditorParams->Resized) {
+			glm::vec2 viewportSize = GetSpecificPanel<ViewportPanel>("Viewport")->GetViewportSize();
+			m_EditorParams->ActiveScene->OnViewportResize((uint32_t)viewportSize.x, (uint32_t)viewportSize.y);
+			m_EditorParams->Resized = true;
+		}
+
+		m_EditorParams->EditorCamera.OnUpdate(ts);
+		m_EditorParams->ActiveScene->OnUpdateEditor(ts, m_EditorParams->EditorCamera);
+	}
+
+	void EditorLayer::AutoSaveEditor(Timestep ts) {
+		static float time = 0.0f;
+		time += ts;
+		if (time > 300) { // save settings every 5 minutes
+			time = 0.0f;
+			Serializer::SerializeEditor(m_EditorParams);
+			FL_CORE_INFO("Automatically saved editor settings");
+		}
+	}
+
 	void EditorLayer::OnOverrideEvent() {
 		// Shortcuts
 		if (m_OverrideEventReady) {
@@ -280,13 +238,13 @@ namespace Flora {
 			bool control = Input::IsKeyPressed(Key::LeftControl) || Input::IsKeyPressed(Key::RightControl);
 			bool shift = Input::IsKeyPressed(Key::LeftShift) || Input::IsKeyPressed(Key::RightShift);
 			if (control && shift && Input::IsKeyPressed(Key::S)) {
-				SaveSceneAs();
+				FileUtils::SaveSceneAs(m_EditorParams);
 			} else if (control && Input::IsKeyPressed(Key::S)) {
-				SaveScene();
+				FileUtils::SaveScene(m_EditorParams);
 			} else if (control && Input::IsKeyPressed(Key::N)) {
-				NewScene();
+				FileUtils::NewScene(m_EditorParams);
 			} else if (control && Input::IsKeyPressed(Key::O)) {
-				OpenScene();
+				FileUtils::OpenScene(m_EditorParams);
 			} else {
 				m_OverrideEventReady = true;
 			}
@@ -294,4 +252,5 @@ namespace Flora {
 			m_OverrideEventReady = true;
 		}
 	}
+
 }

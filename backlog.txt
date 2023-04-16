@@ -1,4 +1,4 @@
-FTODO:
+TODO:
 	
 	- indicate if scene is saved or not
 
@@ -82,13 +82,17 @@ FTODO:
 
 IN PROGRESS:
 
-	- make all panels extend a panel class and turn all panels into a vector in editorlayer and perform all general functions accordingly
-
-	- move viewport into separate panel too
-
 	- panels should be able to be closed and reopened via a task bar section called "windows"
 
 IMPLEMENTED TICKETS:
+
+	- move dialogs to fileutils
+	
+	- fix bug that causes delete to break the program
+
+	- make all panels extend a panel class and turn all panels into a vector in editorlayer and perform all general functions accordingly
+
+	- move viewport into separate panel too
 
 	- serialization properly saves and opens entity IDs
 

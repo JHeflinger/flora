@@ -8,5 +8,6 @@ namespace Flora {
 		int GizmoType = -1;
 		Ref<Scene> ActiveScene;
 		EditorCamera EditorCamera;
+		bool Resized = true;
 	};
 }

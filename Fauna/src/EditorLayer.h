@@ -21,25 +21,20 @@ namespace Flora {
 	private:
 		bool OnKeyPressed(KeyPressedEvent& e);
 		bool OnMouseButtonPressed(MouseButtonPressedEvent& e);
-		void SaveSceneAs();
-		void OpenScene();
-		void SaveScene();
-		void OpenScene(const std::filesystem::path& path);
-		void NewScene();
 		void OnOverrideEvent();
 		void ResetEditorParams();
 		void InitializePanels();
 		void SetPanelContext();
 		void UpdatePanels();
 		void RenderImGuiPanels();
+		void UpdateEditorParams(Timestep ts);
+		void AutoSaveEditor(Timestep ts);
+	private:
+		template<typename T>
+		T* GetSpecificPanel(std::string key) { return dynamic_cast<T*>(m_Panels[key].get()); }
 	private:
 		// Panels
 		std::map<std::string, Scope<EditorPanel>> m_Panels;
-
-		// Panels
-		SceneHierarchyPanel m_SceneHierarchyPanel;
-		ContentBrowserPanel m_ContentBrowserPanel;
-		ViewportPanel m_ViewportPanel;
 
 		// OverrideEvent - temp solution
 		bool m_OverrideEventReady = true;
