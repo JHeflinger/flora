@@ -12,7 +12,6 @@ int main(int argc, char** argv) {
 	// warnings
 	{
 		FL_WARN("Session does not indicate save status");
-		FL_WARN("Gizmos are not saved in between sessions");
 		FL_WARN("Console messages are only reflected in the terminal, not fauna");
 		FL_CORE_WARN("Files are not checked for validity when uploading to textures, scenes, and scripts");
 		FL_CORE_WARN("There is no assetmanager to minimize texture allocation");

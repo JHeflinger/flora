@@ -40,8 +40,7 @@ project "Flora"
 		"%{IncludeDir.stb_image}",
 		"%{IncludeDir.entt}",
 		"%{IncludeDir.yaml_cpp}",
-		"%{IncludeDir.ImGuizmo}",
-		"%{IncludeDir.VulkanSDK}"
+		"%{IncludeDir.ImGuizmo}"
 	}
 
 	links
@@ -68,33 +67,12 @@ project "Flora"
 		runtime "Debug"
 		symbols "on"
 
-		links
-		{
-			"%{Library.ShaderC_Debug}",
-			"%{Library.SPIRV_Cross_Debug}",
-			"%{Library.SPIRV_Cross_GLSL_Debug}"
-		}
-
 	filter "configurations:Release"
 		defines "FL_RELEASE"
 		runtime "Release"
 		optimize "on"
 
-		links
-		{
-			"%{Library.ShaderC_Release}",
-			"%{Library.SPIRV_Cross_Release}",
-			"%{Library.SPIRV_Cross_GLSL_Release}"
-		}
-
 	filter "configurations:Dist"
 		defines "FL_DIST"
 		runtime "Release"
 		optimize "on"
-
-		links
-		{
-			"%{Library.ShaderC_Release}",
-			"%{Library.SPIRV_Cross_Release}",
-			"%{Library.SPIRV_Cross_GLSL_Release}"
-		}
