@@ -1,18 +1,10 @@
 TODO:
-	
-	- indicate if scene is saved or not
-
-	- convert all console messages into an editor console panel
 
 	- integrate SPIR-V shaders
 
 	- implement projects
 
-	- make it so you can double click scenes in content browser to open them
-
 	- custom shaders, post processing, materials
-
-	- save scene prompt on close
 
 	- implement layers
 
@@ -35,8 +27,6 @@ TODO:
 	- undo and redo
 
 	- asset manager so a new texture won't be used for every entity that uses that texture
-
-	- drag and drop stuff should check if it's the valid filetype, and should pop up an error popup otherwise
 
 	- text rendering!
 
@@ -75,6 +65,16 @@ TODO:
 	- need to be able to get entity from id or tag
 
 IN PROGRESS:
+
+	- drag and drop stuff should check if it's the valid filetype, and should pop up an error popup otherwise
+
+	- save scene prompt on close
+
+	- convert all console messages into an editor console panel
+
+	- make it so you can double click scenes in content browser to open them
+	
+	- show when scene was last saved
 	
 	- clean up content browser (center text, make proper back button, etc)
 
