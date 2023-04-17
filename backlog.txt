@@ -9,16 +9,12 @@ TODO:
 	- implement projects
 
 	- make it so you can double click scenes in content browser to open them
-	
-	- clean up content browser (center text, make proper back button, etc)
 
 	- custom shaders, post processing, materials
 
 	- save scene prompt on close
 
 	- implement layers
-
-	- maybe even make a panel manager class
 
 	- runtime performance in stats panel
 	
@@ -79,12 +75,14 @@ TODO:
 	- need to be able to get entity from id or tag
 
 IN PROGRESS:
+	
+	- clean up content browser (center text, make proper back button, etc)
 
-	- panels should be able to be closed and reopened via a task bar section called "windows" and can be closed via an x button
+IMPLEMENTED TICKETS:
 
 	- panels that are opened and closed should be saved in the editor settings
 
-IMPLEMENTED TICKETS:
+	- panels should be able to be closed and reopened via a task bar section called "windows" and can be closed via an x button
 
 	- separate scenehierarchy panel and properties panel
 

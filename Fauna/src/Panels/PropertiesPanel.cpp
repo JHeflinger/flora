@@ -150,7 +150,7 @@ namespace Flora {
 	}
 
 	void PropertiesPanel::OnImGuiRender() {
-		ImGui::Begin("Properties");
+		ImGui::Begin("Properties", &m_Enabled);
 		Entity selectedEntity = m_EditorContext->SelectedEntity;
 		if (selectedEntity)
 			DrawComponents(selectedEntity);

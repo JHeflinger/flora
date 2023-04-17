@@ -39,6 +39,10 @@ namespace Flora {
 			auto sceneFilePath = commandLineArgs[1];
 			Serializer::DeserializeScene(m_EditorParams->ActiveScene, sceneFilePath);
 		} else Serializer::DeserializeEditor(m_EditorParams);
+
+		// Close panels
+		for (int i = 0; i < m_EditorParams->ClosedPanels.size(); i++)
+			m_Panels[m_EditorParams->ClosedPanels[i]]->m_Enabled = false;
 	}
 
 	void EditorLayer::OnDetatch() {
@@ -134,9 +138,7 @@ namespace Flora {
 
 			if (ImGui::BeginMenu("Windows")) {
 				for (auto& panel : m_Panels) {
-					if (ImGui::MenuItem(panel.first.c_str())) {
-						panel.second->TogglePanel();
-					}
+					ImGui::MenuItem(panel.first.c_str(), NULL, &(panel.second->m_Enabled));
 				}
 				ImGui::EndMenu();
 			}
@@ -210,14 +212,14 @@ namespace Flora {
 
 	void EditorLayer::UpdatePanels() {
 		for (auto& panel : m_Panels) {
-			if (panel.second->GetPanelEnabled())
+			if (panel.second->m_Enabled)
 				panel.second->OnUpdate();
 		}
 	}
 
 	void EditorLayer::RenderImGuiPanels() {
 		for (auto& panel : m_Panels) {
-			if (panel.second->GetPanelEnabled())
+			if (panel.second->m_Enabled)
 				panel.second->OnImGuiRender();
 		}
 	}
@@ -227,6 +229,12 @@ namespace Flora {
 			glm::vec2 viewportSize = GetSpecificPanel<ViewportPanel>("Viewport")->GetViewportSize();
 			m_EditorParams->ActiveScene->OnViewportResize((uint32_t)viewportSize.x, (uint32_t)viewportSize.y);
 			m_EditorParams->Resized = true;
+		}
+
+		m_EditorParams->ClosedPanels.clear();
+		for (auto& panel : m_Panels) {
+			if (!panel.second->m_Enabled)
+				m_EditorParams->ClosedPanels.push_back(panel.first);
 		}
 
 		m_EditorParams->EditorCamera.OnUpdate(ts);

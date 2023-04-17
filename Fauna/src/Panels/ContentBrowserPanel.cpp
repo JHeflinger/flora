@@ -13,7 +13,7 @@ namespace Flora {
 	}
 
 	void ContentBrowserPanel::OnImGuiRender() {
-		ImGui::Begin("Content Browser");
+		ImGui::Begin("Content Browser", &m_Enabled);
 
 		if (m_CurrentDirectory != std::filesystem::path(g_AssetPath)) {
 			if (ImGui::Button("<-")) {

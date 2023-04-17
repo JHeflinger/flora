@@ -195,6 +195,12 @@ namespace Flora {
 		out << YAML::Key << "Size" << YAML::Value << params->EditorCamera.GetOrthographicSize();
 		out << YAML::EndMap;
 
+		out << YAML::Key << "Closed Panels" << YAML::Value;
+		out << YAML::BeginSeq;
+		for (int i = 0; i < params->ClosedPanels.size(); i++)
+			out << params->ClosedPanels[i];
+		out << YAML::EndSeq;
+
 		out << YAML::EndMap;
 		std::ofstream fout(filepath);
 		fout << out.c_str();
@@ -308,13 +314,17 @@ namespace Flora {
 			!data["Editor Camera Type"] ||
 			!data["General Camera Settings"] ||
 			!data["Perspective Camera Settings"] ||
-			!data["Orthographic Camera Settings"])
+			!data["Orthographic Camera Settings"] ||
+			!data["Closed Panels"])
 			return false;
 
 		// set up saved scene
 		std::string sceneFilepath = data["Scene Filepath"].as<std::string>();
 		params->ActiveScene->SetSceneFilepath(sceneFilepath);
 		bool success = DeserializeScene(params->ActiveScene, sceneFilepath);
+
+		// set closed panels
+		params->ClosedPanels = data["Closed Panels"].as<std::vector<std::string>>();
 
 		// set camera settings
 		params->EditorCamera.SetCameraTypeWithString(data["Editor Camera Type"].as<std::string>());

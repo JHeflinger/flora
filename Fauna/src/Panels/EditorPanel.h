@@ -11,9 +11,9 @@ namespace Flora {
 		virtual void OnUpdate() = 0;
 		virtual void OnImGuiRender() = 0;
 		virtual void TogglePanel() { m_Enabled = !m_Enabled; }
-		virtual bool GetPanelEnabled() { return m_Enabled; }
-	protected:
+	public:
 		bool m_Enabled = true;
+	protected:
 		Ref<EditorParams> m_EditorContext;
 	};
 }

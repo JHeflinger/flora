@@ -9,7 +9,7 @@ namespace Flora {
 	}
 
 	void SceneHierarchyPanel::OnImGuiRender() {
-		ImGui::Begin("Scene Hierarchy");
+		ImGui::Begin("Scene Hierarchy", &m_Enabled);
 		m_EditorContext->ActiveScene->m_Registry.each([&](auto entityID) {
 			Entity entity{ entityID, m_EditorContext->ActiveScene.get() };
 			DrawEntityNode(entity);

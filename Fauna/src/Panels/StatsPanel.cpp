@@ -6,7 +6,7 @@
 namespace Flora {
 	void StatsPanel::OnImGuiRender() {
 		auto rendererStats = Renderer2D::GetStats();
-		ImGui::Begin("Stats");
+		ImGui::Begin("Stats", &m_Enabled);
 		ImGui::Text("Draw Calls: %d", rendererStats.DrawCalls);
 		ImGui::Text("Quads: %d", rendererStats.QuadCount);
 		ImGui::Text("Vertices: %d", rendererStats.GetTotalVertexCount());

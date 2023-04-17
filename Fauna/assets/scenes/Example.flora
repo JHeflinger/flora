@@ -135,14 +135,14 @@ Entities:
       TilingFactor: 6.5999999
       Rows: 2
       Columns: 6
-      RowCoordinate: 2
-      ColumnCoordinate: 2
+      RowCoordinate: 1
+      ColumnCoordinate: 5
       SubtextureWidth: 1
       SubtextureHeight: 1
       Frames: 12
       StartFrame: 1
       EndFrame: 12
-      CurrentFrame: 8
+      CurrentFrame: 5
       FPS: 12
     NativeScriptComponent:
       Path: assets\scripts\BasicController.h
