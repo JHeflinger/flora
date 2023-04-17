@@ -14,8 +14,6 @@ TODO:
 
 	- custom shaders, post processing, materials
 
-	- separate scenehierarchy panel and properties panel
-
 	- save scene prompt on close
 
 	- implement layers
@@ -82,9 +80,13 @@ TODO:
 
 IN PROGRESS:
 
-	- panels should be able to be closed and reopened via a task bar section called "windows"
+	- panels should be able to be closed and reopened via a task bar section called "windows" and can be closed via an x button
+
+	- panels that are opened and closed should be saved in the editor settings
 
 IMPLEMENTED TICKETS:
+
+	- separate scenehierarchy panel and properties panel
 
 	- move dialogs to fileutils
 	

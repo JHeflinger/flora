@@ -17,6 +17,7 @@ namespace Flora {
 		: Layer("Editor") {
 		m_Panels["Stats"] = CreateScope<StatsPanel>();
 		m_Panels["Scene Hierarchy"] = CreateScope<SceneHierarchyPanel>();
+		m_Panels["Properties"] = CreateScope<PropertiesPanel>();
 		m_Panels["Content Browser"] = CreateScope<ContentBrowserPanel>();
 		m_Panels["Viewport"] = CreateScope<ViewportPanel>();
 	}
@@ -131,6 +132,15 @@ namespace Flora {
 				ImGui::EndMenu();
 			}
 
+			if (ImGui::BeginMenu("Windows")) {
+				for (auto& panel : m_Panels) {
+					if (ImGui::MenuItem(panel.first.c_str())) {
+						panel.second->TogglePanel();
+					}
+				}
+				ImGui::EndMenu();
+			}
+
 			ImGui::EndMenuBar();
 		}
 
@@ -200,13 +210,15 @@ namespace Flora {
 
 	void EditorLayer::UpdatePanels() {
 		for (auto& panel : m_Panels) {
-			panel.second->OnUpdate();
+			if (panel.second->GetPanelEnabled())
+				panel.second->OnUpdate();
 		}
 	}
 
 	void EditorLayer::RenderImGuiPanels() {
 		for (auto& panel : m_Panels) {
-			panel.second->OnImGuiRender();
+			if (panel.second->GetPanelEnabled())
+				panel.second->OnImGuiRender();
 		}
 	}
 

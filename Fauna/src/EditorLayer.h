@@ -4,6 +4,7 @@
 #include "Panels/ContentBrowserPanel.h"
 #include "Panels/ViewportPanel.h"
 #include "Panels/StatsPanel.h"
+#include "Panels/PropertiesPanel.h"
 #include "Flora/Renderer/EditorCamera.h"
 #include "Flora/Utils/Structures.h"
 #include <map>

@@ -1,7 +1,5 @@
 #pragma once
 #include "EditorPanel.h"
-#include "Flora/Core/Base.h"
-#include "Flora/Scene/Scene.h"
 #include "Flora/Scene/Entity.h"
 
 namespace Flora {
@@ -14,6 +12,5 @@ namespace Flora {
 		void OnImGuiRender() override;
 	private:
 		void DrawEntityNode(Entity entity);
-		void DrawComponents(Entity entity);
 	};
 }
