@@ -2,6 +2,7 @@
 #include "Flora/Core/Base.h"
 #include "spdlog/spdlog.h"
 #include "spdlog/sinks/stdout_color_sinks.h"
+#include "spdlog/sinks/ringbuffer_sink.h"
 #include "spdlog/fmt/ostr.h"
 
 namespace Flora {
@@ -10,7 +11,11 @@ namespace Flora {
 		static void Init();
 		inline static std::shared_ptr<spdlog::logger>& GetCoreLogger() { return s_CoreLogger; }
 		inline static std::shared_ptr<spdlog::logger>& GetClientLogger() { return s_ClientLogger; }
+		inline static std::shared_ptr<spdlog::sinks::ringbuffer_sink_mt>& GetCoreRingBuffer() { return s_CoreRingbuffer; }
+		inline static std::shared_ptr<spdlog::sinks::ringbuffer_sink_mt>& GetClientRingBuffer() { return s_ClientRingbuffer; }
 	private:
+		static std::shared_ptr<spdlog::sinks::ringbuffer_sink_mt> s_CoreRingbuffer;
+		static std::shared_ptr<spdlog::sinks::ringbuffer_sink_mt> s_ClientRingbuffer;
 		static std::shared_ptr<spdlog::logger> s_CoreLogger;
 		static std::shared_ptr<spdlog::logger> s_ClientLogger;
 	};

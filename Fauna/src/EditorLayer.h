@@ -5,6 +5,7 @@
 #include "Panels/ViewportPanel.h"
 #include "Panels/StatsPanel.h"
 #include "Panels/PropertiesPanel.h"
+#include "Panels/ConsolePanel.h"
 #include "Flora/Renderer/EditorCamera.h"
 #include "Flora/Utils/Structures.h"
 #include <map>
@@ -30,6 +31,8 @@ namespace Flora {
 		void RenderImGuiPanels();
 		void UpdateEditorParams(Timestep ts);
 		void AutoSaveEditor(Timestep ts);
+	private:
+		void DevEvent();
 	private:
 		template<typename T>
 		T* GetSpecificPanel(std::string key) { return dynamic_cast<T*>(m_Panels[key].get()); }

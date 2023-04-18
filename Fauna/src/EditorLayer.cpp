@@ -20,6 +20,7 @@ namespace Flora {
 		m_Panels["Properties"] = CreateScope<PropertiesPanel>();
 		m_Panels["Content Browser"] = CreateScope<ContentBrowserPanel>();
 		m_Panels["Viewport"] = CreateScope<ViewportPanel>();
+		m_Panels["Console"] = CreateScope<ConsolePanel>();
 	}
 
 	void EditorLayer::OnAttatch() {
@@ -265,6 +266,8 @@ namespace Flora {
 				FileUtils::NewScene(m_EditorParams);
 			} else if (control && Input::IsKeyPressed(Key::O)) {
 				FileUtils::OpenScene(m_EditorParams);
+			} else if (Input::IsKeyPressed(Key::Backslash)) {
+				DevEvent();
 			} else {
 				m_OverrideEventReady = true;
 			}
@@ -273,4 +276,11 @@ namespace Flora {
 		}
 	}
 
+	void EditorLayer::DevEvent() {
+		FL_CORE_ERROR("DEV EVENT FIRED");
+		GetSpecificPanel<ConsolePanel>("Console")->Trace("Console Trace Test");
+		GetSpecificPanel<ConsolePanel>("Console")->Info("Console Info Test");
+		GetSpecificPanel<ConsolePanel>("Console")->Warning("Console Warning Test");
+		GetSpecificPanel<ConsolePanel>("Console")->Fatal("Console Fatal Test");
+	}
 }
