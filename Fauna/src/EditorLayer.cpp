@@ -277,10 +277,6 @@ namespace Flora {
 	}
 
 	void EditorLayer::DevEvent() {
-		FL_CORE_ERROR("DEV EVENT FIRED");
-		GetSpecificPanel<ConsolePanel>("Console")->Trace("Console Trace Test");
-		GetSpecificPanel<ConsolePanel>("Console")->Info("Console Info Test");
-		GetSpecificPanel<ConsolePanel>("Console")->Warning("Console Warning Test");
-		GetSpecificPanel<ConsolePanel>("Console")->Fatal("Console Fatal Test");
+		FL_CORE_INFO("DEV EVENT FIRED");
 	}
 }

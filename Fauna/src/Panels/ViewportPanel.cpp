@@ -87,7 +87,11 @@ namespace Flora {
 		if (ImGui::BeginDragDropTarget()) {
 			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM")) {
 				const wchar_t* path = (const wchar_t*)payload->Data;
-				FileUtils::OpenScene(m_EditorContext, std::filesystem::path(g_AssetPath) / path);
+				std::filesystem::path scenePath = std::filesystem::path(g_AssetPath) / path;
+				if (scenePath.extension().string() != ".flora")
+					FL_CORE_ERROR("Not a valid scene file! Please upload a file ending with the .flora extension");
+				else
+					FileUtils::OpenScene(m_EditorContext, scenePath);
 			}
 			ImGui::EndDragDropTarget();
 		}

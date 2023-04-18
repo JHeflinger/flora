@@ -31,6 +31,7 @@ namespace Flora {
 	void FileUtils::OpenScene(Ref<EditorParams> context, const std::filesystem::path& path){
 		NewScene(context);
 		context->ActiveScene->SetSceneFilepath(path.string());
+		context->SelectedEntity = {};
 		Serializer::DeserializeScene(context->ActiveScene, path.string());
 		Serializer::SerializeEditor(context);
 	}

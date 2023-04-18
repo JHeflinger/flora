@@ -66,8 +66,6 @@ TODO:
 
 IN PROGRESS:
 
-	- drag and drop stuff should check if it's the valid filetype, and should pop up an error popup otherwise
-
 	- save scene prompt on close
 
 	- make it so you can double click scenes in content browser to open them
@@ -77,6 +75,8 @@ IN PROGRESS:
 	- clean up content browser (center text, make proper back button, etc)
 
 IMPLEMENTED TICKETS:
+
+	- drag and drop stuff should check if it's the valid filetype, and should pop up an error popup otherwise
 
 	- convert all console messages into an editor console panel
 

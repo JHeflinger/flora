@@ -139,9 +139,13 @@ namespace Flora {
 			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM")) {
 				const wchar_t* path = (const wchar_t*)payload->Data;
 				std::filesystem::path texturePath = std::filesystem::path(g_AssetPath) / path;
-				component.Filename = texturePath.filename().string();
-				component.Path = texturePath.string();
-				component.Texture = Texture2D::Create(texturePath.string());
+				if (texturePath.extension().string() == ".png") {
+					component.Filename = texturePath.filename().string();
+					component.Path = texturePath.string();
+					component.Texture = Texture2D::Create(texturePath.string());
+				} else {
+					FL_CORE_ERROR("Invalid texture type. Please use a .png file");
+				}
 			}
 			ImGui::EndDragDropTarget();
 		}

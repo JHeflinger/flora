@@ -1,11 +1,122 @@
 Scene: Untitled
 Entities:
-  - Entity: 123456
+  - Entity: 6
     TagComponent:
-      Tag: Untitled Entity
+      Tag: RED
     TransformComponent:
-      Translation: [0, 0, 0]
+      Translation: [0, 0, -0.512675524]
       Rotation: [0, 0, 0]
       Scale: [1, 1, 1]
     SpriteRendererComponent:
-      Color: [1, 1, 1, 1]
+      Color: [1, 0, 0, 1]
+      Path: "NULL"
+      Filename: None Selected
+      Type: 0
+      TilingFactor: 1
+      Rows: 1
+      Columns: 1
+      RowCoordinate: 1
+      ColumnCoordinate: 1
+      SubtextureWidth: 1
+      SubtextureHeight: 1
+      Frames: 1
+      StartFrame: 1
+      EndFrame: 1
+      CurrentFrame: 1
+      FPS: 1
+  - Entity: 5
+    TagComponent:
+      Tag: BLUE
+    TransformComponent:
+      Translation: [0, -0.5, 0]
+      Rotation: [1.57079637, 0, 0]
+      Scale: [1, 1, 1]
+    SpriteRendererComponent:
+      Color: [0, 0.0506329536, 1, 1]
+      Path: "NULL"
+      Filename: None Selected
+      Type: 0
+      TilingFactor: 1
+      Rows: 1
+      Columns: 1
+      RowCoordinate: 1
+      ColumnCoordinate: 1
+      SubtextureWidth: 1
+      SubtextureHeight: 1
+      Frames: 1
+      StartFrame: 1
+      EndFrame: 1
+      CurrentFrame: 1
+      FPS: 1
+  - Entity: 4
+    TagComponent:
+      Tag: GREEN
+    TransformComponent:
+      Translation: [0, 0.5, 0]
+      Rotation: [1.5707972, 2.98023224e-08, 0]
+      Scale: [1, 0.999953687, 0.999956191]
+    SpriteRendererComponent:
+      Color: [0.126582384, 1, 0, 1]
+      Path: "NULL"
+      Filename: None Selected
+      Type: 0
+      TilingFactor: 1
+      Rows: 1
+      Columns: 1
+      RowCoordinate: 1
+      ColumnCoordinate: 1
+      SubtextureWidth: 1
+      SubtextureHeight: 1
+      Frames: 1
+      StartFrame: 1
+      EndFrame: 1
+      CurrentFrame: 1
+      FPS: 1
+  - Entity: 3
+    TagComponent:
+      Tag: YELLOW
+    TransformComponent:
+      Translation: [0.840224743, 0, 2.02789749e-08]
+      Rotation: [0, 1.57079637, 0]
+      Scale: [0.99999845, 1, 0.99999845]
+    SpriteRendererComponent:
+      Color: [0.987341762, 1, 0, 1]
+      Path: "NULL"
+      Filename: None Selected
+      Type: 0
+      TilingFactor: 1
+      Rows: 1
+      Columns: 1
+      RowCoordinate: 1
+      ColumnCoordinate: 1
+      SubtextureWidth: 1
+      SubtextureHeight: 1
+      Frames: 1
+      StartFrame: 1
+      EndFrame: 1
+      CurrentFrame: 1
+      FPS: 1
+  - Entity: 2
+    TagComponent:
+      Tag: PURPLE
+    TransformComponent:
+      Translation: [-1.13499355, 0, -3.78485652e-08]
+      Rotation: [0, 1.57079637, 0]
+      Scale: [0.999998271, 1, 0.999998271]
+    SpriteRendererComponent:
+      Color: [0.708860397, 0, 1, 1]
+      Path: "NULL"
+      Filename: None Selected
+      Type: 0
+      TilingFactor: 1
+      Rows: 1
+      Columns: 1
+      RowCoordinate: 1
+      ColumnCoordinate: 1
+      SubtextureWidth: 1
+      SubtextureHeight: 1
+      Frames: 1
+      StartFrame: 1
+      EndFrame: 1
+      CurrentFrame: 1
+      FPS: 1
