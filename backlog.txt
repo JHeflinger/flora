@@ -36,17 +36,11 @@ TODO:
 
 	- standalone runtime and standalone serialization
 
-	- refactor camera component properties layout
-
 	- audio
 
 	- networking
 
-	- tilemap component?
-
 	- optimization for multithreading!
-
-	- subentities (scene hierarhcy doesn't really h"have" hierarchy atm)
 
 	- optick profiler
 
@@ -66,9 +60,13 @@ TODO:
 
 IN PROGRESS:
 
+	- subentities (scene hierarhcy doesn't really "have" hierarchy atm)
+
 	- play button
 
 IMPLEMENTED TICKETS:
+
+	- refactor camera component properties layout
 	
 	- clean up content browser (center text, make proper back button, etc)
 
