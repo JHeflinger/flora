@@ -43,8 +43,5 @@ namespace Flora {
 		entt::entity m_EntityHandle{ entt::null };
 		bool m_Initialized = false;
 		Scene* m_Scene = nullptr;
-	private:
-		Ref<Entity> m_Parent;
-		Ref<Entity> m_Child;
 	};
 }

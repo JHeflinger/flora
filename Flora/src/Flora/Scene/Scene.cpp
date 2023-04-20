@@ -1,11 +1,24 @@
 #include "flpch.h"
 #include "Flora/Scene/Scene.h"
-#include "Flora/Scene/Components.h"
 #include "Flora/Renderer/Renderer2D.h"
 #include "Flora/Scene/Entity.h"
+#include "Flora/Scene/Components.h"
 #include <glm/glm.hpp>
 
 namespace Flora {
+	static void DrawEntitySprite(Entity& entity, bool useTransformRef = false, glm::mat4 refTransform = glm::mat4(0.0f)) {
+		glm::mat4 transform = entity.GetComponent<TransformComponent>().GetTransform();
+		if (useTransformRef) transform = refTransform * transform;
+		Renderer2D::DrawSprite(transform, entity.GetComponent<SpriteRendererComponent>(), (int)(uint32_t)entity);
+		if (entity.HasComponent<ChildComponent>()) {
+			std::vector<Entity> children = entity.GetComponent<ChildComponent>().Children;
+			for (int i = 0; i < children.size(); i++) {
+				if (children[i].HasComponent<SpriteRendererComponent>())
+					DrawEntitySprite(children[i], true, transform);
+			}
+		}
+	}
+
 	Scene::Scene() {
 	}
 
@@ -52,8 +65,9 @@ namespace Flora {
 			Renderer2D::BeginScene(camera);
 			auto group = m_Registry.group<TransformComponent>(entt::get<SpriteRendererComponent>);
 			for (auto entity : group) {
-				auto [transform, sprite] = group.get<TransformComponent, SpriteRendererComponent>(entity);
-				Renderer2D::DrawSprite(transform.GetTransform(), sprite, (int)entity);
+				Entity drawEntity = Entity{ entity, this };
+				if (!drawEntity.HasComponent<ParentComponent>())
+					DrawEntitySprite(drawEntity);
 			}
 			Renderer2D::EndScene();
 		}
@@ -89,8 +103,9 @@ namespace Flora {
 				Renderer2D::BeginScene(primaryCamera->GetProjection(), cameraTransform);
 				auto group = m_Registry.group<TransformComponent>(entt::get<SpriteRendererComponent>);
 				for (auto entity : group) {
-					auto [transform, sprite] = group.get<TransformComponent, SpriteRendererComponent>(entity);
-					Renderer2D::DrawSprite(transform.GetTransform(), sprite, (int)entity);
+					Entity drawEntity = Entity{ entity, this };
+					if (!drawEntity.HasComponent<ParentComponent>())
+						DrawEntitySprite(drawEntity);
 				}
 				Renderer2D::EndScene();
 			}
@@ -141,6 +156,16 @@ namespace Flora {
 
 	template<>
 	void Scene::OnComponentAdded<NativeScriptComponent>(Entity entity, NativeScriptComponent& component) {
+
+	}
+
+	template<>
+	void Scene::OnComponentAdded<ChildComponent>(Entity entity, ChildComponent& component) {
+
+	}
+
+	template<>
+	void Scene::OnComponentAdded<ParentComponent>(Entity entity, ParentComponent& component) {
 
 	}
 

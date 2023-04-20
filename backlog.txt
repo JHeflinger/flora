@@ -60,11 +60,23 @@ TODO:
 
 IN PROGRESS:
 
-	- subentities (scene hierarhcy doesn't really "have" hierarchy atm)
+	- drag entities to modify scene hierarchy
+
+	- subentities should inherit and be relative to parent entities
+
+	- update gizmoz to be use the child transform
 
 	- play button
 
 IMPLEMENTED TICKETS:
+
+	- if a subentity, propertiespanel should give a checkmark option to inherit parent propreties or be relative to
+
+	- subentities (scene hierarhcy doesn't really "have" hierarchy atm)
+
+	- serializer saves parent and child components too
+
+	- add new subentities on right click
 
 	- refactor camera component properties layout
 	
