@@ -66,11 +66,13 @@ TODO:
 
 IN PROGRESS:
 
-	- make it so you can double click scenes in content browser to open them
+	- play button
+
+IMPLEMENTED TICKETS:
 	
 	- clean up content browser (center text, make proper back button, etc)
 
-IMPLEMENTED TICKETS:
+	- make it so you can double click scenes in content browser to open them
 
 	- save scene prompt on close or loading new scene or creating new scene (whenever leaving scene)
 	

@@ -122,19 +122,19 @@ Entities:
       FPS: 1
   - Entity: 1
     TagComponent:
-      Tag: ORANGE
+      Tag: "Sprite      "
     TransformComponent:
-      Translation: [0, 0, -0.5]
+      Translation: [0, 0, 1.18438721]
       Rotation: [0, 0, 0]
-      Scale: [1, 1, 1]
+      Scale: [0.693889976, 1.70634341, 1]
     SpriteRendererComponent:
-      Color: [0, 1, 0.942085028, 1]
-      Path: assets\game\textures\testanim.png
-      Filename: testanim.png
+      Color: [1, 1, 1, 1]
+      Path: assets\game\textures\tilemap.png
+      Filename: tilemap.png
       Type: 2
-      TilingFactor: 6.5999999
-      Rows: 2
-      Columns: 6
+      TilingFactor: 9.19999981
+      Rows: 12
+      Columns: 11
       RowCoordinate: 1
       ColumnCoordinate: 1
       SubtextureWidth: 1

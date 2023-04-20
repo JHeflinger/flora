@@ -181,7 +181,11 @@ namespace Flora {
 	}
 
 	void EditorLayer::RenderSavePrompt() {
-		std::string filepath = GetSpecificPanel<ViewportPanel>("Viewport")->GetRequestedStringPath();
+		std::string filepath = "";
+		if (GetSpecificPanel<ViewportPanel>("Viewport")->IsRequestingOpenScene())
+			filepath = GetSpecificPanel<ViewportPanel>("Viewport")->GetRequestedStringPath();
+		else if (GetSpecificPanel<ContentBrowserPanel>("Content Browser")->IsRequestingOpenScene())
+			filepath = GetSpecificPanel<ContentBrowserPanel>("Content Browser")->GetRequestedStringPath();
 		if (m_SavePromptType != SavePromptType::NONE && !Serializer::IsSceneSaved(m_EditorParams->ActiveScene)) {
 			ImGui::OpenPopup("WARNING");
 			ImVec2 center = ImGui::GetMainViewport()->GetCenter();
@@ -217,6 +221,10 @@ namespace Flora {
 						FileUtils::SaveScene(m_EditorParams);
 						m_SavePromptType = SavePromptType::NONE;
 						FileUtils::OpenScene(m_EditorParams, filepath);
+						if (GetSpecificPanel<ViewportPanel>("Viewport")->IsRequestingOpenScene())
+							GetSpecificPanel<ViewportPanel>("Viewport")->ResolveOpenSceneRequest();
+						else if (GetSpecificPanel<ContentBrowserPanel>("Content Browser")->IsRequestingOpenScene())
+							GetSpecificPanel<ContentBrowserPanel>("Content Browser")->ResolveOpenSceneRequest();
 						break;
 					}					
 					ImGui::CloseCurrentPopup();
@@ -244,6 +252,10 @@ namespace Flora {
 					case SavePromptType::OPENPATH:
 						m_SavePromptType = SavePromptType::NONE;
 						FileUtils::OpenScene(m_EditorParams, filepath);
+						if (GetSpecificPanel<ViewportPanel>("Viewport")->IsRequestingOpenScene())
+							GetSpecificPanel<ViewportPanel>("Viewport")->ResolveOpenSceneRequest();
+						else if (GetSpecificPanel<ContentBrowserPanel>("Content Browser")->IsRequestingOpenScene())
+							GetSpecificPanel<ContentBrowserPanel>("Content Browser")->ResolveOpenSceneRequest();
 						break;
 					}
 					ImGui::CloseCurrentPopup();
@@ -257,6 +269,10 @@ namespace Flora {
 				break;
 			case SavePromptType::OPENPATH:
 				FileUtils::OpenScene(m_EditorParams, filepath);
+				if (GetSpecificPanel<ViewportPanel>("Viewport")->IsRequestingOpenScene())
+					GetSpecificPanel<ViewportPanel>("Viewport")->ResolveOpenSceneRequest();
+				else if (GetSpecificPanel<ContentBrowserPanel>("Content Browser")->IsRequestingOpenScene())
+					GetSpecificPanel<ContentBrowserPanel>("Content Browser")->ResolveOpenSceneRequest();
 				break;
 			case SavePromptType::OPEN:
 				FileUtils::OpenScene(m_EditorParams);
@@ -337,10 +353,8 @@ namespace Flora {
 		}
 
 		// process panel extras
-		if (GetSpecificPanel<ViewportPanel>("Viewport")->IsRequestingOpenScene()) {
+		if (GetSpecificPanel<ViewportPanel>("Viewport")->IsRequestingOpenScene() || GetSpecificPanel<ContentBrowserPanel>("Content Browser")->IsRequestingOpenScene())
 			PromptSave(SavePromptType::OPENPATH);
-			GetSpecificPanel<ViewportPanel>("Viewport")->ResolveOpenSceneRequest();
-		}
 	}
 
 	void EditorLayer::RenderImGuiPanels() {
