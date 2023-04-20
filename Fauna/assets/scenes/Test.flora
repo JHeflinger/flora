@@ -28,9 +28,9 @@ Entities:
     TagComponent:
       Tag: BLUE
     TransformComponent:
-      Translation: [0, -0.5, 0]
+      Translation: [0, 0.019173719, -3.094517e-08]
       Rotation: [1.57079637, 0, 0]
-      Scale: [1, 1, 1]
+      Scale: [1, 0.999995768, 0.999995768]
     SpriteRendererComponent:
       Color: [0, 0.0506329536, 1, 1]
       Path: "NULL"
@@ -52,9 +52,9 @@ Entities:
     TagComponent:
       Tag: GREEN
     TransformComponent:
-      Translation: [0, 0.5, 0]
+      Translation: [-9.7194388e-15, 0.122651078, -3.1488446e-07]
       Rotation: [1.5707972, 2.98023224e-08, 0]
-      Scale: [1, 0.999953687, 0.999956191]
+      Scale: [1, 0.999949634, 0.999952137]
     SpriteRendererComponent:
       Color: [0.126582384, 1, 0, 1]
       Path: "NULL"

@@ -124,9 +124,9 @@ Entities:
     TagComponent:
       Tag: ORANGE
     TransformComponent:
-      Translation: [-0.0208294392, -1.23999596, -0.5]
-      Rotation: [-0.724883556, 0, 0]
-      Scale: [1, 0.999999881, 0.999999881]
+      Translation: [0, 0, -0.5]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
     SpriteRendererComponent:
       Color: [0, 1, 0.942085028, 1]
       Path: assets\game\textures\testanim.png

@@ -220,6 +220,7 @@ namespace Flora {
 						break;
 					}					
 					ImGui::CloseCurrentPopup();
+					m_EditorParams->Time = 0;
 				}
 				ImGui::SameLine();
 				if (ImGui::Button("NO", { 60, 25 })) {
@@ -238,6 +239,7 @@ namespace Flora {
 					case SavePromptType::NEW:
 						m_SavePromptType = SavePromptType::NONE;
 						FileUtils::NewScene(m_EditorParams);
+						m_EditorParams->Time = 0;
 						break;
 					case SavePromptType::OPENPATH:
 						m_SavePromptType = SavePromptType::NONE;
@@ -261,6 +263,7 @@ namespace Flora {
 				break;
 			case SavePromptType::NEW:
 				FileUtils::NewScene(m_EditorParams);
+				m_EditorParams->Time = 0;
 				break;
 			}
 			m_SavePromptType = SavePromptType::NONE;

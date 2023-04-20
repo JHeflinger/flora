@@ -144,7 +144,7 @@ namespace Flora {
 					component.Path = texturePath.string();
 					component.Texture = Texture2D::Create(texturePath.string());
 				} else {
-					FL_CORE_ASSERT(false, "Invalid texture type. Please use a .png file");
+					FL_CORE_ERROR("Invalid texture type. Please use a .png file");
 				}
 			}
 			ImGui::EndDragDropTarget();
