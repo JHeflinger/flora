@@ -37,6 +37,8 @@ namespace Flora {
 
 		m_LayerStack.PushLayer(layer);
 		layer->OnAttatch();
+
+		if (layer->RequestCloseProtection()) m_ProtectClose = true;
 	}
 
 	void Application::PushOverlay(Layer* layer) {
@@ -62,12 +64,17 @@ namespace Flora {
 	void Application::Run() {
 		FL_PROFILE_FUNCTION();
 
-		while (m_Running) {
+		while (m_Running || m_ProtectClose) {
 			FL_PROFILE_SCOPE("Runloop");
 
 			float time = (float)glfwGetTime();
 			Timestep timestep = time - m_LastFrameTime;
 			m_LastFrameTime = time;
+
+			if (m_ProtectClose)
+				for (Layer* layer : m_LayerStack)
+					if (layer->ConfirmClose())
+						m_ProtectClose = false;
 
 			if (!m_Minimized) {
 				{
@@ -95,6 +102,8 @@ namespace Flora {
 
 	bool Application::OnWindowClosed(WindowCloseEvent& e) {
 		m_Running = false;
+		for (Layer* layer : m_LayerStack)
+			layer->ProcessWindowClose();
 		return true;
 	}
 

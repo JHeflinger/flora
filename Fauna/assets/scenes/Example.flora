@@ -78,7 +78,7 @@ Entities:
     TransformComponent:
       Translation: [0.5, 0, 0]
       Rotation: [0, 1.57079637, 0]
-      Scale: [1, 1, 1]
+      Scale: [0.999995887, 1, 0.999995887]
     SpriteRendererComponent:
       Color: [0.987341762, 1, 0, 1]
       Path: "NULL"
@@ -102,7 +102,7 @@ Entities:
     TransformComponent:
       Translation: [-0.5, 0, 0]
       Rotation: [0, 1.57079637, 0]
-      Scale: [1, 1, 1]
+      Scale: [0.999992371, 1, 0.999992371]
     SpriteRendererComponent:
       Color: [0.708860397, 0, 1, 1]
       Path: "NULL"
@@ -124,7 +124,7 @@ Entities:
     TagComponent:
       Tag: ORANGE
     TransformComponent:
-      Translation: [-0.0208294392, -0.0806665421, -0.5]
+      Translation: [-0.0208294392, -1.23999596, -0.5]
       Rotation: [-0.724883556, 0, 0]
       Scale: [1, 0.999999881, 0.999999881]
     SpriteRendererComponent:
@@ -136,13 +136,13 @@ Entities:
       Rows: 2
       Columns: 6
       RowCoordinate: 1
-      ColumnCoordinate: 5
+      ColumnCoordinate: 1
       SubtextureWidth: 1
       SubtextureHeight: 1
       Frames: 12
       StartFrame: 1
       EndFrame: 12
-      CurrentFrame: 5
+      CurrentFrame: 1
       FPS: 12
     NativeScriptComponent:
       Path: assets\scripts\BasicController.h

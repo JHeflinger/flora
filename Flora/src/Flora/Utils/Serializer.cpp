@@ -119,14 +119,22 @@ namespace Flora {
 			out << YAML::Key << "TilingFactor" << YAML::Value << spriteRendererComponent.TilingFactor;
 			out << YAML::Key << "Rows" << YAML::Value << spriteRendererComponent.Rows;
 			out << YAML::Key << "Columns" << YAML::Value << spriteRendererComponent.Columns;
-			out << YAML::Key << "RowCoordinate" << YAML::Value << spriteRendererComponent.RowCoordinate;
-			out << YAML::Key << "ColumnCoordinate" << YAML::Value << spriteRendererComponent.ColumnCoordinate;
+
+			// accomodate for variances in sprite animation for comparisons
+			if (spriteRendererComponent.Type != SpriteRendererComponent::SpriteType::ANIMATION) {
+				out << YAML::Key << "RowCoordinate" << YAML::Value << spriteRendererComponent.RowCoordinate;
+				out << YAML::Key << "ColumnCoordinate" << YAML::Value << spriteRendererComponent.ColumnCoordinate;
+			} else {
+				out << YAML::Key << "RowCoordinate" << YAML::Value << 1;
+				out << YAML::Key << "ColumnCoordinate" << YAML::Value << 1;
+			}
+
 			out << YAML::Key << "SubtextureWidth" << YAML::Value << spriteRendererComponent.SubtextureWidth;
 			out << YAML::Key << "SubtextureHeight" << YAML::Value << spriteRendererComponent.SubtextureHeight;
 			out << YAML::Key << "Frames" << YAML::Value << spriteRendererComponent.Frames;
 			out << YAML::Key << "StartFrame" << YAML::Value << spriteRendererComponent.StartFrame;
 			out << YAML::Key << "EndFrame" << YAML::Value << spriteRendererComponent.EndFrame;
-			out << YAML::Key << "CurrentFrame" << YAML::Value << spriteRendererComponent.CurrentFrame;
+			out << YAML::Key << "CurrentFrame" << YAML::Value << spriteRendererComponent.StartFrame;
 			out << YAML::Key << "FPS" << YAML::Value << spriteRendererComponent.FPS;
 			out << YAML::EndMap;
 		}
@@ -143,7 +151,12 @@ namespace Flora {
 		out << YAML::EndMap;
 	}
 
-	void Serializer::SerializeScene(Ref<Scene>& scene, const std::string& filepath) {
+	void Serializer::SerializeFile(const std::string content, const std::string& filepath) {
+		std::ofstream fout(filepath);
+		fout << content.c_str();
+	}
+
+	std::string Serializer::SerializeScene(Ref<Scene>& scene) {
 		YAML::Emitter out;
 		out << YAML::BeginMap;
 		out << YAML::Key << "Scene" << YAML::Value << "Untitled";
@@ -156,16 +169,16 @@ namespace Flora {
 		out << YAML::EndSeq;
 		out << YAML::EndMap;
 
-		std::ofstream fout(filepath);
-		fout << out.c_str();
+		return std::string(out.c_str());
 	}
 
-	void Serializer::SerializeRuntime() {
+	std::string Serializer::SerializeRuntime() {
 		// not implemented yet!
 		FL_CORE_ASSERT(false);
+		return "";
 	}
 
-	void Serializer::SerializeEditor(Ref<EditorParams> params, const std::string& filepath) {
+	std::string Serializer::SerializeEditor(Ref<EditorParams> params) {
 		int selectedEntity = -1;
 		if (params->SelectedEntity)
 			selectedEntity = (int)(uint32_t)params->SelectedEntity;
@@ -202,8 +215,8 @@ namespace Flora {
 		out << YAML::EndSeq;
 
 		out << YAML::EndMap;
-		std::ofstream fout(filepath);
-		fout << out.c_str();
+		
+		return std::string(out.c_str());
 	}
 
 	bool Serializer::DeserializeScene(Ref<Scene>& scene, const std::string& filepath) {
@@ -344,5 +357,16 @@ namespace Flora {
 			params->SelectedEntity = params->ActiveScene->GetEntityFromID((uint32_t)entityID);
 
 		return success;
+	}
+
+	bool Serializer::IsSceneSaved(Ref<Scene>& scene) {
+		// forgot to make it so time resets wne u save btw
+		std::ifstream file(scene->m_SceneFilepath);
+		if (file.is_open()) {
+			std::string newSceneContent = SerializeScene(scene);
+			std::string oldSceneContent((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
+			return newSceneContent == oldSceneContent;
+		}
+		return false;
 	}
 }

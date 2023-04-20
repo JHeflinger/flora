@@ -47,9 +47,6 @@ namespace Flora {
 	}
 
 	void EditorLayer::OnDetatch() {
-		// Save editor settings
-		Serializer::SerializeEditor(m_EditorParams);
-		FL_CORE_INFO("Saved editor settings");
 	}
 
 	void EditorLayer::OnUpdate(Timestep ts) {
@@ -114,19 +111,21 @@ namespace Flora {
 		if (ImGui::BeginMenuBar()) {
 			if (ImGui::BeginMenu("Scene")) {
 				if (ImGui::MenuItem("New", "Ctrl+N")) {
-					FileUtils::NewScene(m_EditorParams);
+					PromptSave(SavePromptType::NEW);
 				}
 
 				if (ImGui::MenuItem("Open...", "Ctrl+O")) {
-					FileUtils::OpenScene(m_EditorParams);
+					PromptSave(SavePromptType::OPEN);
 				}
 
 				if (ImGui::MenuItem("Save As...", "Ctrl+Shift+S	")) {
 					FileUtils::SaveSceneAs(m_EditorParams);
+					m_EditorParams->Time = 0;
 				}
 
 				if (ImGui::MenuItem("Save", "Ctrl+S")) {
 					FileUtils::SaveScene(m_EditorParams);
+					m_EditorParams->Time = 0;
 				}
 
 				ImGui::EndMenu();
@@ -144,6 +143,13 @@ namespace Flora {
 				ImGui::EndMenu();
 			}
 
+			ImGui::SameLine(ImGui::GetWindowSize().x);
+			std::string lastSaved = "Last Saved " + GetLastSavedString() + " ago";
+			ImGui::SetCursorPosX(ImGui::GetCursorPosX() - ImGui::CalcTextSize(lastSaved.c_str()).x - 10);
+			ImGui::PushStyleColor(ImGuiCol_Text, {0.6, 0.6, 0.6, 1});
+			ImGui::Text(lastSaved.c_str());
+			ImGui::PopStyleColor();
+
 			ImGui::EndMenuBar();
 		}
 
@@ -152,7 +158,19 @@ namespace Flora {
 		// Panels
 		RenderImGuiPanels();
 
+		// Prompt Save
+		RenderSavePrompt();
+
 		ImGui::End();
+	}
+
+	void EditorLayer::ProcessWindowClose() {
+		// Save editor settings
+		Serializer::SerializeEditor(m_EditorParams);
+		FL_CORE_INFO("Saved editor settings");
+
+		// Prompt save
+		PromptSave(SavePromptType::FINAL);
 	}
 
 	void EditorLayer::OnEvent(Event& e) {
@@ -160,6 +178,93 @@ namespace Flora {
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<KeyPressedEvent>(FL_BIND_EVENT_FN(EditorLayer::OnKeyPressed));
 		dispatcher.Dispatch<MouseButtonPressedEvent>(FL_BIND_EVENT_FN(EditorLayer::OnMouseButtonPressed));
+	}
+
+	void EditorLayer::RenderSavePrompt() {
+		std::string filepath = GetSpecificPanel<ViewportPanel>("Viewport")->GetRequestedStringPath();
+		if (m_SavePromptType != SavePromptType::NONE && !Serializer::IsSceneSaved(m_EditorParams->ActiveScene)) {
+			ImGui::OpenPopup("WARNING");
+			ImVec2 center = ImGui::GetMainViewport()->GetCenter();
+			ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
+			if (ImGui::BeginPopupModal("WARNING", NULL, ImGuiWindowFlags_AlwaysAutoResize)) {
+				ImGui::SetItemDefaultFocus();
+				ImGui::Text("You have not saved this scene! Would you like to save first?\n\n");
+				ImGui::Separator();
+				ImGui::Dummy({ 0, 3 });
+				if (ImGui::Button("YES", { 60, 25 })) {
+					switch (m_SavePromptType) {
+					case SavePromptType::NORM:
+						FileUtils::SaveScene(m_EditorParams);
+						m_EditorParams->Time = 0;
+						m_SavePromptType = SavePromptType::NONE;
+						break;
+					case SavePromptType::FINAL:
+						FileUtils::SaveScene(m_EditorParams);
+						m_SavePromptType = SavePromptType::NONE;
+						m_ReadyToClose = true;
+						break;
+					case SavePromptType::OPEN:
+						FileUtils::SaveScene(m_EditorParams);
+						m_SavePromptType = SavePromptType::NONE;
+						FileUtils::OpenScene(m_EditorParams);
+						break;
+					case SavePromptType::NEW:
+						FileUtils::SaveScene(m_EditorParams);
+						m_SavePromptType = SavePromptType::NONE;
+						FileUtils::NewScene(m_EditorParams);
+						break;
+					case SavePromptType::OPENPATH:
+						FileUtils::SaveScene(m_EditorParams);
+						m_SavePromptType = SavePromptType::NONE;
+						FileUtils::OpenScene(m_EditorParams, filepath);
+						break;
+					}					
+					ImGui::CloseCurrentPopup();
+				}
+				ImGui::SameLine();
+				if (ImGui::Button("NO", { 60, 25 })) {
+					switch (m_SavePromptType) {
+					case SavePromptType::NORM:
+						m_SavePromptType = SavePromptType::NONE;
+						break;
+					case SavePromptType::FINAL:
+						m_SavePromptType = SavePromptType::NONE;
+						m_ReadyToClose = true;
+						break;
+					case SavePromptType::OPEN:
+						m_SavePromptType = SavePromptType::NONE;
+						FileUtils::OpenScene(m_EditorParams);
+						break;
+					case SavePromptType::NEW:
+						m_SavePromptType = SavePromptType::NONE;
+						FileUtils::NewScene(m_EditorParams);
+						break;
+					case SavePromptType::OPENPATH:
+						m_SavePromptType = SavePromptType::NONE;
+						FileUtils::OpenScene(m_EditorParams, filepath);
+						break;
+					}
+					ImGui::CloseCurrentPopup();
+				}
+				ImGui::EndPopup();
+			}
+		} else {
+			switch (m_SavePromptType) {
+			case SavePromptType::FINAL:
+				m_ReadyToClose = true;
+				break;
+			case SavePromptType::OPENPATH:
+				FileUtils::OpenScene(m_EditorParams, filepath);
+				break;
+			case SavePromptType::OPEN:
+				FileUtils::OpenScene(m_EditorParams);
+				break;
+			case SavePromptType::NEW:
+				FileUtils::NewScene(m_EditorParams);
+				break;
+			}
+			m_SavePromptType = SavePromptType::NONE;
+		}
 	}
 
 	bool EditorLayer::OnKeyPressed(KeyPressedEvent& e) {
@@ -211,10 +316,27 @@ namespace Flora {
 		}
 	}
 
+	std::string EditorLayer::GetLastSavedString() {
+		float time = m_EditorParams->Time;
+		std::stringstream ss;
+		if (time < 60.0)
+			ss << (int)time << " seconds";
+		else if (time / 60.0f < 60.0)
+			ss << (int)(time / 60.0f) << " minutes";
+		else ss << (int)(time / 3600.0f) << " hours";
+		return ss.str();
+	}
+
 	void EditorLayer::UpdatePanels() {
 		for (auto& panel : m_Panels) {
 			if (panel.second->m_Enabled)
 				panel.second->OnUpdate();
+		}
+
+		// process panel extras
+		if (GetSpecificPanel<ViewportPanel>("Viewport")->IsRequestingOpenScene()) {
+			PromptSave(SavePromptType::OPENPATH);
+			GetSpecificPanel<ViewportPanel>("Viewport")->ResolveOpenSceneRequest();
 		}
 	}
 
@@ -240,6 +362,7 @@ namespace Flora {
 
 		m_EditorParams->EditorCamera.OnUpdate(ts);
 		m_EditorParams->ActiveScene->OnUpdateEditor(ts, m_EditorParams->EditorCamera);
+		m_EditorParams->Time += ts.GetSeconds();
 	}
 
 	void EditorLayer::AutoSaveEditor(Timestep ts) {
@@ -260,12 +383,14 @@ namespace Flora {
 			bool shift = Input::IsKeyPressed(Key::LeftShift) || Input::IsKeyPressed(Key::RightShift);
 			if (control && shift && Input::IsKeyPressed(Key::S)) {
 				FileUtils::SaveSceneAs(m_EditorParams);
+				m_EditorParams->Time = 0;
 			} else if (control && Input::IsKeyPressed(Key::S)) {
 				FileUtils::SaveScene(m_EditorParams);
+				m_EditorParams->Time = 0;
 			} else if (control && Input::IsKeyPressed(Key::N)) {
-				FileUtils::NewScene(m_EditorParams);
+				PromptSave(SavePromptType::NEW);
 			} else if (control && Input::IsKeyPressed(Key::O)) {
-				FileUtils::OpenScene(m_EditorParams);
+				PromptSave(SavePromptType::OPEN);
 			} else if (Input::IsKeyPressed(Key::Backslash)) {
 				DevEvent();
 			} else {
@@ -278,5 +403,6 @@ namespace Flora {
 
 	void EditorLayer::DevEvent() {
 		FL_CORE_INFO("DEV EVENT FIRED");
+		Serializer::IsSceneSaved(m_EditorParams->ActiveScene);
 	}
 }

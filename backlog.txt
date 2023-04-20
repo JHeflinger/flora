@@ -66,15 +66,15 @@ TODO:
 
 IN PROGRESS:
 
-	- save scene prompt on close or loading new scene or creating new scene (whenever leaving scene)
-
 	- make it so you can double click scenes in content browser to open them
-	
-	- show when scene was last saved
 	
 	- clean up content browser (center text, make proper back button, etc)
 
 IMPLEMENTED TICKETS:
+
+	- save scene prompt on close or loading new scene or creating new scene (whenever leaving scene)
+	
+	- show when scene was last saved
 
 	- drag and drop stuff should check if it's the valid filetype, and should pop up an error popup otherwise
 

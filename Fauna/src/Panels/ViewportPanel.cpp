@@ -89,9 +89,10 @@ namespace Flora {
 				const wchar_t* path = (const wchar_t*)payload->Data;
 				std::filesystem::path scenePath = std::filesystem::path(g_AssetPath) / path;
 				if (scenePath.extension().string() != ".flora")
-					FL_CORE_ERROR("Not a valid scene file! Please upload a file ending with the .flora extension");
-				else
-					FileUtils::OpenScene(m_EditorContext, scenePath);
+					FL_CORE_ERROR("Not a valid scene file! Please upload a file ending with the .flora extension"); //convert later to popup maybe
+				else {
+					RequestOpenScene(scenePath.string());
+				}
 			}
 			ImGui::EndDragDropTarget();
 		}

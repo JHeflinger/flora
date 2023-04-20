@@ -11,10 +11,15 @@
 #include <map>
 
 namespace Flora {
+	enum class SavePromptType { NONE = 0, NORM = 1, FINAL = 2, OPEN = 3, NEW = 4, OPENPATH = 5};
+
 	class EditorLayer : public Layer {
 	public:
 		EditorLayer();
 		virtual ~EditorLayer() = default;
+		virtual bool RequestCloseProtection() override { return true; }
+		virtual bool ConfirmClose() override { return m_ReadyToClose; }
+		virtual void ProcessWindowClose() override;
 		virtual void OnAttatch() override;
 		virtual void OnDetatch() override;
 		void OnUpdate(Timestep ts) override;
@@ -31,6 +36,9 @@ namespace Flora {
 		void RenderImGuiPanels();
 		void UpdateEditorParams(Timestep ts);
 		void AutoSaveEditor(Timestep ts);
+		std::string GetLastSavedString();
+		void PromptSave(SavePromptType type) { m_SavePromptType = type; }
+		void RenderSavePrompt();
 	private:
 		void DevEvent();
 	private:
@@ -42,6 +50,12 @@ namespace Flora {
 
 		// OverrideEvent - temp solution
 		bool m_OverrideEventReady = true;
+
+		// save prompt vars
+		SavePromptType m_SavePromptType = SavePromptType::NONE;
+
+		// process before close var
+		bool m_ReadyToClose = false;
 
 		// Serializer Settings
 		Ref<EditorParams> m_EditorParams;

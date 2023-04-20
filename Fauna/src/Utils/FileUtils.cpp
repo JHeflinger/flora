@@ -14,14 +14,16 @@ namespace Flora {
 	void FileUtils::SaveSceneAs(Ref<EditorParams> context){
 		std::string filepath = FileDialogs::SaveFile("Flora Scene (*.flora)\0*.flora\0");
 		if (!filepath.empty()) {
-			Serializer::SerializeScene(context->ActiveScene, filepath);
+			std::string sceneContent = Serializer::SerializeScene(context->ActiveScene);
+			Serializer::SerializeFile(sceneContent, filepath);
 		}
 	}
 
 	void FileUtils::SaveScene(Ref<EditorParams> context){
 		std::string sceneFilepath = context->ActiveScene->GetSceneFilepath();
 		if (sceneFilepath != "NULL") {
-			Serializer::SerializeScene(context->ActiveScene, sceneFilepath);
+			std::string sceneContent = Serializer::SerializeScene(context->ActiveScene);
+			Serializer::SerializeFile(sceneContent, sceneFilepath);
 		}
 		else {
 			SaveSceneAs(context);
@@ -33,7 +35,8 @@ namespace Flora {
 		context->ActiveScene->SetSceneFilepath(path.string());
 		context->SelectedEntity = {};
 		Serializer::DeserializeScene(context->ActiveScene, path.string());
-		Serializer::SerializeEditor(context);
+		std::string editorContent = Serializer::SerializeEditor(context);
+		Serializer::SerializeFile(editorContent, "assets/settings/fauna.fnproj");
 	}
 
 	void FileUtils::NewScene(Ref<EditorParams> context){

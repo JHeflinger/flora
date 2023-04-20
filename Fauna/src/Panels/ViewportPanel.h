@@ -16,11 +16,19 @@ namespace Flora {
 		bool ViewportHovered() const { return m_ViewportHovered; }
 		bool ViewportFocused() const { return m_ViewportFocused; }
 		Entity GetHoveredEntity() const { return m_HoveredEntity; }
+	public:
+		void RequestOpenScene(std::string filepath) { m_OpenNewScene = true; newScenePath = filepath; }
+		bool IsRequestingOpenScene() { return m_OpenNewScene; }
+		void ResolveOpenSceneRequest() { m_OpenNewScene = false; }
+		std::string GetRequestedStringPath() { return newScenePath; }
 	private:
 		Ref<Framebuffer> m_Framebuffer;
 		glm::vec2 m_ViewportSize = { 0, 0 };
 		glm::vec2 m_ViewportBounds[2];
 		bool m_ViewportFocused, m_ViewportHovered = false;
 		Entity m_HoveredEntity;
+	private:
+		bool m_OpenNewScene = false;
+		std::string newScenePath = "";
 	};
 }

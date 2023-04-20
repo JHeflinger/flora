@@ -8,6 +8,9 @@ namespace Flora {
 	public:
 		Layer(const std::string& name = "Layer");
 		virtual ~Layer();
+		virtual bool RequestCloseProtection() { return false; }
+		virtual bool ConfirmClose() { return false; }
+		virtual void ProcessWindowClose() {};
 		virtual void OnAttatch() {}
 		virtual void OnDetatch() {}
 		virtual void OnUpdate(Timestep ts) {}
