@@ -206,13 +206,9 @@ namespace Flora {
 				ImGui::SetColumnWidth(0, 150.0f);
 				ImGui::Dummy(ImVec2(0, 8.0f));
 				ImGui::Text("Inherit Transform");
-				ImGui::Dummy(ImVec2(0, 10.0f));
-				ImGui::Text("Inherit Scripts");
 				ImGui::NextColumn();
 				ImGui::Dummy(ImVec2(0, 5.0f));
 				ImGui::Checkbox("##InheritTransform", &component.InheritTransform);
-				ImGui::Dummy(ImVec2(0, 5.0f));
-				ImGui::Checkbox("##InheritScripts", &component.InheritScripts);
 				ImGui::Columns(1);
 				ImGui::TreePop();
 				if (component.InheritAll)

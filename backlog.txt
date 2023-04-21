@@ -62,13 +62,15 @@ IN PROGRESS:
 
 	- drag entities to modify scene hierarchy
 
-	- subentities should inherit and be relative to parent entities
-
-	- update gizmoz to be use the child transform
+	- nativescript component should allow multiple scripts or should allow to have multiple native script components
 
 	- play button
 
 IMPLEMENTED TICKETS:
+
+	- subentities should inherit and be relative to parent entities
+
+	- update gizmoz to be use the child transform
 
 	- if a subentity, propertiespanel should give a checkmark option to inherit parent propreties or be relative to
 

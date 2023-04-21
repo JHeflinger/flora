@@ -95,6 +95,5 @@ namespace Flora {
 		Entity Parent;
 		bool InheritAll = true;
 		bool InheritTransform = true;
-		bool InheritScripts = true;
 	};
 }

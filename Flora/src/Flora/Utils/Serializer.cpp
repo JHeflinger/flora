@@ -155,7 +155,6 @@ namespace Flora {
 			out << YAML::Key << "Parent" << YAML::Value << (uint32_t)parentComponent.Parent;
 			out << YAML::Key << "InheritAll" << YAML::Value << parentComponent.InheritAll;
 			out << YAML::Key << "InheritTransform" << YAML::Value << parentComponent.InheritTransform;
-			out << YAML::Key << "InheritScripts" << YAML::Value << parentComponent.InheritScripts;
 			out << YAML::EndMap;
 		}
 
@@ -329,7 +328,6 @@ namespace Flora {
 					auto& pc = deserializedEntity.AddComponent<ParentComponent>();
 					pc.Parent = Entity{ (entt::entity)parentComponent["Parent"].as<uint32_t>(), scene.get() };
 					pc.InheritAll = parentComponent["InheritAll"].as<bool>();
-					pc.InheritScripts = parentComponent["InheritScripts"].as<bool>();
 					pc.InheritTransform = parentComponent["InheritTransform"].as<bool>();
 				}
 

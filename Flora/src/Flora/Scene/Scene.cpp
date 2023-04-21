@@ -13,8 +13,10 @@ namespace Flora {
 		if (entity.HasComponent<ChildComponent>()) {
 			std::vector<Entity> children = entity.GetComponent<ChildComponent>().Children;
 			for (int i = 0; i < children.size(); i++) {
-				if (children[i].HasComponent<SpriteRendererComponent>())
-					DrawEntitySprite(children[i], true, transform);
+				if (children[i].HasComponent<SpriteRendererComponent>()) {
+					bool useParentTransform = children[i].GetComponent<ParentComponent>().InheritAll || (!children[i].GetComponent<ParentComponent>().InheritAll && children[i].GetComponent<ParentComponent>().InheritTransform);
+					DrawEntitySprite(children[i], useParentTransform, transform);
+				}
 			}
 		}
 	}
