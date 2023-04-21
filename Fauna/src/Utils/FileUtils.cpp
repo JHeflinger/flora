@@ -42,6 +42,7 @@ namespace Flora {
 	void FileUtils::NewScene(Ref<EditorParams> context){
 		context->ActiveScene = CreateRef<Scene>();
 		context->ActiveScene->SetSceneFilepath("NULL");
+		context->SelectedEntity = {};
 		context->Resized = false;
 	}
 }

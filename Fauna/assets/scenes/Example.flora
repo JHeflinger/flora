@@ -1,5 +1,44 @@
 Scene: Untitled
 Entities:
+  - Entity: 1048586
+    TagComponent:
+      Tag: Grandchild 1
+    TransformComponent:
+      Translation: [-3.7252903e-07, 0, -0.348020792]
+      Rotation: [0, 1.05054942e-13, 0]
+      Scale: [3.11122584, 1, 1]
+    SpriteRendererComponent:
+      Color: [1, 1, 1, 1]
+      Path: "NULL"
+      Filename: None Selected
+      Type: 0
+      TilingFactor: 1
+      Rows: 1
+      Columns: 1
+      RowCoordinate: 1
+      ColumnCoordinate: 1
+      SubtextureWidth: 1
+      SubtextureHeight: 1
+      Frames: 1
+      StartFrame: 1
+      EndFrame: 1
+      CurrentFrame: 1
+      FPS: 1
+    ParentComponent:
+      Parent: 1048576
+      InheritAll: true
+      InheritTransform: true
+  - Entity: 1048585
+    TagComponent:
+      Tag: Child 2
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    ParentComponent:
+      Parent: 2
+      InheritAll: true
+      InheritTransform: true
   - Entity: 6
     TagComponent:
       Tag: RED
@@ -120,11 +159,14 @@ Entities:
       EndFrame: 1
       CurrentFrame: 1
       FPS: 1
+    ChildComponent:
+      - 1048576
+      - 1048585
   - Entity: 1
     TagComponent:
       Tag: "Sprite      "
     TransformComponent:
-      Translation: [0, 0, 1.18438721]
+      Translation: [-0.0613897443, -0.0554478541, -0.207925186]
       Rotation: [0, 0, 0]
       Scale: [0.693889976, 1.70634341, 1]
     SpriteRendererComponent:
@@ -144,6 +186,36 @@ Entities:
       EndFrame: 12
       CurrentFrame: 1
       FPS: 12
+  - Entity: 1048576
+    TagComponent:
+      Tag: Child 1
+    TransformComponent:
+      Translation: [0.0787353516, 0.0913697854, -0.403152347]
+      Rotation: [0, 5.19082173e-13, 0]
+      Scale: [0.379854351, 0.355009854, 0.999993563]
+    SpriteRendererComponent:
+      Color: [1, 1, 1, 1]
+      Path: "NULL"
+      Filename: None Selected
+      Type: 0
+      TilingFactor: 1
+      Rows: 1
+      Columns: 1
+      RowCoordinate: 1
+      ColumnCoordinate: 1
+      SubtextureWidth: 1
+      SubtextureHeight: 1
+      Frames: 1
+      StartFrame: 1
+      EndFrame: 1
+      CurrentFrame: 1
+      FPS: 1
     NativeScriptComponent:
       Path: assets\scripts\BasicController.h
       Filename: BasicController.h
+    ParentComponent:
+      Parent: 2
+      InheritAll: true
+      InheritTransform: true
+    ChildComponent:
+      - 1048586

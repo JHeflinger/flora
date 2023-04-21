@@ -148,6 +148,25 @@ namespace Flora {
 			out << YAML::EndMap;
 		}
 
+		if (entity.HasComponent<ParentComponent>()) {
+			out << YAML::Key << "ParentComponent";
+			out << YAML::BeginMap;
+			auto& parentComponent = entity.GetComponent<ParentComponent>();
+			out << YAML::Key << "Parent" << YAML::Value << (uint32_t)parentComponent.Parent;
+			out << YAML::Key << "InheritAll" << YAML::Value << parentComponent.InheritAll;
+			out << YAML::Key << "InheritTransform" << YAML::Value << parentComponent.InheritTransform;
+			out << YAML::EndMap;
+		}
+
+		if (entity.HasComponent<ChildComponent>()) {
+			out << YAML::Key << "ChildComponent";
+			auto& childComponent = entity.GetComponent<ChildComponent>();
+			out << YAML::BeginSeq;
+			for (int i = 0; i < childComponent.Children.size(); i++)
+				out << (uint32_t)childComponent.Children[i];
+			out << YAML::EndSeq;
+		}
+
 		out << YAML::EndMap;
 	}
 
@@ -302,6 +321,21 @@ namespace Flora {
 					nsc.Path = nativeScriptComponent["Path"].as<std::string>();
 					nsc.Filename = nativeScriptComponent["Filename"].as<std::string>();
 					BindScriptToComponent(nsc, std::filesystem::path(nsc.Path).filename().stem().string());
+				}
+
+				auto parentComponent = entity["ParentComponent"];
+				if (parentComponent) {
+					auto& pc = deserializedEntity.AddComponent<ParentComponent>();
+					pc.Parent = Entity{ (entt::entity)parentComponent["Parent"].as<uint32_t>(), scene.get() };
+					pc.InheritAll = parentComponent["InheritAll"].as<bool>();
+					pc.InheritTransform = parentComponent["InheritTransform"].as<bool>();
+				}
+
+				auto childComponent = entity["ChildComponent"];
+				if (childComponent) {
+					auto& cc = deserializedEntity.AddComponent<ChildComponent>();
+					for (auto child : childComponent)
+						cc.AddChild(Entity{ (entt::entity)child.as<uint32_t>(), scene.get() });
 				}
 			}
 		}

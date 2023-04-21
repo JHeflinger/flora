@@ -1,11 +1,26 @@
 #include "flpch.h"
 #include "Flora/Scene/Scene.h"
-#include "Flora/Scene/Components.h"
 #include "Flora/Renderer/Renderer2D.h"
 #include "Flora/Scene/Entity.h"
+#include "Flora/Scene/Components.h"
 #include <glm/glm.hpp>
 
 namespace Flora {
+	static void DrawEntitySprite(Entity& entity, bool useTransformRef = false, glm::mat4 refTransform = glm::mat4(0.0f)) {
+		glm::mat4 transform = entity.GetComponent<TransformComponent>().GetTransform();
+		if (useTransformRef) transform = refTransform * transform;
+		Renderer2D::DrawSprite(transform, entity.GetComponent<SpriteRendererComponent>(), (int)(uint32_t)entity);
+		if (entity.HasComponent<ChildComponent>()) {
+			std::vector<Entity> children = entity.GetComponent<ChildComponent>().Children;
+			for (int i = 0; i < children.size(); i++) {
+				if (children[i].HasComponent<SpriteRendererComponent>()) {
+					bool useParentTransform = children[i].GetComponent<ParentComponent>().InheritAll || (!children[i].GetComponent<ParentComponent>().InheritAll && children[i].GetComponent<ParentComponent>().InheritTransform);
+					DrawEntitySprite(children[i], useParentTransform, transform);
+				}
+			}
+		}
+	}
+
 	Scene::Scene() {
 	}
 
@@ -32,19 +47,42 @@ namespace Flora {
 		m_Registry.destroy(entity);
 	}
 
+	bool Scene::EntityExists(uint32_t entityID) {
+		return m_Registry.valid((entt::entity)entityID);
+	}
+
+	void Scene::UpdateScripts(Timestep ts) {
+		// update native scripts
+		m_Registry.view<NativeScriptComponent>().each([=](auto entity, auto& nsc) {
+			if (nsc.Bound) {
+				if (!nsc.Instance) {
+					nsc.Instance = nsc.InstantiateScript();
+					nsc.Instance->m_Entity = Entity{ entity, this };
+					nsc.Instance->OnCreate();
+				}
+				nsc.Instance->OnUpdate(ts);
+			}
+		});
+
+		// script manager
+		m_Registry.view<ScriptManagerComponent>().each([=](auto entity, auto& smc) {
+			for (int i = 0; i < smc.NativeScripts.size(); i++) {
+				if (smc.NativeScripts[i].Bound) {
+					if (!smc.NativeScripts[i].Instance) {
+						smc.NativeScripts[i].Instance = smc.NativeScripts[i].InstantiateScript();
+						smc.NativeScripts[i].Instance->m_Entity = Entity{ entity, this };
+						smc.NativeScripts[i].Instance->OnCreate();
+					}
+					smc.NativeScripts[i].Instance->OnUpdate(ts);
+				}
+			}
+		});
+	}
+
 	void Scene::OnUpdateEditor(Timestep ts, EditorCamera& camera) {
 		// Update Scripts
 		if (m_ViewportHovered) {
-			m_Registry.view<NativeScriptComponent>().each([=](auto entity, auto& nsc) {
-				if (nsc.Bound) {
-					if (!nsc.Instance) {
-						nsc.Instance = nsc.InstantiateScript();
-						nsc.Instance->m_Entity = Entity{ entity, this };
-						nsc.Instance->OnCreate();
-					}
-					nsc.Instance->OnUpdate(ts);
-				}
-			});
+			UpdateScripts(ts);
 		}
 
 		// Render 2D Sprites
@@ -52,8 +90,9 @@ namespace Flora {
 			Renderer2D::BeginScene(camera);
 			auto group = m_Registry.group<TransformComponent>(entt::get<SpriteRendererComponent>);
 			for (auto entity : group) {
-				auto [transform, sprite] = group.get<TransformComponent, SpriteRendererComponent>(entity);
-				Renderer2D::DrawSprite(transform.GetTransform(), sprite, (int)entity);
+				Entity drawEntity = Entity{ entity, this };
+				if (!drawEntity.HasComponent<ParentComponent>())
+					DrawEntitySprite(drawEntity);
 			}
 			Renderer2D::EndScene();
 		}
@@ -61,16 +100,7 @@ namespace Flora {
 
 	void Scene::OnUpdateRuntime(Timestep ts) {
 		// Update Scripts
-		{
-			m_Registry.view<NativeScriptComponent>().each([=](auto entity, auto& nsc) {
-				if (!nsc.Instance) {
-					nsc.Instance = nsc.InstantiateScript();
-					nsc.Instance->m_Entity = Entity{ entity, this };
-					nsc.Instance->OnCreate();
-				}
-				nsc.Instance->OnUpdate(ts);
-			});
-		}
+		UpdateScripts(ts);
 
 		// Render 2D Sprites
 		{
@@ -89,8 +119,9 @@ namespace Flora {
 				Renderer2D::BeginScene(primaryCamera->GetProjection(), cameraTransform);
 				auto group = m_Registry.group<TransformComponent>(entt::get<SpriteRendererComponent>);
 				for (auto entity : group) {
-					auto [transform, sprite] = group.get<TransformComponent, SpriteRendererComponent>(entity);
-					Renderer2D::DrawSprite(transform.GetTransform(), sprite, (int)entity);
+					Entity drawEntity = Entity{ entity, this };
+					if (!drawEntity.HasComponent<ParentComponent>())
+						DrawEntitySprite(drawEntity);
 				}
 				Renderer2D::EndScene();
 			}
@@ -145,7 +176,22 @@ namespace Flora {
 	}
 
 	template<>
+	void Scene::OnComponentAdded<ChildComponent>(Entity entity, ChildComponent& component) {
+
+	}
+
+	template<>
+	void Scene::OnComponentAdded<ParentComponent>(Entity entity, ParentComponent& component) {
+
+	}
+
+	template<>
 	void Scene::OnComponentAdded<TagComponent>(Entity entity, TagComponent& component) {
+
+	}
+
+	template<>
+	void Scene::OnComponentAdded<ScriptManagerComponent>(Entity entity, ScriptManagerComponent& component) {
 
 	}
 

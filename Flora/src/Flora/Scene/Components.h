@@ -79,4 +79,25 @@ namespace Flora {
 			DestroyScript = [](NativeScriptComponent* nsc) { delete nsc->Instance; nsc->Instance = nullptr; };
 		}
 	};
+
+	struct ScriptManagerComponent {
+		std::vector<NativeScriptComponent> NativeScripts;
+	};
+
+	struct ChildComponent {
+		std::vector<Entity> Children;
+		bool HasChildren() { return Children.size() == 0; }
+		void AddChild(Entity entity) { Children.emplace_back(entity); }
+		void RemoveChild(Entity entity) {
+			for (int i = 0; i < Children.size(); i++)
+				if (Children[i] == entity)
+					Children.erase(Children.begin() + i);
+		}
+	};
+
+	struct ParentComponent {
+		Entity Parent;
+		bool InheritAll = true;
+		bool InheritTransform = true;
+	};
 }

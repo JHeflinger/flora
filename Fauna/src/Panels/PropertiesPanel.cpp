@@ -179,6 +179,7 @@ namespace Flora {
 			DrawAddComponentItem<CameraComponent>("Camera", m_EditorContext->SelectedEntity);
 			DrawAddComponentItem<SpriteRendererComponent>("Sprite Renderer", m_EditorContext->SelectedEntity);
 			DrawAddComponentItem<NativeScriptComponent>("Native Script", m_EditorContext->SelectedEntity);
+			DrawAddComponentItem<ScriptManagerComponent>("Script Manager", m_EditorContext->SelectedEntity);
 			ImGui::EndPopup();
 		}
 		ImGui::PopItemWidth();
@@ -187,13 +188,42 @@ namespace Flora {
 		style.ItemSpacing = ImVec2(8.0f, 4.0f); // Add spacing between items in the column
 		style.ColumnsMinSpacing = 20.0f;
 
+		DrawComponent<ParentComponent>("Parent", entity, [](auto& component) {
+			ImGui::Columns(2);
+			ImGui::SetColumnWidth(0, 100.0f);
+			ImGui::Text("Inherit All");
+			ImGui::NextColumn();
+			ImGui::Checkbox("##InheritAll", &component.InheritAll);
+			ImGui::Columns(1);
+
+			ImGui::Dummy(ImVec2(0, 10.0f));
+			const ImGuiTreeNodeFlags treeNodeFlags = ImGuiTreeNodeFlags_SpanAvailWidth | ImGuiTreeNodeFlags_AllowItemOverlap | ImGuiTreeNodeFlags_FramePadding;
+			bool open = ImGui::TreeNodeEx((void*)typeid(ParentComponent).hash_code(), treeNodeFlags, "Advanced Settings");
+			if (open) {
+				if (component.InheritAll)
+					ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.25f);
+				ImGui::Dummy(ImVec2(0, 5.0f));
+				ImGui::Columns(2);
+				ImGui::SetColumnWidth(0, 150.0f);
+				ImGui::Dummy(ImVec2(0, 8.0f));
+				ImGui::Text("Inherit Transform");
+				ImGui::NextColumn();
+				ImGui::Dummy(ImVec2(0, 5.0f));
+				ImGui::Checkbox("##InheritTransform", &component.InheritTransform);
+				ImGui::Columns(1);
+				ImGui::TreePop();
+				if (component.InheritAll)
+					ImGui::PopStyleVar();
+			}
+		}, false);
+
 		DrawComponent<TransformComponent>("Transform", entity, [](auto& component) {
 			DrawVec3Control("Translation", component.Translation);
 			glm::vec3 rotation = glm::degrees(component.Rotation);
 			DrawVec3Control("Rotation", rotation);
 			component.Rotation = glm::radians(rotation);
 			DrawVec3Control("Scale", component.Scale);
-			}, false);
+		}, false);
 
 		DrawComponent<CameraComponent>("Camera", entity, [](auto& component) {
 			const char* projectionTypeStrings[] = { "Perspective", "Orthographic" };
@@ -268,7 +298,7 @@ namespace Flora {
 				ImGui::Checkbox("##FixedAspectRatio", &component.FixedAspectRatio);
 				ImGui::Columns(1);
 			}
-			});
+		});
 
 		DrawComponent<SpriteRendererComponent>("Sprite", entity, [](auto& component) {
 			ImGuiIO& io = ImGui::GetIO();
@@ -465,7 +495,7 @@ namespace Flora {
 			}
 
 			ImGui::PopStyleVar();
-			});
+		});
 
 		DrawComponent<NativeScriptComponent>("Native Script", entity, [](auto& component) {
 			float lineHeight = GImGui->Font->FontSize + GImGui->Style.FramePadding.y * 2.0f;
@@ -500,6 +530,50 @@ namespace Flora {
 			ImGui::Text(component.Filename.c_str());
 
 			ImGui::Columns(1);
-			});
+		});
+
+		DrawComponent<ScriptManagerComponent>("Script Manager", entity, [](auto& component) {
+			float lineHeight = GImGui->Font->FontSize + GImGui->Style.FramePadding.y * 2.0f;
+			ImVec2 smallButtonSize = { lineHeight + 3.0f, lineHeight };
+			ImVec2 largeButtonSize = { 100, lineHeight };
+
+			ImGui::Columns(2);
+			ImGui::SetColumnWidth(0, 120.0f);
+			for (int i = 0; i < component.NativeScripts.size(); i++) {
+				std::string filename = component.NativeScripts[i].Filename;
+				int extensionPos = filename.find_last_of(".");
+				if (extensionPos != std::string::npos && extensionPos != 0 && extensionPos != filename.length() - 1)
+					filename = filename.substr(0, extensionPos);
+				ImGui::Dummy({ 0, 2 });
+				ImGui::Text(filename.c_str());
+			}
+			ImGui::NextColumn();
+
+			for (int i = 0; i < component.NativeScripts.size(); i++) {
+				if (ImGui::Button("Native Script", largeButtonSize)) {
+					std::string filepath = FileDialogs::OpenFile("Native Script (*.h)\0*.h\0");
+					if (!filepath.empty()) {
+						std::filesystem::path scriptPath = std::filesystem::path(filepath); // warning this is not relative
+						component.NativeScripts[i].Filename = scriptPath.filename().string();
+						component.NativeScripts[i].Path = scriptPath.string();
+						BindScriptToComponent(component.NativeScripts[i], scriptPath.filename().stem().string());
+					}
+				}
+				if (ImGui::BeginDragDropTarget()) {
+					if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM")) {
+						const wchar_t* path = (const wchar_t*)payload->Data;
+						std::filesystem::path scriptPath = std::filesystem::path(g_AssetPath) / path;
+						component.NativeScripts[i].Filename = scriptPath.filename().string();
+						component.NativeScripts[i].Path = scriptPath.string();
+						BindScriptToComponent(component.NativeScripts[i], scriptPath.filename().stem().string());
+					}
+					ImGui::EndDragDropTarget();
+				}
+			}
+			ImGui::Columns(1);
+			ImGui::Dummy({ 0, 10 });
+			if (ImGui::Button("Add", { 60, lineHeight }))
+				component.NativeScripts.emplace_back(NativeScriptComponent());
+		});
 	}
 }

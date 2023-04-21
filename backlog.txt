@@ -60,11 +60,33 @@ TODO:
 
 IN PROGRESS:
 
-	- subentities (scene hierarhcy doesn't really "have" hierarchy atm)
-
 	- play button
 
 IMPLEMENTED TICKETS:
+
+	- nativescript component should allow multiple scripts or should allow to have multiple native script components
+
+	- bug: new scene breaks application
+
+	- bug: selected entity isnt being saved anymore
+
+	- delete entity should be recursive
+
+	- drag and drop entities in scene hierarchy should allow entities to be dropped at the highest level
+
+	- drag entities to modify scene hierarchy
+
+	- subentities should inherit and be relative to parent entities
+
+	- update gizmoz to be use the child transform
+
+	- if a subentity, propertiespanel should give a checkmark option to inherit parent propreties or be relative to
+
+	- subentities (scene hierarhcy doesn't really "have" hierarchy atm)
+
+	- serializer saves parent and child components too
+
+	- add new subentities on right click
 
 	- refactor camera component properties layout
 	
