@@ -21,6 +21,7 @@ namespace Flora {
 		void SetSceneFilepath(const std::string& filepath) { m_SceneFilepath = filepath; }
 		void SetViewportHovered(bool hovered) { m_ViewportHovered = hovered; }
 		std::string GetSceneFilepath() { return m_SceneFilepath; }
+		bool EntityExists(uint32_t entityID);
 	private:
 		template<typename T>
 		void OnComponentAdded(Entity entity, T& component);

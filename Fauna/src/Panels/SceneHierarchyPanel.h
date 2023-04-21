@@ -12,5 +12,6 @@ namespace Flora {
 		void OnImGuiRender() override;
 	private:
 		void DrawEntityNode(Entity entity);
+		void DeleteEntity(Entity entity);
 	};
 }

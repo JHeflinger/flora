@@ -60,13 +60,17 @@ TODO:
 
 IN PROGRESS:
 
-	- drag entities to modify scene hierarchy
-
 	- nativescript component should allow multiple scripts or should allow to have multiple native script components
 
 	- play button
 
 IMPLEMENTED TICKETS:
+
+	- delete entity should be recursive
+
+	- drag and drop entities in scene hierarchy should allow entities to be dropped at the highest level
+
+	- drag entities to modify scene hierarchy
 
 	- subentities should inherit and be relative to parent entities
 

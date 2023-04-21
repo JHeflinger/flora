@@ -28,13 +28,30 @@ namespace Flora {
 	}
 
 	void SceneHierarchyPanel::DrawEntityNode(Entity entity) {
-
+		if (!m_EditorContext->ActiveScene->EntityExists(entity)) return;
 		auto& tag = entity.GetComponent<TagComponent>().Tag;
 		ImGuiTreeNodeFlags flags = ((m_EditorContext->SelectedEntity == entity) ? ImGuiTreeNodeFlags_Selected : 0) | ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_DefaultOpen;
 		flags |= ImGuiTreeNodeFlags_SpanAvailWidth;
 		bool opened = ImGui::TreeNodeEx((void*)(uint64_t)(uint32_t)entity, flags, tag.c_str());
 		if (ImGui::IsItemClicked()) 
 			m_EditorContext->SelectedEntity = entity;
+		if (ImGui::BeginDragDropSource()) {
+			uint32_t entityHandle = (uint32_t)entity;
+			ImGui::SetDragDropPayload("HIERARCHY_DRAG_ENTITY", &entityHandle, sizeof(&entityHandle));
+			ImGui::EndDragDropSource();
+		}
+		if (ImGui::BeginDragDropTarget()) {
+			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("HIERARCHY_DRAG_ENTITY")) {
+				Entity draggedEntity{ (entt::entity)(*(const uint32_t*)payload->Data), m_EditorContext->ActiveScene.get() };
+				if (draggedEntity.HasComponent<ParentComponent>())
+					draggedEntity.GetComponent<ParentComponent>().Parent.GetComponent<ChildComponent>().RemoveChild(draggedEntity);
+				if (!entity.HasComponent<ChildComponent>()) entity.AddComponent<ChildComponent>();
+				if (!draggedEntity.HasComponent<ParentComponent>()) draggedEntity.AddComponent<ParentComponent>();
+				draggedEntity.GetComponent<ParentComponent>().Parent = entity;
+				entity.GetComponent<ChildComponent>().AddChild(draggedEntity);
+			}
+			ImGui::EndDragDropTarget();
+		}
 
 		bool entityDeleted = false;
 		if (ImGui::BeginPopupContextItem()) {
@@ -46,6 +63,12 @@ namespace Flora {
 				if (!entity.HasComponent<ChildComponent>())
 					entity.AddComponent<ChildComponent>().AddChild(newChild);
 				else entity.GetComponent<ChildComponent>().AddChild(newChild);
+			}
+			if (entity.HasComponent<ParentComponent>()) {
+				if (ImGui::MenuItem("Bring Entity Out")) {
+					entity.GetComponent<ParentComponent>().Parent.GetComponent<ChildComponent>().RemoveChild(entity);
+					entity.RemoveComponent<ParentComponent>();
+				}
 			}
 			ImGui::EndPopup();
 		}
@@ -60,10 +83,22 @@ namespace Flora {
 		}
 
 		if (entityDeleted) {
-			m_EditorContext->ActiveScene->DestroyEntity(entity);
+			DeleteEntity(entity);
 			if (m_EditorContext->SelectedEntity == entity) {
 				m_EditorContext->SelectedEntity = {};
 			}
 		}
+	}
+
+	void SceneHierarchyPanel::DeleteEntity(Entity entity) {
+		if (entity.HasComponent<ChildComponent>()) {
+			std::vector<Entity> children = entity.GetComponent<ChildComponent>().Children;
+			for (int i = 0; i < children.size(); i++) {
+				DeleteEntity(children[i]);
+			}
+		}
+		if (entity.HasComponent<ParentComponent>()) 
+			entity.GetComponent<ParentComponent>().Parent.GetComponent<ChildComponent>().RemoveChild(entity);
+		m_EditorContext->ActiveScene->DestroyEntity(entity);
 	}
 }

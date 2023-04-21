@@ -47,6 +47,10 @@ namespace Flora {
 		m_Registry.destroy(entity);
 	}
 
+	bool Scene::EntityExists(uint32_t entityID) {
+		return m_Registry.valid((entt::entity)entityID);
+	}
+
 	void Scene::OnUpdateEditor(Timestep ts, EditorCamera& camera) {
 		// Update Scripts
 		if (m_ViewportHovered) {
