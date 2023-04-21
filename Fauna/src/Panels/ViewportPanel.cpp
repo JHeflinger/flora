@@ -119,6 +119,9 @@ namespace Flora {
 			// Entity transform
 			auto& tc = selectedEntity.GetComponent<TransformComponent>();
 			glm::mat4 transform = tc.GetTransform();
+			bool isChild = selectedEntity.HasComponent<ParentComponent>();
+			glm::mat4 parentTransform = isChild ? selectedEntity.GetComponent<ParentComponent>().Parent.GetComponent<TransformComponent>().GetTransform() : glm::mat4(1);
+			transform = parentTransform * transform;
 
 			// Snapping
 			bool snap = Input::IsKeyPressed(Key::LeftControl);
@@ -132,9 +135,10 @@ namespace Flora {
 
 			if (ImGuizmo::IsUsing()) {
 				glm::vec3 translation, rotation, scale;
-				Math::DecomposeTransform(transform, translation, rotation, scale);
+				glm::mat4 newTransform = isChild ? glm::inverse(parentTransform) * transform : transform;
+				Math::DecomposeTransform(newTransform, translation, rotation, scale);
 				glm::vec3 deltaRotation = rotation - tc.Rotation;
-				tc.Translation = glm::vec3(transform[3]);
+				tc.Translation = glm::vec3(newTransform[3]);
 				tc.Rotation += deltaRotation;
 				tc.Scale = scale;
 			}
