@@ -62,6 +62,8 @@ IN PROGRESS:
 
 	- nativescript component should allow multiple scripts or should allow to have multiple native script components
 
+	- bug: selected entity isnt being saved anymore
+
 	- play button
 
 IMPLEMENTED TICKETS:

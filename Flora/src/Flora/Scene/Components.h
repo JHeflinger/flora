@@ -80,6 +80,10 @@ namespace Flora {
 		}
 	};
 
+	struct ScriptManagerComponent {
+		std::vector<NativeScriptComponent> NativeScripts;
+	};
+
 	struct ChildComponent {
 		std::vector<Entity> Children;
 		bool HasChildren() { return Children.size() == 0; }

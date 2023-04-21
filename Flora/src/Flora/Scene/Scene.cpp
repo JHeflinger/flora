@@ -181,6 +181,11 @@ namespace Flora {
 	}
 
 	template<>
+	void Scene::OnComponentAdded<ScriptManagerComponent>(Entity entity, ScriptManagerComponent& component) {
+
+	}
+
+	template<>
 	void Scene::OnComponentAdded<CameraComponent>(Entity entity, CameraComponent& component) {
 		if (m_ViewportWidth > 0 && m_ViewportHeight > 0)
 			component.Camera.SetViewportSize(m_ViewportWidth, m_ViewportHeight);

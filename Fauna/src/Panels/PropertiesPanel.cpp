@@ -179,6 +179,7 @@ namespace Flora {
 			DrawAddComponentItem<CameraComponent>("Camera", m_EditorContext->SelectedEntity);
 			DrawAddComponentItem<SpriteRendererComponent>("Sprite Renderer", m_EditorContext->SelectedEntity);
 			DrawAddComponentItem<NativeScriptComponent>("Native Script", m_EditorContext->SelectedEntity);
+			DrawAddComponentItem<ScriptManagerComponent>("Script Manager", m_EditorContext->SelectedEntity);
 			ImGui::EndPopup();
 		}
 		ImGui::PopItemWidth();
@@ -529,6 +530,50 @@ namespace Flora {
 			ImGui::Text(component.Filename.c_str());
 
 			ImGui::Columns(1);
+		});
+
+		DrawComponent<ScriptManagerComponent>("Script Manager", entity, [](auto& component) {
+			float lineHeight = GImGui->Font->FontSize + GImGui->Style.FramePadding.y * 2.0f;
+			ImVec2 smallButtonSize = { lineHeight + 3.0f, lineHeight };
+			ImVec2 largeButtonSize = { 100, lineHeight };
+
+			ImGui::Columns(2);
+			ImGui::SetColumnWidth(0, 120.0f);
+			for (int i = 0; i < component.NativeScripts.size(); i++) {
+				std::string filename = component.NativeScripts[i].Filename;
+				int extensionPos = filename.find_last_of(".");
+				if (extensionPos != std::string::npos && extensionPos != 0 && extensionPos != filename.length() - 1)
+					filename = filename.substr(0, extensionPos);
+				ImGui::Dummy({ 0, 2 });
+				ImGui::Text(filename.c_str());
+			}
+			ImGui::NextColumn();
+
+			for (int i = 0; i < component.NativeScripts.size(); i++) {
+				if (ImGui::Button("Native Script", largeButtonSize)) {
+					std::string filepath = FileDialogs::OpenFile("Native Script (*.h)\0*.h\0");
+					if (!filepath.empty()) {
+						std::filesystem::path scriptPath = std::filesystem::path(filepath); // warning this is not relative
+						component.NativeScripts[i].Filename = scriptPath.filename().string();
+						component.NativeScripts[i].Path = scriptPath.string();
+						BindScriptToComponent(component.NativeScripts[i], scriptPath.filename().stem().string());
+					}
+				}
+				if (ImGui::BeginDragDropTarget()) {
+					if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM")) {
+						const wchar_t* path = (const wchar_t*)payload->Data;
+						std::filesystem::path scriptPath = std::filesystem::path(g_AssetPath) / path;
+						component.NativeScripts[i].Filename = scriptPath.filename().string();
+						component.NativeScripts[i].Path = scriptPath.string();
+						BindScriptToComponent(component.NativeScripts[i], scriptPath.filename().stem().string());
+					}
+					ImGui::EndDragDropTarget();
+				}
+			}
+			ImGui::Columns(1);
+			ImGui::Dummy({ 0, 10 });
+			if (ImGui::Button("Add", { 60, lineHeight }))
+				component.NativeScripts.emplace_back(NativeScriptComponent());
 		});
 	}
 }
