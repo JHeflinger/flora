@@ -51,19 +51,38 @@ namespace Flora {
 		return m_Registry.valid((entt::entity)entityID);
 	}
 
+	void Scene::UpdateScripts(Timestep ts) {
+		// update native scripts
+		m_Registry.view<NativeScriptComponent>().each([=](auto entity, auto& nsc) {
+			if (nsc.Bound) {
+				if (!nsc.Instance) {
+					nsc.Instance = nsc.InstantiateScript();
+					nsc.Instance->m_Entity = Entity{ entity, this };
+					nsc.Instance->OnCreate();
+				}
+				nsc.Instance->OnUpdate(ts);
+			}
+		});
+
+		// script manager
+		m_Registry.view<ScriptManagerComponent>().each([=](auto entity, auto& smc) {
+			for (int i = 0; i < smc.NativeScripts.size(); i++) {
+				if (smc.NativeScripts[i].Bound) {
+					if (!smc.NativeScripts[i].Instance) {
+						smc.NativeScripts[i].Instance = smc.NativeScripts[i].InstantiateScript();
+						smc.NativeScripts[i].Instance->m_Entity = Entity{ entity, this };
+						smc.NativeScripts[i].Instance->OnCreate();
+					}
+					smc.NativeScripts[i].Instance->OnUpdate(ts);
+				}
+			}
+		});
+	}
+
 	void Scene::OnUpdateEditor(Timestep ts, EditorCamera& camera) {
 		// Update Scripts
 		if (m_ViewportHovered) {
-			m_Registry.view<NativeScriptComponent>().each([=](auto entity, auto& nsc) {
-				if (nsc.Bound) {
-					if (!nsc.Instance) {
-						nsc.Instance = nsc.InstantiateScript();
-						nsc.Instance->m_Entity = Entity{ entity, this };
-						nsc.Instance->OnCreate();
-					}
-					nsc.Instance->OnUpdate(ts);
-				}
-			});
+			UpdateScripts(ts);
 		}
 
 		// Render 2D Sprites
@@ -81,16 +100,7 @@ namespace Flora {
 
 	void Scene::OnUpdateRuntime(Timestep ts) {
 		// Update Scripts
-		{
-			m_Registry.view<NativeScriptComponent>().each([=](auto entity, auto& nsc) {
-				if (!nsc.Instance) {
-					nsc.Instance = nsc.InstantiateScript();
-					nsc.Instance->m_Entity = Entity{ entity, this };
-					nsc.Instance->OnCreate();
-				}
-				nsc.Instance->OnUpdate(ts);
-			});
-		}
+		UpdateScripts(ts);
 
 		// Render 2D Sprites
 		{

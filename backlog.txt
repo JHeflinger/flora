@@ -60,11 +60,11 @@ TODO:
 
 IN PROGRESS:
 
-	- nativescript component should allow multiple scripts or should allow to have multiple native script components
-
 	- play button
 
 IMPLEMENTED TICKETS:
+
+	- nativescript component should allow multiple scripts or should allow to have multiple native script components
 
 	- bug: new scene breaks application
 

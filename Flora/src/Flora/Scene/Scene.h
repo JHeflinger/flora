@@ -25,6 +25,7 @@ namespace Flora {
 	private:
 		template<typename T>
 		void OnComponentAdded(Entity entity, T& component);
+		void UpdateScripts(Timestep ts);
 	private:
 		entt::registry m_Registry;
 		uint32_t m_ViewportWidth, m_ViewportHeight = 0;
