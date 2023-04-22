@@ -23,6 +23,7 @@ namespace Flora {
 		Ref<Texture2D> m_UpIcon;
 	private:
 		bool m_OpenNewScene = false;
+		std::string m_FileToRename = "";
 		std::string newScenePath = "";
 	};
 }

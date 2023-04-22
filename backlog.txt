@@ -60,17 +60,33 @@ TODO:
 
 	- stats panel should be able to click on a stat and open a graph over time and reset option
 
+	- content browser select multiple 
+
+	- new file options in content browser too
+
+	- errors should open up a popup
+
 IN PROGRESS:
 
-	- copy pasting support
+	- copy/cut/pasting support
 
-	- delete files from content browser
+	- copy files from content browser
 
-	- content browser names are only on the first row? also the centering isn't perfect it slowly goes off center
+	- cut files from content browser
 
 	- play button
 
 IMPLEMENTED TICKETS:
+
+	- delete files from content browser
+
+	- drag files around content browser
+
+	- rename files in content browser
+
+	- open files from content browser
+
+	- content browser names are only on the first row? also the centering isn't perfect it slowly goes off center
 
 	- show scene name on viewport
 

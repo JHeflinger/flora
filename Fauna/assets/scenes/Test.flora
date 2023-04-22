@@ -1,9 +1,0 @@
-Scene: Untitled
-Entities:
-  - Entity: 0
-    TagComponent:
-      Tag: blarg
-    TransformComponent:
-      Translation: [0, 0, 0]
-      Rotation: [0, 0, 0]
-      Scale: [3.93347812, 1, 1]
