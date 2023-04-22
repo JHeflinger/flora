@@ -32,7 +32,7 @@ namespace Flora {
 		void ResetEditorParams();
 		void InitializePanels();
 		void SetPanelContext();
-		void UpdatePanels();
+		void UpdatePanels(Timestep ts);
 		void RenderImGuiPanels();
 		void UpdateEditorParams(Timestep ts);
 		void AutoSaveEditor(Timestep ts);

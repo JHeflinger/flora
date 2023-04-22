@@ -1,6 +1,7 @@
 #include "flpch.h"
 #include "ContentBrowserPanel.h"
 #include <imgui/imgui.h>
+#include <stdio.h>
 
 namespace Flora {
 	// TODO: change this when projects are implemented
@@ -21,6 +22,15 @@ namespace Flora {
 			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 0));
 			if (ImGui::ImageButton((ImTextureID)m_BackIcon->GetRendererID(), { 20, 20 }, { 0, 1 }, { 1, 0 }))
 				m_CurrentDirectory = m_CurrentDirectory.parent_path();
+			if (ImGui::BeginDragDropTarget()) {
+				if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM")) {
+					const wchar_t* path = (const wchar_t*)payload->Data;
+					std::filesystem::path payloadPath = std::filesystem::path(g_AssetPath) / path;
+					std::string newPath = payloadPath.parent_path().parent_path().string() + "/" + payloadPath.filename().string();
+					if (std::rename(payloadPath.string().c_str(), newPath.c_str()) != 0) FL_CORE_ERROR("Error moving file");
+				}
+				ImGui::EndDragDropTarget();
+			}
 
 			ImGui::SameLine(ImGui::GetWindowSize().x);
 			ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 30);
@@ -43,9 +53,6 @@ namespace Flora {
 
 		ImGui::Columns(columnCount, 0, false);
 
-		float columnWidth = ImGui::GetWindowContentRegionWidth() / columnCount;
-
-		int i = 0;
 		for (auto& directoryEntry : std::filesystem::directory_iterator(m_CurrentDirectory)) {	
 			const auto& path = directoryEntry.path();
 			auto relativePath = std::filesystem::relative(path, g_AssetPath);
@@ -65,6 +72,18 @@ namespace Flora {
 				ImGui::EndDragDropSource();
 			}
 
+			if (directoryEntry.is_directory()) {
+				if (ImGui::BeginDragDropTarget()) {
+					if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM")) {
+						const wchar_t* path = (const wchar_t*)payload->Data;
+						std::filesystem::path payloadPath = std::filesystem::path(g_AssetPath) / path;
+						std::string newPath = payloadPath.parent_path().string() + "/" + filenameString + "/" + payloadPath.filename().string();
+						if (std::rename(payloadPath.string().c_str(), newPath.c_str()) != 0) FL_CORE_ERROR("Error moving file");
+					}
+					ImGui::EndDragDropTarget();
+				}
+			}
+
 			if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left)) {
 				if (directoryEntry.is_directory())
 					m_CurrentDirectory /= path.filename();
@@ -72,11 +91,38 @@ namespace Flora {
 					RequestOpenScene(path.string());
 			}
 
-			ImGui::SetCursorPosX((i*columnWidth) + columnWidth / 2 - ImGui::CalcTextSize(filenameString.c_str()).x / 2);
-			ImGui::TextWrapped(filenameString.c_str());
+			if (ImGui::BeginPopupContextItem()) {
+				if (path.extension().string() == ".flora")
+					if (ImGui::MenuItem("Open")) 
+						RequestOpenScene(path.string());
+				if (ImGui::MenuItem("Rename"))
+					m_FileToRename = path.string();
+				if (ImGui::MenuItem("Delete")) 
+					if (std::remove(path.string().c_str()) != 0) FL_CORE_ERROR("Error deleting file");
+				if (ImGui::MenuItem("Cut"))
+					FL_CORE_ERROR("Cut functionality has not been implemented yet");
+				if (ImGui::MenuItem("Copy"))
+					FL_CORE_ERROR("Copy functionality has not been implemented yet");
+				ImGui::EndPopup();
+			}
+
+			if (path.string() == m_FileToRename) {
+				static char newFilename[256] = "";
+				strncpy(newFilename, path.filename().string().c_str(), 256);
+				ImGui::SetNextItemWidth(thumbnailSize);
+				bool enterPressed = ImGui::InputText("##Rename", newFilename, 256, ImGuiInputTextFlags_EnterReturnsTrue);
+				if (enterPressed) {
+					std::string completeFilename = m_CurrentDirectory.string() + "/" + std::string(newFilename);
+					if (std::rename(path.string().c_str(), completeFilename.c_str()) == 0) {
+						m_FileToRename = "";
+					} else FL_CORE_ERROR("Error renaming file");
+				}
+			} else {
+				ImGui::SetCursorPosX(ImGui::GetCursorPosX() + thumbnailSize / 2 - ImGui::CalcTextSize(filenameString.c_str()).x / 2);
+				ImGui::TextWrapped(filenameString.c_str());
+			}
 			ImGui::NextColumn();
 			ImGui::PopID();
-			i++;
 		}
 
 		ImGui::Columns(1);

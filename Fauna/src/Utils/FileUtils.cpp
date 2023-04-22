@@ -14,8 +14,10 @@ namespace Flora {
 	void FileUtils::SaveSceneAs(Ref<EditorParams> context){
 		std::string filepath = FileDialogs::SaveFile("Flora Scene (*.flora)\0*.flora\0");
 		if (!filepath.empty()) {
+			if (std::filesystem::path(filepath).stem().extension().string() != ".flora") filepath = filepath + ".flora";
 			std::string sceneContent = Serializer::SerializeScene(context->ActiveScene);
 			Serializer::SerializeFile(sceneContent, filepath);
+			context->ActiveScene->SetSceneFilepath(filepath);
 		}
 	}
 

@@ -54,7 +54,7 @@ namespace Flora {
 		GetSpecificPanel<ViewportPanel>("Viewport")->PreUpdate();
 
 		// Update Panels
-		UpdatePanels();
+		UpdatePanels(ts);
 
 		// Update editor params
 		UpdateEditorParams(ts);
@@ -149,6 +149,12 @@ namespace Flora {
 			ImGui::PushStyleColor(ImGuiCol_Text, {0.6, 0.6, 0.6, 1});
 			ImGui::Text(lastSaved.c_str());
 			ImGui::PopStyleColor();
+
+			ImGui::SameLine((ImGui::GetWindowSize().x) / 2);
+			std::string viewportName = std::filesystem::path(m_EditorParams->ActiveScene->GetSceneFilepath()).stem().filename().string();
+			if (m_EditorParams->ActiveScene->GetSceneFilepath() == "NULL") viewportName = "Untitled";
+			ImGui::SetCursorPosX(ImGui::GetCursorPosX() - ImGui::CalcTextSize(viewportName.c_str()).x / 2);
+			ImGui::Text(viewportName.c_str());
 
 			ImGui::EndMenuBar();
 		}
@@ -346,7 +352,7 @@ namespace Flora {
 		return ss.str();
 	}
 
-	void EditorLayer::UpdatePanels() {
+	void EditorLayer::UpdatePanels(Timestep ts) {
 		for (auto& panel : m_Panels) {
 			if (panel.second->m_Enabled)
 				panel.second->OnUpdate();
@@ -355,6 +361,8 @@ namespace Flora {
 		// process panel extras
 		if (GetSpecificPanel<ViewportPanel>("Viewport")->IsRequestingOpenScene() || GetSpecificPanel<ContentBrowserPanel>("Content Browser")->IsRequestingOpenScene())
 			PromptSave(SavePromptType::OPENPATH);
+
+		GetSpecificPanel<StatsPanel>("Stats")->UpdateFrametime((float)ts);
 	}
 
 	void EditorLayer::RenderImGuiPanels() {

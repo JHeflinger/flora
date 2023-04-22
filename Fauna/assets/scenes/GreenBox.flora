@@ -1,0 +1,177 @@
+Scene: Untitled
+Entities:
+  - Entity: 1048581
+    TagComponent:
+      Tag: G5
+    TransformComponent:
+      Translation: [1.35041773e-08, -1.87754631e-06, 1]
+      Rotation: [2.02505384e-13, 0, 0]
+      Scale: [1, 0.999996543, 0.999996543]
+    SpriteRendererComponent:
+      Color: [0.211764708, 0.886274517, 0, 1]
+      Path: "NULL"
+      Filename: None Selected
+      Type: 0
+      TilingFactor: 1
+      Rows: 1
+      Columns: 1
+      RowCoordinate: 1
+      ColumnCoordinate: 1
+      SubtextureWidth: 1
+      SubtextureHeight: 1
+      Frames: 1
+      StartFrame: 1
+      EndFrame: 1
+      CurrentFrame: 1
+      FPS: 1
+    ParentComponent:
+      Parent: 1
+      InheritAll: true
+      InheritTransform: true
+  - Entity: 4
+    TagComponent:
+      Tag: G4
+    TransformComponent:
+      Translation: [0, 0, 1]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    SpriteRendererComponent:
+      Color: [0.294117659, 1, 0, 1]
+      Path: "NULL"
+      Filename: None Selected
+      Type: 0
+      TilingFactor: 1
+      Rows: 1
+      Columns: 1
+      RowCoordinate: 1
+      ColumnCoordinate: 1
+      SubtextureWidth: 1
+      SubtextureHeight: 1
+      Frames: 1
+      StartFrame: 1
+      EndFrame: 1
+      CurrentFrame: 1
+      FPS: 1
+    ParentComponent:
+      Parent: 0
+      InheritAll: true
+      InheritTransform: true
+  - Entity: 3
+    TagComponent:
+      Tag: G3
+    TransformComponent:
+      Translation: [0.5, 0, 0.5]
+      Rotation: [6.16882858e-07, 1.57079637, 6.33815716e-07]
+      Scale: [0.999999762, 1, 0.999999762]
+    SpriteRendererComponent:
+      Color: [0.223529413, 0.717647076, 0, 1]
+      Path: "NULL"
+      Filename: None Selected
+      Type: 0
+      TilingFactor: 1
+      Rows: 1
+      Columns: 1
+      RowCoordinate: 1
+      ColumnCoordinate: 1
+      SubtextureWidth: 1
+      SubtextureHeight: 1
+      Frames: 1
+      StartFrame: 1
+      EndFrame: 1
+      CurrentFrame: 1
+      FPS: 1
+    ParentComponent:
+      Parent: 0
+      InheritAll: true
+      InheritTransform: true
+  - Entity: 2
+    TagComponent:
+      Tag: G2
+    TransformComponent:
+      Translation: [-0.5, 0, 0.5]
+      Rotation: [0, 1.57079637, 0]
+      Scale: [1, 1, 1]
+    SpriteRendererComponent:
+      Color: [0.221821383, 0.718146682, 0, 1]
+      Path: "NULL"
+      Filename: None Selected
+      Type: 0
+      TilingFactor: 1
+      Rows: 1
+      Columns: 1
+      RowCoordinate: 1
+      ColumnCoordinate: 1
+      SubtextureWidth: 1
+      SubtextureHeight: 1
+      Frames: 1
+      StartFrame: 1
+      EndFrame: 1
+      CurrentFrame: 1
+      FPS: 1
+    ParentComponent:
+      Parent: 0
+      InheritAll: true
+      InheritTransform: true
+  - Entity: 1
+    TagComponent:
+      Tag: G1
+    TransformComponent:
+      Translation: [-0.00368341804, 0.5, 0.5]
+      Rotation: [1.57079637, 0, 0]
+      Scale: [1, 0.999999285, 0.999999285]
+    SpriteRendererComponent:
+      Color: [0.212578848, 0.888030887, 0, 1]
+      Path: "NULL"
+      Filename: None Selected
+      Type: 0
+      TilingFactor: 1
+      Rows: 1
+      Columns: 1
+      RowCoordinate: 1
+      ColumnCoordinate: 1
+      SubtextureWidth: 1
+      SubtextureHeight: 1
+      Frames: 1
+      StartFrame: 1
+      EndFrame: 1
+      CurrentFrame: 1
+      FPS: 1
+    ParentComponent:
+      Parent: 0
+      InheritAll: true
+      InheritTransform: true
+    ChildComponent:
+      - 1048581
+  - Entity: 0
+    TagComponent:
+      Tag: G0
+    TransformComponent:
+      Translation: [-3.13355255, 0, 0]
+      Rotation: [5.16996622, 0.00352668762, 4.69177437]
+      Scale: [0.411009341, 2.02999997, 0.920000017]
+    SpriteRendererComponent:
+      Color: [0.308880329, 1, 0, 1]
+      Path: "NULL"
+      Filename: None Selected
+      Type: 0
+      TilingFactor: 1
+      Rows: 1
+      Columns: 1
+      RowCoordinate: 1
+      ColumnCoordinate: 1
+      SubtextureWidth: 1
+      SubtextureHeight: 1
+      Frames: 1
+      StartFrame: 1
+      EndFrame: 1
+      CurrentFrame: 1
+      FPS: 1
+    ScriptManagerComponent:
+      NativeScripts:
+        - Path: assets\scripts\AutoRotater.h
+          Filename: AutoRotater.h
+    ChildComponent:
+      - 1
+      - 2
+      - 3
+      - 4
