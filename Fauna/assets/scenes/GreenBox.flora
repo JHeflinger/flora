@@ -147,8 +147,8 @@ Entities:
       Tag: G0
     TransformComponent:
       Translation: [-3.13355255, 0, 0]
-      Rotation: [-0.063074097, 0.447021127, 1.55903482]
-      Scale: [9.40903854, 4.93350649, 6.820755]
+      Rotation: [5.16996622, 0.00352668762, 4.69177437]
+      Scale: [0.411009341, 2.02999997, 0.920000017]
     SpriteRendererComponent:
       Color: [0.308880329, 1, 0, 1]
       Path: "NULL"

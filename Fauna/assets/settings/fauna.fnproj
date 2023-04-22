@@ -1,15 +1,15 @@
 Scene Filepath: assets\scenes\GreenBox.flora
 Selected Entity: -1
-Current Gizmo: -1
+Current Gizmo: 896
 Editor Camera Type: Perspective
 General Camera Settings:
-  Position: [39.0840416, 2.72700691, 7.4390254]
-  Focal Point: [-0.0690399706, -0.0515977927, -0.0258541219]
+  Position: [-6.80578423, 6.61076593, 5.21590042]
+  Focal Point: [-1.98177171, -1.74936521, 0]
 Perspective Camera Settings:
-  Distance: 39.9550858
-  Pitch: 0.0695993751
-  Yaw: -1.38239849
+  Distance: 10.9712582
+  Pitch: 0.86640054
+  Yaw: -5.53680038
 Orthographic Camera Settings:
-  Size: 2.37864852
+  Size: 28.9032993
 Closed Panels:
   []

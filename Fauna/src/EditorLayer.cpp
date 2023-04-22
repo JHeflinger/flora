@@ -150,6 +150,12 @@ namespace Flora {
 			ImGui::Text(lastSaved.c_str());
 			ImGui::PopStyleColor();
 
+			ImGui::SameLine((ImGui::GetWindowSize().x) / 2);
+			std::string viewportName = std::filesystem::path(m_EditorParams->ActiveScene->GetSceneFilepath()).stem().filename().string();
+			if (m_EditorParams->ActiveScene->GetSceneFilepath() == "NULL") viewportName = "Untitled";
+			ImGui::SetCursorPosX(ImGui::GetCursorPosX() - ImGui::CalcTextSize(viewportName.c_str()).x / 2);
+			ImGui::Text(viewportName.c_str());
+
 			ImGui::EndMenuBar();
 		}
 

@@ -12,12 +12,12 @@ namespace Flora {
 	private:
 		void ResetStats() {
 			m_Frametime = 0.0f;
-			m_LowestFPS = 9999999;
+			m_LowestFPS = 99999;
 			m_HighestFPS = 0;
 		}
 	private:
 		float m_Frametime = 0.0f;
-		int m_LowestFPS = 9999999;
+		int m_LowestFPS = 99999;
 		int m_HighestFPS = 0;
 	};
 }
