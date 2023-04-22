@@ -78,6 +78,7 @@ namespace Flora {
 		m_ViewportFocused = ImGui::IsWindowFocused();
 		m_ViewportHovered = ImGui::IsWindowHovered();
 		m_EditorContext->ActiveScene->SetViewportHovered(m_ViewportHovered); // temporary solution
+		m_EditorContext->ActiveScene->SetViewportFocused(m_ViewportFocused);
 		Application::Get().GetImGuiLayer()->BlockEvents(!m_ViewportFocused && !m_ViewportHovered);
 		ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
 		m_ViewportSize = { viewportPanelSize.x, viewportPanelSize.y };

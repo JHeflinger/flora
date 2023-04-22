@@ -58,9 +58,21 @@ TODO:
 
 	- need to be able to get entity from id or tag
 
+	- content browser names are only on the first row? also the centering isn't perfect it slowly goes off center
+
 IN PROGRESS:
 
+	- copy pasting support
+
+	- show scene name on viewport
+
+	- delete files from content browser
+
 	- play button
+
+	- refactor stats panel
+
+	- stats panel reset button
 
 IMPLEMENTED TICKETS:
 

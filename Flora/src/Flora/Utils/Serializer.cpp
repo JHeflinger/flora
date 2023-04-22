@@ -148,6 +148,22 @@ namespace Flora {
 			out << YAML::EndMap;
 		}
 
+		if (entity.HasComponent<ScriptManagerComponent>()) {
+			out << YAML::Key << "ScriptManagerComponent";
+			auto& scriptManager = entity.GetComponent<ScriptManagerComponent>();
+			out << YAML::BeginMap;
+			out << YAML::Key << "NativeScripts";
+			out << YAML::BeginSeq;
+			for (int i = 0; i < scriptManager.NativeScripts.size(); i++) {
+				out << YAML::BeginMap;
+				out << YAML::Key << "Path" << YAML::Value << scriptManager.NativeScripts[i].Path;
+				out << YAML::Key << "Filename" << YAML::Value << scriptManager.NativeScripts[i].Filename;
+				out << YAML::EndMap;
+			}
+			out << YAML::EndSeq;
+			out << YAML::EndMap;
+		}
+
 		if (entity.HasComponent<ParentComponent>()) {
 			out << YAML::Key << "ParentComponent";
 			out << YAML::BeginMap;
@@ -336,6 +352,19 @@ namespace Flora {
 					auto& cc = deserializedEntity.AddComponent<ChildComponent>();
 					for (auto child : childComponent)
 						cc.AddChild(Entity{ (entt::entity)child.as<uint32_t>(), scene.get() });
+				}
+
+				auto scriptManager = entity["ScriptManagerComponent"];
+				if (scriptManager) {
+					auto& smc = deserializedEntity.AddComponent<ScriptManagerComponent>();
+					auto nativeScripts = scriptManager["NativeScripts"];
+					for (auto nsc : nativeScripts) {
+						NativeScriptComponent newNativeScript;
+						newNativeScript.Path = nsc["Path"].as<std::string>();
+						newNativeScript.Filename = nsc["Filename"].as<std::string>();
+						BindScriptToComponent(newNativeScript, std::filesystem::path(newNativeScript.Path).filename().stem().string());
+						smc.NativeScripts.emplace_back(newNativeScript);
+					}
 				}
 			}
 		}

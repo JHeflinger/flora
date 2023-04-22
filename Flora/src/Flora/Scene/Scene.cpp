@@ -81,7 +81,7 @@ namespace Flora {
 
 	void Scene::OnUpdateEditor(Timestep ts, EditorCamera& camera) {
 		// Update Scripts
-		if (m_ViewportHovered) {
+		if (m_ViewportFocused) {
 			UpdateScripts(ts);
 		}
 
