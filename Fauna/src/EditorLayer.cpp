@@ -419,7 +419,16 @@ namespace Flora {
 						std::string copyfile = m_EditorParams->Clipboard.Filepath;
 						if (copyfile == "") break;
 						if (std::filesystem::is_directory(copyfile)) {
-							//TODO
+							std::string newFolder = GetSpecificPanel<ContentBrowserPanel>("Content Browser")->GetBrowserDirectory() + "\\"
+								+ std::filesystem::path(copyfile).filename().string();
+							int i = 0;
+							while (std::filesystem::exists(newFolder)) {
+								i++;
+								newFolder = std::filesystem::path(copyfile).parent_path().string() + "/" +
+									std::filesystem::path(copyfile).stem().string() + " (" + std::to_string(i) + ")" +
+									std::filesystem::path(copyfile).extension().string();
+							}
+							FileUtils::CopyDirectory(copyfile, newFolder);
 						}
 						else {
 							std::string newfile = GetSpecificPanel<ContentBrowserPanel>("Content Browser")->GetBrowserDirectory() + "\\"
@@ -457,9 +466,14 @@ namespace Flora {
 			if (!copycutpasted) {
 				switch (m_EditorParams->FocusedPanel) {
 				case Panels::CONTENTBROWSER:
-					if (std::remove(GetSpecificPanel<ContentBrowserPanel>("Content Browser")->GetSelectedFile().c_str()) != 0) {
-						FL_CORE_ERROR("Error deleting file");
-					} else GetSpecificPanel<ContentBrowserPanel>("Content Browser")->SetSelectedFile("");
+					std::filesystem::path path = std::filesystem::path(GetSpecificPanel<ContentBrowserPanel>("Content Browser")->GetSelectedFile());
+					if (std::filesystem::is_directory(path)) {
+						if (std::filesystem::remove_all(path.string().c_str()) != 0) FL_CORE_ERROR("Error deleting directory");
+					}
+					else {
+						if (std::remove(path.string().c_str()) != 0) FL_CORE_ERROR("Error deleting file");
+					}
+					GetSpecificPanel<ContentBrowserPanel>("Content Browser")->SetSelectedFile("");
 					break;
 				}
 				copycutpasted = true;

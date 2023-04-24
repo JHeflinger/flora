@@ -105,7 +105,11 @@ namespace Flora {
 				if (ImGui::MenuItem("Rename"))
 					m_FileToRename = path.string();
 				if (ImGui::MenuItem("Delete")) 
-					if (std::remove(path.string().c_str()) != 0) FL_CORE_ERROR("Error deleting file");
+					if (std::filesystem::is_directory(path)) {
+						if (std::filesystem::remove_all(path.string().c_str()) != 0) FL_CORE_ERROR("Error deleting directory");
+					} else {
+						if (std::remove(path.string().c_str()) != 0) FL_CORE_ERROR("Error deleting file");
+					}
 				if (ImGui::MenuItem("Cut"))
 					FL_CORE_ERROR("Cut functionality has not been implemented yet");
 				if (ImGui::MenuItem("Copy"))
