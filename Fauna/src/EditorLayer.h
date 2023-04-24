@@ -34,7 +34,7 @@ namespace Flora {
 		void SetPanelContext();
 		void UpdatePanels(Timestep ts);
 		void RenderImGuiPanels();
-		void UpdateEditorParams(Timestep ts);
+		void UpdateEditor(Timestep ts);
 		void AutoSaveEditor(Timestep ts);
 		std::string GetLastSavedString();
 		void PromptSave(SavePromptType type) { m_SavePromptType = type; }

@@ -62,21 +62,28 @@ TODO:
 
 	- content browser select multiple 
 
-	- new file options in content browser too
+	- new file/folder options in content browser too
 
 	- errors should open up a popup
 
+	- copy and paste can select multiple files/entities
+
 IN PROGRESS:
+	- copy/cut/pasting support for content browser
 
-	- copy/cut/pasting support
+	- copy/cut/pasting support for scene hierarchy and viewport
 
-	- copy files from content browser
+	- copy files from content browser with menu click
+
+	- copy, cut, and paste file with keycommands
 
 	- cut files from content browser
 
 	- play button
 
 IMPLEMENTED TICKETS:
+
+	- delete by key command
 
 	- delete files from content browser
 

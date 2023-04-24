@@ -55,7 +55,9 @@ namespace Flora {
 
 		ImGui::Columns(columnCount, 0, false);
 
-		for (auto& directoryEntry : std::filesystem::directory_iterator(m_CurrentDirectory)) {	
+		if (ImGui::IsMouseClicked(ImGuiMouseButton_Left) || !ImGui::IsWindowFocused())
+			m_SelectedFile = "";
+		for (auto& directoryEntry : std::filesystem::directory_iterator(m_CurrentDirectory)) {
 			const auto& path = directoryEntry.path();
 			auto relativePath = std::filesystem::relative(path, g_AssetPath);
 			std::string filenameString = relativePath.filename().string();
@@ -64,9 +66,12 @@ namespace Flora {
 
 			Ref<Texture2D> icon = directoryEntry.is_directory() ? m_DirectoryIcon : m_FileIcon;
 			
-			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 0));
-			ImGui::ImageButton((ImTextureID)icon->GetRendererID(), { thumbnailSize, thumbnailSize }, { 0, 1 }, { 1, 0 });
-			ImGui::PopStyleColor();
+			if (m_SelectedFile != path.string()) {
+				ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 0));
+				if (ImGui::ImageButton((ImTextureID)icon->GetRendererID(), { thumbnailSize, thumbnailSize }, { 0, 1 }, { 1, 0 }))
+					m_SelectedFile = path.string();
+				ImGui::PopStyleColor();
+			} else ImGui::ImageButton((ImTextureID)icon->GetRendererID(), { thumbnailSize, thumbnailSize }, { 0, 1 }, { 1, 0 });
 
 			if (ImGui::BeginDragDropSource()) {
 				const wchar_t* itemPath = relativePath.c_str();

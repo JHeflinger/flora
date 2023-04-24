@@ -14,6 +14,11 @@ namespace Flora {
 		VIEWPORT = 6
 	};
 
+	struct Clipboard {
+		std::string Filepath = "";
+		bool CutFile = false;
+	};
+
 	struct EditorParams {
 		Entity SelectedEntity = {};
 		int GizmoType = -1;
@@ -24,5 +29,6 @@ namespace Flora {
 		float Time; // in seconds
 		Panels FocusedPanel = Panels::NONE;
 		Panels HoveredPanel = Panels::NONE;
+		Clipboard Clipboard;
 	};
 }
