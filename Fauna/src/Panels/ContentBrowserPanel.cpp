@@ -17,6 +17,8 @@ namespace Flora {
 
 	void ContentBrowserPanel::OnImGuiRender() {
 		ImGui::Begin("Content Browser", &m_Enabled);
+		if (ImGui::IsWindowHovered()) m_EditorContext->HoveredPanel = Panels::CONTENTBROWSER;
+		if (ImGui::IsWindowFocused()) m_EditorContext->FocusedPanel = Panels::CONTENTBROWSER;
 
 		if (m_CurrentDirectory != std::filesystem::path(g_AssetPath)) {
 			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 0));

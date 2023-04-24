@@ -155,6 +155,8 @@ namespace Flora {
 
 	void PropertiesPanel::OnImGuiRender() {
 		ImGui::Begin("Properties", &m_Enabled);
+		if (ImGui::IsWindowHovered()) m_EditorContext->HoveredPanel = Panels::PROPERTIES;
+		if (ImGui::IsWindowFocused()) m_EditorContext->FocusedPanel = Panels::PROPERTIES;
 		Entity selectedEntity = m_EditorContext->SelectedEntity;
 		if (selectedEntity)
 			DrawComponents(selectedEntity);

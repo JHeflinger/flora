@@ -10,6 +10,8 @@ namespace Flora {
 
 	void SceneHierarchyPanel::OnImGuiRender() {
 		ImGui::Begin("Scene Hierarchy", &m_Enabled);
+		if (ImGui::IsWindowHovered()) m_EditorContext->HoveredPanel = Panels::SCENEHIERARCHY;
+		if (ImGui::IsWindowFocused()) m_EditorContext->FocusedPanel = Panels::SCENEHIERARCHY;
 		m_EditorContext->ActiveScene->m_Registry.each([&](auto entityID) {
 			Entity entity{ entityID, m_EditorContext->ActiveScene.get() };
 			if (!entity.HasComponent<ParentComponent>())

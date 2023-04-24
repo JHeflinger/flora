@@ -75,11 +75,11 @@ namespace Flora {
 		auto viewportOffset = ImGui::GetWindowPos();
 		m_ViewportBounds[0] = { viewportMinRegion.x + viewportOffset.x , viewportMinRegion.y + viewportOffset.y };
 		m_ViewportBounds[1] = { viewportMaxRegion.x + viewportOffset.x , viewportMaxRegion.y + viewportOffset.y };
-		m_ViewportFocused = ImGui::IsWindowFocused();
-		m_ViewportHovered = ImGui::IsWindowHovered();
-		m_EditorContext->ActiveScene->SetViewportHovered(m_ViewportHovered); // temporary solution
-		m_EditorContext->ActiveScene->SetViewportFocused(m_ViewportFocused);
-		Application::Get().GetImGuiLayer()->BlockEvents(!m_ViewportFocused && !m_ViewportHovered);
+		if (ImGui::IsWindowHovered()) m_EditorContext->HoveredPanel = Panels::VIEWPORT;
+		if (ImGui::IsWindowFocused()) m_EditorContext->FocusedPanel = Panels::VIEWPORT;
+		m_EditorContext->ActiveScene->SetViewportHovered(m_EditorContext->HoveredPanel == Panels::VIEWPORT); // temporary solution
+		m_EditorContext->ActiveScene->SetViewportFocused(m_EditorContext->FocusedPanel == Panels::VIEWPORT);
+		Application::Get().GetImGuiLayer()->BlockEvents(!ImGui::IsWindowFocused && !ImGui::IsWindowHovered);
 		ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
 		m_ViewportSize = { viewportPanelSize.x, viewportPanelSize.y };
 		uint32_t textureID = m_Framebuffer->GetColorAttachmentRendererID();

@@ -167,6 +167,9 @@ namespace Flora {
 		// Prompt Save
 		RenderSavePrompt();
 
+		FL_CORE_INFO((int)m_EditorParams->HoveredPanel);
+		FL_CORE_INFO((int)m_EditorParams->FocusedPanel);
+
 		ImGui::End();
 	}
 
@@ -315,7 +318,7 @@ namespace Flora {
 
 	bool EditorLayer::OnMouseButtonPressed(MouseButtonPressedEvent& e) {
 		if (e.GetMouseButton() == Mouse::ButtonLeft &&
-			GetSpecificPanel<ViewportPanel>("Viewport")->ViewportHovered() &&
+			m_EditorParams->HoveredPanel == Panels::VIEWPORT &&
 			!ImGuizmo::IsUsing() &&
 			!ImGuizmo::IsOver() &&
 			!Input::IsKeyPressed(Key::Space))
@@ -388,6 +391,8 @@ namespace Flora {
 		m_EditorParams->EditorCamera.OnUpdate(ts);
 		m_EditorParams->ActiveScene->OnUpdateEditor(ts, m_EditorParams->EditorCamera);
 		m_EditorParams->Time += ts.GetSeconds();
+		m_EditorParams->HoveredPanel = Panels::NONE;
+		m_EditorParams->FocusedPanel = Panels::NONE;
 	}
 
 	void EditorLayer::AutoSaveEditor(Timestep ts) {

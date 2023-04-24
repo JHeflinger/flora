@@ -7,6 +7,8 @@ namespace Flora {
 	void ConsolePanel::OnImGuiRender() {
 		auto rendererStats = Renderer2D::GetStats();
 		ImGui::Begin("Console", &m_Enabled);
+		if (ImGui::IsWindowHovered()) m_EditorContext->HoveredPanel = Panels::CONSOLE;
+		if (ImGui::IsWindowFocused()) m_EditorContext->FocusedPanel = Panels::CONSOLE;
 		for (int i = 0; i < m_Logs.size(); i++) {
 			ImVec4 color;
 			switch (m_Logs[i].Type) {
