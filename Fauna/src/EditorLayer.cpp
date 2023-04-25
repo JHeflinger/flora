@@ -397,6 +397,14 @@ namespace Flora {
 					m_EditorParams->Clipboard.Filepath = GetSpecificPanel<ContentBrowserPanel>("Content Browser")->GetSelectedFile();
 					m_EditorParams->Clipboard.CutFile = false;
 					break;
+				case Panels::SCENEHIERARCHY:
+					m_EditorParams->Clipboard.Entity = m_EditorParams->SelectedEntity;
+					m_EditorParams->Clipboard.CutEntity = false;
+					break;
+				case Panels::VIEWPORT:
+					m_EditorParams->Clipboard.Entity = m_EditorParams->SelectedEntity;
+					m_EditorParams->Clipboard.CutEntity = false;
+					break;
 				}
 				copycutpasted = true;
 			}
@@ -406,6 +414,14 @@ namespace Flora {
 				case Panels::CONTENTBROWSER:
 					m_EditorParams->Clipboard.Filepath = GetSpecificPanel<ContentBrowserPanel>("Content Browser")->GetSelectedFile();
 					m_EditorParams->Clipboard.CutFile = true;
+					break;
+				case Panels::SCENEHIERARCHY:
+					m_EditorParams->Clipboard.Entity = m_EditorParams->SelectedEntity;
+					m_EditorParams->Clipboard.CutEntity = true;
+					break;
+				case Panels::VIEWPORT:
+					m_EditorParams->Clipboard.Entity = m_EditorParams->SelectedEntity;
+					m_EditorParams->Clipboard.CutEntity = true;
 					break;
 				}
 				copycutpasted = true;
@@ -459,14 +475,43 @@ namespace Flora {
 						else GetSpecificPanel<ContentBrowserPanel>("Content Browser")->SetSelectedFile("");
 					}
 					break;
+				case Panels::SCENEHIERARCHY:
+					if (!(bool)(m_EditorParams->SelectedEntity))
+						m_EditorParams->ActiveScene->CopyEntity(m_EditorParams->Clipboard.Entity);
+					else
+						m_EditorParams->ActiveScene->CopyEntity(m_EditorParams->Clipboard.Entity, m_EditorParams->SelectedEntity);
+					if (m_EditorParams->Clipboard.CutEntity) {
+						if (m_EditorParams->SelectedEntity == m_EditorParams->Clipboard.Entity) {
+							m_EditorParams->SelectedEntity = {};
+						}
+						GetSpecificPanel<SceneHierarchyPanel>("Scene Hierarchy")->DeleteEntity(m_EditorParams->Clipboard.Entity);
+						m_EditorParams->Clipboard.Entity = {};
+						m_EditorParams->Clipboard.CutEntity = false;
+					}
+					break;
+				case Panels::VIEWPORT:
+					if (!(bool)m_EditorParams->SelectedEntity)
+						m_EditorParams->ActiveScene->CopyEntity(m_EditorParams->Clipboard.Entity);
+					else
+						m_EditorParams->ActiveScene->CopyEntity(m_EditorParams->Clipboard.Entity, m_EditorParams->SelectedEntity);
+					if (m_EditorParams->Clipboard.CutEntity) {
+						if (m_EditorParams->SelectedEntity == m_EditorParams->Clipboard.Entity) {
+							m_EditorParams->SelectedEntity = {};
+						}
+						GetSpecificPanel<SceneHierarchyPanel>("Scene Hierarchy")->DeleteEntity(m_EditorParams->Clipboard.Entity);
+						m_EditorParams->Clipboard.Entity = {};
+						m_EditorParams->Clipboard.CutEntity = false;
+					}
+					break;
 				}
 				copycutpasted = true;
 			}
 		} else if (Input::IsKeyPressed(Key::Delete)) { // delete
 			if (!copycutpasted) {
+				std::filesystem::path path;
 				switch (m_EditorParams->FocusedPanel) {
 				case Panels::CONTENTBROWSER:
-					std::filesystem::path path = std::filesystem::path(GetSpecificPanel<ContentBrowserPanel>("Content Browser")->GetSelectedFile());
+					path = std::filesystem::path(GetSpecificPanel<ContentBrowserPanel>("Content Browser")->GetSelectedFile());
 					if (std::filesystem::is_directory(path)) {
 						std::filesystem::remove_all(path.string().c_str());
 					}
@@ -474,6 +519,14 @@ namespace Flora {
 						if (std::remove(path.string().c_str()) != 0) FL_CORE_ERROR("Error deleting file");
 					}
 					GetSpecificPanel<ContentBrowserPanel>("Content Browser")->SetSelectedFile("");
+					break;
+				case Panels::VIEWPORT:
+					GetSpecificPanel<SceneHierarchyPanel>("Scene Hierarchy")->DeleteEntity(m_EditorParams->SelectedEntity);
+					m_EditorParams->SelectedEntity = {};
+					break;
+				case Panels::SCENEHIERARCHY:
+					GetSpecificPanel<SceneHierarchyPanel>("Scene Hierarchy")->DeleteEntity(m_EditorParams->SelectedEntity);
+					m_EditorParams->SelectedEntity = {};
 					break;
 				}
 				copycutpasted = true;

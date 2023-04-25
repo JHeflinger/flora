@@ -26,10 +26,10 @@ namespace Flora {
 			if (ImGui::MenuItem("Paste Entity")) {
 				m_EditorContext->ActiveScene->CopyEntity(m_EditorContext->Clipboard.Entity);
 				if (m_EditorContext->Clipboard.CutEntity) {
-					DeleteEntity(m_EditorContext->Clipboard.Entity);
 					if (m_EditorContext->SelectedEntity == m_EditorContext->Clipboard.Entity) {
 						m_EditorContext->SelectedEntity = {};
 					}
+					DeleteEntity(m_EditorContext->Clipboard.Entity);
 					m_EditorContext->Clipboard.Entity = {};
 					m_EditorContext->Clipboard.CutEntity = false;
 				}
@@ -94,10 +94,10 @@ namespace Flora {
 			if (ImGui::MenuItem("Paste Entity")) {
 				m_EditorContext->ActiveScene->CopyEntity(m_EditorContext->Clipboard.Entity, entity);
 				if (m_EditorContext->Clipboard.CutEntity) {
-					DeleteEntity(m_EditorContext->Clipboard.Entity);
 					if (m_EditorContext->SelectedEntity == m_EditorContext->Clipboard.Entity) {
 						m_EditorContext->SelectedEntity = {};
 					}
+					DeleteEntity(m_EditorContext->Clipboard.Entity);
 					m_EditorContext->Clipboard.Entity = {};
 					m_EditorContext->Clipboard.CutEntity = false;
 				}

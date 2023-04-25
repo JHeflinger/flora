@@ -74,28 +74,10 @@ TODO:
 
 	- rightclick menu to add new component in propertiespanel
 
+	- scriptmanager should be able to move around scripts
+
 IN PROGRESS:
-
-	- copy/cut/pasting support for scene hierarchy and viewport
-
-	- copy, cut, and paste entities with keycommands
 
 	- play button
 
-	- scriptmanager should be able to remove scripts
-
 IMPLEMENTED TICKETS:
-
-	- copy, cut, and paste entities with menu click popup
-
-	- bug: selected entity would be attempted to be set on startup even if it didn't exist
-
-	- copy, cut, and paste file with keycommands
-
-	- cut files from content browser
-
-	- copy files from content browser with menu click
-
-	- copy/cut/pasting support for content browser
-
-	- delete by key command

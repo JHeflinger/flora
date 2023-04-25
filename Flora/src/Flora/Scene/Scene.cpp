@@ -82,13 +82,6 @@ namespace Flora {
 		Entity newEntity(m_Registry.create(), this);
 		CopyAllComponents(entity, newEntity);
 
-		// modify parent based on parameter
-		if (!parent.HasComponent<ChildComponent>()) parent.AddComponent<ChildComponent>();
-		parent.GetComponent<ChildComponent>().AddChild(newEntity);
-		CopyComponent<ParentComponent>(entity, newEntity);
-		if (!newEntity.HasComponent<ParentComponent>()) newEntity.AddComponent<ParentComponent>();
-		newEntity.GetComponent<ParentComponent>().Parent = parent;
-
 		// copy children recursively to avoid having the same children
 		if (entity.HasComponent<ChildComponent>()) {
 			ChildComponent cc = entity.GetComponent<ChildComponent>();
@@ -97,6 +90,13 @@ namespace Flora {
 				new_cc.AddChild(CopyEntity(cc.Children[i], newEntity));
 			}
 		}
+
+		// modify parent based on parameter
+		if (!parent.HasComponent<ChildComponent>()) parent.AddComponent<ChildComponent>();
+		parent.GetComponent<ChildComponent>().AddChild(newEntity);
+		CopyComponent<ParentComponent>(entity, newEntity);
+		if (!newEntity.HasComponent<ParentComponent>()) newEntity.AddComponent<ParentComponent>();
+		newEntity.GetComponent<ParentComponent>().Parent = parent;
 
 		return newEntity;
 	}

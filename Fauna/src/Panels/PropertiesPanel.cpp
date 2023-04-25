@@ -571,6 +571,14 @@ namespace Flora {
 					}
 					ImGui::EndDragDropTarget();
 				}
+				
+				ImGui::SameLine();
+				ImGui::SetCursorPosX(ImGui::GetWindowWidth() - 30);
+				ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 0));
+				if (ImGui::Button("X")) {
+					component.NativeScripts.erase(component.NativeScripts.begin() + i);
+				}
+				ImGui::PopStyleColor();
 			}
 			ImGui::Columns(1);
 			ImGui::Dummy({ 0, 10 });
