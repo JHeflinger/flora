@@ -57,7 +57,7 @@ namespace Flora {
 		UpdatePanels(ts);
 
 		// Update editor params
-		UpdateEditorParams(ts);
+		UpdateEditor(ts);
 
 		// Process viewport
 		GetSpecificPanel<ViewportPanel>("Viewport")->PostUpdate();
@@ -315,7 +315,7 @@ namespace Flora {
 
 	bool EditorLayer::OnMouseButtonPressed(MouseButtonPressedEvent& e) {
 		if (e.GetMouseButton() == Mouse::ButtonLeft &&
-			GetSpecificPanel<ViewportPanel>("Viewport")->ViewportHovered() &&
+			m_EditorParams->HoveredPanel == Panels::VIEWPORT &&
 			!ImGuizmo::IsUsing() &&
 			!ImGuizmo::IsOver() &&
 			!Input::IsKeyPressed(Key::Space))
@@ -372,22 +372,175 @@ namespace Flora {
 		}
 	}
 
-	void EditorLayer::UpdateEditorParams(Timestep ts) {
+	void EditorLayer::UpdateEditor(Timestep ts) {
+		// resizing
 		if (!m_EditorParams->Resized) {
 			glm::vec2 viewportSize = GetSpecificPanel<ViewportPanel>("Viewport")->GetViewportSize();
 			m_EditorParams->ActiveScene->OnViewportResize((uint32_t)viewportSize.x, (uint32_t)viewportSize.y);
 			m_EditorParams->Resized = true;
 		}
 
+		// close panels
 		m_EditorParams->ClosedPanels.clear();
 		for (auto& panel : m_Panels) {
 			if (!panel.second->m_Enabled)
 				m_EditorParams->ClosedPanels.push_back(panel.first);
 		}
 
+		// copy cut paste delete
+		static bool copycutpasted = false;
+		bool control = Input::IsKeyPressed(Key::LeftControl) || Input::IsKeyPressed(Key::RightControl);
+		if (control && Input::IsKeyPressed(Key::C)) { // copy
+			if (!copycutpasted) {
+				switch (m_EditorParams->FocusedPanel) {
+				case Panels::CONTENTBROWSER:
+					m_EditorParams->Clipboard.Filepath = GetSpecificPanel<ContentBrowserPanel>("Content Browser")->GetSelectedFile();
+					m_EditorParams->Clipboard.CutFile = false;
+					break;
+				case Panels::SCENEHIERARCHY:
+					m_EditorParams->Clipboard.Entity = m_EditorParams->SelectedEntity;
+					m_EditorParams->Clipboard.CutEntity = false;
+					break;
+				case Panels::VIEWPORT:
+					m_EditorParams->Clipboard.Entity = m_EditorParams->SelectedEntity;
+					m_EditorParams->Clipboard.CutEntity = false;
+					break;
+				}
+				copycutpasted = true;
+			}
+		} else if (control && Input::IsKeyPressed(Key::X)) { // cut
+			if (!copycutpasted) {
+				switch (m_EditorParams->FocusedPanel) {
+				case Panels::CONTENTBROWSER:
+					m_EditorParams->Clipboard.Filepath = GetSpecificPanel<ContentBrowserPanel>("Content Browser")->GetSelectedFile();
+					m_EditorParams->Clipboard.CutFile = true;
+					break;
+				case Panels::SCENEHIERARCHY:
+					m_EditorParams->Clipboard.Entity = m_EditorParams->SelectedEntity;
+					m_EditorParams->Clipboard.CutEntity = true;
+					break;
+				case Panels::VIEWPORT:
+					m_EditorParams->Clipboard.Entity = m_EditorParams->SelectedEntity;
+					m_EditorParams->Clipboard.CutEntity = true;
+					break;
+				}
+				copycutpasted = true;
+			}
+		}
+		else if (control && Input::IsKeyPressed(Key::V)) { // paste
+			if (!copycutpasted) {
+				switch (m_EditorParams->FocusedPanel) {
+				case Panels::CONTENTBROWSER:
+					if (!m_EditorParams->Clipboard.CutFile) {
+						std::string copyfile = m_EditorParams->Clipboard.Filepath;
+						if (copyfile == "") break;
+						if (std::filesystem::is_directory(copyfile)) {
+							std::string newFolder = GetSpecificPanel<ContentBrowserPanel>("Content Browser")->GetBrowserDirectory() + "\\"
+								+ std::filesystem::path(copyfile).filename().string();
+							int i = 0;
+							while (std::filesystem::exists(newFolder)) {
+								i++;
+								newFolder = std::filesystem::path(copyfile).parent_path().string() + "/" +
+									std::filesystem::path(copyfile).stem().string() + " (" + std::to_string(i) + ")" +
+									std::filesystem::path(copyfile).extension().string();
+							}
+							FileUtils::CopyDirectory(copyfile, newFolder);
+						}
+						else {
+							std::string newfile = GetSpecificPanel<ContentBrowserPanel>("Content Browser")->GetBrowserDirectory() + "\\"
+								+ std::filesystem::path(copyfile).filename().string();
+							int i = 0;
+							while (std::filesystem::exists(newfile)) {
+								i++;
+								newfile = std::filesystem::path(copyfile).parent_path().string() + "/" +
+									std::filesystem::path(copyfile).stem().string() + " (" + std::to_string(i) + ")" +
+									std::filesystem::path(copyfile).extension().string();
+							}
+							std::ifstream infile(copyfile.c_str(), std::ios::binary);
+							std::ofstream outfile(newfile.c_str(), std::ios::binary);
+							if (infile.is_open() && outfile.is_open()) {
+								outfile << infile.rdbuf();
+								infile.close();
+								outfile.close();
+							}
+							else FL_CORE_ERROR("Error pasting file");
+						}
+					} else {
+						std::string copyfile = m_EditorParams->Clipboard.Filepath;
+						std::string newfile = GetSpecificPanel<ContentBrowserPanel>("Content Browser")->GetBrowserDirectory() + "\\" +
+							std::filesystem::path(copyfile).stem().string() +
+							std::filesystem::path(copyfile).extension().string();
+						if (std::rename(copyfile.c_str(), newfile.c_str()) != 0)
+							FL_CORE_ERROR("Error moving file");
+						else GetSpecificPanel<ContentBrowserPanel>("Content Browser")->SetSelectedFile("");
+					}
+					break;
+				case Panels::SCENEHIERARCHY:
+					if (!(bool)(m_EditorParams->SelectedEntity))
+						m_EditorParams->ActiveScene->CopyEntity(m_EditorParams->Clipboard.Entity);
+					else
+						m_EditorParams->ActiveScene->CopyEntity(m_EditorParams->Clipboard.Entity, m_EditorParams->SelectedEntity);
+					if (m_EditorParams->Clipboard.CutEntity) {
+						if (m_EditorParams->SelectedEntity == m_EditorParams->Clipboard.Entity) {
+							m_EditorParams->SelectedEntity = {};
+						}
+						GetSpecificPanel<SceneHierarchyPanel>("Scene Hierarchy")->DeleteEntity(m_EditorParams->Clipboard.Entity);
+						m_EditorParams->Clipboard.Entity = {};
+						m_EditorParams->Clipboard.CutEntity = false;
+					}
+					break;
+				case Panels::VIEWPORT:
+					if (!(bool)m_EditorParams->SelectedEntity)
+						m_EditorParams->ActiveScene->CopyEntity(m_EditorParams->Clipboard.Entity);
+					else
+						m_EditorParams->ActiveScene->CopyEntity(m_EditorParams->Clipboard.Entity, m_EditorParams->SelectedEntity);
+					if (m_EditorParams->Clipboard.CutEntity) {
+						if (m_EditorParams->SelectedEntity == m_EditorParams->Clipboard.Entity) {
+							m_EditorParams->SelectedEntity = {};
+						}
+						GetSpecificPanel<SceneHierarchyPanel>("Scene Hierarchy")->DeleteEntity(m_EditorParams->Clipboard.Entity);
+						m_EditorParams->Clipboard.Entity = {};
+						m_EditorParams->Clipboard.CutEntity = false;
+					}
+					break;
+				}
+				copycutpasted = true;
+			}
+		} else if (Input::IsKeyPressed(Key::Delete)) { // delete
+			if (!copycutpasted) {
+				std::filesystem::path path;
+				switch (m_EditorParams->FocusedPanel) {
+				case Panels::CONTENTBROWSER:
+					path = std::filesystem::path(GetSpecificPanel<ContentBrowserPanel>("Content Browser")->GetSelectedFile());
+					if (std::filesystem::is_directory(path)) {
+						std::filesystem::remove_all(path.string().c_str());
+					}
+					else {
+						if (std::remove(path.string().c_str()) != 0) FL_CORE_ERROR("Error deleting file");
+					}
+					GetSpecificPanel<ContentBrowserPanel>("Content Browser")->SetSelectedFile("");
+					break;
+				case Panels::VIEWPORT:
+					GetSpecificPanel<SceneHierarchyPanel>("Scene Hierarchy")->DeleteEntity(m_EditorParams->SelectedEntity);
+					m_EditorParams->SelectedEntity = {};
+					break;
+				case Panels::SCENEHIERARCHY:
+					GetSpecificPanel<SceneHierarchyPanel>("Scene Hierarchy")->DeleteEntity(m_EditorParams->SelectedEntity);
+					m_EditorParams->SelectedEntity = {};
+					break;
+				}
+				copycutpasted = true;
+			}
+		} else if (copycutpasted) {
+			copycutpasted = false;
+		}
+
+		// update params
 		m_EditorParams->EditorCamera.OnUpdate(ts);
 		m_EditorParams->ActiveScene->OnUpdateEditor(ts, m_EditorParams->EditorCamera);
 		m_EditorParams->Time += ts.GetSeconds();
+		m_EditorParams->HoveredPanel = Panels::NONE;
+		m_EditorParams->FocusedPanel = Panels::NONE;
 	}
 
 	void EditorLayer::AutoSaveEditor(Timestep ts) {
@@ -428,6 +581,7 @@ namespace Flora {
 
 	void EditorLayer::DevEvent() {
 		FL_CORE_INFO("DEV EVENT FIRED");
-		Serializer::IsSceneSaved(m_EditorParams->ActiveScene);
+		FL_CORE_INFO(GetSpecificPanel<ContentBrowserPanel>("Content Browser")->GetSelectedFile());
+		m_EditorParams->ActiveScene->CopyEntity(m_EditorParams->SelectedEntity);
 	}
 }

@@ -2,6 +2,7 @@
 #include "ContentBrowserPanel.h"
 #include <imgui/imgui.h>
 #include <stdio.h>
+#include "../Utils/FileUtils.h"
 
 namespace Flora {
 	// TODO: change this when projects are implemented
@@ -17,6 +18,8 @@ namespace Flora {
 
 	void ContentBrowserPanel::OnImGuiRender() {
 		ImGui::Begin("Content Browser", &m_Enabled);
+		if (ImGui::IsWindowHovered()) m_EditorContext->HoveredPanel = Panels::CONTENTBROWSER;
+		if (ImGui::IsWindowFocused()) m_EditorContext->FocusedPanel = Panels::CONTENTBROWSER;
 
 		if (m_CurrentDirectory != std::filesystem::path(g_AssetPath)) {
 			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 0));
@@ -53,7 +56,9 @@ namespace Flora {
 
 		ImGui::Columns(columnCount, 0, false);
 
-		for (auto& directoryEntry : std::filesystem::directory_iterator(m_CurrentDirectory)) {	
+		if (ImGui::IsMouseClicked(ImGuiMouseButton_Left) || !ImGui::IsWindowFocused())
+			m_SelectedFile = "";
+		for (auto& directoryEntry : std::filesystem::directory_iterator(m_CurrentDirectory)) {
 			const auto& path = directoryEntry.path();
 			auto relativePath = std::filesystem::relative(path, g_AssetPath);
 			std::string filenameString = relativePath.filename().string();
@@ -62,9 +67,12 @@ namespace Flora {
 
 			Ref<Texture2D> icon = directoryEntry.is_directory() ? m_DirectoryIcon : m_FileIcon;
 			
-			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 0));
-			ImGui::ImageButton((ImTextureID)icon->GetRendererID(), { thumbnailSize, thumbnailSize }, { 0, 1 }, { 1, 0 });
-			ImGui::PopStyleColor();
+			if (m_SelectedFile != path.string()) {
+				ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 0));
+				if (ImGui::ImageButton((ImTextureID)icon->GetRendererID(), { thumbnailSize, thumbnailSize }, { 0, 1 }, { 1, 0 }))
+					m_SelectedFile = path.string();
+				ImGui::PopStyleColor();
+			} else ImGui::ImageButton((ImTextureID)icon->GetRendererID(), { thumbnailSize, thumbnailSize }, { 0, 1 }, { 1, 0 });
 
 			if (ImGui::BeginDragDropSource()) {
 				const wchar_t* itemPath = relativePath.c_str();
@@ -98,11 +106,19 @@ namespace Flora {
 				if (ImGui::MenuItem("Rename"))
 					m_FileToRename = path.string();
 				if (ImGui::MenuItem("Delete")) 
-					if (std::remove(path.string().c_str()) != 0) FL_CORE_ERROR("Error deleting file");
-				if (ImGui::MenuItem("Cut"))
-					FL_CORE_ERROR("Cut functionality has not been implemented yet");
-				if (ImGui::MenuItem("Copy"))
-					FL_CORE_ERROR("Copy functionality has not been implemented yet");
+					if (std::filesystem::is_directory(path)) {
+						std::filesystem::remove_all(path.string().c_str());
+					} else {
+						if (std::remove(path.string().c_str()) != 0) FL_CORE_ERROR("Error deleting file");
+					}
+				if (ImGui::MenuItem("Cut")) {
+					m_EditorContext->Clipboard.Filepath = path.string();
+					m_EditorContext->Clipboard.CutFile = true;
+				}
+				if (ImGui::MenuItem("Copy")) {
+					m_EditorContext->Clipboard.Filepath = path.string();
+					m_EditorContext->Clipboard.CutFile = false;
+				}
 				ImGui::EndPopup();
 			}
 
@@ -127,7 +143,69 @@ namespace Flora {
 
 		ImGui::Columns(1);
 
-		// TODO: status bar
+		if (ImGui::BeginPopupContextWindow(0, 1 | ImGuiPopupFlags_NoOpenOverItems)) {
+			if (ImGui::MenuItem("New Folder")) {
+				std::filesystem::path newFolderPath = m_CurrentDirectory / "New Folder";
+				std::filesystem::create_directory(newFolderPath);
+			}
+			if (ImGui::MenuItem("New Script")) {
+				// TODO
+				FL_CORE_ERROR("New Script has not been implemented yet!");
+			}
+			if (ImGui::MenuItem("New Scene")) {
+				// TODO
+				FL_CORE_ERROR("New Scene has not been implemented yet!");
+			}
+			if (ImGui::MenuItem("Paste")) {
+				if (!m_EditorContext->Clipboard.CutFile) {
+					std::string copyfile = m_EditorContext->Clipboard.Filepath;
+					if (copyfile != "") {
+						if (std::filesystem::is_directory(copyfile)) {
+							std::string newFolder = m_CurrentDirectory.string() + "\\"
+								+ std::filesystem::path(copyfile).filename().string();
+							int i = 0;
+							while (std::filesystem::exists(newFolder)) {
+								i++;
+								newFolder = std::filesystem::path(copyfile).parent_path().string() + "/" +
+									std::filesystem::path(copyfile).stem().string() + " (" + std::to_string(i) + ")" +
+									std::filesystem::path(copyfile).extension().string();
+							}
+							FileUtils::CopyDirectory(copyfile, newFolder);
+						}
+						else {
+							std::string newfile = m_CurrentDirectory.string() + "\\"
+								+ std::filesystem::path(copyfile).filename().string();
+							int i = 0;
+							while (std::filesystem::exists(newfile)) {
+								i++;
+								newfile = std::filesystem::path(copyfile).parent_path().string() + "/" +
+									std::filesystem::path(copyfile).stem().string() + " (" + std::to_string(i) + ")" +
+									std::filesystem::path(copyfile).extension().string();
+							}
+							std::ifstream infile(copyfile.c_str(), std::ios::binary);
+							std::ofstream outfile(newfile.c_str(), std::ios::binary);
+							if (infile.is_open() && outfile.is_open()) {
+								outfile << infile.rdbuf();
+								infile.close();
+								outfile.close();
+							}
+							else FL_CORE_ERROR("Error pasting file");
+						}
+					}
+				}
+				else {
+					std::string copyfile = m_EditorContext->Clipboard.Filepath;
+					std::string newfile = m_CurrentDirectory.string() + "\\" +
+						std::filesystem::path(copyfile).stem().string() +
+						std::filesystem::path(copyfile).extension().string();
+					if (std::rename(copyfile.c_str(), newfile.c_str()) != 0)
+						FL_CORE_ERROR("Error moving file");
+					else m_SelectedFile = "";
+				}
+			}
+			ImGui::EndPopup();
+		}
+
 		ImGui::End();
 	}
 }

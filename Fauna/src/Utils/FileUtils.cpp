@@ -47,4 +47,34 @@ namespace Flora {
 		context->SelectedEntity = {};
 		context->Resized = false;
 	}
+
+	void FileUtils::CopyDirectory(const std::filesystem::path& source, const std::filesystem::path& destination) {
+		if (!std::filesystem::exists(source)) {
+			FL_CORE_ERROR("Error: Source folder does not exist.");
+			return;
+		}
+
+		if (!std::filesystem::exists(destination))
+			std::filesystem::create_directory(destination);
+
+		for (const auto& entry : std::filesystem::recursive_directory_iterator(source)) {
+			// Get the path of the entry relative to the source folder
+			const std::filesystem::path relative_path = std::filesystem::relative(entry.path(), source);
+
+			// Construct the corresponding path in the destination folder
+			const std::filesystem::path destination_path = destination / relative_path;
+
+			if (std::filesystem::is_directory(entry)) {
+				// If the entry is a subfolder, create a corresponding folder in the destination
+				std::filesystem::create_directory(destination_path);
+			} else {
+				// If the entry is a file, copy it to the corresponding location in the destination
+				std::ifstream infile(entry.path(), std::ios::binary);
+				std::ofstream outfile(destination_path, std::ios::binary);
+
+				if (infile.is_open() && outfile.is_open())
+					outfile << infile.rdbuf();
+			}
+		}
+	}
 }

@@ -4,6 +4,10 @@
 #include "Flora/Scene/Entity.h"
 #include "Flora/Scene/Components.h"
 #include <glm/glm.hpp>
+#include <filesystem>
+
+// temp until stable alternative is implemented
+#include "../../Fauna/assets/scripts/MasterNativeScript.h"
 
 namespace Flora {
 	static void DrawEntitySprite(Entity& entity, bool useTransformRef = false, glm::mat4 refTransform = glm::mat4(0.0f)) {
@@ -43,6 +47,60 @@ namespace Flora {
 		return entity;
 	}
 
+	template <typename T>
+	static void CopyComponent(Entity source, Entity dest) {
+		if (source.HasComponent<T>())
+			dest.AddComponent<T>(source.GetComponent<T>());
+	}
+
+	static void CopyAllComponents(Entity entity, Entity newEntity) {
+		CopyComponent<TagComponent>(entity, newEntity);
+		CopyComponent<TransformComponent>(entity, newEntity);
+		CopyComponent<SpriteRendererComponent>(entity, newEntity);
+		CopyComponent<CameraComponent>(entity, newEntity);
+		CopyComponent<NativeScriptComponent>(entity, newEntity);
+		CopyComponent<ScriptManagerComponent>(entity, newEntity);
+	}
+
+	Entity Scene::CopyEntity(Entity entity) {
+		Entity newEntity(m_Registry.create(), this);
+		CopyAllComponents(entity, newEntity);
+		
+		// copy children recursively to avoid having the same children
+		if (entity.HasComponent<ChildComponent>()) {
+			ChildComponent cc = entity.GetComponent<ChildComponent>();
+			ChildComponent new_cc = newEntity.AddComponent<ChildComponent>();
+			for (int i = 0; i < cc.Children.size(); i++) {
+				new_cc.AddChild(CopyEntity(cc.Children[i], newEntity));
+			}
+		}
+
+		return newEntity;
+	}
+
+	Entity Scene::CopyEntity(Entity entity, Entity parent) {
+		Entity newEntity(m_Registry.create(), this);
+		CopyAllComponents(entity, newEntity);
+
+		// copy children recursively to avoid having the same children
+		if (entity.HasComponent<ChildComponent>()) {
+			ChildComponent cc = entity.GetComponent<ChildComponent>();
+			ChildComponent new_cc = newEntity.AddComponent<ChildComponent>();
+			for (int i = 0; i < cc.Children.size(); i++) {
+				new_cc.AddChild(CopyEntity(cc.Children[i], newEntity));
+			}
+		}
+
+		// modify parent based on parameter
+		if (!parent.HasComponent<ChildComponent>()) parent.AddComponent<ChildComponent>();
+		parent.GetComponent<ChildComponent>().AddChild(newEntity);
+		CopyComponent<ParentComponent>(entity, newEntity);
+		if (!newEntity.HasComponent<ParentComponent>()) newEntity.AddComponent<ParentComponent>();
+		newEntity.GetComponent<ParentComponent>().Parent = parent;
+
+		return newEntity;
+	}
+
 	void Scene::DestroyEntity(Entity entity) {
 		m_Registry.destroy(entity);
 	}
@@ -54,7 +112,9 @@ namespace Flora {
 	void Scene::UpdateScripts(Timestep ts) {
 		// update native scripts
 		m_Registry.view<NativeScriptComponent>().each([=](auto entity, auto& nsc) {
-			if (nsc.Bound) {
+			if (nsc.Path != "NULL" && !nsc.Bound) {
+				BindScriptToComponent(nsc, std::filesystem::path(nsc.Path).filename().stem().string());
+			} else if (nsc.Bound) {
 				if (!nsc.Instance) {
 					nsc.Instance = nsc.InstantiateScript();
 					nsc.Instance->m_Entity = Entity{ entity, this };
@@ -67,7 +127,9 @@ namespace Flora {
 		// script manager
 		m_Registry.view<ScriptManagerComponent>().each([=](auto entity, auto& smc) {
 			for (int i = 0; i < smc.NativeScripts.size(); i++) {
-				if (smc.NativeScripts[i].Bound) {
+				if (smc.NativeScripts[i].Path != "NULL" && !smc.NativeScripts[i].Bound) {
+					BindScriptToComponent(smc.NativeScripts[i], std::filesystem::path(smc.NativeScripts[i].Path).filename().stem().string());
+				} else if (smc.NativeScripts[i].Bound) {
 					if (!smc.NativeScripts[i].Instance) {
 						smc.NativeScripts[i].Instance = smc.NativeScripts[i].InstantiateScript();
 						smc.NativeScripts[i].Instance->m_Entity = Entity{ entity, this };

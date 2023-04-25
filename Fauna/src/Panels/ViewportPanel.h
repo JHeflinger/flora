@@ -13,8 +13,6 @@ namespace Flora {
 		virtual void OnImGuiRender() override;
 		glm::vec2 GetViewportSize() const { return m_ViewportSize; }
 		bool ViewportResized();
-		bool ViewportHovered() const { return m_ViewportHovered; }
-		bool ViewportFocused() const { return m_ViewportFocused; }
 		Entity GetHoveredEntity() const { return m_HoveredEntity; }
 	public:
 		void RequestOpenScene(std::string filepath) { m_OpenNewScene = true; newScenePath = filepath; }
@@ -25,7 +23,6 @@ namespace Flora {
 		Ref<Framebuffer> m_Framebuffer;
 		glm::vec2 m_ViewportSize = { 0, 0 };
 		glm::vec2 m_ViewportBounds[2];
-		bool m_ViewportFocused, m_ViewportHovered = false;
 		Entity m_HoveredEntity;
 	private:
 		bool m_OpenNewScene = false;

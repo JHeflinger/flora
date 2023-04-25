@@ -10,6 +10,8 @@ namespace Flora {
 
 	void SceneHierarchyPanel::OnImGuiRender() {
 		ImGui::Begin("Scene Hierarchy", &m_Enabled);
+		if (ImGui::IsWindowHovered()) m_EditorContext->HoveredPanel = Panels::SCENEHIERARCHY;
+		if (ImGui::IsWindowFocused()) m_EditorContext->FocusedPanel = Panels::SCENEHIERARCHY;
 		m_EditorContext->ActiveScene->m_Registry.each([&](auto entityID) {
 			Entity entity{ entityID, m_EditorContext->ActiveScene.get() };
 			if (!entity.HasComponent<ParentComponent>())
@@ -21,6 +23,17 @@ namespace Flora {
 		if (ImGui::BeginPopupContextWindow(0, 1 | ImGuiPopupFlags_NoOpenOverItems)) {
 			if (ImGui::MenuItem("Create New Entity")) 
 				m_EditorContext->ActiveScene->CreateEntity();
+			if (ImGui::MenuItem("Paste Entity")) {
+				m_EditorContext->ActiveScene->CopyEntity(m_EditorContext->Clipboard.Entity);
+				if (m_EditorContext->Clipboard.CutEntity) {
+					if (m_EditorContext->SelectedEntity == m_EditorContext->Clipboard.Entity) {
+						m_EditorContext->SelectedEntity = {};
+					}
+					DeleteEntity(m_EditorContext->Clipboard.Entity);
+					m_EditorContext->Clipboard.Entity = {};
+					m_EditorContext->Clipboard.CutEntity = false;
+				}
+			}
 			ImGui::EndPopup();
 		}
 		
@@ -68,6 +81,25 @@ namespace Flora {
 				if (ImGui::MenuItem("Bring Entity Out")) {
 					entity.GetComponent<ParentComponent>().Parent.GetComponent<ChildComponent>().RemoveChild(entity);
 					entity.RemoveComponent<ParentComponent>();
+				}
+			}
+			if (ImGui::MenuItem("Copy Entity")) {
+				m_EditorContext->Clipboard.Entity = entity;
+				m_EditorContext->Clipboard.CutEntity = false;
+			}
+			if (ImGui::MenuItem("Cut Entity")) {
+				m_EditorContext->Clipboard.Entity = entity;
+				m_EditorContext->Clipboard.CutEntity = true;
+			}
+			if (ImGui::MenuItem("Paste Entity")) {
+				m_EditorContext->ActiveScene->CopyEntity(m_EditorContext->Clipboard.Entity, entity);
+				if (m_EditorContext->Clipboard.CutEntity) {
+					if (m_EditorContext->SelectedEntity == m_EditorContext->Clipboard.Entity) {
+						m_EditorContext->SelectedEntity = {};
+					}
+					DeleteEntity(m_EditorContext->Clipboard.Entity);
+					m_EditorContext->Clipboard.Entity = {};
+					m_EditorContext->Clipboard.CutEntity = false;
 				}
 			}
 			ImGui::EndPopup();

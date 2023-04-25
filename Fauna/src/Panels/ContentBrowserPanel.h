@@ -11,10 +11,13 @@ namespace Flora {
 		virtual void OnUpdate() override {};
 		void OnImGuiRender() override;
 	public:
-		void RequestOpenScene(std::string filepath) { m_OpenNewScene = true; newScenePath = filepath; }
+		void RequestOpenScene(std::string filepath) { m_OpenNewScene = true; m_NewScenePath = filepath; }
 		bool IsRequestingOpenScene() { return m_OpenNewScene; }
 		void ResolveOpenSceneRequest() { m_OpenNewScene = false; }
-		std::string GetRequestedStringPath() { return newScenePath; }
+		std::string GetRequestedStringPath() { return m_NewScenePath; }
+		std::string GetSelectedFile() { return m_SelectedFile; }
+		std::string GetBrowserDirectory() { return m_CurrentDirectory.string(); }
+		void SetSelectedFile(std::string newfile) { m_SelectedFile = newfile; }
 	private:
 		std::filesystem::path m_CurrentDirectory; 
 		Ref<Texture2D> m_DirectoryIcon;
@@ -23,7 +26,8 @@ namespace Flora {
 		Ref<Texture2D> m_UpIcon;
 	private:
 		bool m_OpenNewScene = false;
+		std::string m_SelectedFile = "";
 		std::string m_FileToRename = "";
-		std::string newScenePath = "";
+		std::string m_NewScenePath = "";
 	};
 }

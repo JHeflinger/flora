@@ -9,6 +9,8 @@ namespace Flora {
 		ImVec2 buttonSize = { 200, 0 };
 
 		ImGui::Begin("Stats", &m_Enabled);
+		if (ImGui::IsWindowHovered()) m_EditorContext->HoveredPanel = Panels::STATS;
+		if (ImGui::IsWindowFocused()) m_EditorContext->FocusedPanel = Panels::STATS;
 
 		if (ImGui::TreeNodeEx("Renderer Volume", treeNodeFlags)) {
 			auto rendererStats = Renderer2D::GetStats();

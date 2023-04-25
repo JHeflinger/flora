@@ -276,8 +276,6 @@ namespace Flora {
 				if (tagComponent)
 					name = tagComponent["Tag"].as<std::string>();
 
-				FL_CORE_TRACE("Deserialized entity with ID = {0}, name = {1}", uuid, name);
-
 				Entity deserializedEntity = scene->CreateEntity(uuid, name);
 
 				auto transformComponent = entity["TransformComponent"];
@@ -416,7 +414,7 @@ namespace Flora {
 
 		// set selected entity
 		int entityID = data["Selected Entity"].as<int>();
-		if (entityID >= 0)
+		if (entityID >= 0 && params->ActiveScene->EntityExists((uint32_t)entityID))
 			params->SelectedEntity = params->ActiveScene->GetEntityFromID((uint32_t)entityID);
 
 		return success;

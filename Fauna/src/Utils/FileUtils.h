@@ -10,5 +10,7 @@ namespace Flora {
 		static void SaveScene(Ref<EditorParams> context);
 		static void OpenScene(Ref<EditorParams> context, const std::filesystem::path& path);
 		static void NewScene(Ref<EditorParams> context);
+	public:
+		static void CopyDirectory(const std::filesystem::path& source, const std::filesystem::path& destination);
 	};
 }
