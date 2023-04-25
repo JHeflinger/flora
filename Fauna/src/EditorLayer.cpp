@@ -468,7 +468,7 @@ namespace Flora {
 				case Panels::CONTENTBROWSER:
 					std::filesystem::path path = std::filesystem::path(GetSpecificPanel<ContentBrowserPanel>("Content Browser")->GetSelectedFile());
 					if (std::filesystem::is_directory(path)) {
-						if (std::filesystem::remove_all(path.string().c_str()) != 0) FL_CORE_ERROR("Error deleting directory");
+						std::filesystem::remove_all(path.string().c_str());
 					}
 					else {
 						if (std::remove(path.string().c_str()) != 0) FL_CORE_ERROR("Error deleting file");

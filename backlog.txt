@@ -68,20 +68,29 @@ TODO:
 
 	- copy and paste can select multiple files/entities
 
+	- new script util
+
+	- new scene file creation util
+
 IN PROGRESS:
-	- copy/cut/pasting support for content browser
 
 	- copy/cut/pasting support for scene hierarchy and viewport
 
-	- copy files from content browser with menu click
+	- copy, cut, and paste entities with keycommands
+
+	- copy, cut, and paste entities with menu click popup
+
+	- play button
+
+IMPLEMENTED TICKETS:
 
 	- copy, cut, and paste file with keycommands
 
 	- cut files from content browser
 
-	- play button
+	- copy files from content browser with menu click
 
-IMPLEMENTED TICKETS:
+	- copy/cut/pasting support for content browser
 
 	- delete by key command
 
