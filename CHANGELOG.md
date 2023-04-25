@@ -1,7 +1,7 @@
 # Change Log
-All notable changes to this project will be documented in this file as of Version 0.1.1
+All notable changes to this project will be documented in this file as of Fauna Version 0.1.1 and Flora Version 0.1.1
 
-## Fauna [0.1.2] = 2023-04-25
+## Fauna [0.1.2] - 2023-04-25
 
 ### Added
 
