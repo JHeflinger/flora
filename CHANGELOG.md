@@ -16,7 +16,24 @@ All notable changes to this project will be documented in this file as of Versio
 
 ### Fixed
 
-- Fixed issue where app would crash if the last selected entity wasn't saved in previous editor session
+- Fixed issue where app would crash if the last selected entity wasn't saved in previous editor session (fixed via Flora 0.1.2)
+
+## Flora [0.1.2] - 2023-04-25
+
+### Added
+
+- Clipboard structure that can hold a filepath and an entity
+- Panel enumeration to differentiate between panels efficiently
+
+### Changed
+
+- Components now have copy constructors
+- Scene now has a copy entity function that can copy an entity to the scene or to a specific parent
+- Scene will now automatically bind native script components if they are not bound. However, this introduces the instability of the NativeScriptComponent to the scene.
+
+### Fixed
+
+- Fixed issue that serializer did not check if selected entity existed in scene when deserializing editor settings
 
 ## Fauna [0.1.1] - 2023-04-22
  
