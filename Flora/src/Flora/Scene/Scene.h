@@ -13,6 +13,8 @@ namespace Flora {
 		Entity CreateEntity(const std::string& name = std::string());
 		Entity CreateEntity(uint32_t id, const std::string& name = std::string());
 		Entity GetEntityFromID(uint32_t id);
+		Entity CopyEntity(Entity entity);
+		Entity CopyEntity(Entity entity, Entity parent);
 		void DestroyEntity(Entity entity);
 		void OnUpdateRuntime(Timestep ts);
 		void OnUpdateEditor(Timestep ts, EditorCamera& Camera);

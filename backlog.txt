@@ -72,17 +72,23 @@ TODO:
 
 	- new scene file creation util
 
+	- rightclick menu to add new component in propertiespanel
+
 IN PROGRESS:
 
 	- copy/cut/pasting support for scene hierarchy and viewport
 
 	- copy, cut, and paste entities with keycommands
 
-	- copy, cut, and paste entities with menu click popup
-
 	- play button
 
+	- scriptmanager should be able to remove scripts
+
 IMPLEMENTED TICKETS:
+
+	- copy, cut, and paste entities with menu click popup
+
+	- bug: selected entity would be attempted to be set on startup even if it didn't exist
 
 	- copy, cut, and paste file with keycommands
 
@@ -93,105 +99,3 @@ IMPLEMENTED TICKETS:
 	- copy/cut/pasting support for content browser
 
 	- delete by key command
-
-	- delete files from content browser
-
-	- drag files around content browser
-
-	- rename files in content browser
-
-	- open files from content browser
-
-	- content browser names are only on the first row? also the centering isn't perfect it slowly goes off center
-
-	- show scene name on viewport
-
-	- refactor stats panel
-
-	- nativescript component should allow multiple scripts or should allow to have multiple native script components
-
-	- bug: new scene breaks application
-
-	- bug: selected entity isnt being saved anymore
-
-	- delete entity should be recursive
-
-	- drag and drop entities in scene hierarchy should allow entities to be dropped at the highest level
-
-	- drag entities to modify scene hierarchy
-
-	- subentities should inherit and be relative to parent entities
-
-	- update gizmoz to be use the child transform
-
-	- if a subentity, propertiespanel should give a checkmark option to inherit parent propreties or be relative to
-
-	- subentities (scene hierarhcy doesn't really "have" hierarchy atm)
-
-	- serializer saves parent and child components too
-
-	- add new subentities on right click
-
-	- refactor camera component properties layout
-	
-	- clean up content browser (center text, make proper back button, etc)
-
-	- make it so you can double click scenes in content browser to open them
-
-	- save scene prompt on close or loading new scene or creating new scene (whenever leaving scene)
-	
-	- show when scene was last saved
-
-	- drag and drop stuff should check if it's the valid filetype, and should pop up an error popup otherwise
-
-	- convert all console messages into an editor console panel
-
-	- panels that are opened and closed should be saved in the editor settings
-
-	- panels should be able to be closed and reopened via a task bar section called "windows" and can be closed via an x button
-
-	- separate scenehierarchy panel and properties panel
-
-	- move dialogs to fileutils
-	
-	- fix bug that causes delete to break the program
-
-	- make all panels extend a panel class and turn all panels into a vector in editorlayer and perform all general functions accordingly
-
-	- move viewport into separate panel too
-
-	- serialization properly saves and opens entity IDs
-
-	- make the QWER settings saved in editor settings as well
-
-	- move all saveable editor settings into a struct to pass in
-
-	- move editor serializer to separate genertic serializer class
-
-	- refactor texture setting in spritecomponent to look better and show filepath using
-
-	- add in native scripting component and update serializer for it
-
-	- add in warnings for unstable parts of code
-
-	- native scripts should only run if viewport is focused
-
-	- texture button in sprite component should also bring up a file selector
-
-	- refactor scene serializer to serialize new spritecomponent settings
-
-	- implement save scene (not save as)
-
-	- add more stats to the stat panel, maybe put it in a separate panel class even
-
-	- sprite renderer component full makeover to include single textures, subtextures, and animations
-
-	- implement animations
-
-	- spitecomponent should support subtextures or make that a separate component
-
-	- make sprite renderer component take in all possibe parameters like tiling factor, etc
-
-	- modify imgui styles on the properties panel to have more padding
-
-	- refactor cameracomponent UI

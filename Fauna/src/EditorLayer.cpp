@@ -529,5 +529,6 @@ namespace Flora {
 	void EditorLayer::DevEvent() {
 		FL_CORE_INFO("DEV EVENT FIRED");
 		FL_CORE_INFO(GetSpecificPanel<ContentBrowserPanel>("Content Browser")->GetSelectedFile());
+		m_EditorParams->ActiveScene->CopyEntity(m_EditorParams->SelectedEntity);
 	}
 }

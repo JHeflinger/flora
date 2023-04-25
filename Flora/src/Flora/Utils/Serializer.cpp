@@ -414,7 +414,7 @@ namespace Flora {
 
 		// set selected entity
 		int entityID = data["Selected Entity"].as<int>();
-		if (entityID >= 0)
+		if (entityID >= 0 && params->ActiveScene->EntityExists((uint32_t)entityID))
 			params->SelectedEntity = params->ActiveScene->GetEntityFromID((uint32_t)entityID);
 
 		return success;

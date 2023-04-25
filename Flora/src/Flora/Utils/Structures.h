@@ -16,7 +16,9 @@ namespace Flora {
 
 	struct Clipboard {
 		std::string Filepath = "";
+		Entity Entity = {};
 		bool CutFile = false;
+		bool CutEntity = false;
 	};
 
 	struct EditorParams {
