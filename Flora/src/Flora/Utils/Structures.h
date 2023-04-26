@@ -14,6 +14,8 @@ namespace Flora {
 		VIEWPORT = 6
 	};
 
+	enum class SceneState { EDIT = 0, PLAY = 1 };
+
 	struct Clipboard {
 		std::string Filepath = "";
 		Entity Entity = {};
@@ -32,5 +34,6 @@ namespace Flora {
 		Panels FocusedPanel = Panels::NONE;
 		Panels HoveredPanel = Panels::NONE;
 		Clipboard Clipboard;
+		SceneState SceneState = SceneState::EDIT;
 	};
 }

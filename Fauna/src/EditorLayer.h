@@ -31,6 +31,7 @@ namespace Flora {
 		void OnOverrideEvent();
 		void ResetEditorParams();
 		void InitializePanels();
+		void InitializeEditor();
 		void SetPanelContext();
 		void UpdatePanels(Timestep ts);
 		void RenderImGuiPanels();
@@ -39,6 +40,9 @@ namespace Flora {
 		std::string GetLastSavedString();
 		void PromptSave(SavePromptType type) { m_SavePromptType = type; }
 		void RenderSavePrompt();
+		void RenderUIBar();
+		void OnScenePlay();
+		void OnSceneStop();
 	private:
 		void DevEvent();
 	private:
@@ -59,5 +63,9 @@ namespace Flora {
 
 		// Serializer Settings
 		Ref<EditorParams> m_EditorParams;
+
+		// Toolbar Icons
+		Ref<Texture2D> m_IconPlay;
+		Ref<Texture2D> m_IconStop;
 	};
 }

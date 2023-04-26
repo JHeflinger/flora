@@ -33,17 +33,8 @@ namespace Flora {
 		// Set panel context
 		SetPanelContext();
 
-		// Load editor settings
-		auto commandLineArgs = Application::Get().GetCommandLineArgs();
-		if (commandLineArgs.Count > 1)
-		{
-			auto sceneFilePath = commandLineArgs[1];
-			Serializer::DeserializeScene(m_EditorParams->ActiveScene, sceneFilePath);
-		} else Serializer::DeserializeEditor(m_EditorParams);
-
-		// Close panels
-		for (int i = 0; i < m_EditorParams->ClosedPanels.size(); i++)
-			m_Panels[m_EditorParams->ClosedPanels[i]]->m_Enabled = false;
+		// Initialize editor
+		InitializeEditor();
 	}
 
 	void EditorLayer::OnDetatch() {
@@ -167,7 +158,41 @@ namespace Flora {
 		// Prompt Save
 		RenderSavePrompt();
 
+		// Render UI Bar
+		RenderUIBar();
+
 		ImGui::End();
+	}
+
+	void EditorLayer::RenderUIBar() {
+		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, { 0, 2 });
+		ImGui::PushStyleVar(ImGuiStyleVar_ItemInnerSpacing, { 0, 0 });
+		ImGui::Begin("##Toolbar", nullptr, ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse);
+		Ref<Texture2D> icon = m_EditorParams->SceneState == SceneState::EDIT ? m_IconPlay : m_IconStop;
+		float size = ImGui::GetWindowHeight() - 4.0f;
+		ImGui::SameLine((ImGui::GetContentRegionMax().x * 0.5f) - (size * 0.5f));
+		ImGui::SetCursorPosY(ImGui::GetCursorPosY() - 2);
+		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 0));
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0, 0, 0, 0));
+		ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0, 0, 0, 0));
+		if (ImGui::ImageButton((ImTextureID)icon->GetRendererID(), {size, size})) {
+			if (m_EditorParams->SceneState == SceneState::EDIT) {
+				OnScenePlay();
+			}else if (m_EditorParams->SceneState == SceneState::PLAY) {
+				OnSceneStop();
+			}
+		}
+		ImGui::PopStyleColor(3);
+		ImGui::PopStyleVar(2);
+		ImGui::End();
+	}
+
+	void EditorLayer::OnScenePlay() {
+		m_EditorParams->SceneState = SceneState::PLAY;
+	}
+
+	void EditorLayer::OnSceneStop() {
+		m_EditorParams->SceneState = SceneState::EDIT;
 	}
 
 	void EditorLayer::ProcessWindowClose() {
@@ -327,6 +352,25 @@ namespace Flora {
 		m_EditorParams = CreateRef<EditorParams>();
 		m_EditorParams->ActiveScene = CreateRef<Scene>();
 		m_EditorParams->EditorCamera = EditorCamera(30.0f, 1.7778f, 0.1f, 1000.0f);
+	}
+
+	void EditorLayer::InitializeEditor() {
+		// Load editor settings
+		auto commandLineArgs = Application::Get().GetCommandLineArgs();
+		if (commandLineArgs.Count > 1)
+		{
+			auto sceneFilePath = commandLineArgs[1];
+			Serializer::DeserializeScene(m_EditorParams->ActiveScene, sceneFilePath);
+		}
+		else Serializer::DeserializeEditor(m_EditorParams);
+
+		// Close panels
+		for (int i = 0; i < m_EditorParams->ClosedPanels.size(); i++)
+			m_Panels[m_EditorParams->ClosedPanels[i]]->m_Enabled = false;
+
+		// Set icons
+		m_IconPlay = Texture2D::Create("resources/icons/Editor/PlayButton.png");
+		m_IconStop = Texture2D::Create("resources/icons/Editor/StopButton.png");
 	}
 
 	void EditorLayer::InitializePanels() {
@@ -537,7 +581,10 @@ namespace Flora {
 
 		// update params
 		m_EditorParams->EditorCamera.OnUpdate(ts);
-		m_EditorParams->ActiveScene->OnUpdateEditor(ts, m_EditorParams->EditorCamera);
+		if (m_EditorParams->SceneState == SceneState::EDIT)
+			m_EditorParams->ActiveScene->OnUpdateEditor(ts, m_EditorParams->EditorCamera);
+		else if (m_EditorParams->SceneState == SceneState::PLAY)
+			m_EditorParams->ActiveScene->OnUpdateRuntime(ts);
 		m_EditorParams->Time += ts.GetSeconds();
 		m_EditorParams->HoveredPanel = Panels::NONE;
 		m_EditorParams->FocusedPanel = Panels::NONE;

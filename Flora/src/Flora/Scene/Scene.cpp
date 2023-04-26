@@ -142,11 +142,6 @@ namespace Flora {
 	}
 
 	void Scene::OnUpdateEditor(Timestep ts, EditorCamera& camera) {
-		// Update Scripts
-		if (m_ViewportFocused) {
-			UpdateScripts(ts);
-		}
-
 		// Render 2D Sprites
 		{
 			Renderer2D::BeginScene(camera);
