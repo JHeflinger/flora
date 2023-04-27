@@ -20,8 +20,6 @@ TODO:
 
 	- make a more efficient way to ensure only one camera is primary
 
-	- bug: you can drag parents into their children to crash the editor
-
 	- physics
 
 	- box2D
@@ -66,26 +64,28 @@ TODO:
 
 	- need to be able to get entity from id or tag
 
-	- stats panel should be able to click on a stat and open a graph over time and reset option
-
 	- content browser select multiple 
-
-	- new file/folder options in content browser too
-
-	- errors should open up a popup
 
 	- copy and paste can select multiple files/entities
 
-	- new script util
-
-	- new scene file creation util
-
-	- rightclick menu to add new component in propertiespanel
-
-	- scriptmanager should be able to move around scripts
+	- simplify popup menus (New __ options should be condensed into an expandable "New..")
 
 IN PROGRESS:
 
-	- play button
+	- errors should open up a popup
+
+	- stats panel should be able to click on a stat and open a graph over time and reset option
+
+	- scriptmanager should be able to move around scripts
 
 IMPLEMENTED TICKETS:
+
+	- new file/folder options in content browser too
+
+	- new scene file creation util
+
+	- new script util
+
+	- bug: you can drag parents into their children to crash the editor
+
+	- play button

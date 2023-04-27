@@ -40,6 +40,17 @@ namespace Flora {
 		ImGui::End();
 	}
 
+	static bool GetIsChildRecursive(Entity source, Entity target) { //is the target the source's child?
+		if (!source.HasComponent<ChildComponent>()) return false;
+		std::vector<Entity> children = source.GetComponent<ChildComponent>().Children;
+		for (int i = 0; i < children.size(); i++) {
+			if (children[i] == target) return true;
+			bool hasSubchild = GetIsChildRecursive(children[i], target);
+			if (hasSubchild) return true;
+		}
+		return false;
+	}
+
 	void SceneHierarchyPanel::DrawEntityNode(Entity entity) {
 		if (!m_EditorContext->ActiveScene->EntityExists(entity)) return;
 		auto& tag = entity.GetComponent<TagComponent>().Tag;
@@ -56,12 +67,14 @@ namespace Flora {
 		if (ImGui::BeginDragDropTarget()) {
 			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("HIERARCHY_DRAG_ENTITY")) {
 				Entity draggedEntity{ (entt::entity)(*(const uint32_t*)payload->Data), m_EditorContext->ActiveScene.get() };
-				if (draggedEntity.HasComponent<ParentComponent>())
-					draggedEntity.GetComponent<ParentComponent>().Parent.GetComponent<ChildComponent>().RemoveChild(draggedEntity);
-				if (!entity.HasComponent<ChildComponent>()) entity.AddComponent<ChildComponent>();
-				if (!draggedEntity.HasComponent<ParentComponent>()) draggedEntity.AddComponent<ParentComponent>();
-				draggedEntity.GetComponent<ParentComponent>().Parent = entity;
-				entity.GetComponent<ChildComponent>().AddChild(draggedEntity);
+				if (!GetIsChildRecursive(draggedEntity, entity)) {
+					if (draggedEntity.HasComponent<ParentComponent>())
+						draggedEntity.GetComponent<ParentComponent>().Parent.GetComponent<ChildComponent>().RemoveChild(draggedEntity);
+					if (!entity.HasComponent<ChildComponent>()) entity.AddComponent<ChildComponent>();
+					if (!draggedEntity.HasComponent<ParentComponent>()) draggedEntity.AddComponent<ParentComponent>();
+					draggedEntity.GetComponent<ParentComponent>().Parent = entity;
+					entity.GetComponent<ChildComponent>().AddChild(draggedEntity);
+				} else FL_CORE_ERROR("ERROR: Cannot make parent entity the child of the parent's child");
 			}
 			ImGui::EndDragDropTarget();
 		}

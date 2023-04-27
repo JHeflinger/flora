@@ -77,4 +77,56 @@ namespace Flora {
 			}
 		}
 	}
+
+	void FileUtils::CreateScript(const std::filesystem::path& directory) { //currently not stable for typical users
+		std::string templateContent = 
+			"#pragma once\n"
+			"#include \"Flora/Scene/ScriptableEntity.h\"\n"
+			"\n"
+			"namespace Flora {\n"
+			"\tclass TEMPLATE : public ScriptableEntity {\n"
+			"\tpublic:\n"
+			"\t\tvoid OnCreate() {\n"
+			"\t\t\n"
+			"\t\t}\n"
+			"\n"
+			"\t\tvoid OnDestroy() {\n"
+			"\t\t\n"
+			"\t\t}\n"
+			"\n"
+			"\t\tvoid OnUpdate(Timestep ts) {\n"
+			"\t\t\n"
+			"\t\t}\n"
+			"\t};\n"
+			"}";
+		std::string newfilename = "New Script.h";
+		int i = 0; 
+		while (std::filesystem::exists(directory / newfilename)) {
+			i++;
+			newfilename = "New Script (" + std::to_string(i) + ").h";
+		}
+		std::ofstream outfile(directory / newfilename);
+		if (outfile.is_open()) {
+			outfile << templateContent;
+			outfile.close();
+		} else {
+			FL_CORE_ERROR("Unable to create file");
+		}
+	}
+	
+	void FileUtils::CreateScene(const std::filesystem::path& directory, std::string filename) {
+		std::string newfilename = filename + ".flora";
+		int i = 0;
+		while (std::filesystem::exists(directory / newfilename)) {
+			i++;
+			newfilename = filename +  " (" + std::to_string(i) + ").flora";
+		}
+		std::ofstream outfile(directory / newfilename);
+		if (outfile.is_open()) {
+			outfile.close();
+		}
+		else {
+			FL_CORE_ERROR("Unable to create file");
+		}
+	}
 }

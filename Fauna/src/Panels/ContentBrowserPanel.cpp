@@ -148,14 +148,10 @@ namespace Flora {
 				std::filesystem::path newFolderPath = m_CurrentDirectory / "New Folder";
 				std::filesystem::create_directory(newFolderPath);
 			}
-			if (ImGui::MenuItem("New Script")) {
-				// TODO
-				FL_CORE_ERROR("New Script has not been implemented yet!");
-			}
-			if (ImGui::MenuItem("New Scene")) {
-				// TODO
-				FL_CORE_ERROR("New Scene has not been implemented yet!");
-			}
+			if (ImGui::MenuItem("New Script"))
+				FileUtils::CreateScript(m_CurrentDirectory);
+			if (ImGui::MenuItem("New Scene"))
+				FileUtils::CreateScene(m_CurrentDirectory);
 			if (ImGui::MenuItem("Paste")) {
 				if (!m_EditorContext->Clipboard.CutFile) {
 					std::string copyfile = m_EditorContext->Clipboard.Filepath;
