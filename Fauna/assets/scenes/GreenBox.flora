@@ -202,9 +202,10 @@ Entities:
       EndFrame: 1
       CurrentFrame: 1
       FPS: 1
-    NativeScriptComponent:
-      Path: assets\scripts\AutoRotater.h
-      Filename: AutoRotater.h
+    ScriptManagerComponent:
+      NativeScripts:
+        - Path: assets\scripts\AutoRotater.h
+          Filename: AutoRotater.h
     ChildComponent:
       - 1
       - 2

@@ -2,6 +2,8 @@ TODO:
 
 	- integrate SPIR-V shaders
 
+	- move editor dependent assets into a protected assets folder
+
 	- implement projects
 
 	- custom shaders, post processing, materials
@@ -15,10 +17,6 @@ TODO:
 	- reflection system (serialize values and show them in properties panel!)
 
 	- sprites should have the option to linear filter or not
-
-	- after play button stops all entity values should go back to the original values
-
-	- make a more efficient way to ensure only one camera is primary
 
 	- physics
 
@@ -68,17 +66,21 @@ TODO:
 
 	- copy and paste can select multiple files/entities
 
+IN PROGRESS:
+
 	- simplify popup menus (New __ options should be condensed into an expandable "New..")
 
-IN PROGRESS:
+	- make a more efficient way to ensure only one camera is primary
+
+	- after play button stops all entity values should go back to the original values
 
 	- errors should open up a popup
 
 	- stats panel should be able to click on a stat and open a graph over time and reset option
 
-	- scriptmanager should be able to move around scripts
-
 IMPLEMENTED TICKETS:
+
+	- scriptmanager should be able to move around scripts
 
 	- new file/folder options in content browser too
 
