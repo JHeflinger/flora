@@ -225,7 +225,8 @@ namespace Flora {
 	}
 
 	void EditorLayer::OnEvent(Event& e) {
-		m_EditorParams->EditorCamera.OnEvent(e);
+		if (m_EditorParams->FocusedPanel == Panels::VIEWPORT)
+			m_EditorParams->EditorCamera.OnEvent(e);
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<KeyPressedEvent>(FL_BIND_EVENT_FN(EditorLayer::OnKeyPressed));
 		dispatcher.Dispatch<MouseButtonPressedEvent>(FL_BIND_EVENT_FN(EditorLayer::OnMouseButtonPressed));
@@ -600,7 +601,7 @@ namespace Flora {
 		}
 
 		// update params
-		m_EditorParams->EditorCamera.OnUpdate(ts);
+		m_EditorParams->EditorCamera.OnUpdate(ts, m_EditorParams->FocusedPanel == Panels::VIEWPORT);
 		if (m_EditorParams->SceneState == SceneState::EDIT)
 			m_EditorParams->ActiveScene->OnUpdateEditor(ts, m_EditorParams->EditorCamera);
 		else if (m_EditorParams->SceneState == SceneState::PLAY)
