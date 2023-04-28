@@ -194,7 +194,7 @@ namespace Flora {
 	std::string Serializer::SerializeScene(Ref<Scene>& scene) {
 		YAML::Emitter out;
 		out << YAML::BeginMap;
-		out << YAML::Key << "Scene" << YAML::Value << "Untitled";
+		out << YAML::Key << "Scene" << YAML::Value << scene->GetSceneName();
 		out << YAML::Key << "Entities" << YAML::Value << YAML::BeginSeq;
 		scene->m_Registry.each([&](auto entityID) {
 			Entity entity = { entityID, scene.get() };
@@ -264,6 +264,7 @@ namespace Flora {
 			return false;
 
 		std::string sceneName = data["Scene"].as<std::string>();
+		scene->SetSceneName(sceneName);
 		FL_CORE_TRACE("Deserializing scene '{0}'", sceneName);
 
 		auto entities = data["Entities"];

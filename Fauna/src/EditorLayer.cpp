@@ -142,10 +142,27 @@ namespace Flora {
 			ImGui::PopStyleColor();
 
 			ImGui::SameLine((ImGui::GetWindowSize().x) / 2);
-			std::string viewportName = std::filesystem::path(m_EditorParams->ActiveScene->GetSceneFilepath()).stem().filename().string();
-			if (m_EditorParams->ActiveScene->GetSceneFilepath() == "NULL") viewportName = "Untitled";
+			std::string viewportName = m_EditorParams->ActiveScene->GetSceneName();
 			ImGui::SetCursorPosX(ImGui::GetCursorPosX() - ImGui::CalcTextSize(viewportName.c_str()).x / 2);
-			ImGui::Text(viewportName.c_str());
+			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 0));
+			ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0, 0, 0, 0));
+			ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0, 0, 0, 0));
+			static bool s_RenameScene = false;
+			if (!s_RenameScene) {
+				if (ImGui::Button(viewportName.c_str())) {
+					s_RenameScene = true;
+				}
+			} else {
+				static char newSceneName[256] = "";
+				strncpy(newSceneName, viewportName.c_str(), 256);
+				ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(0, 0, 0, 0));
+				ImGui::SetNextItemWidth(500);
+				s_RenameScene = !(ImGui::InputText("##Rename", newSceneName, 256, ImGuiInputTextFlags_EnterReturnsTrue));
+				ImGui::PopStyleColor();
+				if (!s_RenameScene)
+					m_EditorParams->ActiveScene->SetSceneName(std::string(newSceneName));
+			}
+			ImGui::PopStyleColor(3);
 
 			ImGui::EndMenuBar();
 		}
@@ -188,10 +205,13 @@ namespace Flora {
 	}
 
 	void EditorLayer::OnScenePlay() {
+		//Serializer::SerializeFile(Serializer::SerializeEditor(m_EditorParams), "assets/settings/fauna.fnproj");
+		FileUtils::SaveTempScene(m_EditorParams);
 		m_EditorParams->SceneState = SceneState::PLAY;
 	}
 
 	void EditorLayer::OnSceneStop() {
+		FileUtils::OpenTempScene(m_EditorParams);
 		m_EditorParams->SceneState = SceneState::EDIT;
 	}
 

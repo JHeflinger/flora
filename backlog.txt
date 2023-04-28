@@ -72,13 +72,13 @@ IN PROGRESS:
 
 	- make a more efficient way to ensure only one camera is primary
 
-	- after play button stops all entity values should go back to the original values
-
 	- errors should open up a popup
 
 	- stats panel should be able to click on a stat and open a graph over time and reset option
 
 IMPLEMENTED TICKETS:
+
+	- after play button stops all entity values should go back to the original values
 
 	- scriptmanager should be able to move around scripts
 

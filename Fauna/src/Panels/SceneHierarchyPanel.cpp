@@ -3,7 +3,6 @@
 #include <imgui/imgui.h>
 
 namespace Flora {
-
 	SceneHierarchyPanel::SceneHierarchyPanel(const Ref<EditorParams>& params) {
 		SetEditorContext(params);
 	}

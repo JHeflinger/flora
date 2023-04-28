@@ -2,9 +2,9 @@
 #include "Flora/Scene/Scene.h"
 #include "Flora/Renderer/Renderer2D.h"
 #include "Flora/Scene/Entity.h"
-#include "Flora/Scene/Components.h"
 #include <glm/glm.hpp>
 #include <filesystem>
+#include "Flora/Scene/Components.h"
 
 // temp until stable alternative is implemented
 #include "../../Fauna/assets/scripts/MasterNativeScript.h"

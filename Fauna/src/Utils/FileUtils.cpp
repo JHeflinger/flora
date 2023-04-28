@@ -32,6 +32,21 @@ namespace Flora {
 		}
 	}
 
+	void FileUtils::SaveTempScene(Ref<EditorParams> context) {
+		std::string sceneContent = Serializer::SerializeScene(context->ActiveScene);
+		Serializer::SerializeFile(sceneContent, "temp/tempScene.flora");
+		std::string editorContent = Serializer::SerializeEditor(context);
+		Serializer::SerializeFile(editorContent, "temp/tempEditorSettings.fnproj");
+	}
+
+	void FileUtils::OpenTempScene(Ref<EditorParams> context) {
+		Serializer::DeserializeEditor(context, "temp/tempEditorSettings.fnproj");
+		std::string sceneFilepath = context->ActiveScene->GetSceneFilepath();
+		NewScene(context);
+		context->ActiveScene->SetSceneFilepath(sceneFilepath);
+		Serializer::DeserializeScene(context->ActiveScene, "temp/tempscene.flora");
+	}
+
 	void FileUtils::OpenScene(Ref<EditorParams> context, const std::filesystem::path& path){
 		NewScene(context);
 		context->ActiveScene->SetSceneFilepath(path.string());
