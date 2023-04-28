@@ -2,6 +2,7 @@
 #include "StatsPanel.h"
 #include "Flora/Renderer/Renderer2D.h"
 #include <imgui/imgui.h>
+#include <imgui/implot.h>
 
 namespace Flora {
 	void StatsPanel::OnImGuiRender() {
