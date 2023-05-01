@@ -14,7 +14,7 @@ namespace Flora {
 		if (ImGui::IsWindowFocused()) m_EditorContext->FocusedPanel = Panels::STATS;
 
 		if (ImGui::TreeNodeEx("Renderer Volume", treeNodeFlags)) {
-			auto rendererStats = Renderer2D::GetStats();
+			m_RendererStats = Renderer2D::GetStats();
 			ImGui::Columns(3);
 			ImGui::SetColumnWidth(0, 100);
 			ImGui::SetColumnWidth(1, 200);
@@ -28,10 +28,10 @@ namespace Flora {
 			ImGui::Text("Indices");
 			ImGui::Dummy({ 0, 2 });
 			ImGui::NextColumn();
-			ImGui::Button(std::to_string(rendererStats.DrawCalls).c_str(), buttonSize);
-			ImGui::Button(std::to_string(rendererStats.QuadCount).c_str(), buttonSize);
-			ImGui::Button(std::to_string(rendererStats.GetTotalVertexCount()).c_str(), buttonSize);
-			ImGui::Button(std::to_string(rendererStats.GetTotalIndexCount()).c_str(), buttonSize);
+			ImGui::Button(std::to_string(m_RendererStats.DrawCalls).c_str(), buttonSize);
+			ImGui::Button(std::to_string(m_RendererStats.QuadCount).c_str(), buttonSize);
+			ImGui::Button(std::to_string(m_RendererStats.GetTotalVertexCount()).c_str(), buttonSize);
+			ImGui::Button(std::to_string(m_RendererStats.GetTotalIndexCount()).c_str(), buttonSize);
 			ImGui::NextColumn();
 			ImGui::Checkbox("##drawcalls", &m_ShowDrawCalls);
 			ImGui::Checkbox("##quads", &m_ShowQuads);
@@ -75,9 +75,12 @@ namespace Flora {
 
 		if (m_ShowGraph) {
 			ImGui::Begin("Graphs");
+
 			ImPlot::PushStyleColor(ImPlotCol_FrameBg, { 0,0,0,0 });
 			ImPlot::PushStyleColor(ImPlotCol_AxisBgHovered, { 0,0,0,0 });
 			ImPlot::PushStyleColor(ImPlotCol_AxisBgActive, { 0,0,0,0 });
+
+			ImPlot::SetNextAxesLimits(m_FrameCountData.front(), m_FrameCountData.back(), 0, GetYMax(), ImPlotCond_Always);
 
 			ImPlotFlags flags = ImPlotFlags_NoTitle;
 			if (ImPlot::BeginPlot("Graph data", { 0, 0 }, flags)) {
@@ -133,18 +136,50 @@ namespace Flora {
 		ImGui::End();
 	}
 
+	static void EmplaceAndPop(std::vector<float>& data, float newpoint, bool pop) {
+		data.emplace_back(newpoint);
+		if (pop) data.erase(data.begin());
+	}
+
 	void StatsPanel::OnUpdate() {
 		m_FrameCount++;
-		auto rendererStats = Renderer2D::GetStats();
-		int fps = (int)(1.0f / m_Frametime);
-		m_FrameCountData.emplace_back((float)m_FrameCount);
-		m_FrametimeData.emplace_back(1000 * m_Frametime);
-		m_DrawCallsData.emplace_back(rendererStats.DrawCalls);
-		m_QuadsData.emplace_back(rendererStats.QuadCount);
-		m_VerticesData.emplace_back(rendererStats.GetTotalVertexCount());
-		m_IndicesData.emplace_back(rendererStats.GetTotalIndexCount());
-		m_FPSData.emplace_back(fps);
-		m_LowestFPSData.emplace_back(m_LowestFPS);
-		m_HighestFPSData.emplace_back(m_HighestFPS);
+		int fps = (1.0f / m_Frametime);
+
+		// limit to time frame
+		float period = 0.0f;
+		for (int i = 0; i < m_FrametimeData.size(); i++)
+			period += m_FrametimeData[i];
+		bool pop = period > (m_TimeFrame * 1000.0f);
+
+		EmplaceAndPop(m_FrameCountData, (float)m_FrameCount, pop);
+		EmplaceAndPop(m_FrametimeData, 1000 * m_Frametime, pop);
+		EmplaceAndPop(m_DrawCallsData, (float)(m_RendererStats.DrawCalls), pop);
+		EmplaceAndPop(m_QuadsData, (float)(m_RendererStats.QuadCount), pop);
+		EmplaceAndPop(m_VerticesData, (float)(m_RendererStats.GetTotalVertexCount()), pop);
+		EmplaceAndPop(m_IndicesData, (float)(m_RendererStats.GetTotalIndexCount()), pop);
+		EmplaceAndPop(m_FPSData, fps, pop);
+		EmplaceAndPop(m_LowestFPSData, m_LowestFPS, pop);
+		EmplaceAndPop(m_HighestFPSData, m_HighestFPS, pop);
+	}
+
+	static float GetMaxFromVector(std::vector<float> vec) {
+		return (float)(*std::max_element(vec.begin(), vec.end()));
+	}
+
+	static float CascadeMax(float oldMax, float newMax) {
+		return newMax > oldMax ? newMax : oldMax;
+	}
+
+	float StatsPanel::GetYMax() {
+		float max = 0.0f;
+		if (m_ShowFrametime) max = CascadeMax(max, 60.0f);
+		if (m_ShowDrawCalls) max = CascadeMax(max, 10.0f);
+		if (m_ShowQuads) max = CascadeMax(max, GetMaxFromVector(m_QuadsData) * 1.1f);
+		if (m_ShowVertices) max = CascadeMax(max, GetMaxFromVector(m_VerticesData) * 1.1f);
+		if (m_ShowIndices) max = CascadeMax(max, GetMaxFromVector(m_IndicesData) * 1.1f);
+		if (m_ShowFPS) max = CascadeMax(max, 144);
+		if (m_ShowLowestFPS) max = CascadeMax(max, GetMaxFromVector(m_LowestFPSData) * 1.1f);
+		if (m_ShowHighestFPS) max = CascadeMax(max, GetMaxFromVector(m_HighestFPSData) * 1.1f);
+		return max;
 	}
 }
