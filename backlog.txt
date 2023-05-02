@@ -2,6 +2,8 @@ TODO:
 
 	- integrate SPIR-V shaders
 
+	- move editor dependent assets into a protected assets folder
+
 	- implement projects
 
 	- custom shaders, post processing, materials
@@ -14,7 +16,7 @@ TODO:
 
 	- reflection system (serialize values and show them in properties panel!)
 
-	- physics
+	- sprites should have the option to linear filter or not
 
 	- box2D
 
@@ -58,26 +60,18 @@ TODO:
 
 	- need to be able to get entity from id or tag
 
-	- stats panel should be able to click on a stat and open a graph over time and reset option
-
 	- content browser select multiple 
-
-	- new file/folder options in content browser too
-
-	- errors should open up a popup
 
 	- copy and paste can select multiple files/entities
 
-	- new script util
-
-	- new scene file creation util
-
-	- rightclick menu to add new component in propertiespanel
-
-	- scriptmanager should be able to move around scripts
-
 IN PROGRESS:
 
-	- play button
+	- 2d physics
+
+	- simplify popup menus (New __ options should be condensed into an expandable "New..")
+
+	- make a more efficient way to ensure only one camera is primary
+
+	- errors should open up a popup
 
 IMPLEMENTED TICKETS:

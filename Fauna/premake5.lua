@@ -21,6 +21,7 @@ project "Fauna"
 		"%{IncludeDir.glm}",
 		"%{IncludeDir.entt}",
 		"%{IncludeDir.ImGuizmo}",
+		"%{IncludeDir.yaml_cpp}",
 	}
 
 	links

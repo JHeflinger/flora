@@ -1,6 +1,6 @@
 Scene Filepath: assets\scenes\GreenBox.flora
-Selected Entity: 0
-Current Gizmo: 7
+Selected Entity: 1
+Current Gizmo: 120
 Editor Camera Type: Perspective
 General Camera Settings:
   Position: [-2.6769073, 1.95696247, -4.57135916]
@@ -13,15 +13,3 @@ Orthographic Camera Settings:
   Size: 7.26999998
 Closed Panels:
   []
-Stat Panel Settings:
-  Timeframe: 5
-  Show Key: false
-  Open Graphs:
-    DRAWCALLS: false
-    QUADS: true
-    VERTICES: false
-    INDICES: false
-    FRAMETIME: false
-    FPS: true
-    LOWEST_FPS: true
-    HIGHEST_FPS: true

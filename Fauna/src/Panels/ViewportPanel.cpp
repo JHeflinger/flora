@@ -101,7 +101,7 @@ namespace Flora {
 
 		// Viewport Gizmos
 		Entity selectedEntity = m_EditorContext->SelectedEntity;
-		if (selectedEntity && m_EditorContext->GizmoType != -1) {
+		if (selectedEntity && m_EditorContext->GizmoType != -1 && m_EditorContext->SceneState == SceneState::EDIT) {
 			ImGuizmo::SetOrthographic(false);
 			ImGuizmo::SetDrawlist();
 			float windowWidth = (float)ImGui::GetWindowWidth();

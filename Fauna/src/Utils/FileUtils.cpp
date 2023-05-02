@@ -1,7 +1,8 @@
 #include "flpch.h"
 #include "FileUtils.h"
-#include "Flora/Utils/Serializer.h"
 #include "Flora/Utils/PlatformUtils.h"
+#include "EditorSerializer.h"
+#include "Flora/Utils/Serializer.h"
 
 namespace Flora {
 	void FileUtils::OpenScene(Ref<EditorParams> context){
@@ -32,12 +33,27 @@ namespace Flora {
 		}
 	}
 
+	void FileUtils::SaveTempScene(Ref<EditorParams> context) {
+		std::string sceneContent = Serializer::SerializeScene(context->ActiveScene);
+		Serializer::SerializeFile(sceneContent, "temp/tempScene.flora");
+		std::string editorContent = EditorSerializer::Serialize(context);
+		Serializer::SerializeFile(editorContent, "temp/tempEditorSettings.fnproj");
+	}
+
+	void FileUtils::OpenTempScene(Ref<EditorParams> context) {
+		EditorSerializer::Deserialize(context, "temp/tempEditorSettings.fnproj");
+		std::string sceneFilepath = context->ActiveScene->GetSceneFilepath();
+		NewScene(context);
+		context->ActiveScene->SetSceneFilepath(sceneFilepath);
+		Serializer::DeserializeScene(context->ActiveScene, "temp/tempscene.flora");
+	}
+
 	void FileUtils::OpenScene(Ref<EditorParams> context, const std::filesystem::path& path){
 		NewScene(context);
 		context->ActiveScene->SetSceneFilepath(path.string());
 		context->SelectedEntity = {};
 		Serializer::DeserializeScene(context->ActiveScene, path.string());
-		std::string editorContent = Serializer::SerializeEditor(context);
+		std::string editorContent = EditorSerializer::Serialize(context);
 		Serializer::SerializeFile(editorContent, "assets/settings/fauna.fnproj");
 	}
 
@@ -76,5 +92,65 @@ namespace Flora {
 					outfile << infile.rdbuf();
 			}
 		}
+	}
+
+	void FileUtils::CreateScript(const std::filesystem::path& directory) { //currently not stable for typical users
+		std::string templateContent = 
+			"#pragma once\n"
+			"#include \"Flora/Scene/ScriptableEntity.h\"\n"
+			"\n"
+			"namespace Flora {\n"
+			"\tclass TEMPLATE : public ScriptableEntity {\n"
+			"\tpublic:\n"
+			"\t\tvoid OnCreate() {\n"
+			"\t\t\n"
+			"\t\t}\n"
+			"\n"
+			"\t\tvoid OnDestroy() {\n"
+			"\t\t\n"
+			"\t\t}\n"
+			"\n"
+			"\t\tvoid OnUpdate(Timestep ts) {\n"
+			"\t\t\n"
+			"\t\t}\n"
+			"\t};\n"
+			"}";
+		std::string newfilename = "New Script.h";
+		int i = 0; 
+		while (std::filesystem::exists(directory / newfilename)) {
+			i++;
+			newfilename = "New Script (" + std::to_string(i) + ").h";
+		}
+		std::ofstream outfile(directory / newfilename);
+		if (outfile.is_open()) {
+			outfile << templateContent;
+			outfile.close();
+		} else {
+			FL_CORE_ERROR("Unable to create file");
+		}
+	}
+	
+	void FileUtils::CreateScene(const std::filesystem::path& directory, std::string filename) {
+		std::string newfilename = filename + ".flora";
+		int i = 0;
+		while (std::filesystem::exists(directory / newfilename)) {
+			i++;
+			newfilename = filename +  " (" + std::to_string(i) + ").flora";
+		}
+		std::ofstream outfile(directory / newfilename);
+		if (outfile.is_open()) {
+			outfile.close();
+		}
+		else {
+			FL_CORE_ERROR("Unable to create file");
+		}
+	}
+
+	void FileUtils::SaveEditor(Ref<EditorParams> context) {
+		Serializer::SerializeFile(EditorSerializer::Serialize(context), "assets/settings/fauna.fnproj"); 
+	}
+
+	void FileUtils::LoadEditor(Ref<EditorParams> context) {
+		EditorSerializer::Deserialize(context); 
 	}
 }

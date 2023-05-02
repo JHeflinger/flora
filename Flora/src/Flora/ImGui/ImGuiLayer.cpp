@@ -5,6 +5,7 @@
 #include "backends/imgui_impl_opengl3.h"
 #include "Flora/Core/Application.h"
 #include "ImGuizmo.h"
+#include "implot.h"
 
 //TEMPORARY
 #include <GLFW/glfw3.h>
@@ -25,6 +26,7 @@ namespace Flora {
 		//setup dear imgui context
 		IMGUI_CHECKVERSION();
 		ImGui::CreateContext();
+		ImPlot::CreateContext();
 		ImGuiIO& io = ImGui::GetIO(); (void)io;
 		io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
 		//io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;
@@ -63,6 +65,7 @@ namespace Flora {
 		ImGui_ImplOpenGL3_Shutdown();
 		ImGui_ImplGlfw_Shutdown();
 		ImGui::DestroyContext();
+		ImPlot::DestroyContext();
 	}
 
 	void ImGuiLayer::OnEvent(Event& e) {

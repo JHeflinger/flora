@@ -1,6 +1,6 @@
 #pragma once
 #include "Flora/Scene/Scene.h"
-#include "Flora/Utils/Structures.h"
+#include "../Utils/Structures.h"
 
 namespace Flora {
 	class EditorPanel {

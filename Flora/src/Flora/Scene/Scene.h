@@ -25,6 +25,15 @@ namespace Flora {
 		void SetViewportFocused(bool hovered) { m_ViewportFocused = hovered; }
 		std::string GetSceneFilepath() { return m_SceneFilepath; }
 		bool EntityExists(uint32_t entityID);
+		void SetSceneName(std::string name) { m_SceneName = name; }
+		std::string GetSceneName() { return m_SceneName; }
+	public:
+		template<typename T, typename LoopFunction>
+		void ForAllComponents(LoopFunction loopFunction) {
+			m_Registry.view<T>().each([=](auto entity, auto& component) {
+				loopFunction(entity, component);
+			});
+		}
 	private:
 		template<typename T>
 		void OnComponentAdded(Entity entity, T& component);
@@ -35,6 +44,7 @@ namespace Flora {
 		bool m_ViewportHovered = false; // temporary solution
 		bool m_ViewportFocused = false;
 		std::string m_SceneFilepath = "NULL";
+		std::string m_SceneName = "Untitled";
 		friend class Entity;
 		friend class SceneHierarchyPanel;
 		friend class Serializer;

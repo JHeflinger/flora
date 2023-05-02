@@ -152,9 +152,9 @@ Entities:
     TagComponent:
       Tag: G1
     TransformComponent:
-      Translation: [-0.00368341804, 0.5, 0.5]
-      Rotation: [1.57079637, 0, 0]
-      Scale: [1, 0.999999285, 0.999999285]
+      Translation: [-0.00368341734, 0.5, 0.500012755]
+      Rotation: [-2.9921751, 0, 0]
+      Scale: [1, 1.03215897, 1.02134466]
     SpriteRendererComponent:
       Color: [0.212578848, 0.888030887, 0, 1]
       Path: "NULL"
