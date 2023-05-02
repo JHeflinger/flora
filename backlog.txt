@@ -75,21 +75,3 @@ IN PROGRESS:
 	- errors should open up a popup
 
 IMPLEMENTED TICKETS:
-
-	- stat graph settings should be saveable in the editor settings
-
-	- stats panel should be able to click on a stat and open a graph over time and reset option
-
-	- after play button stops all entity values should go back to the original values
-
-	- scriptmanager should be able to move around scripts
-
-	- new file/folder options in content browser too
-
-	- new scene file creation util
-
-	- new script util
-
-	- bug: you can drag parents into their children to crash the editor
-
-	- play button

@@ -1,6 +1,33 @@
 # Change Log
 All notable changes to this project will be documented in this file as of Fauna Version 0.1.1 and Flora Version 0.1.1
 
+## Fauna [0.1.3] - 2023-05-02
+
+### Added
+
+- Stats panel now features a graph of info over time that can be customized to specific stats over specific times
+- Play button can now be used to run a simulation of behavior
+- ScriptManagerComponent GUI can now rearrange the order of scripts through drag and drop
+- Content Browser can now make new files, scenes, and folders through right click
+
+### Fixed
+
+- Fixed issue where dragging parents into children in the scene hierarchy would cause a stack overflow due to unhandled recursion
+
+## Flora [0.1.3] - 2023-05-02
+
+### Added
+
+- Native scripts will now automatically bind during runtime if not already binded
+- Scenes now have set names rather than depending on the scene's filename
+- ImPlot integrated into Flora's ImGui integration
+
+### Changed
+
+- Native scripts now only will run during game runtime, not editor runtime
+- Yaml extended operators have been moved into "YamlUtils.h"
+- Moved "Structures.h" into Fauna
+
 ## Fauna [0.1.2] - 2023-04-25
 
 ### Added
