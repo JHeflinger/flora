@@ -73,8 +73,28 @@ namespace Flora {
 			ImGui::TreePop();
 		}
 
-		if (m_ShowGraph) {
-			ImGui::Begin("Graphs");
+		ImGui::Separator();
+		if (ImGui::TreeNodeEx("Graph Settings", treeNodeFlags)) {
+			ImGui::Columns(2);
+			ImGui::SetColumnWidth(0, 100);
+			ImGui::Dummy({ 0, 2 });
+			ImGui::Text("Graph History");
+			ImGui::Dummy({ 0, 2 });
+			ImGui::Text("Reset Stats");
+			ImGui::Dummy({ 0, 2 });
+			ImGui::Text("Show Key");
+			ImGui::Dummy({ 0, 2 });
+			ImGui::NextColumn();
+			ImGui::SetNextItemWidth(180);
+			ImGui::DragFloat("##history", &m_TimeFrame, 0.1f, 0.0f, 10000.0f, "%.2f");
+			if (ImGui::Button("RESET", buttonSize)) ResetStats();
+			ImGui::Checkbox("##showkey", &m_ShowKey);
+			ImGui::Columns(1);
+			ImGui::TreePop();
+		}
+
+		if (m_ShowGraph && m_FrameCountData.size() != 0) {
+			ImGui::Begin("Graphs", NULL, ImGuiWindowFlags_NoScrollbar);
 
 			ImPlot::PushStyleColor(ImPlotCol_FrameBg, { 0,0,0,0 });
 			ImPlot::PushStyleColor(ImPlotCol_AxisBgHovered, { 0,0,0,0 });
@@ -83,7 +103,11 @@ namespace Flora {
 			ImPlot::SetNextAxesLimits(m_FrameCountData.front(), m_FrameCountData.back(), 0, GetYMax(), ImPlotCond_Always);
 
 			ImPlotFlags flags = ImPlotFlags_NoTitle;
-			if (ImPlot::BeginPlot("Graph data", { 0, 0 }, flags)) {
+			if (!m_ShowKey) flags |= ImPlotFlags_NoLegend;
+			ImVec2 plotsize = ImGui::GetWindowContentRegionMax();
+			plotsize.y -= 20.0f;
+			ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 10.0f);
+			if (ImPlot::BeginPlot("Graph data", plotsize, flags)) {
 				float* frameCountData = &m_FrameCountData[0];
 
 				if (m_ShowDrawCalls) {

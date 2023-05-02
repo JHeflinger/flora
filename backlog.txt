@@ -18,8 +18,6 @@ TODO:
 
 	- sprites should have the option to linear filter or not
 
-	- physics
-
 	- box2D
 
 	- particle system
@@ -68,15 +66,19 @@ TODO:
 
 IN PROGRESS:
 
+	- 2d physics
+
 	- simplify popup menus (New __ options should be condensed into an expandable "New..")
 
 	- make a more efficient way to ensure only one camera is primary
 
 	- errors should open up a popup
 
-	- stats panel should be able to click on a stat and open a graph over time and reset option
+	- stat graph settings should be saveable in the editor settings
 
 IMPLEMENTED TICKETS:
+
+	- stats panel should be able to click on a stat and open a graph over time and reset option
 
 	- after play button stops all entity values should go back to the original values
 

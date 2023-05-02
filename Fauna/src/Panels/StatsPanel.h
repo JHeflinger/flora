@@ -35,6 +35,7 @@ namespace Flora {
 		Renderer2D::Statistics m_RendererStats;
 	private:
 		float m_TimeFrame = 5.0f; // frame of data recording in seconds
+		bool m_ShowKey = true;
 		bool m_ShowGraph = true;
 		bool m_ShowDrawCalls = false;
 		bool m_ShowQuads = false;
