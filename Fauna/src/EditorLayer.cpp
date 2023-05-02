@@ -217,7 +217,7 @@ namespace Flora {
 
 	void EditorLayer::ProcessWindowClose() {
 		// Save editor settings
-		Serializer::SerializeFile(Serializer::SerializeEditor(m_EditorParams), "assets/settings/fauna.fnproj");
+		FileUtils::SaveEditor(m_EditorParams);
 		FL_CORE_INFO("Saved editor settings");
 
 		// Prompt save
@@ -383,7 +383,7 @@ namespace Flora {
 			auto sceneFilePath = commandLineArgs[1];
 			Serializer::DeserializeScene(m_EditorParams->ActiveScene, sceneFilePath);
 		}
-		else Serializer::DeserializeEditor(m_EditorParams);
+		else FileUtils::LoadEditor(m_EditorParams);
 
 		// Close panels
 		for (int i = 0; i < m_EditorParams->ClosedPanels.size(); i++)
@@ -616,7 +616,7 @@ namespace Flora {
 		time += ts;
 		if (time > 300) { // save settings every 5 minutes
 			time = 0.0f;
-			Serializer::SerializeFile(Serializer::SerializeEditor(m_EditorParams), "assets/settings/fauna.fnproj");
+			FileUtils::SaveEditor(m_EditorParams);
 			FL_CORE_INFO("Automatically saved editor settings");
 		}
 	}

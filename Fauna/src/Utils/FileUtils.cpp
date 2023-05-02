@@ -1,7 +1,8 @@
 #include "flpch.h"
 #include "FileUtils.h"
-#include "Flora/Utils/Serializer.h"
 #include "Flora/Utils/PlatformUtils.h"
+#include "EditorSerializer.h"
+#include "Flora/Utils/Serializer.h"
 
 namespace Flora {
 	void FileUtils::OpenScene(Ref<EditorParams> context){
@@ -35,12 +36,12 @@ namespace Flora {
 	void FileUtils::SaveTempScene(Ref<EditorParams> context) {
 		std::string sceneContent = Serializer::SerializeScene(context->ActiveScene);
 		Serializer::SerializeFile(sceneContent, "temp/tempScene.flora");
-		std::string editorContent = Serializer::SerializeEditor(context);
+		std::string editorContent = EditorSerializer::Serialize(context);
 		Serializer::SerializeFile(editorContent, "temp/tempEditorSettings.fnproj");
 	}
 
 	void FileUtils::OpenTempScene(Ref<EditorParams> context) {
-		Serializer::DeserializeEditor(context, "temp/tempEditorSettings.fnproj");
+		EditorSerializer::Deserialize(context, "temp/tempEditorSettings.fnproj");
 		std::string sceneFilepath = context->ActiveScene->GetSceneFilepath();
 		NewScene(context);
 		context->ActiveScene->SetSceneFilepath(sceneFilepath);
@@ -52,7 +53,7 @@ namespace Flora {
 		context->ActiveScene->SetSceneFilepath(path.string());
 		context->SelectedEntity = {};
 		Serializer::DeserializeScene(context->ActiveScene, path.string());
-		std::string editorContent = Serializer::SerializeEditor(context);
+		std::string editorContent = EditorSerializer::Serialize(context);
 		Serializer::SerializeFile(editorContent, "assets/settings/fauna.fnproj");
 	}
 
@@ -143,5 +144,13 @@ namespace Flora {
 		else {
 			FL_CORE_ERROR("Unable to create file");
 		}
+	}
+
+	void FileUtils::SaveEditor(Ref<EditorParams> context) {
+		Serializer::SerializeFile(EditorSerializer::Serialize(context), "assets/settings/fauna.fnproj"); 
+	}
+
+	void FileUtils::LoadEditor(Ref<EditorParams> context) {
+		EditorSerializer::Deserialize(context); 
 	}
 }

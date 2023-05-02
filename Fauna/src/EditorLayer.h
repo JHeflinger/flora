@@ -7,7 +7,7 @@
 #include "Panels/PropertiesPanel.h"
 #include "Panels/ConsolePanel.h"
 #include "Flora/Renderer/EditorCamera.h"
-#include "Flora/Utils/Structures.h"
+#include "Utils/Structures.h"
 #include <map>
 
 namespace Flora {
