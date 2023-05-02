@@ -5,7 +5,29 @@
 #include <imgui/implot.h>
 
 namespace Flora {
+	void StatsPanel::Initialize() {
+		m_DataMap[Stats::DRAWCALLS] = {};
+		m_DataMap[Stats::QUADS] = {};
+		m_DataMap[Stats::VERTICES] = {};
+		m_DataMap[Stats::INDICES] = {};
+		m_DataMap[Stats::FRAMETIME] = {};
+		m_DataMap[Stats::FPS] = {};
+		m_DataMap[Stats::LOWEST_FPS] = {};
+		m_DataMap[Stats::HIGHEST_FPS] = {};
+	}
+
 	void StatsPanel::OnImGuiRender() {
+		if (m_EditorContext->ShowStatMap.size() <= 0) {
+			m_EditorContext->ShowStatMap[Stats::DRAWCALLS] = true;
+			m_EditorContext->ShowStatMap[Stats::QUADS] = true;
+			m_EditorContext->ShowStatMap[Stats::VERTICES] = true;
+			m_EditorContext->ShowStatMap[Stats::INDICES] = true;
+			m_EditorContext->ShowStatMap[Stats::FRAMETIME] = true;
+			m_EditorContext->ShowStatMap[Stats::FPS] = true;
+			m_EditorContext->ShowStatMap[Stats::LOWEST_FPS] = true;
+			m_EditorContext->ShowStatMap[Stats::HIGHEST_FPS] = true;
+		}
+
 		const ImGuiTreeNodeFlags treeNodeFlags = ImGuiTreeNodeFlags_SpanAvailWidth | ImGuiTreeNodeFlags_AllowItemOverlap | ImGuiTreeNodeFlags_FramePadding | ImGuiTreeNodeFlags_DefaultOpen;
 		ImVec2 buttonSize = { 180, 0 };
 
@@ -33,10 +55,10 @@ namespace Flora {
 			ImGui::Button(std::to_string(m_RendererStats.GetTotalVertexCount()).c_str(), buttonSize);
 			ImGui::Button(std::to_string(m_RendererStats.GetTotalIndexCount()).c_str(), buttonSize);
 			ImGui::NextColumn();
-			ImGui::Checkbox("##drawcalls", &m_ShowDrawCalls);
-			ImGui::Checkbox("##quads", &m_ShowQuads);
-			ImGui::Checkbox("##vertices", &m_ShowVertices);
-			ImGui::Checkbox("##indices", &m_ShowIndices);
+			ImGui::Checkbox("##drawcalls", &m_EditorContext->ShowStatMap[Stats::DRAWCALLS]);
+			ImGui::Checkbox("##quads", &m_EditorContext->ShowStatMap[Stats::QUADS]);
+			ImGui::Checkbox("##vertices", &m_EditorContext->ShowStatMap[Stats::VERTICES]);
+			ImGui::Checkbox("##indices", &m_EditorContext->ShowStatMap[Stats::INDICES]);
 			ImGui::Columns(1);
 			ImGui::TreePop();
 		}
@@ -65,10 +87,10 @@ namespace Flora {
 			ImGui::Button(std::to_string(m_LowestFPS).c_str(), buttonSize);
 			ImGui::Button(std::to_string(m_HighestFPS).c_str(), buttonSize);
 			ImGui::NextColumn();
-			ImGui::Checkbox("##frametime", &m_ShowFrametime);
-			ImGui::Checkbox("##fps", &m_ShowFPS);
-			ImGui::Checkbox("##fpsfloor", &m_ShowLowestFPS);
-			ImGui::Checkbox("##fpsceiling", &m_ShowHighestFPS);
+			ImGui::Checkbox("##frametime", &m_EditorContext->ShowStatMap[Stats::FRAMETIME]);
+			ImGui::Checkbox("##fps", &m_EditorContext->ShowStatMap[Stats::FPS]);
+			ImGui::Checkbox("##fpsfloor", &m_EditorContext->ShowStatMap[Stats::LOWEST_FPS]);
+			ImGui::Checkbox("##fpsceiling", &m_EditorContext->ShowStatMap[Stats::HIGHEST_FPS]);
 			ImGui::Columns(1);
 			ImGui::TreePop();
 		}
@@ -86,9 +108,9 @@ namespace Flora {
 			ImGui::Dummy({ 0, 2 });
 			ImGui::NextColumn();
 			ImGui::SetNextItemWidth(180);
-			ImGui::DragFloat("##history", &m_TimeFrame, 0.1f, 0.0f, 10000.0f, "%.2f");
+			ImGui::DragFloat("##history", &(m_EditorContext->Timeframe), 0.1f, 0.0f, 10000.0f, "%.2f");
 			if (ImGui::Button("RESET", buttonSize)) ResetStats();
-			ImGui::Checkbox("##showkey", &m_ShowKey);
+			ImGui::Checkbox("##showkey", &(m_EditorContext->ShowGraphKey));
 			ImGui::Columns(1);
 			ImGui::TreePop();
 		}
@@ -103,50 +125,50 @@ namespace Flora {
 			ImPlot::SetNextAxesLimits(m_FrameCountData.front(), m_FrameCountData.back(), 0, GetYMax(), ImPlotCond_Always);
 
 			ImPlotFlags flags = ImPlotFlags_NoTitle;
-			if (!m_ShowKey) flags |= ImPlotFlags_NoLegend;
+			if (!(m_EditorContext->ShowGraphKey)) flags |= ImPlotFlags_NoLegend;
 			ImVec2 plotsize = ImGui::GetWindowContentRegionMax();
 			plotsize.y -= 20.0f;
 			ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 10.0f);
 			if (ImPlot::BeginPlot("Graph data", plotsize, flags)) {
 				float* frameCountData = &m_FrameCountData[0];
 
-				if (m_ShowDrawCalls) {
-					float* drawCallData = &m_DrawCallsData[0];
+				if (m_EditorContext->ShowStatMap[Stats::DRAWCALLS]) {
+					float* drawCallData = &m_DataMap[Stats::DRAWCALLS][0];
 					ImPlot::PlotLine("Draw Calls", frameCountData, drawCallData, m_FrameCountData.size());
 				}
 
-				if (m_ShowQuads) {
-					float* drawQuadData = &m_QuadsData[0];
+				if (m_EditorContext->ShowStatMap[Stats::QUADS]) {
+					float* drawQuadData = &m_DataMap[Stats::QUADS][0];
 					ImPlot::PlotLine("Quads", frameCountData, drawQuadData, m_FrameCountData.size());
 				}
 
-				if (m_ShowVertices) {
-					float* vertexData = &m_VerticesData[0];
+				if (m_EditorContext->ShowStatMap[Stats::VERTICES]) {
+					float* vertexData = &m_DataMap[Stats::VERTICES][0];
 					ImPlot::PlotLine("Vertices", frameCountData, vertexData, m_FrameCountData.size());
 				}
 
-				if (m_ShowIndices) {
-					float* indexData = &m_IndicesData[0];
+				if (m_EditorContext->ShowStatMap[Stats::INDICES]) {
+					float* indexData = &m_DataMap[Stats::INDICES][0];
 					ImPlot::PlotLine("Indices", frameCountData, indexData, m_FrameCountData.size());
 				}
 
-				if (m_ShowFrametime) {
-					float* frametimeData = &m_FrametimeData[0];
+				if (m_EditorContext->ShowStatMap[Stats::FRAMETIME]) {
+					float* frametimeData = &m_DataMap[Stats::FRAMETIME][0];
 					ImPlot::PlotLine("Frame time (us)", frameCountData, frametimeData, m_FrameCountData.size());
 				}
 
-				if (m_ShowFPS) {
-					float* fpsData = &m_FPSData[0];
+				if (m_EditorContext->ShowStatMap[Stats::FPS]) {
+					float* fpsData = &m_DataMap[Stats::FPS][0];
 					ImPlot::PlotLine("FPS", frameCountData, fpsData, m_FrameCountData.size());
 				}
 
-				if (m_ShowLowestFPS) {
-					float* lowestFPSData = &m_LowestFPSData[0];
+				if (m_EditorContext->ShowStatMap[Stats::LOWEST_FPS]) {
+					float* lowestFPSData = &m_DataMap[Stats::LOWEST_FPS][0];
 					ImPlot::PlotLine("FPS Floor", frameCountData, lowestFPSData, m_FrameCountData.size());
 				}
 
-				if (m_ShowHighestFPS) {
-					float* highestFPSData = &m_HighestFPSData[0];
+				if (m_EditorContext->ShowStatMap[Stats::HIGHEST_FPS]) {
+					float* highestFPSData = &m_DataMap[Stats::HIGHEST_FPS][0];
 					ImPlot::PlotLine("FPS Ceiling", frameCountData, highestFPSData, m_FrameCountData.size());
 				}
 
@@ -171,19 +193,19 @@ namespace Flora {
 
 		// limit to time frame
 		float period = 0.0f;
-		for (int i = 0; i < m_FrametimeData.size(); i++)
-			period += m_FrametimeData[i];
-		bool pop = period > (m_TimeFrame * 1000.0f);
+		for (int i = 0; i < m_DataMap[Stats::FRAMETIME].size(); i++)
+			period += m_DataMap[Stats::FRAMETIME][i];
+		bool pop = period > (m_EditorContext->Timeframe * 1000.0f);
 
 		EmplaceAndPop(m_FrameCountData, (float)m_FrameCount, pop);
-		EmplaceAndPop(m_FrametimeData, 1000 * m_Frametime, pop);
-		EmplaceAndPop(m_DrawCallsData, (float)(m_RendererStats.DrawCalls), pop);
-		EmplaceAndPop(m_QuadsData, (float)(m_RendererStats.QuadCount), pop);
-		EmplaceAndPop(m_VerticesData, (float)(m_RendererStats.GetTotalVertexCount()), pop);
-		EmplaceAndPop(m_IndicesData, (float)(m_RendererStats.GetTotalIndexCount()), pop);
-		EmplaceAndPop(m_FPSData, fps, pop);
-		EmplaceAndPop(m_LowestFPSData, m_LowestFPS, pop);
-		EmplaceAndPop(m_HighestFPSData, m_HighestFPS, pop);
+		EmplaceAndPop(m_DataMap[Stats::FRAMETIME], 1000 * m_Frametime, pop);
+		EmplaceAndPop(m_DataMap[Stats::DRAWCALLS], (float)(m_RendererStats.DrawCalls), pop);
+		EmplaceAndPop(m_DataMap[Stats::QUADS], (float)(m_RendererStats.QuadCount), pop);
+		EmplaceAndPop(m_DataMap[Stats::VERTICES], (float)(m_RendererStats.GetTotalVertexCount()), pop);
+		EmplaceAndPop(m_DataMap[Stats::INDICES], (float)(m_RendererStats.GetTotalIndexCount()), pop);
+		EmplaceAndPop(m_DataMap[Stats::FPS], fps, pop);
+		EmplaceAndPop(m_DataMap[Stats::LOWEST_FPS], m_LowestFPS, pop);
+		EmplaceAndPop(m_DataMap[Stats::HIGHEST_FPS], m_HighestFPS, pop);
 	}
 
 	static float GetMaxFromVector(std::vector<float> vec) {
@@ -196,14 +218,14 @@ namespace Flora {
 
 	float StatsPanel::GetYMax() {
 		float max = 0.0f;
-		if (m_ShowFrametime) max = CascadeMax(max, 60.0f);
-		if (m_ShowDrawCalls) max = CascadeMax(max, 10.0f);
-		if (m_ShowQuads) max = CascadeMax(max, GetMaxFromVector(m_QuadsData) * 1.1f);
-		if (m_ShowVertices) max = CascadeMax(max, GetMaxFromVector(m_VerticesData) * 1.1f);
-		if (m_ShowIndices) max = CascadeMax(max, GetMaxFromVector(m_IndicesData) * 1.1f);
-		if (m_ShowFPS) max = CascadeMax(max, 144);
-		if (m_ShowLowestFPS) max = CascadeMax(max, GetMaxFromVector(m_LowestFPSData) * 1.1f);
-		if (m_ShowHighestFPS) max = CascadeMax(max, GetMaxFromVector(m_HighestFPSData) * 1.1f);
+		if (m_EditorContext->ShowStatMap[Stats::FRAMETIME]) max = CascadeMax(max, 60.0f);
+		if (m_EditorContext->ShowStatMap[Stats::DRAWCALLS]) max = CascadeMax(max, 10.0f);
+		if (m_EditorContext->ShowStatMap[Stats::QUADS]) max = CascadeMax(max, GetMaxFromVector(m_DataMap[Stats::QUADS]) * 1.1f);
+		if (m_EditorContext->ShowStatMap[Stats::VERTICES]) max = CascadeMax(max, GetMaxFromVector(m_DataMap[Stats::VERTICES]) * 1.1f);
+		if (m_EditorContext->ShowStatMap[Stats::INDICES]) max = CascadeMax(max, GetMaxFromVector(m_DataMap[Stats::INDICES]) * 1.1f);
+		if (m_EditorContext->ShowStatMap[Stats::FPS]) max = CascadeMax(max, 144);
+		if (m_EditorContext->ShowStatMap[Stats::LOWEST_FPS]) max = CascadeMax(max, GetMaxFromVector(m_DataMap[Stats::FPS]) * 1.1f);
+		if (m_EditorContext->ShowStatMap[Stats::HIGHEST_FPS]) max = CascadeMax(max, GetMaxFromVector(m_DataMap[Stats::HIGHEST_FPS]) * 1.1f);
 		return max;
 	}
 }

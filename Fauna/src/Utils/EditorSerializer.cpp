@@ -39,6 +39,23 @@ namespace Flora {
 			out << params->ClosedPanels[i];
 		out << YAML::EndSeq;
 
+		out << YAML::Key << "Stat Panel Settings" << YAML::Value;
+		out << YAML::BeginMap;
+		out << YAML::Key << "Timeframe" << YAML::Value << params->Timeframe;
+		out << YAML::Key << "Show Key" << YAML::Value << params->ShowGraphKey;
+		out << YAML::Key << "Open Graphs" << YAML::Value;
+		out << YAML::BeginMap;
+		out << YAML::Key << "DRAWCALLS" << YAML::Value << params->ShowStatMap[Stats::DRAWCALLS];
+		out << YAML::Key << "QUADS" << YAML::Value << params->ShowStatMap[Stats::QUADS];
+		out << YAML::Key << "VERTICES" << YAML::Value << params->ShowStatMap[Stats::VERTICES];
+		out << YAML::Key << "INDICES" << YAML::Value << params->ShowStatMap[Stats::INDICES];
+		out << YAML::Key << "FRAMETIME" << YAML::Value << params->ShowStatMap[Stats::FRAMETIME];
+		out << YAML::Key << "FPS" << YAML::Value << params->ShowStatMap[Stats::FPS];
+		out << YAML::Key << "LOWEST_FPS" << YAML::Value << params->ShowStatMap[Stats::LOWEST_FPS];
+		out << YAML::Key << "HIGHEST_FPS" << YAML::Value << params->ShowStatMap[Stats::HIGHEST_FPS];
+		out << YAML::EndMap;
+		out << YAML::EndMap;
+
 		out << YAML::EndMap;
 
 		return std::string(out.c_str());
@@ -57,7 +74,8 @@ namespace Flora {
 			!data["General Camera Settings"] ||
 			!data["Perspective Camera Settings"] ||
 			!data["Orthographic Camera Settings"] ||
-			!data["Closed Panels"])
+			!data["Closed Panels"] ||
+			!data["Stat Panel Settings"])
 			return false;
 
 		// set up saved scene
@@ -84,6 +102,18 @@ namespace Flora {
 		int entityID = data["Selected Entity"].as<int>();
 		if (entityID >= 0 && params->ActiveScene->EntityExists((uint32_t)entityID))
 			params->SelectedEntity = params->ActiveScene->GetEntityFromID((uint32_t)entityID);
+
+		// set up stats panel
+		params->Timeframe = data["Stat Panel Settings"]["Timeframe"].as<float>();
+		params->ShowGraphKey = data["Stat Panel Settings"]["Show Key"].as<bool>();
+		params->ShowStatMap[Stats::DRAWCALLS] = data["Stat Panel Settings"]["Open Graphs"]["DRAWCALLS"].as<bool>();
+		params->ShowStatMap[Stats::QUADS] = data["Stat Panel Settings"]["Open Graphs"]["QUADS"].as<bool>();
+		params->ShowStatMap[Stats::VERTICES] = data["Stat Panel Settings"]["Open Graphs"]["VERTICES"].as<bool>();
+		params->ShowStatMap[Stats::INDICES] = data["Stat Panel Settings"]["Open Graphs"]["INDICES"].as<bool>();
+		params->ShowStatMap[Stats::FRAMETIME] = data["Stat Panel Settings"]["Open Graphs"]["FRAMETIME"].as<bool>();
+		params->ShowStatMap[Stats::FPS] = data["Stat Panel Settings"]["Open Graphs"]["FPS"].as<bool>();
+		params->ShowStatMap[Stats::LOWEST_FPS] = data["Stat Panel Settings"]["Open Graphs"]["LOWEST_FPS"].as<bool>();
+		params->ShowStatMap[Stats::HIGHEST_FPS] = data["Stat Panel Settings"]["Open Graphs"]["HIGHEST_FPS"].as<bool>();
 
 		return success;
 	}

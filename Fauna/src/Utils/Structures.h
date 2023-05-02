@@ -16,6 +16,17 @@ namespace Flora {
 
 	enum class SceneState { EDIT = 0, PLAY = 1 };
 
+	enum class Stats {
+		DRAWCALLS = 0,
+		QUADS = 1,
+		VERTICES = 2,
+		INDICES = 3,
+		FRAMETIME = 4,
+		FPS = 5,
+		LOWEST_FPS = 6,
+		HIGHEST_FPS = 7
+	};
+
 	struct Clipboard {
 		std::string Filepath = "";
 		Entity Entity = {};
@@ -24,6 +35,7 @@ namespace Flora {
 	};
 
 	struct EditorParams {
+		// general editor settings
 		Entity SelectedEntity = {};
 		int GizmoType = -1;
 		Ref<Scene> ActiveScene;
@@ -35,5 +47,10 @@ namespace Flora {
 		Panels HoveredPanel = Panels::NONE;
 		Clipboard Clipboard;
 		SceneState SceneState = SceneState::EDIT;
+		
+		// stats panel settings
+		float Timeframe = 5.0f;
+		bool ShowGraphKey = true;
+		std::map<Stats, bool> ShowStatMap;
 	};
 }

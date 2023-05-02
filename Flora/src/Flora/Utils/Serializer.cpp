@@ -342,7 +342,7 @@ namespace Flora {
 		return node.as<glm::vec4>();
 	}
 
-	std::vector<std::string> GetNodeAsVecString(YAML::Node node) {
+	std::vector<std::string> Serializer::GetNodeAsVecString(YAML::Node node) {
 		return node.as<std::vector<std::string>>();
 	}
 }

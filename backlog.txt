@@ -74,9 +74,9 @@ IN PROGRESS:
 
 	- errors should open up a popup
 
-	- stat graph settings should be saveable in the editor settings
-
 IMPLEMENTED TICKETS:
+
+	- stat graph settings should be saveable in the editor settings
 
 	- stats panel should be able to click on a stat and open a graph over time and reset option
 
