@@ -75,3 +75,5 @@ IN PROGRESS:
 	- errors should open up a popup
 
 IMPLEMENTED TICKETS:
+
+	- added axis minimum and axis scalar settings to stat panel

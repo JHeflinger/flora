@@ -50,6 +50,8 @@ namespace Flora {
 		
 		// stats panel settings
 		float Timeframe = 5.0f;
+		float AxisScale = 1.0f;
+		float AxisMinimum = 0.0f;
 		bool ShowGraphKey = true;
 		std::map<Stats, bool> ShowStatMap;
 	};

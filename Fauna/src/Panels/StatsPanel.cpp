@@ -102,13 +102,21 @@ namespace Flora {
 			ImGui::Dummy({ 0, 2 });
 			ImGui::Text("Graph History");
 			ImGui::Dummy({ 0, 2 });
+			ImGui::Text("Axis Scalar");
+			ImGui::Dummy({ 0, 2 });
+			ImGui::Text("Axis Minimum");
+			ImGui::Dummy({ 0, 2 });
 			ImGui::Text("Reset Stats");
 			ImGui::Dummy({ 0, 2 });
 			ImGui::Text("Show Key");
 			ImGui::Dummy({ 0, 2 });
 			ImGui::NextColumn();
 			ImGui::SetNextItemWidth(180);
-			ImGui::DragFloat("##history", &(m_EditorContext->Timeframe), 0.1f, 0.0f, 10000.0f, "%.2f");
+			ImGui::DragFloat("##history", &(m_EditorContext->Timeframe), 0.01f, 0.0f, 10000.0f, "%.2f");
+			ImGui::SetNextItemWidth(180);
+			ImGui::DragFloat("##axisscale", &(m_EditorContext->AxisScale), 0.01f, 0.0f, 10000.0f, "%.2f");
+			ImGui::SetNextItemWidth(180);
+			ImGui::DragFloat("##axismin", &(m_EditorContext->AxisMinimum), 0.01f, 0.0f, 1000000.0f, "%.2f");
 			if (ImGui::Button("RESET", buttonSize)) ResetStats();
 			ImGui::Checkbox("##showkey", &(m_EditorContext->ShowGraphKey));
 			ImGui::Columns(1);
@@ -122,7 +130,7 @@ namespace Flora {
 			ImPlot::PushStyleColor(ImPlotCol_AxisBgHovered, { 0,0,0,0 });
 			ImPlot::PushStyleColor(ImPlotCol_AxisBgActive, { 0,0,0,0 });
 
-			ImPlot::SetNextAxesLimits(m_FrameCountData.front(), m_FrameCountData.back(), 0, GetYMax(), ImPlotCond_Always);
+			ImPlot::SetNextAxesLimits(m_FrameCountData.front(), m_FrameCountData.back(), m_EditorContext->AxisMinimum, GetYMax(), ImPlotCond_Always);
 
 			ImPlotFlags flags = ImPlotFlags_NoTitle;
 			if (!(m_EditorContext->ShowGraphKey)) flags |= ImPlotFlags_NoLegend;
@@ -226,6 +234,6 @@ namespace Flora {
 		if (m_EditorContext->ShowStatMap[Stats::FPS]) max = CascadeMax(max, 144);
 		if (m_EditorContext->ShowStatMap[Stats::LOWEST_FPS]) max = CascadeMax(max, GetMaxFromVector(m_DataMap[Stats::FPS]) * 1.1f);
 		if (m_EditorContext->ShowStatMap[Stats::HIGHEST_FPS]) max = CascadeMax(max, GetMaxFromVector(m_DataMap[Stats::HIGHEST_FPS]) * 1.1f);
-		return max;
+		return max * m_EditorContext->AxisScale;
 	}
 }

@@ -43,6 +43,8 @@ namespace Flora {
 		out << YAML::BeginMap;
 		out << YAML::Key << "Timeframe" << YAML::Value << params->Timeframe;
 		out << YAML::Key << "Show Key" << YAML::Value << params->ShowGraphKey;
+		out << YAML::Key << "Axis Scalar" << YAML::Value << params->AxisScale;
+		out << YAML::Key << "Axis Minimum" << YAML::Value << params->AxisMinimum;
 		out << YAML::Key << "Open Graphs" << YAML::Value;
 		out << YAML::BeginMap;
 		out << YAML::Key << "DRAWCALLS" << YAML::Value << params->ShowStatMap[Stats::DRAWCALLS];
@@ -106,6 +108,8 @@ namespace Flora {
 		// set up stats panel
 		params->Timeframe = data["Stat Panel Settings"]["Timeframe"].as<float>();
 		params->ShowGraphKey = data["Stat Panel Settings"]["Show Key"].as<bool>();
+		params->AxisMinimum = data["Stat Panel Settings"]["Axis Minimum"].as<float>();
+		params->AxisScale = data["Stat Panel Settings"]["Axis Scalar"].as<float>();
 		params->ShowStatMap[Stats::DRAWCALLS] = data["Stat Panel Settings"]["Open Graphs"]["DRAWCALLS"].as<bool>();
 		params->ShowStatMap[Stats::QUADS] = data["Stat Panel Settings"]["Open Graphs"]["QUADS"].as<bool>();
 		params->ShowStatMap[Stats::VERTICES] = data["Stat Panel Settings"]["Open Graphs"]["VERTICES"].as<bool>();

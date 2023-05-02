@@ -14,14 +14,16 @@ Orthographic Camera Settings:
 Closed Panels:
   []
 Stat Panel Settings:
-  Timeframe: 5
-  Show Key: false
+  Timeframe: 2
+  Show Key: true
+  Axis Scalar: 0.469999999
+  Axis Minimum: 52.5
   Open Graphs:
     DRAWCALLS: false
-    QUADS: true
+    QUADS: false
     VERTICES: false
     INDICES: false
     FRAMETIME: false
     FPS: true
-    LOWEST_FPS: true
-    HIGHEST_FPS: true
+    LOWEST_FPS: false
+    HIGHEST_FPS: false
