@@ -1,22 +1,18 @@
 TODO:
 
-	- integrate SPIR-V shaders
+	- custom editor settings like color scheme, etc
 
-	- move editor dependent assets into a protected assets folder
+	- integrate SPIR-V shaders
 
 	- implement projects
 
 	- custom shaders, post processing, materials
 
 	- implement layers
-
-	- runtime performance in stats panel
 	
 	- c# scripting
 
 	- reflection system (serialize values and show them in properties panel!)
-
-	- sprites should have the option to linear filter or not
 
 	- box2D
 
@@ -32,9 +28,7 @@ TODO:
 
 	- text rendering!
 
-	- layout system?
-
-	- menu screens
+	- layout system
 
 	- standalone runtime and standalone serialization
 
@@ -52,13 +46,9 @@ TODO:
 
 	- make native scripting more stable
 
-	- some sort of generate new native script button
-
 	- project settings?
 
 	- move some editor settings to scene settings (like editor camera) or separate it into a sceneEditorSetting file specific to scene
-
-	- need to be able to get entity from id or tag
 
 	- content browser select multiple 
 
@@ -67,6 +57,14 @@ TODO:
 IN PROGRESS:
 
 	- 2d physics
+
+	- sprites should have the option to linear filter or not
+
+	- runtime performance in stats panel (cpu/gpu usage, temp, etc)
+
+	- move editor dependent assets into a protected assets folder
+
+	- need to be able to get entity from id or tag
 
 	- simplify popup menus (New __ options should be condensed into an expandable "New..")
 
