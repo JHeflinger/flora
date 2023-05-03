@@ -72,8 +72,8 @@ IN PROGRESS:
 
 	- make a more efficient way to ensure only one camera is primary
 
-	- errors should open up a popup
-
 IMPLEMENTED TICKETS:
+
+	- spdlogged errors should automatically open up a popup
 
 	- added axis minimum and axis scalar settings to stat panel

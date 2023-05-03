@@ -40,6 +40,7 @@ namespace Flora {
 		std::string GetLastSavedString();
 		void PromptSave(SavePromptType type) { m_SavePromptType = type; }
 		void RenderSavePrompt();
+		void RenderErrorPrompt();
 		void RenderUIBar();
 		void OnScenePlay();
 		void OnSceneStop();

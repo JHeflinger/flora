@@ -47,6 +47,7 @@ namespace Flora {
 		Panels HoveredPanel = Panels::NONE;
 		Clipboard Clipboard;
 		SceneState SceneState = SceneState::EDIT;
+		std::string Error = "";
 		
 		// stats panel settings
 		float Timeframe = 5.0f;

@@ -172,11 +172,14 @@ namespace Flora {
 		// Panels
 		RenderImGuiPanels();
 
+		// Render UI Bar
+		RenderUIBar();
+
 		// Prompt Save
 		RenderSavePrompt();
 
-		// Render UI Bar
-		RenderUIBar();
+		// Prompt Errors
+		RenderErrorPrompt();
 
 		ImGui::End();
 	}
@@ -230,6 +233,26 @@ namespace Flora {
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<KeyPressedEvent>(FL_BIND_EVENT_FN(EditorLayer::OnKeyPressed));
 		dispatcher.Dispatch<MouseButtonPressedEvent>(FL_BIND_EVENT_FN(EditorLayer::OnMouseButtonPressed));
+	}
+
+	void EditorLayer::RenderErrorPrompt() {
+		if (m_EditorParams->Error != "") {
+			ImGui::OpenPopup("ERROR"); 
+			ImVec2 center = ImGui::GetMainViewport()->GetCenter();
+			ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
+			if (ImGui::BeginPopupModal("ERROR", NULL, ImGuiWindowFlags_AlwaysAutoResize)) {
+				ImGui::SetItemDefaultFocus();
+				std::string message = m_EditorParams->Error.substr(10) + "\n\n";
+				ImGui::Text(message.c_str());
+				ImGui::Separator();
+				ImGui::Dummy({ 0, 3 });
+				if (ImGui::Button("OK", { 60, 25 })) {
+					m_EditorParams->Error = "";
+					ImGui::CloseCurrentPopup();
+				}
+				ImGui::EndPopup();
+			}
+		}
 	}
 
 	void EditorLayer::RenderSavePrompt() {
