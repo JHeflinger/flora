@@ -209,14 +209,8 @@ namespace Flora {
 		}
 	}
 
-	Entity Scene::GetPrimaryCameraEntity() {
-		auto view = m_Registry.view<CameraComponent>();
-		for (auto entity : view) {
-			const auto& camera = view.get<CameraComponent>(entity);
-			if (camera.Primary)
-				return Entity{ entity, this };
-		}
-		return {};
+	Entity* Scene::GetPrimaryCamera() {
+		return m_PrimaryCamera;
 	}
 
 	Entity Scene::GetEntityFromID(uint32_t id) {

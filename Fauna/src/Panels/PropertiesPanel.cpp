@@ -268,6 +268,7 @@ namespace Flora {
 				}
 				ImGui::EndCombo();
 			}
+			
 			if (ImGui::Checkbox("##Primary", &component.Primary)) {
 				// TODO
 			}

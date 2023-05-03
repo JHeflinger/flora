@@ -15,7 +15,7 @@ namespace Flora {
 		Entity GetEntityFromID(uint32_t id);
 		Entity CopyEntity(Entity entity);
 		Entity CopyEntity(Entity entity, Entity parent);
-		Entity GetPrimaryCameraEntity();
+		Entity* GetPrimaryCamera();
 		std::vector<Entity> GetEntitiesByTag(std::string tag);
 		bool EntityExists(uint32_t entityID);
 		void DestroyEntity(Entity entity);
@@ -26,6 +26,7 @@ namespace Flora {
 		void SetViewportHovered(bool hovered) { m_ViewportHovered = hovered; }
 		void SetViewportFocused(bool hovered) { m_ViewportFocused = hovered; }
 		void SetSceneName(std::string name) { m_SceneName = name; }
+		void SetPrimaryCamera(Entity* camera) { m_PrimaryCamera = camera; }
 		std::string GetSceneFilepath() { return m_SceneFilepath; }
 		std::string GetSceneName() { return m_SceneName; }
 	public:
@@ -46,6 +47,7 @@ namespace Flora {
 		bool m_ViewportFocused = false;
 		std::string m_SceneFilepath = "NULL";
 		std::string m_SceneName = "Untitled";
+		Entity* m_PrimaryCamera = nullptr;
 		friend class Entity;
 		friend class SceneHierarchyPanel;
 		friend class Serializer;

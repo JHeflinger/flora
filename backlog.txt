@@ -54,6 +54,8 @@ TODO:
 
 	- copy and paste can select multiple files/entities
 
+	- move editor dependent assets into a protected assets folder
+
 IN PROGRESS:
 
 	- 2d physics
@@ -62,15 +64,17 @@ IN PROGRESS:
 
 	- runtime performance in stats panel (cpu/gpu usage, temp, etc)
 
-	- move editor dependent assets into a protected assets folder
-
-	- need to be able to get entity from tag
-
 	- simplify popup menus (New __ options should be condensed into an expandable "New..")
 
 	- make a more efficient way to ensure only one camera is primary
 
+	- update getprimarycameraentity
+
 IMPLEMENTED TICKETS:
+
+	- bug: closing while scene is playing will prompt save based on scene play state not editor state
+
+	- need to be able to get entity from tag
 
 	- spdlogged errors should automatically open up a popup
 

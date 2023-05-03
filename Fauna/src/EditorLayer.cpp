@@ -208,9 +208,11 @@ namespace Flora {
 	}
 
 	void EditorLayer::OnScenePlay() {
-		//Serializer::SerializeFile(Serializer::SerializeEditor(m_EditorParams), "assets/settings/fauna.fnproj");
 		FileUtils::SaveTempScene(m_EditorParams);
 		m_EditorParams->SceneState = SceneState::PLAY;
+
+		// warnings
+		if (!m_EditorParams->ActiveScene->GetPrimaryCamera()) FL_WARN("No primary camera selected");
 	}
 
 	void EditorLayer::OnSceneStop() {
