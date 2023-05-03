@@ -206,6 +206,8 @@ Entities:
       NativeScripts:
         - Path: assets\scripts\AutoRotater.h
           Filename: AutoRotater.h
+        - Path: assets\scripts\TestScript.h
+          Filename: TestScript.h
     ChildComponent:
       - 1
       - 2

@@ -31,6 +31,17 @@ namespace Flora {
 	Scene::~Scene() {
 	}
 
+	std::vector<Entity> Scene::GetEntitiesByTag(std::string tag) {
+		std::vector<Entity> entities;
+		auto view = m_Registry.view<TagComponent>();
+		for (auto entity : view) {
+			Entity foundEntity = Entity{ entity, this };
+			if (foundEntity.GetComponent<TagComponent>().Tag == tag)
+				entities.emplace_back(foundEntity);
+		}
+		return entities;
+	}
+
 	Entity Scene::CreateEntity(const std::string& name) {
 		Entity entity(m_Registry.create(), this);
 		entity.AddComponent<TransformComponent>();

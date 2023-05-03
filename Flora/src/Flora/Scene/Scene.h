@@ -15,17 +15,18 @@ namespace Flora {
 		Entity GetEntityFromID(uint32_t id);
 		Entity CopyEntity(Entity entity);
 		Entity CopyEntity(Entity entity, Entity parent);
+		Entity GetPrimaryCameraEntity();
+		std::vector<Entity> GetEntitiesByTag(std::string tag);
+		bool EntityExists(uint32_t entityID);
 		void DestroyEntity(Entity entity);
 		void OnUpdateRuntime(Timestep ts);
 		void OnUpdateEditor(Timestep ts, EditorCamera& Camera);
 		void OnViewportResize(uint32_t width, uint32_t height);
-		Entity GetPrimaryCameraEntity();
 		void SetSceneFilepath(const std::string& filepath) { m_SceneFilepath = filepath; }
 		void SetViewportHovered(bool hovered) { m_ViewportHovered = hovered; }
 		void SetViewportFocused(bool hovered) { m_ViewportFocused = hovered; }
-		std::string GetSceneFilepath() { return m_SceneFilepath; }
-		bool EntityExists(uint32_t entityID);
 		void SetSceneName(std::string name) { m_SceneName = name; }
+		std::string GetSceneFilepath() { return m_SceneFilepath; }
 		std::string GetSceneName() { return m_SceneName; }
 	public:
 		template<typename T, typename LoopFunction>

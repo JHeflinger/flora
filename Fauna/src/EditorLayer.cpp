@@ -224,6 +224,8 @@ namespace Flora {
 		FL_CORE_INFO("Saved editor settings");
 
 		// Prompt save
+		if (m_EditorParams->SceneState == SceneState::PLAY)
+			OnSceneStop();
 		PromptSave(SavePromptType::FINAL);
 	}
 
