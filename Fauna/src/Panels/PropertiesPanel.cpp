@@ -42,7 +42,7 @@ namespace Flora {
 			if (open) {
 				auto& src = entity.GetComponent<T>();
 				ImGui::Dummy(ImVec2(0, 5.0f));
-				uifunction(component);
+				uifunction(entity, component);
 				ImGui::Dummy(ImVec2(0, 5.0f));
 				ImGui::TreePop();
 			}
@@ -209,7 +209,7 @@ namespace Flora {
 		style.ItemSpacing = ImVec2(8.0f, 4.0f); // Add spacing between items in the column
 		style.ColumnsMinSpacing = 20.0f;
 
-		DrawComponent<ParentComponent>("Parent", entity, [](auto& component) {
+		DrawComponent<ParentComponent>("Parent", entity, [](auto& entity, auto& component) {
 			ImGui::Columns(2);
 			ImGui::SetColumnWidth(0, 100.0f);
 			ImGui::Text("Inherit All");
@@ -238,7 +238,7 @@ namespace Flora {
 			}
 		}, false);
 
-		DrawComponent<TransformComponent>("Transform", entity, [](auto& component) {
+		DrawComponent<TransformComponent>("Transform", entity, [](auto& entity, auto& component) {
 			DrawVec3Control("Translation", component.Translation);
 			glm::vec3 rotation = glm::degrees(component.Rotation);
 			DrawVec3Control("Rotation", rotation);
@@ -246,7 +246,7 @@ namespace Flora {
 			DrawVec3Control("Scale", component.Scale);
 		}, false);
 
-		DrawComponent<CameraComponent>("Camera", entity, [](auto& component) {
+		DrawComponent<CameraComponent>("Camera", entity, [](auto& entity, auto& component) {
 			const char* projectionTypeStrings[] = { "Perspective", "Orthographic" };
 			const char* currentProjectionTypeString = projectionTypeStrings[(int)component.Camera.GetProjectionType()];
 			float linespacing = 2.0f;
@@ -268,9 +268,19 @@ namespace Flora {
 				}
 				ImGui::EndCombo();
 			}
-			
-			if (ImGui::Checkbox("##Primary", &component.Primary)) {
-				// TODO
+
+			Entity* primaryCameraEntity = entity.GetScene()->GetPrimaryCamera();
+			bool isPrimary = false;
+			if (primaryCameraEntity != nullptr) {
+				isPrimary = (uint32_t)(*primaryCameraEntity) == (uint32_t)entity;
+			}
+			if (ImGui::Checkbox("##Primary", &isPrimary)) {
+				if (isPrimary) {
+					entity.GetScene()->SetPrimaryCamera(&entity);
+				}
+				else {
+					entity.GetScene()->SetPrimaryCamera(nullptr);
+				}
 			}
 			ImGui::Columns(1);
 
@@ -324,7 +334,7 @@ namespace Flora {
 			}
 		});
 
-		DrawComponent<SpriteRendererComponent>("Sprite", entity, [](auto& component) {
+		DrawComponent<SpriteRendererComponent>("Sprite", entity, [](auto& entity, auto& component) {
 			ImGuiIO& io = ImGui::GetIO();
 			auto boldFont = io.Fonts->Fonts[0];
 			const char* spriteTypeStrings[] = { "Single Texture", "Subtexture", "Animation" };
@@ -521,7 +531,7 @@ namespace Flora {
 			ImGui::PopStyleVar();
 		});
 
-		DrawComponent<NativeScriptComponent>("Native Script", entity, [](auto& component) {
+		DrawComponent<NativeScriptComponent>("Native Script", entity, [](auto& entity, auto& component) {
 			float lineHeight = GImGui->Font->FontSize + GImGui->Style.FramePadding.y * 2.0f;
 			ImVec2 smallButtonSize = { lineHeight + 3.0f, lineHeight };
 			ImVec2 largeButtonSize = { 100, lineHeight };
@@ -556,7 +566,7 @@ namespace Flora {
 			ImGui::Columns(1);
 		});
 
-		DrawComponent<ScriptManagerComponent>("Script Manager", entity, [](auto& component) {
+		DrawComponent<ScriptManagerComponent>("Script Manager", entity, [](auto& entity, auto& component) {
 			float lineHeight = GImGui->Font->FontSize + GImGui->Style.FramePadding.y * 2.0f;
 			ImVec2 smallButtonSize = { lineHeight + 3.0f, lineHeight };
 			ImVec2 largeButtonSize = { 100, lineHeight };
