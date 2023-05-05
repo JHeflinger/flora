@@ -269,17 +269,16 @@ namespace Flora {
 				ImGui::EndCombo();
 			}
 
-			Entity* primaryCameraEntity = entity.GetScene()->GetPrimaryCamera();
+			int primaryCameraEntity = entity.GetScene()->GetPrimaryCamera();
 			bool isPrimary = false;
-			if (primaryCameraEntity != nullptr) {
-				isPrimary = (uint32_t)(*primaryCameraEntity) == (uint32_t)entity;
-			}
+			if (primaryCameraEntity >= 0)
+				isPrimary = (uint32_t)(primaryCameraEntity) == (uint32_t)entity;
 			if (ImGui::Checkbox("##Primary", &isPrimary)) {
 				if (isPrimary) {
-					entity.GetScene()->SetPrimaryCamera(&entity);
+					entity.GetScene()->SetPrimaryCamera((int)(uint32_t)entity);
 				}
 				else {
-					entity.GetScene()->SetPrimaryCamera(nullptr);
+					entity.GetScene()->SetPrimaryCamera(-1);
 				}
 			}
 			ImGui::Columns(1);

@@ -90,7 +90,6 @@ namespace Flora {
 			out << YAML::Key << "OrthographicNear" << YAML::Value << camera.GetOrthographicNearClip();
 			out << YAML::Key << "OrthographicFar" << YAML::Value << camera.GetOrthographicFarClip();
 			out << YAML::EndMap;
-			out << YAML::Key << "Primary" << YAML::Value << cameraComponent.Primary;
 			out << YAML::Key << "FixedAspectRatio" << YAML::Value << cameraComponent.FixedAspectRatio;
 			out << YAML::EndMap;
 		}
@@ -182,6 +181,7 @@ namespace Flora {
 		YAML::Emitter out;
 		out << YAML::BeginMap;
 		out << YAML::Key << "Scene" << YAML::Value << scene->GetSceneName();
+		out << YAML::Key << "Primary Camera" << YAML::Value << scene->GetPrimaryCamera();
 		out << YAML::Key << "Entities" << YAML::Value << YAML::BeginSeq;
 		scene->m_Registry.each([&](auto entityID) {
 			Entity entity = { entityID, scene.get() };
@@ -212,6 +212,8 @@ namespace Flora {
 		std::string sceneName = data["Scene"].as<std::string>();
 		scene->SetSceneName(sceneName);
 		FL_CORE_TRACE("Deserializing scene '{0}'", sceneName);
+
+		scene->SetPrimaryCamera(data["Primary Camera"].as<int>());
 
 		auto entities = data["Entities"];
 		if (entities) {
@@ -248,7 +250,6 @@ namespace Flora {
 					cc.Camera.SetOrthographicNearClip(cameraProps["OrthographicNear"].as<float>());
 					cc.Camera.SetOrthographicFarClip(cameraProps["OrthographicFar"].as<float>());
 
-					cc.Primary = cameraComponent["Primary"].as<bool>();
 					cc.FixedAspectRatio = cameraComponent["FixedAspectRatio"].as<bool>();
 				}
 

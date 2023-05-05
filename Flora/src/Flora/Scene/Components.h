@@ -79,12 +79,10 @@ namespace Flora {
 
 	struct CameraComponent {
 		SceneCamera Camera;
-		bool Primary = false; // TODO: think about moving to scene
 		bool FixedAspectRatio = false;
 		CameraComponent() = default;
 		CameraComponent(const CameraComponent& other) {
 			Camera = other.Camera;
-			Primary = other.Primary;
 			FixedAspectRatio = other.FixedAspectRatio;
 		}
 	};

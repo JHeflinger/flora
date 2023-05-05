@@ -172,18 +172,10 @@ namespace Flora {
 
 		// Render 2D Sprites
 		{
-			Camera* primaryCamera = nullptr;
-			glm::mat4 cameraTransform;
-			auto view = m_Registry.view<TransformComponent, CameraComponent>();
-			for (auto entity : view) {
-				auto [transform, camera] = view.get<TransformComponent, CameraComponent>(entity);
-				if (camera.Primary) {
-					primaryCamera = &camera.Camera;
-					cameraTransform = transform.GetTransform();
-					break;
-				}
-			}
-			if (primaryCamera) {
+			if (m_PrimaryCameraHandle >= 0) {
+				Entity cameraEntity = Entity{ (entt::entity)(uint32_t)m_PrimaryCameraHandle, this };
+				Camera* primaryCamera = &(cameraEntity.GetComponent<CameraComponent>().Camera);
+				glm::mat4 cameraTransform = cameraEntity.GetComponent<TransformComponent>().GetTransform();
 				Renderer2D::BeginScene(primaryCamera->GetProjection(), cameraTransform);
 				auto group = m_Registry.group<TransformComponent>(entt::get<SpriteRendererComponent>);
 				for (auto entity : group) {
@@ -207,10 +199,6 @@ namespace Flora {
 			if (!cameraComponent.FixedAspectRatio) 
 				cameraComponent.Camera.SetViewportSize(width, height);
 		}
-	}
-
-	Entity* Scene::GetPrimaryCamera() {
-		return m_PrimaryCamera;
 	}
 
 	Entity Scene::GetEntityFromID(uint32_t id) {

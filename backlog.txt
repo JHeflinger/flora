@@ -2,6 +2,8 @@ TODO:
 
 	- custom editor settings like color scheme, etc
 
+	- bug: there is some instability when dealing with entt handles between int to uint32_t conversions
+
 	- integrate SPIR-V shaders
 
 	- implement projects
@@ -66,11 +68,9 @@ IN PROGRESS:
 
 	- simplify popup menus (New __ options should be condensed into an expandable "New..")
 
-	- make a more efficient way to ensure only one camera is primary
-
-	- update getprimarycameraentity
-
 IMPLEMENTED TICKETS:
+
+	- make a more efficient way to ensure only one camera is primary
 
 	- bug: closing while scene is playing will prompt save based on scene play state not editor state
 
