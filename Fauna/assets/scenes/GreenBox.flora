@@ -1,5 +1,5 @@
 Scene: GreenBox
-Primary Camera: 7
+Primary Camera: 6
 Entities:
   - Entity: 7
     TagComponent:

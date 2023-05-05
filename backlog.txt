@@ -40,6 +40,8 @@ TODO:
 
 	- optimization for multithreading!
 
+	- simplify popup menus (New __ options should be condensed into an expandable "New..")
+
 	- optick profiler
 
 	- support distrubution (custom formats)
@@ -58,6 +60,8 @@ TODO:
 
 	- move editor dependent assets into a protected assets folder
 
+	- startup splash screen oooooo
+
 IN PROGRESS:
 
 	- 2d physics
@@ -66,9 +70,11 @@ IN PROGRESS:
 
 	- runtime performance in stats panel (cpu/gpu usage, temp, etc)
 
-	- simplify popup menus (New __ options should be condensed into an expandable "New..")
-
 IMPLEMENTED TICKETS:
+
+	- bug: application->close menu button doesnt work
+
+	- application full screen on startup
 
 	- make a more efficient way to ensure only one camera is primary
 

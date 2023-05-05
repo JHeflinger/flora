@@ -27,6 +27,7 @@ namespace Flora {
 			uint32_t Width, Height;
 			bool VSync;
 			EventCallbackFn EventCallback;
+			bool FullScreen = true;
 		};
 		WindowData m_Data;
 	};
