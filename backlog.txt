@@ -76,6 +76,8 @@ IN PROGRESS:
 
 IMPLEMENTED TICKETS:
 
+	- bug: reset button crashed the program
+
 	- 2d physics
 	
 	- 2d physics save in esrializer and update copy component 

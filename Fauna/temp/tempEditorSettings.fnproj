@@ -1,16 +1,16 @@
 Scene Filepath: assets\scenes\Physics Test.flora
-Selected Entity: 1048578
-Current Gizmo: 7
+Selected Entity: 4
+Current Gizmo: 896
 Editor Camera Type: Orthographic
 General Camera Settings:
-  Position: [-0.929573059, 1.62870312, 10]
-  Focal Point: [-0.929573059, 1.62870312, 0]
+  Position: [-5.98767519, 12.0590935, 10]
+  Focal Point: [-5.98767519, 12.0590935, 0]
 Perspective Camera Settings:
   Distance: 10
   Pitch: 0
   Yaw: 0
 Orthographic Camera Settings:
-  Size: 13.3539963
+  Size: 41.3539925
 Closed Panels:
   []
 Stat Panel Settings:

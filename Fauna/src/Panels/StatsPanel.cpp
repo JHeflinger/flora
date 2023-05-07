@@ -327,7 +327,7 @@ namespace Flora {
 		double memUsage = (memCounterVal.doubleValue / (1024.0 * 1024.0 * 1024.0)) / m_Ramsize;
 
 		// compensate for delay
-		if (!readyToCollect) {
+		if (!readyToCollect && m_DataMap[Stats::CPU_USAGE].size() > 0) {
 			cpuUsage = m_DataMap[Stats::CPU_USAGE].back();
 			gpuUsage = m_DataMap[Stats::GPU_USAGE].back();
 			memUsage = m_DataMap[Stats::GPU_USAGE].back();
