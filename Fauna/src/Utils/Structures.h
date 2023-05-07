@@ -24,7 +24,11 @@ namespace Flora {
 		FRAMETIME = 4,
 		FPS = 5,
 		LOWEST_FPS = 6,
-		HIGHEST_FPS = 7
+		HIGHEST_FPS = 7,
+		CPU_USAGE = 8,
+		GPU_USAGE = 9,
+		MEM_USAGE = 10,
+		DISK_USAGE = 11
 	};
 
 	struct Clipboard {

@@ -62,15 +62,19 @@ TODO:
 
 	- startup splash screen oooooo
 
+	- bug: gpu monitoring doesn't really work depending on graphics card
+
+	- add hardware monitoring error handling
+
 IN PROGRESS:
 
 	- 2d physics
 
 	- sprites should have the option to linear filter or not
 
-	- runtime performance in stats panel (cpu/gpu usage, temp, etc)
-
 IMPLEMENTED TICKETS:
+
+	- runtime performance in stats panel (cpu/gpu usage, temp, etc)
 
 	- bug: application->close menu button doesnt work
 

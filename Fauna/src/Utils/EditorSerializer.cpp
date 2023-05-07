@@ -55,6 +55,10 @@ namespace Flora {
 		out << YAML::Key << "FPS" << YAML::Value << params->ShowStatMap[Stats::FPS];
 		out << YAML::Key << "LOWEST_FPS" << YAML::Value << params->ShowStatMap[Stats::LOWEST_FPS];
 		out << YAML::Key << "HIGHEST_FPS" << YAML::Value << params->ShowStatMap[Stats::HIGHEST_FPS];
+		out << YAML::Key << "CPU_USAGE" << YAML::Value << params->ShowStatMap[Stats::CPU_USAGE];
+		out << YAML::Key << "GPU_USAGE" << YAML::Value << params->ShowStatMap[Stats::GPU_USAGE];
+		out << YAML::Key << "MEM_USAGE" << YAML::Value << params->ShowStatMap[Stats::MEM_USAGE];
+		out << YAML::Key << "DISK_USAGE" << YAML::Value << params->ShowStatMap[Stats::DISK_USAGE];
 		out << YAML::EndMap;
 		out << YAML::EndMap;
 
@@ -118,6 +122,10 @@ namespace Flora {
 		params->ShowStatMap[Stats::FPS] = data["Stat Panel Settings"]["Open Graphs"]["FPS"].as<bool>();
 		params->ShowStatMap[Stats::LOWEST_FPS] = data["Stat Panel Settings"]["Open Graphs"]["LOWEST_FPS"].as<bool>();
 		params->ShowStatMap[Stats::HIGHEST_FPS] = data["Stat Panel Settings"]["Open Graphs"]["HIGHEST_FPS"].as<bool>();
+		params->ShowStatMap[Stats::CPU_USAGE] = data["Stat Panel Settings"]["Open Graphs"]["CPU_USAGE"].as<bool>();
+		params->ShowStatMap[Stats::GPU_USAGE] = data["Stat Panel Settings"]["Open Graphs"]["GPU_USAGE"].as<bool>();
+		params->ShowStatMap[Stats::MEM_USAGE] = data["Stat Panel Settings"]["Open Graphs"]["MEM_USAGE"].as<bool>();
+		params->ShowStatMap[Stats::DISK_USAGE] = data["Stat Panel Settings"]["Open Graphs"]["DISK_USAGE"].as<bool>();
 
 		return success;
 	}
