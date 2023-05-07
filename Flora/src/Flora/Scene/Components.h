@@ -147,4 +147,35 @@ namespace Flora {
 			InheritTransform = other.InheritTransform;
 		}
 	};
+
+	struct RigidBody2DComponent {
+		enum class BodyType { STATIC = 0, KINEMATIC = 1, DYNAMIC = 2 };
+		BodyType Type = BodyType::STATIC;
+		bool FixedRotation = false;
+		void* RuntimeBody = nullptr;
+		RigidBody2DComponent() = default;
+		RigidBody2DComponent(const RigidBody2DComponent& other) {
+			Type = other.Type;
+			FixedRotation = other.FixedRotation;
+		}
+	};
+
+	struct BoxCollider2DComponent {
+		glm::vec2 Offset = { 0.0f, 0.0f };
+		glm::vec2 Size = { 0.5f, 0.5f };
+		float Density = 1.0f;
+		float Friction = 0.5;
+		float Restitution = 0.0f;
+		float RestitutionThreshold = 0.5f;
+		void* RuntimeFixture = nullptr;
+		BoxCollider2DComponent() = default;
+		BoxCollider2DComponent(const BoxCollider2DComponent& other) {
+			Offset = other.Offset;
+			Size = other.Size;
+			Density = other.Density;
+			Friction = other.Friction;
+			Restitution = other.Restitution;
+			RestitutionThreshold = other.RestitutionThreshold;
+		}
+	};
 }

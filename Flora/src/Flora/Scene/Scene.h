@@ -3,6 +3,8 @@
 #include "Flora/Core/Timestep.h"
 #include "Flora/Renderer/EditorCamera.h"
 
+class b2World;
+
 namespace Flora {
 	class Entity;
 
@@ -19,6 +21,8 @@ namespace Flora {
 		std::vector<Entity> GetEntitiesByTag(std::string tag);
 		bool EntityExists(uint32_t entityID);
 		void DestroyEntity(Entity entity);
+		void OnRuntimeStart();
+		void OnRuntimeStop();
 		void OnUpdateRuntime(Timestep ts);
 		void OnUpdateEditor(Timestep ts, EditorCamera& Camera);
 		void OnViewportResize(uint32_t width, uint32_t height);
@@ -40,6 +44,8 @@ namespace Flora {
 		template<typename T>
 		void OnComponentAdded(Entity entity, T& component);
 		void UpdateScripts(Timestep ts);
+		void UpdatePhysics(Timestep ts);
+		void RenderRuntime();
 	private:
 		entt::registry m_Registry;
 		uint32_t m_ViewportWidth, m_ViewportHeight = 0;
@@ -48,6 +54,7 @@ namespace Flora {
 		std::string m_SceneFilepath = "NULL";
 		std::string m_SceneName = "Untitled";
 		int m_PrimaryCameraHandle = -1;
+		b2World* m_PhysicsWorld = nullptr;
 		friend class Entity;
 		friend class SceneHierarchyPanel;
 		friend class Serializer;

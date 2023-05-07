@@ -210,12 +210,14 @@ namespace Flora {
 	void EditorLayer::OnScenePlay() {
 		FileUtils::SaveTempScene(m_EditorParams);
 		m_EditorParams->SceneState = SceneState::PLAY;
+		m_EditorParams->ActiveScene->OnRuntimeStart();
 
 		// warnings
 		if (!m_EditorParams->ActiveScene->GetPrimaryCamera()) FL_WARN("No primary camera selected");
 	}
 
 	void EditorLayer::OnSceneStop() {
+		m_EditorParams->ActiveScene->OnRuntimeStop();
 		FileUtils::OpenTempScene(m_EditorParams);
 		m_EditorParams->SceneState = SceneState::EDIT;
 	}

@@ -70,9 +70,17 @@ TODO:
 
 IN PROGRESS:
 
-	- 2d physics
+	- expost velocityiterations and positioniterations and other physics options from Scene::UpdatePhysics() to the editor
+
+	- make propertiespanel gui look neater for box collider
 
 IMPLEMENTED TICKETS:
+
+	- 2d physics
+	
+	- 2d physics save in esrializer and update copy component 
+
+	- bug: content browser wigs out sometimes
 
 	- runtime performance in stats panel (cpu/gpu usage, temp, etc)
 

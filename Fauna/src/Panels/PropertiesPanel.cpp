@@ -201,6 +201,8 @@ namespace Flora {
 			DrawAddComponentItem<SpriteRendererComponent>("Sprite Renderer", m_EditorContext->SelectedEntity);
 			DrawAddComponentItem<NativeScriptComponent>("Native Script", m_EditorContext->SelectedEntity);
 			DrawAddComponentItem<ScriptManagerComponent>("Script Manager", m_EditorContext->SelectedEntity);
+			DrawAddComponentItem<RigidBody2DComponent>("Rigid Body 2D", m_EditorContext->SelectedEntity);
+			DrawAddComponentItem<BoxCollider2DComponent>("Box Collider 2D", m_EditorContext->SelectedEntity);
 			ImGui::EndPopup();
 		}
 		ImGui::PopItemWidth();
@@ -622,6 +624,120 @@ namespace Flora {
 			ImGui::Dummy({ 0, 10 });
 			if (ImGui::Button("Add", { 60, lineHeight }))
 				component.NativeScripts.emplace_back(NativeScriptComponent());
+		});
+
+		DrawComponent<RigidBody2DComponent>("Rigid Body 2D", entity, [](auto& entity, auto& component) {
+			const char* bodyTypeString[] = { "Static", "Kinematic", "Dynamic"};
+			const char* currentBodyTypeString = bodyTypeString[(int)component.Type];
+			float linespacing = 2.0f;
+			ImGui::Columns(2);
+			ImGui::SetColumnWidth(0, 150.0f);
+			ImGui::Text("Body Type");
+			ImGui::Dummy(ImVec2(0, linespacing));
+			ImGui::Text("Fixed Rotation");
+			ImGui::NextColumn();
+			if (ImGui::BeginCombo("##bodytype", currentBodyTypeString)) {
+				for (int i = 0; i < 3; i++) {
+					bool isSelected = currentBodyTypeString == bodyTypeString[i];
+					if (ImGui::Selectable(bodyTypeString[i], isSelected)) {
+						currentBodyTypeString = bodyTypeString[i];
+						component.Type = (RigidBody2DComponent::BodyType)i;
+					}
+					if (isSelected)
+						ImGui::SetItemDefaultFocus();
+				}
+				ImGui::EndCombo();
+			}
+
+			ImGui::Checkbox("##fixedrotation", &component.FixedRotation);
+			ImGui::Columns(1);
+		});
+
+		DrawComponent<BoxCollider2DComponent>("Box Collider 2D", entity, [](auto& entity, auto& component) {
+			ImGuiIO& io = ImGui::GetIO();
+			ImGuiStyle& style = ImGui::GetStyle();
+			auto boldFont = io.Fonts->Fonts[0];
+			float lineHeight = GImGui->Font->FontSize + GImGui->Style.FramePadding.y * 2.0f;
+			ImVec2 smallButtonSize = { lineHeight + 3.0f, lineHeight };
+			float linespacing = 2.0f;
+			ImGui::Columns(2);
+			ImGui::SetColumnWidth(0, 150.0f);
+			ImGui::Text("Offset");
+			ImGui::Dummy(ImVec2(0, linespacing));
+			ImGui::Text("Size");
+			ImGui::Dummy(ImVec2(0, linespacing));
+			ImGui::Text("Density");
+			ImGui::Dummy(ImVec2(0, linespacing));
+			ImGui::Text("Friction");
+			ImGui::Dummy(ImVec2(0, linespacing));
+			ImGui::Text("Restitution");
+			ImGui::Dummy(ImVec2(0, linespacing));
+			ImGui::Text("Rest. Threshold");
+			ImGui::NextColumn();
+
+			ImGui::PushItemWidth(50);
+			style.ItemSpacing = ImVec2(0, 0); // remove spacing
+
+			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.8f, 0.2f, 0.3f, 1.0f });
+			ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.9f, 0.2f, 0.2f, 1.0f });
+			ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.7f, 0.1f, 0.1f, 1.0f });
+			ImGui::PushFont(boldFont);
+			if (ImGui::Button("X", smallButtonSize))
+				component.Offset.x = 0;
+			ImGui::PopStyleColor(3);
+			ImGui::PopFont();
+
+			ImGui::SameLine();
+			ImGui::DragFloat("##Xoffset", &component.Offset.x, 0.1f, 1, 10000);
+			ImGui::SameLine();
+
+			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.2f, 0.3f, 0.8f, 1.0f });
+			ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.2f, 0.2f, 0.9f, 1.0f });
+			ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.1f, 0.1f, 0.7f, 1.0f });
+			ImGui::PushFont(boldFont);
+			if (ImGui::Button("Y", smallButtonSize))
+				component.Offset.y = 0;
+			ImGui::PopStyleColor(3);
+			ImGui::PopFont();
+
+			ImGui::SameLine();
+			ImGui::DragFloat("##Yoffset", &component.Offset.y, 0.1f, 1, 10000);
+			ImGui::Dummy(ImVec2(0, linespacing));
+
+			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.8f, 0.2f, 0.3f, 1.0f });
+			ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.9f, 0.2f, 0.2f, 1.0f });
+			ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.7f, 0.1f, 0.1f, 1.0f });
+			ImGui::PushFont(boldFont);
+			if (ImGui::Button("W", smallButtonSize))
+				component.Size.x = 0;
+			ImGui::PopStyleColor(3);
+			ImGui::PopFont();
+
+			ImGui::SameLine();
+			ImGui::DragFloat("##Woffset", &component.Size.x, 0.1f, 1, 10000);
+			ImGui::SameLine();
+
+			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.2f, 0.3f, 0.8f, 1.0f });
+			ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.2f, 0.2f, 0.9f, 1.0f });
+			ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.1f, 0.1f, 0.7f, 1.0f });
+			ImGui::PushFont(boldFont);
+			if (ImGui::Button("H", smallButtonSize))
+				component.Size.y = 0;
+			ImGui::PopStyleColor(3);
+			ImGui::PopFont();
+
+			ImGui::SameLine();
+			ImGui::DragFloat("##Hoffset", &component.Size.y, 0.1f, 1, 10000);
+			ImGui::Dummy(ImVec2(0, linespacing));
+
+			ImGui::PopItemWidth();
+			style.ItemSpacing = ImVec2(8.0f, 4.0f); // Add back spacing
+
+			ImGui::DragFloat("##Density", &component.Density, 0.1, 0.0f, 10000.0f, "%.2f");
+			ImGui::DragFloat("##Friction", &component.Friction, 0.1, 0.0f, 10000.0f, "%.2f");
+			ImGui::DragFloat("##Restitution", &component.Restitution, 0.1, 0.0f, 10000.0f, "%.2f");
+			ImGui::DragFloat("##RestitutionThreshold", &component.RestitutionThreshold, 0.1, 0.0f, 10000.0f, "%.2f");
+
 		});
 	}
 }
