@@ -66,11 +66,11 @@ TODO:
 
 	- add hardware monitoring error handling
 
+	- sprites should have the option to linear filter or not
+
 IN PROGRESS:
 
 	- 2d physics
-
-	- sprites should have the option to linear filter or not
 
 IMPLEMENTED TICKETS:
 
