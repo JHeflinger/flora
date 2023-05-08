@@ -6,6 +6,7 @@
 #include "Panels/StatsPanel.h"
 #include "Panels/PropertiesPanel.h"
 #include "Panels/ConsolePanel.h"
+#include "Panels/PhysicsPanel.h"
 #include "Flora/Renderer/EditorCamera.h"
 #include "Utils/Structures.h"
 #include <map>

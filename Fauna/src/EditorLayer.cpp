@@ -21,6 +21,7 @@ namespace Flora {
 		m_Panels["Content Browser"] = CreateScope<ContentBrowserPanel>();
 		m_Panels["Viewport"] = CreateScope<ViewportPanel>();
 		m_Panels["Console"] = CreateScope<ConsolePanel>();
+		m_Panels["Physics"] = CreateScope<PhysicsPanel>();
 	}
 
 	void EditorLayer::OnAttatch() {

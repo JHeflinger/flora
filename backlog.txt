@@ -16,8 +16,6 @@ TODO:
 
 	- reflection system (serialize values and show them in properties panel!)
 
-	- box2D
-
 	- particle system
 
 	- gravity
