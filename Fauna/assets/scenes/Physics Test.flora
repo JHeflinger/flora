@@ -9,9 +9,9 @@ Entities:
       Rotation: [0, 0, 0]
       Scale: [1, 1, 1]
     SpriteRendererComponent:
-      Color: [0.37837851, 1, 0, 1]
-      Path: "NULL"
-      Filename: None Selected
+      Color: [1, 1, 1, 1]
+      Path: assets\game\textures\block_pig.png
+      Filename: block_pig.png
       Type: 0
       TilingFactor: 1
       Rows: 1
@@ -35,7 +35,7 @@ Entities:
       Size: [0.5, 0.5]
       Density: 1
       Friction: 0.5
-      Restitution: 0
+      Restitution: 0.300000012
       RestitutionThreshold: 0.5
   - Entity: 8
     TagComponent:
@@ -45,9 +45,9 @@ Entities:
       Rotation: [0, 0, 0]
       Scale: [1, 1, 1]
     SpriteRendererComponent:
-      Color: [0.37837851, 1, 0, 1]
-      Path: "NULL"
-      Filename: None Selected
+      Color: [1, 1, 1, 1]
+      Path: assets\game\textures\block_pig.png
+      Filename: block_pig.png
       Type: 0
       TilingFactor: 1
       Rows: 1
@@ -71,43 +71,7 @@ Entities:
       Size: [0.5, 0.5]
       Density: 1
       Friction: 0.5
-      Restitution: 0
-      RestitutionThreshold: 0.5
-  - Entity: 7
-    TagComponent:
-      Tag: Box
-    TransformComponent:
-      Translation: [1.65210176, -0.0126158278, 0]
-      Rotation: [0, 0, 0]
-      Scale: [1, 1, 1]
-    SpriteRendererComponent:
-      Color: [0.37837851, 1, 0, 1]
-      Path: "NULL"
-      Filename: None Selected
-      Type: 0
-      TilingFactor: 1
-      Rows: 1
-      Columns: 1
-      RowCoordinate: 1
-      ColumnCoordinate: 1
-      SubtextureWidth: 1
-      SubtextureHeight: 1
-      Frames: 1
-      StartFrame: 1
-      EndFrame: 1
-      CurrentFrame: 1
-      FPS: 1
-    ChildComponent:
-      []
-    RigidBody2DComponent:
-      Type: 2
-      FixedRotation: false
-    BoxCollider2DComponent:
-      Offset: [0, 0]
-      Size: [0.5, 0.5]
-      Density: 1
-      Friction: 0.5
-      Restitution: 0
+      Restitution: 0.300000012
       RestitutionThreshold: 0.5
   - Entity: 6
     TagComponent:
@@ -117,9 +81,9 @@ Entities:
       Rotation: [0, 0, 0]
       Scale: [1, 1, 1]
     SpriteRendererComponent:
-      Color: [0.37837851, 1, 0, 1]
-      Path: "NULL"
-      Filename: None Selected
+      Color: [1, 1, 1, 1]
+      Path: assets\game\textures\test.png
+      Filename: test.png
       Type: 0
       TilingFactor: 1
       Rows: 1
@@ -143,7 +107,7 @@ Entities:
       Size: [0.5, 0.5]
       Density: 1
       Friction: 0.5
-      Restitution: 0
+      Restitution: 0.300000012
       RestitutionThreshold: 0.5
   - Entity: 5
     TagComponent:
@@ -153,9 +117,9 @@ Entities:
       Rotation: [0, 0, 0]
       Scale: [1, 1, 1]
     SpriteRendererComponent:
-      Color: [0.37837851, 1, 0, 1]
-      Path: "NULL"
-      Filename: None Selected
+      Color: [1, 1, 1, 1]
+      Path: assets\game\textures\block_pig.png
+      Filename: block_pig.png
       Type: 0
       TilingFactor: 1
       Rows: 1
@@ -177,7 +141,7 @@ Entities:
       Size: [0.5, 0.5]
       Density: 1
       Friction: 0.5
-      Restitution: 0
+      Restitution: 0.300000012
       RestitutionThreshold: 0.5
   - Entity: 4
     TagComponent:
@@ -221,9 +185,9 @@ Entities:
       Rotation: [0, 0, 0]
       Scale: [1, 1, 1]
     SpriteRendererComponent:
-      Color: [0.37837851, 1, 0, 1]
-      Path: "NULL"
-      Filename: None Selected
+      Color: [1, 1, 1, 1]
+      Path: assets\game\textures\block_pig.png
+      Filename: block_pig.png
       Type: 0
       TilingFactor: 1
       Rows: 1
@@ -247,7 +211,7 @@ Entities:
       Size: [0.5, 0.5]
       Density: 1
       Friction: 0.5
-      Restitution: 0
+      Restitution: 0.300000012
       RestitutionThreshold: 0.5
   - Entity: 1048578
     TagComponent:
@@ -257,9 +221,9 @@ Entities:
       Rotation: [0, 0, 0]
       Scale: [1, 1, 1]
     SpriteRendererComponent:
-      Color: [0.37837851, 1, 0, 1]
-      Path: "NULL"
-      Filename: None Selected
+      Color: [1, 1, 1, 1]
+      Path: assets\game\textures\piggy.png
+      Filename: piggy.png
       Type: 0
       TilingFactor: 1
       Rows: 1
@@ -283,7 +247,7 @@ Entities:
       Size: [0.5, 0.5]
       Density: 8.30000019
       Friction: 0.100000001
-      Restitution: 0.100000001
+      Restitution: 0.400000006
       RestitutionThreshold: 0.5
   - Entity: 1
     TagComponent:

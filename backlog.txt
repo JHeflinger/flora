@@ -70,11 +70,13 @@ TODO:
 
 IN PROGRESS:
 
-	- expost velocityiterations and positioniterations and other physics options from Scene::UpdatePhysics() to the editor
+	- expost velocityiterations and positioniterations and other physics options from Scene::UpdatePhysics() to the editor, and gravity!
 
-	- make propertiespanel gui look neater for box collider
+	- bug: using same texture multiple times can fuck up
 
 IMPLEMENTED TICKETS:
+
+	- make propertiespanel gui look neater for box collider
 
 	- bug: reset button crashed the program
 

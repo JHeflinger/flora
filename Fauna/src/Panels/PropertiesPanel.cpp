@@ -733,11 +733,12 @@ namespace Flora {
 			ImGui::PopItemWidth();
 			style.ItemSpacing = ImVec2(8.0f, 4.0f); // Add back spacing
 
+			ImGui::PushItemWidth(154);
 			ImGui::DragFloat("##Density", &component.Density, 0.1, 0.0f, 10000.0f, "%.2f");
 			ImGui::DragFloat("##Friction", &component.Friction, 0.1, 0.0f, 10000.0f, "%.2f");
 			ImGui::DragFloat("##Restitution", &component.Restitution, 0.1, 0.0f, 10000.0f, "%.2f");
 			ImGui::DragFloat("##RestitutionThreshold", &component.RestitutionThreshold, 0.1, 0.0f, 10000.0f, "%.2f");
-
+			ImGui::PopItemWidth();
 		});
 	}
 }
