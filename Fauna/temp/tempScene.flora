@@ -77,7 +77,7 @@ Entities:
     TagComponent:
       Tag: Box
     TransformComponent:
-      Translation: [0.488279879, 0.010204792, 0]
+      Translation: [0.488279879, 0.0102047902, 0]
       Rotation: [0, 0, 0]
       Scale: [1, 1, 1]
     SpriteRendererComponent:

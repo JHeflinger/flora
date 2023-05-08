@@ -53,7 +53,7 @@ namespace Flora {
 	}
 
 	float EditorCamera::ZoomSpeed() const {
-		float distance = m_Distance * 0.2f;
+		float distance = m_Distance * 0.5f;
 		distance = std::max(distance, 0.0f);
 		float speed = distance * distance;
 		speed = std::min(speed, 100.0f); // max speed = 100
@@ -111,6 +111,10 @@ namespace Flora {
 
 	void EditorCamera::MousePan(const glm::vec2& delta) {
 		auto [xSpeed, ySpeed] = PanSpeed();
+		if (m_ProjectionType == ProjectionType::Orthographic) {
+			xSpeed = 1;
+			ySpeed = 1;
+		}
 		m_FocalPoint += -GetRightDirection() * delta.x * xSpeed * m_Distance;
 		m_FocalPoint += GetUpDirection() * delta.y * ySpeed * m_Distance;
 	}
