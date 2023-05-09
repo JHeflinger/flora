@@ -19,9 +19,9 @@ namespace Flora {
 		static int velin = 0;
 		static int posin = 0;
 		static float gravity = 9.8f;
-		ImGui::DragInt("##velit", &velin, 0.1, 0, 999999, "%.2f");
-		ImGui::DragInt("##posin", &posin, 0.1, 0, 999999, "%.2f");
-		ImGui::DragFloat("##gravity", &gravity, 0.1, 0, 999999, "%.2f");
+		ImGui::DragInt("##velit", m_EditorContext->ActiveScene->GetVelocityIterationRef(), 1, 0, 999999);
+		ImGui::DragInt("##posin", m_EditorContext->ActiveScene->GetPositionIterationRef(), 1, 0, 999999);
+		ImGui::DragFloat("##gravity", m_EditorContext->ActiveScene->GetGravityRef(), 0.1, 0, 999999, "%.2f");
 		ImGui::PopItemWidth();
 		ImGui::Columns(1);
 		ImGui::End();

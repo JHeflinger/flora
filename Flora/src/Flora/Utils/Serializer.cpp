@@ -222,6 +222,12 @@ namespace Flora {
 		out << YAML::BeginMap;
 		out << YAML::Key << "Scene" << YAML::Value << scene->GetSceneName();
 		out << YAML::Key << "Primary Camera" << YAML::Value << scene->GetPrimaryCamera();
+		out << YAML::Key << "Physics";
+		out << YAML::BeginMap;
+		out << YAML::Key << "Gravity" << YAML::Value << scene->GetGravity();
+		out << YAML::Key << "VelocityIterations" << YAML::Value << scene->GetVelocityIterations();
+		out << YAML::Key << "PositionIterations" << YAML::Value << scene->GetPositionIterations();
+		out << YAML::EndMap;
 		out << YAML::Key << "Entities" << YAML::Value << YAML::BeginSeq;
 		scene->m_Registry.each([&](auto entityID) {
 			Entity entity = { entityID, scene.get() };
@@ -254,6 +260,10 @@ namespace Flora {
 		FL_CORE_TRACE("Deserializing scene '{0}'", sceneName);
 
 		scene->SetPrimaryCamera(data["Primary Camera"].as<int>());
+
+		scene->SetGravity(data["Physics"]["Gravity"].as<float>());
+		scene->SetVelocityIterations(data["Physics"]["VelocityIterations"].as<int32_t>());
+		scene->SetPositionIterations(data["Physics"]["PositionIterations"].as<int32_t>());
 
 		auto entities = data["Entities"];
 		if (entities) {

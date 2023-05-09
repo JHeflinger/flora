@@ -38,8 +38,18 @@ namespace Flora {
 		void ForAllComponents(LoopFunction loopFunction) {
 			m_Registry.view<T>().each([=](auto entity, auto& component) {
 				loopFunction(entity, component);
-			});
+				});
 		}
+	public:
+		float GetGravity() { return m_Gravity; }
+		int32_t GetVelocityIterations() { return m_PhysicsVelocityIterations; }
+		int32_t GetPositionIterations() { return m_PhysicsPositionIterations; }
+		void SetGravity(float gravity) { m_Gravity = gravity; }
+		void SetVelocityIterations(int32_t iterations) { m_PhysicsVelocityIterations = iterations; }
+		void SetPositionIterations(int32_t iterations) { m_PhysicsPositionIterations = iterations; }
+		float* GetGravityRef() { return &m_Gravity; }
+		int32_t* GetVelocityIterationRef() { return &m_PhysicsVelocityIterations; }
+		int32_t* GetPositionIterationRef() { return &m_PhysicsPositionIterations; }
 	private:
 		template<typename T>
 		void OnComponentAdded(Entity entity, T& component);
@@ -55,6 +65,9 @@ namespace Flora {
 		std::string m_SceneName = "Untitled";
 		int m_PrimaryCameraHandle = -1;
 		b2World* m_PhysicsWorld = nullptr;
+		float m_Gravity = 9.8f;
+		int32_t m_PhysicsVelocityIterations = 6;
+		int32_t m_PhysicsPositionIterations = 2;
 		friend class Entity;
 		friend class SceneHierarchyPanel;
 		friend class Serializer;

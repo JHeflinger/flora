@@ -1,5 +1,9 @@
 Scene: Physics
 Primary Camera: 0
+Physics:
+  Gravity: 9.80000019
+  VelocityIterations: 6
+  PositionIterations: 2
 Entities:
   - Entity: 9
     TagComponent:

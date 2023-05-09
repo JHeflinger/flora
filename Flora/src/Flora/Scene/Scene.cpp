@@ -36,7 +36,7 @@ namespace Flora {
 	}
 
 	void Scene::OnRuntimeStart() {
-		m_PhysicsWorld = new b2World({0.0f, -9.8f});
+		m_PhysicsWorld = new b2World({0.0f, -m_Gravity });
 		auto view = m_Registry.view<RigidBody2DComponent>();
 		for (auto e : view) {
 			Entity entity = { e, this };
@@ -212,9 +212,7 @@ namespace Flora {
 	}
 
 	void Scene::UpdatePhysics(Timestep ts) {
-		const int32_t velocityIterations = 6;
-		const int32_t positionIterations = 2;
-		m_PhysicsWorld->Step(ts, velocityIterations, positionIterations);
+		m_PhysicsWorld->Step(ts, m_PhysicsVelocityIterations, m_PhysicsPositionIterations);
 		auto view = m_Registry.view<RigidBody2DComponent>();
 		for (auto e : view) {
 			Entity entity = { e, this };
