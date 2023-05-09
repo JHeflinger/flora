@@ -679,7 +679,7 @@ namespace Flora {
 
 	void EditorLayer::DevEvent() {
 		FL_CORE_INFO("DEV EVENT FIRED");
-		FL_CORE_INFO(GetSpecificPanel<ContentBrowserPanel>("Content Browser")->GetSelectedFile());
-		m_EditorParams->ActiveScene->CopyEntity(m_EditorParams->SelectedEntity);
+		int entityHandle = (int)(uint32_t)m_EditorParams->SelectedEntity;
+		FL_CORE_INFO("Selected Entity ID: {0}", entityHandle);
 	}
 }

@@ -1,7 +1,7 @@
 Scene: Physics
 Primary Camera: 0
 Physics:
-  Gravity: 9.80000019
+  Gravity: 17.5
   VelocityIterations: 6
   PositionIterations: 2
 Entities:
@@ -81,13 +81,13 @@ Entities:
     TagComponent:
       Tag: Box
     TransformComponent:
-      Translation: [0.488279879, 0.0102047902, 0]
+      Translation: [0.488279879, 0.010204792, 0]
       Rotation: [0, 0, 0]
       Scale: [1, 1, 1]
     SpriteRendererComponent:
       Color: [1, 1, 1, 1]
-      Path: assets\game\textures\test.png
-      Filename: test.png
+      Path: assets\game\textures\block_pig.png
+      Filename: block_pig.png
       Type: 0
       TilingFactor: 1
       Rows: 1
@@ -151,13 +151,13 @@ Entities:
     TagComponent:
       Tag: Floor
     TransformComponent:
-      Translation: [-4.79301071, 1.66882646, 0]
+      Translation: [-4.79301071, 1.74065053, 0]
       Rotation: [0, 0, -0.927190661]
       Scale: [53.2633057, 0.895077646, 1]
     SpriteRendererComponent:
-      Color: [0.467181444, 0.357874602, 0.0793667212, 1]
-      Path: "NULL"
-      Filename: None Selected
+      Color: [1, 1, 1, 1]
+      Path: assets\game\textures\block_pig.png
+      Filename: block_pig.png
       Type: 0
       TilingFactor: 1
       Rows: 1
@@ -249,7 +249,7 @@ Entities:
     BoxCollider2DComponent:
       Offset: [0, 0]
       Size: [0.5, 0.5]
-      Density: 8.30000019
+      Density: 42.5999985
       Friction: 0.100000001
       Restitution: 0.400000006
       RestitutionThreshold: 0.5
@@ -261,9 +261,9 @@ Entities:
       Rotation: [0, 0, 0]
       Scale: [10.589263, 0.895077765, 1]
     SpriteRendererComponent:
-      Color: [0.467181444, 0.357874602, 0.0793667212, 1]
-      Path: "NULL"
-      Filename: None Selected
+      Color: [1, 1, 1, 1]
+      Path: assets\game\textures\block_pig.png
+      Filename: block_pig.png
       Type: 0
       TilingFactor: 1
       Rows: 1
