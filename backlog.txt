@@ -68,11 +68,11 @@ TODO:
 
 IN PROGRESS:
 
-	- expost velocityiterations and positioniterations and other physics options from Scene::UpdatePhysics() to the editor, and gravity!
-
 	- bug: using same texture multiple times can fuck up
 
 IMPLEMENTED TICKETS:
+
+	- add physics panel
 
 	- make propertiespanel gui look neater for box collider
 
