@@ -1,0 +1,306 @@
+Scene: Physics
+Primary Camera: 0
+Physics:
+  Gravity: 17.5
+  VelocityIterations: 6
+  PositionIterations: 2
+Entities:
+  - Entity: 9
+    TagComponent:
+      Tag: Box
+    TransformComponent:
+      Translation: [-0.0593997389, -1.1992588, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    SpriteRendererComponent:
+      Color: [1, 1, 1, 1]
+      Path: assets\game\textures\block_pig.png
+      Filename: block_pig.png
+      Type: 0
+      TilingFactor: 1
+      Rows: 1
+      Columns: 1
+      RowCoordinate: 1
+      ColumnCoordinate: 1
+      SubtextureWidth: 1
+      SubtextureHeight: 1
+      Frames: 1
+      StartFrame: 1
+      EndFrame: 1
+      CurrentFrame: 1
+      FPS: 1
+    ChildComponent:
+      []
+    RigidBody2DComponent:
+      Type: 2
+      FixedRotation: false
+    BoxCollider2DComponent:
+      Offset: [0, 0]
+      Size: [0.5, 0.5]
+      Density: 1
+      Friction: 0.5
+      Restitution: 0.300000012
+      RestitutionThreshold: 0.5
+  - Entity: 8
+    TagComponent:
+      Tag: Box
+    TransformComponent:
+      Translation: [2.1541431, -1.22207832, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    SpriteRendererComponent:
+      Color: [1, 1, 1, 1]
+      Path: assets\game\textures\block_pig.png
+      Filename: block_pig.png
+      Type: 0
+      TilingFactor: 1
+      Rows: 1
+      Columns: 1
+      RowCoordinate: 1
+      ColumnCoordinate: 1
+      SubtextureWidth: 1
+      SubtextureHeight: 1
+      Frames: 1
+      StartFrame: 1
+      EndFrame: 1
+      CurrentFrame: 1
+      FPS: 1
+    ChildComponent:
+      []
+    RigidBody2DComponent:
+      Type: 2
+      FixedRotation: false
+    BoxCollider2DComponent:
+      Offset: [0, 0]
+      Size: [0.5, 0.5]
+      Density: 1
+      Friction: 0.5
+      Restitution: 0.300000012
+      RestitutionThreshold: 0.5
+  - Entity: 6
+    TagComponent:
+      Tag: Box
+    TransformComponent:
+      Translation: [0.488279879, 0.010204792, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    SpriteRendererComponent:
+      Color: [1, 1, 1, 1]
+      Path: assets\game\textures\block_pig.png
+      Filename: block_pig.png
+      Type: 0
+      TilingFactor: 1
+      Rows: 1
+      Columns: 1
+      RowCoordinate: 1
+      ColumnCoordinate: 1
+      SubtextureWidth: 1
+      SubtextureHeight: 1
+      Frames: 1
+      StartFrame: 1
+      EndFrame: 1
+      CurrentFrame: 1
+      FPS: 1
+    ChildComponent:
+      []
+    RigidBody2DComponent:
+      Type: 2
+      FixedRotation: false
+    BoxCollider2DComponent:
+      Offset: [0, 0]
+      Size: [0.5, 0.5]
+      Density: 1
+      Friction: 0.5
+      Restitution: 0.300000012
+      RestitutionThreshold: 0.5
+  - Entity: 5
+    TagComponent:
+      Tag: Box
+    TransformComponent:
+      Translation: [1.05878234, -1.24489737, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    SpriteRendererComponent:
+      Color: [1, 1, 1, 1]
+      Path: assets\game\textures\block_pig.png
+      Filename: block_pig.png
+      Type: 0
+      TilingFactor: 1
+      Rows: 1
+      Columns: 1
+      RowCoordinate: 1
+      ColumnCoordinate: 1
+      SubtextureWidth: 1
+      SubtextureHeight: 1
+      Frames: 1
+      StartFrame: 1
+      EndFrame: 1
+      CurrentFrame: 1
+      FPS: 1
+    RigidBody2DComponent:
+      Type: 2
+      FixedRotation: false
+    BoxCollider2DComponent:
+      Offset: [0, 0]
+      Size: [0.5, 0.5]
+      Density: 1
+      Friction: 0.5
+      Restitution: 0.300000012
+      RestitutionThreshold: 0.5
+  - Entity: 4
+    TagComponent:
+      Tag: Floor
+    TransformComponent:
+      Translation: [-4.79301071, 1.74065053, 0]
+      Rotation: [0, 0, -0.927190661]
+      Scale: [53.2633057, 0.895077646, 1]
+    SpriteRendererComponent:
+      Color: [1, 1, 1, 1]
+      Path: assets\game\textures\block_pig.png
+      Filename: block_pig.png
+      Type: 0
+      TilingFactor: 1
+      Rows: 1
+      Columns: 1
+      RowCoordinate: 1
+      ColumnCoordinate: 1
+      SubtextureWidth: 1
+      SubtextureHeight: 1
+      Frames: 1
+      StartFrame: 1
+      EndFrame: 1
+      CurrentFrame: 1
+      FPS: 1
+    RigidBody2DComponent:
+      Type: 0
+      FixedRotation: false
+    BoxCollider2DComponent:
+      Offset: [0, 0]
+      Size: [0.5, 0.5]
+      Density: 1
+      Friction: 0.5
+      Restitution: 0
+      RestitutionThreshold: 0.5
+  - Entity: 3
+    TagComponent:
+      Tag: Box
+    TransformComponent:
+      Translation: [1.19570279, 1.28812516, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    SpriteRendererComponent:
+      Color: [1, 1, 1, 1]
+      Path: assets\game\textures\block_pig.png
+      Filename: block_pig.png
+      Type: 0
+      TilingFactor: 1
+      Rows: 1
+      Columns: 1
+      RowCoordinate: 1
+      ColumnCoordinate: 1
+      SubtextureWidth: 1
+      SubtextureHeight: 1
+      Frames: 1
+      StartFrame: 1
+      EndFrame: 1
+      CurrentFrame: 1
+      FPS: 1
+    ChildComponent:
+      []
+    RigidBody2DComponent:
+      Type: 2
+      FixedRotation: false
+    BoxCollider2DComponent:
+      Offset: [0, 0]
+      Size: [0.5, 0.5]
+      Density: 1
+      Friction: 0.5
+      Restitution: 0.300000012
+      RestitutionThreshold: 0.5
+  - Entity: 1048578
+    TagComponent:
+      Tag: Box
+    TransformComponent:
+      Translation: [-8.68675137, 31.4982662, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    SpriteRendererComponent:
+      Color: [1, 1, 1, 1]
+      Path: assets\game\textures\piggy.png
+      Filename: piggy.png
+      Type: 0
+      TilingFactor: 1
+      Rows: 1
+      Columns: 1
+      RowCoordinate: 1
+      ColumnCoordinate: 1
+      SubtextureWidth: 1
+      SubtextureHeight: 1
+      Frames: 1
+      StartFrame: 1
+      EndFrame: 1
+      CurrentFrame: 1
+      FPS: 1
+    ChildComponent:
+      []
+    RigidBody2DComponent:
+      Type: 2
+      FixedRotation: false
+    BoxCollider2DComponent:
+      Offset: [0, 0]
+      Size: [0.5, 0.5]
+      Density: 42.5999985
+      Friction: 0.100000001
+      Restitution: 0.400000006
+      RestitutionThreshold: 0.5
+  - Entity: 1
+    TagComponent:
+      Tag: Floor
+    TransformComponent:
+      Translation: [0.21185565, -2.27901268, 0]
+      Rotation: [0, 0, 0]
+      Scale: [10.589263, 0.895077765, 1]
+    SpriteRendererComponent:
+      Color: [1, 1, 1, 1]
+      Path: assets\game\textures\block_pig.png
+      Filename: block_pig.png
+      Type: 0
+      TilingFactor: 1
+      Rows: 1
+      Columns: 1
+      RowCoordinate: 1
+      ColumnCoordinate: 1
+      SubtextureWidth: 1
+      SubtextureHeight: 1
+      Frames: 1
+      StartFrame: 1
+      EndFrame: 1
+      CurrentFrame: 1
+      FPS: 1
+    RigidBody2DComponent:
+      Type: 0
+      FixedRotation: false
+    BoxCollider2DComponent:
+      Offset: [0, 0]
+      Size: [0.5, 0.5]
+      Density: 1
+      Friction: 0.5
+      Restitution: 0
+      RestitutionThreshold: 0.5
+  - Entity: 0
+    TagComponent:
+      Tag: Camera
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    CameraComponent:
+      Camera:
+        ProjectionType: 1
+        PerspectiveFOV: 0.785398185
+        PerspectiveNear: 0.00999999978
+        PerspectiveFar: 1000
+        OrthographicSize: 50
+        OrthographicNear: -1
+        OrthographicFar: 1
+      FixedAspectRatio: false

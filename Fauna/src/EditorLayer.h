@@ -6,6 +6,7 @@
 #include "Panels/StatsPanel.h"
 #include "Panels/PropertiesPanel.h"
 #include "Panels/ConsolePanel.h"
+#include "Panels/PhysicsPanel.h"
 #include "Flora/Renderer/EditorCamera.h"
 #include "Utils/Structures.h"
 #include <map>
@@ -40,6 +41,7 @@ namespace Flora {
 		std::string GetLastSavedString();
 		void PromptSave(SavePromptType type) { m_SavePromptType = type; }
 		void RenderSavePrompt();
+		void RenderErrorPrompt();
 		void RenderUIBar();
 		void OnScenePlay();
 		void OnSceneStop();

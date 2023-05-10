@@ -53,7 +53,7 @@ namespace Flora {
 	}
 
 	float EditorCamera::ZoomSpeed() const {
-		float distance = m_Distance * 0.2f;
+		float distance = m_Distance * 0.5f;
 		distance = std::max(distance, 0.0f);
 		float speed = distance * distance;
 		speed = std::min(speed, 100.0f); // max speed = 100
@@ -74,10 +74,7 @@ namespace Flora {
 				MouseZoom(delta.y);
 			
 			if (Input::IsKeyPressed(Key::GraveAccent)) { // reset camera position
-				m_Distance = 10.0f;
-				m_Pitch = 0.0f, m_Yaw = 0.0f;
-				m_Position = { 0.0f, 0.0f, 0.0f };
-				m_FocalPoint = { 0.0f, 0.0f, 0.0f };
+				ResetCamera();
 			}
 
 			if (Input::IsKeyPressed(Key::LeftAlt)) { // toggle camera type
@@ -97,6 +94,13 @@ namespace Flora {
 		UpdateView();
 	}
 
+	void EditorCamera::ResetCamera() {
+		m_Distance = 10.0f;
+		m_Pitch = 0.0f, m_Yaw = 0.0f;
+		m_Position = { 0.0f, 0.0f, 0.0f };
+		m_FocalPoint = { 0.0f, 0.0f, 0.0f };
+	}
+
 	void EditorCamera::OnEvent(Event& e) {
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<MouseScrolledEvent>(FL_BIND_EVENT_FN(EditorCamera::OnMouseScroll));
@@ -111,6 +115,10 @@ namespace Flora {
 
 	void EditorCamera::MousePan(const glm::vec2& delta) {
 		auto [xSpeed, ySpeed] = PanSpeed();
+		if (m_ProjectionType == ProjectionType::Orthographic) {
+			xSpeed = 1;
+			ySpeed = 1;
+		}
 		m_FocalPoint += -GetRightDirection() * delta.x * xSpeed * m_Distance;
 		m_FocalPoint += GetUpDirection() * delta.y * ySpeed * m_Distance;
 	}
@@ -139,6 +147,7 @@ namespace Flora {
 			m_ProjectionType = ProjectionType::Orthographic;
 		else
 			m_ProjectionType = ProjectionType::Perspective;
+		UpdateProjection();
 	}
 
 	std::string EditorCamera::GetCameraTypeString() {

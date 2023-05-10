@@ -81,11 +81,32 @@ namespace Flora {
 			}
 	}
 
+	std::string ConsolePanel::SnipLog(std::string log, int snips) {
+		std::string result = log;
+		for (int i = 0; i < snips; i++) {
+			bool inBracket = false;
+			int startIndex = 0;
+			for (int i = 0; i < result.size(); i++) {
+				if (result[i] == '[') {
+					inBracket = true;
+					startIndex = i;
+				}
+				else if (result[i] == ']' && inBracket) {
+					inBracket = false;
+					result.erase(startIndex, i - startIndex + 1);
+					break;
+				}
+			}
+		}
+		return result;
+	}
+
 	void ConsolePanel::AddLog(LogType type, std::string log) {
 		ConsoleLog clg;
 		clg.Type = type;
-		clg.Log = log;
+		clg.Log = SnipLog(log);
 		AddLog(clg);
+		if (clg.Type == LogType::FATAL) m_EditorContext->Error = SnipLog(log, 3);
 	}
 
 	void ConsolePanel::AddLog(ConsoleLog log) {

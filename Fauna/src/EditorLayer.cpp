@@ -21,6 +21,7 @@ namespace Flora {
 		m_Panels["Content Browser"] = CreateScope<ContentBrowserPanel>();
 		m_Panels["Viewport"] = CreateScope<ViewportPanel>();
 		m_Panels["Console"] = CreateScope<ConsolePanel>();
+		m_Panels["Physics"] = CreateScope<PhysicsPanel>();
 	}
 
 	void EditorLayer::OnAttatch() {
@@ -109,7 +110,7 @@ namespace Flora {
 					PromptSave(SavePromptType::OPEN);
 				}
 
-				if (ImGui::MenuItem("Save As...", "Ctrl+Shift+S	")) {
+				if (ImGui::MenuItem("Save As...", "Ctrl+Shift+S")) {
 					FileUtils::SaveSceneAs(m_EditorParams);
 					m_EditorParams->Time = 0;
 				}
@@ -131,6 +132,22 @@ namespace Flora {
 				for (auto& panel : m_Panels) {
 					ImGui::MenuItem(panel.first.c_str(), NULL, &(panel.second->m_Enabled));
 				}
+				ImGui::EndMenu();
+			}
+
+			if (ImGui::BeginMenu("Editor")) {
+				if (m_EditorParams->EditorCamera.GetCameraTypeString() == "Orthographic") {
+					if (ImGui::MenuItem("Switch to perspective", "Space+Alt")) {
+						m_EditorParams->EditorCamera.SetCameraTypeWithString("Perspective");
+					}
+				}
+				else {
+					if (ImGui::MenuItem("Switch to orthographic", "Space+Alt")) {
+						m_EditorParams->EditorCamera.SetCameraTypeWithString("Orthographic");
+					}
+				}
+				if (ImGui::MenuItem("Reset Editor Camera", "Space+`"))
+					m_EditorParams->EditorCamera.ResetCamera();
 				ImGui::EndMenu();
 			}
 
@@ -172,11 +189,14 @@ namespace Flora {
 		// Panels
 		RenderImGuiPanels();
 
+		// Render UI Bar
+		RenderUIBar();
+
 		// Prompt Save
 		RenderSavePrompt();
 
-		// Render UI Bar
-		RenderUIBar();
+		// Prompt Errors
+		RenderErrorPrompt();
 
 		ImGui::End();
 	}
@@ -205,12 +225,16 @@ namespace Flora {
 	}
 
 	void EditorLayer::OnScenePlay() {
-		//Serializer::SerializeFile(Serializer::SerializeEditor(m_EditorParams), "assets/settings/fauna.fnproj");
 		FileUtils::SaveTempScene(m_EditorParams);
 		m_EditorParams->SceneState = SceneState::PLAY;
+		m_EditorParams->ActiveScene->OnRuntimeStart();
+
+		// warnings
+		if (!m_EditorParams->ActiveScene->GetPrimaryCamera()) FL_WARN("No primary camera selected");
 	}
 
 	void EditorLayer::OnSceneStop() {
+		m_EditorParams->ActiveScene->OnRuntimeStop();
 		FileUtils::OpenTempScene(m_EditorParams);
 		m_EditorParams->SceneState = SceneState::EDIT;
 	}
@@ -221,6 +245,8 @@ namespace Flora {
 		FL_CORE_INFO("Saved editor settings");
 
 		// Prompt save
+		if (m_EditorParams->SceneState == SceneState::PLAY)
+			OnSceneStop();
 		PromptSave(SavePromptType::FINAL);
 	}
 
@@ -230,6 +256,26 @@ namespace Flora {
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<KeyPressedEvent>(FL_BIND_EVENT_FN(EditorLayer::OnKeyPressed));
 		dispatcher.Dispatch<MouseButtonPressedEvent>(FL_BIND_EVENT_FN(EditorLayer::OnMouseButtonPressed));
+	}
+
+	void EditorLayer::RenderErrorPrompt() {
+		if (m_EditorParams->Error != "") {
+			ImGui::OpenPopup("ERROR"); 
+			ImVec2 center = ImGui::GetMainViewport()->GetCenter();
+			ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
+			if (ImGui::BeginPopupModal("ERROR", NULL, ImGuiWindowFlags_AlwaysAutoResize)) {
+				ImGui::SetItemDefaultFocus();
+				std::string message = m_EditorParams->Error.substr(10) + "\n\n";
+				ImGui::Text(message.c_str());
+				ImGui::Separator();
+				ImGui::Dummy({ 0, 3 });
+				if (ImGui::Button("OK", { 60, 25 })) {
+					m_EditorParams->Error = "";
+					ImGui::CloseCurrentPopup();
+				}
+				ImGui::EndPopup();
+			}
+		}
 	}
 
 	void EditorLayer::RenderSavePrompt() {
@@ -649,7 +695,7 @@ namespace Flora {
 
 	void EditorLayer::DevEvent() {
 		FL_CORE_INFO("DEV EVENT FIRED");
-		FL_CORE_INFO(GetSpecificPanel<ContentBrowserPanel>("Content Browser")->GetSelectedFile());
-		m_EditorParams->ActiveScene->CopyEntity(m_EditorParams->SelectedEntity);
+		int entityHandle = (int)(uint32_t)m_EditorParams->SelectedEntity;
+		FL_CORE_INFO("Selected Entity ID: {0}", entityHandle);
 	}
 }

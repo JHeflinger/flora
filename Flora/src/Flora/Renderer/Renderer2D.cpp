@@ -146,6 +146,7 @@ namespace Flora {
 	void Renderer2D::Flush() {
 		if (s_Data.QuadIndexCount == 0)
 			return; // Nothing to draw
+
 		uint32_t dataSize = (uint32_t)((uint8_t*)s_Data.QuadVertexBufferPtr - (uint8_t*)s_Data.QuadVertexBufferBase);
 		s_Data.QuadVertexBuffer->SetData(s_Data.QuadVertexBufferBase, dataSize);
 
@@ -295,7 +296,9 @@ namespace Flora {
 		float textureIndex = 0.0f;
 		if (texture != nullptr) {
 			for (uint32_t i = 1; i < s_Data.TextureSlotIndex; i++) {
-				if (*s_Data.TextureSlots[i] == *texture) {
+				s_Data.TextureSlots[i];
+				texture;
+				if (s_Data.TextureSlots[i].get() == texture.get()) {
 					textureIndex = (float)i;
 					break;
 				}
@@ -307,6 +310,12 @@ namespace Flora {
 				textureIndex = (float)s_Data.TextureSlotIndex;
 				s_Data.TextureSlots[s_Data.TextureSlotIndex] = texture;
 				s_Data.TextureSlotIndex++;
+			}
+		}
+
+		{ // DELETE THIS AFTER DEBUGGING
+			if (entityID == 4) {
+				FL_CORE_WARN("DELETE THIS");
 			}
 		}
 
@@ -344,7 +353,7 @@ namespace Flora {
 		float textureIndex = 0.0f;
 		if (texture != nullptr) {
 			for (uint32_t i = 1; i < s_Data.TextureSlotIndex; i++) {
-				if (*s_Data.TextureSlots[i] == *texture) {
+				if (*s_Data.TextureSlots[i].get() == *texture.get()) {
 					textureIndex = (float)i;
 					break;
 				}

@@ -1,6 +1,44 @@
 # Change Log
 All notable changes to this project will be documented in this file as of Fauna Version 0.1.1 and Flora Version 0.1.1
 
+## Fauna [0.2.0] - 2023-05-10
+
+### Added
+
+- 2D physics are now implemented! There is now a RigidBody2D component and BoxCollider2D component that can be used to give entities physics bodies with restitution, density, and friction properties!
+- Physics panel that can now control the gravity and preciseness of the physics world. Note that increasing the preciseness over the recommended amount may lead to performance issues.
+- Stats panel can now control minimim Y Axis and value scalars on the real time graphs
+- Errors logged with FL_CORE_ERROR and FL_ERROR now automatically force a popup in the editor
+- If no primary camera is selected, console will warn the user
+- Stats panel now shows runtime performance in the stats panel, including CPU usage, memory usage, and disk usage. GPU usage is added, but unreliable based on graphics card
+- Example "Angry Birds" scene to demo editor capabilities
+
+### Changed
+
+- Primary camera is now enforced through Flora's Scene for security and efficiency
+- Fauna now defaults to full screen on startup
+
+### Fixed
+
+- closing the editor while playing the scene would prompt saving
+- closing Fauna from the application menu would not work
+- Content browser would glitch out and seize up when having file names that overflowed
+- Stat panel reset button would crash the program
+
+## Flora [0.1.4] - 2023-05-10
+
+### Added
+
+- New function in the Scene class to get entities from the scene based on their tag
+
+### Changed
+
+- Scene now holds the primary camera entity
+
+### Fixed
+
+- Texture slot 4 would not render correctly when using the texture shader
+
 ## Fauna [0.1.3] - 2023-05-02
 
 ### Added

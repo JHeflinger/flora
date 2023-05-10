@@ -112,12 +112,6 @@ namespace Flora {
 			const glm::mat4& cameraProjection = m_EditorContext->EditorCamera.GetProjection();
 			glm::mat4 cameraView = m_EditorContext->EditorCamera.GetViewMatrix();
 
-			// Runtime Camera
-			/*auto cameraEntity = m_ActiveScene->GetPrimaryCameraEntity();
-			const auto& camera = cameraEntity.GetComponent<CameraComponent>().Camera;
-			const glm::mat4& cameraProjection = camera.GetProjection();
-			glm::mat4 cameraView = glm::inverse(cameraEntity.GetComponent<TransformComponent>().GetTransform());*/
-
 			// Entity transform
 			auto& tc = selectedEntity.GetComponent<TransformComponent>();
 			glm::mat4 transform = tc.GetTransform();

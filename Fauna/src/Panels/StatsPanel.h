@@ -1,6 +1,8 @@
 #pragma once
+#pragma comment(lib, "pdh.lib")
 #include "EditorPanel.h"
 #include "Flora/Renderer/Renderer2D.h"
+#include <Pdh.h>
 
 namespace Flora {
 	class StatsPanel : public EditorPanel {
@@ -31,5 +33,20 @@ namespace Flora {
 		std::map<Stats, std::vector<float>> m_DataMap;
 		std::vector<float> m_FrameCountData;
 		bool m_ShowGraph = true;
+	private:
+		float m_HardwareCollectionDelay = 0.0f;
+		double m_Ramsize = 0.0f; // in gigabytes
+		PDH_HQUERY cpuQuery;
+		PDH_HCOUNTER cpuTotal;
+		PDH_FMT_COUNTERVALUE cpuCounterVal;
+		PDH_HQUERY gpuQuery;
+		PDH_HCOUNTER gpuTotal;
+		PDH_FMT_COUNTERVALUE gpuCounterVal;
+		PDH_HQUERY memQuery;
+		PDH_HCOUNTER memTotal;
+		PDH_FMT_COUNTERVALUE memCounterVal;
+		PDH_HQUERY diskQuery;
+		PDH_HCOUNTER diskTotal;
+		PDH_FMT_COUNTERVALUE diskCounterVal;
 	};
 }

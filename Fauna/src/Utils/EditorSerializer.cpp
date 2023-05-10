@@ -43,6 +43,8 @@ namespace Flora {
 		out << YAML::BeginMap;
 		out << YAML::Key << "Timeframe" << YAML::Value << params->Timeframe;
 		out << YAML::Key << "Show Key" << YAML::Value << params->ShowGraphKey;
+		out << YAML::Key << "Axis Scalar" << YAML::Value << params->AxisScale;
+		out << YAML::Key << "Axis Minimum" << YAML::Value << params->AxisMinimum;
 		out << YAML::Key << "Open Graphs" << YAML::Value;
 		out << YAML::BeginMap;
 		out << YAML::Key << "DRAWCALLS" << YAML::Value << params->ShowStatMap[Stats::DRAWCALLS];
@@ -53,6 +55,10 @@ namespace Flora {
 		out << YAML::Key << "FPS" << YAML::Value << params->ShowStatMap[Stats::FPS];
 		out << YAML::Key << "LOWEST_FPS" << YAML::Value << params->ShowStatMap[Stats::LOWEST_FPS];
 		out << YAML::Key << "HIGHEST_FPS" << YAML::Value << params->ShowStatMap[Stats::HIGHEST_FPS];
+		out << YAML::Key << "CPU_USAGE" << YAML::Value << params->ShowStatMap[Stats::CPU_USAGE];
+		out << YAML::Key << "GPU_USAGE" << YAML::Value << params->ShowStatMap[Stats::GPU_USAGE];
+		out << YAML::Key << "MEM_USAGE" << YAML::Value << params->ShowStatMap[Stats::MEM_USAGE];
+		out << YAML::Key << "DISK_USAGE" << YAML::Value << params->ShowStatMap[Stats::DISK_USAGE];
 		out << YAML::EndMap;
 		out << YAML::EndMap;
 
@@ -106,6 +112,8 @@ namespace Flora {
 		// set up stats panel
 		params->Timeframe = data["Stat Panel Settings"]["Timeframe"].as<float>();
 		params->ShowGraphKey = data["Stat Panel Settings"]["Show Key"].as<bool>();
+		params->AxisMinimum = data["Stat Panel Settings"]["Axis Minimum"].as<float>();
+		params->AxisScale = data["Stat Panel Settings"]["Axis Scalar"].as<float>();
 		params->ShowStatMap[Stats::DRAWCALLS] = data["Stat Panel Settings"]["Open Graphs"]["DRAWCALLS"].as<bool>();
 		params->ShowStatMap[Stats::QUADS] = data["Stat Panel Settings"]["Open Graphs"]["QUADS"].as<bool>();
 		params->ShowStatMap[Stats::VERTICES] = data["Stat Panel Settings"]["Open Graphs"]["VERTICES"].as<bool>();
@@ -114,6 +122,10 @@ namespace Flora {
 		params->ShowStatMap[Stats::FPS] = data["Stat Panel Settings"]["Open Graphs"]["FPS"].as<bool>();
 		params->ShowStatMap[Stats::LOWEST_FPS] = data["Stat Panel Settings"]["Open Graphs"]["LOWEST_FPS"].as<bool>();
 		params->ShowStatMap[Stats::HIGHEST_FPS] = data["Stat Panel Settings"]["Open Graphs"]["HIGHEST_FPS"].as<bool>();
+		params->ShowStatMap[Stats::CPU_USAGE] = data["Stat Panel Settings"]["Open Graphs"]["CPU_USAGE"].as<bool>();
+		params->ShowStatMap[Stats::GPU_USAGE] = data["Stat Panel Settings"]["Open Graphs"]["GPU_USAGE"].as<bool>();
+		params->ShowStatMap[Stats::MEM_USAGE] = data["Stat Panel Settings"]["Open Graphs"]["MEM_USAGE"].as<bool>();
+		params->ShowStatMap[Stats::DISK_USAGE] = data["Stat Panel Settings"]["Open Graphs"]["DISK_USAGE"].as<bool>();
 
 		return success;
 	}

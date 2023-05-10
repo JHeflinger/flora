@@ -20,3 +20,6 @@
 [submodule "Flora/vendor/ImGuizmo"]
 	path = Flora/vendor/ImGuizmo
 	url = https://github.com/JHeflinger/ImGuizmo.git
+[submodule "Flora/vendor/box2D"]
+	path = Flora/vendor/box2D
+	url = git@github.com:JHeflinger/box2D.git

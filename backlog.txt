@@ -1,24 +1,20 @@
 TODO:
 
-	- integrate SPIR-V shaders
+	- custom editor settings like color scheme, etc
 
-	- move editor dependent assets into a protected assets folder
+	- bug: there is some instability when dealing with entt handles between int to uint32_t conversions
+
+	- integrate SPIR-V shaders
 
 	- implement projects
 
 	- custom shaders, post processing, materials
 
 	- implement layers
-
-	- runtime performance in stats panel
 	
 	- c# scripting
 
 	- reflection system (serialize values and show them in properties panel!)
-
-	- sprites should have the option to linear filter or not
-
-	- box2D
 
 	- particle system
 
@@ -28,13 +24,9 @@ TODO:
 
 	- undo and redo
 
-	- asset manager so a new texture won't be used for every entity that uses that texture
-
 	- text rendering!
 
-	- layout system?
-
-	- menu screens
+	- layout system
 
 	- standalone runtime and standalone serialization
 
@@ -44,6 +36,8 @@ TODO:
 
 	- optimization for multithreading!
 
+	- simplify popup menus (New __ options should be condensed into an expandable "New..")
+
 	- optick profiler
 
 	- support distrubution (custom formats)
@@ -52,26 +46,42 @@ TODO:
 
 	- make native scripting more stable
 
-	- some sort of generate new native script button
-
 	- project settings?
 
 	- move some editor settings to scene settings (like editor camera) or separate it into a sceneEditorSetting file specific to scene
-
-	- need to be able to get entity from id or tag
 
 	- content browser select multiple 
 
 	- copy and paste can select multiple files/entities
 
+	- move editor dependent assets into a protected assets folder
+
+	- startup splash screen oooooo
+
+	- bug: gpu monitoring doesn't really work depending on graphics card
+
+	- add hardware monitoring error handling
+
+	- sprites should have the option to linear filter or not
+
+	- asset manager so a new texture won't be used for every entity that uses that texture
+
+	- show hitbox option on collider body
+
+	- show camera view box
+
+	- bug: z-index blending isnt working perfectly
+
+	- bug: physics don't work perfectly when it comes to sub-entities
+
+	- bug: click to select doesn't always work
+
+	- physics wrapper to add vectors and etc
+
+	- texture hot reloading
+
 IN PROGRESS:
 
-	- 2d physics
-
-	- simplify popup menus (New __ options should be condensed into an expandable "New..")
-
-	- make a more efficient way to ensure only one camera is primary
-
-	- errors should open up a popup
+	- more texture support
 
 IMPLEMENTED TICKETS:

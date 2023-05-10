@@ -1,4 +1,5 @@
 Scene: GreenBox
+Primary Camera: 6
 Entities:
   - Entity: 7
     TagComponent:
@@ -16,7 +17,6 @@ Entities:
         OrthographicSize: 10
         OrthographicNear: -1
         OrthographicFar: 1
-      Primary: true
       FixedAspectRatio: false
   - Entity: 6
     TagComponent:
@@ -34,7 +34,6 @@ Entities:
         OrthographicSize: 10
         OrthographicNear: -1
         OrthographicFar: 1
-      Primary: false
       FixedAspectRatio: false
   - Entity: 1048581
     TagComponent:
@@ -184,12 +183,12 @@ Entities:
     TransformComponent:
       Translation: [0, 0, 0]
       Rotation: [0, 0, 0]
-      Scale: [0.411009341, 2.02999997, 0.920000017]
+      Scale: [1.54361224, 1.58871245, 1.70896792]
     SpriteRendererComponent:
       Color: [0.308880329, 1, 0, 1]
-      Path: "NULL"
-      Filename: None Selected
-      Type: 0
+      Path: assets\game\textures\tilemap.png
+      Filename: tilemap.png
+      Type: 2
       TilingFactor: 1
       Rows: 1
       Columns: 1
@@ -206,6 +205,8 @@ Entities:
       NativeScripts:
         - Path: assets\scripts\AutoRotater.h
           Filename: AutoRotater.h
+        - Path: assets\scripts\TestScript.h
+          Filename: TestScript.h
     ChildComponent:
       - 1
       - 2

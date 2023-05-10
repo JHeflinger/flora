@@ -1,27 +1,33 @@
-Scene Filepath: assets\scenes\GreenBox.flora
-Selected Entity: 0
+Scene Filepath: assets\scenes\Angry Birds Demo.flora
+Selected Entity: -1
 Current Gizmo: 7
-Editor Camera Type: Perspective
+Editor Camera Type: Orthographic
 General Camera Settings:
-  Position: [-2.6769073, 1.95696247, -4.57135916]
-  Focal Point: [-0.115702331, 0.0549406707, 0.234940886]
+  Position: [0, 0, 10]
+  Focal Point: [0, 0, 0]
 Perspective Camera Settings:
-  Distance: 5.76870775
-  Pitch: 0.336000293
-  Yaw: -3.63120079
+  Distance: 10
+  Pitch: 0
+  Yaw: 0
 Orthographic Camera Settings:
-  Size: 7.26999998
+  Size: 19.104496
 Closed Panels:
   []
 Stat Panel Settings:
-  Timeframe: 5
-  Show Key: false
+  Timeframe: 4.19000006
+  Show Key: true
+  Axis Scalar: 0.75999999
+  Axis Minimum: 0
   Open Graphs:
     DRAWCALLS: false
-    QUADS: true
+    QUADS: false
     VERTICES: false
     INDICES: false
     FRAMETIME: false
     FPS: true
-    LOWEST_FPS: true
-    HIGHEST_FPS: true
+    LOWEST_FPS: false
+    HIGHEST_FPS: false
+    CPU_USAGE: true
+    GPU_USAGE: true
+    MEM_USAGE: true
+    DISK_USAGE: true

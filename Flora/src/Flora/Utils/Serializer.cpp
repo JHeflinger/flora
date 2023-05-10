@@ -10,6 +10,24 @@
 
 namespace YAML {
 	template<>
+	struct convert<glm::vec2> {
+		static Node encode(const glm::vec2& rhs) {
+			Node node;
+			node.push_back(rhs.x);
+			node.push_back(rhs.y);
+			return node;
+		}
+
+		static bool decode(const Node& node, glm::vec2& rhs) {
+			if (!node.IsSequence() || node.size() != 2)
+				return false;
+			rhs.x = node[0].as<float>();
+			rhs.y = node[1].as<float>();
+			return true;
+		}
+	};
+
+	template<>
 	struct convert<glm::vec3> {
 		static Node encode(const glm::vec3& rhs) {
 			Node node;
@@ -90,7 +108,6 @@ namespace Flora {
 			out << YAML::Key << "OrthographicNear" << YAML::Value << camera.GetOrthographicNearClip();
 			out << YAML::Key << "OrthographicFar" << YAML::Value << camera.GetOrthographicFarClip();
 			out << YAML::EndMap;
-			out << YAML::Key << "Primary" << YAML::Value << cameraComponent.Primary;
 			out << YAML::Key << "FixedAspectRatio" << YAML::Value << cameraComponent.FixedAspectRatio;
 			out << YAML::EndMap;
 		}
@@ -170,6 +187,28 @@ namespace Flora {
 			out << YAML::EndSeq;
 		}
 
+		if (entity.HasComponent<RigidBody2DComponent>()) {
+			out << YAML::Key << "RigidBody2DComponent";
+			auto& rigidBody2DComponent = entity.GetComponent<RigidBody2DComponent>();
+			out << YAML::BeginMap;
+			out << YAML::Key << "Type" << YAML::Value << (int)(rigidBody2DComponent.Type);
+			out << YAML::Key << "FixedRotation" << YAML::Value << rigidBody2DComponent.FixedRotation;
+			out << YAML::EndMap;
+		}
+
+		if (entity.HasComponent<BoxCollider2DComponent>()) {
+			out << YAML::Key << "BoxCollider2DComponent";
+			auto& boxCollider2DComponent = entity.GetComponent<BoxCollider2DComponent>();
+			out << YAML::BeginMap;
+			out << YAML::Key << "Offset" << YAML::Value << boxCollider2DComponent.Offset;
+			out << YAML::Key << "Size" << YAML::Value << boxCollider2DComponent.Size;
+			out << YAML::Key << "Density" << YAML::Value << boxCollider2DComponent.Density;
+			out << YAML::Key << "Friction" << YAML::Value << boxCollider2DComponent.Friction;
+			out << YAML::Key << "Restitution" << YAML::Value << boxCollider2DComponent.Restitution;
+			out << YAML::Key << "RestitutionThreshold" << YAML::Value << boxCollider2DComponent.RestitutionThreshold;
+			out << YAML::EndMap;
+		}
+
 		out << YAML::EndMap;
 	}
 
@@ -182,6 +221,13 @@ namespace Flora {
 		YAML::Emitter out;
 		out << YAML::BeginMap;
 		out << YAML::Key << "Scene" << YAML::Value << scene->GetSceneName();
+		out << YAML::Key << "Primary Camera" << YAML::Value << scene->GetPrimaryCamera();
+		out << YAML::Key << "Physics";
+		out << YAML::BeginMap;
+		out << YAML::Key << "Gravity" << YAML::Value << scene->GetGravity();
+		out << YAML::Key << "VelocityIterations" << YAML::Value << scene->GetVelocityIterations();
+		out << YAML::Key << "PositionIterations" << YAML::Value << scene->GetPositionIterations();
+		out << YAML::EndMap;
 		out << YAML::Key << "Entities" << YAML::Value << YAML::BeginSeq;
 		scene->m_Registry.each([&](auto entityID) {
 			Entity entity = { entityID, scene.get() };
@@ -212,6 +258,12 @@ namespace Flora {
 		std::string sceneName = data["Scene"].as<std::string>();
 		scene->SetSceneName(sceneName);
 		FL_CORE_TRACE("Deserializing scene '{0}'", sceneName);
+
+		scene->SetPrimaryCamera(data["Primary Camera"].as<int>());
+
+		scene->SetGravity(data["Physics"]["Gravity"].as<float>());
+		scene->SetVelocityIterations(data["Physics"]["VelocityIterations"].as<int32_t>());
+		scene->SetPositionIterations(data["Physics"]["PositionIterations"].as<int32_t>());
 
 		auto entities = data["Entities"];
 		if (entities) {
@@ -248,7 +300,6 @@ namespace Flora {
 					cc.Camera.SetOrthographicNearClip(cameraProps["OrthographicNear"].as<float>());
 					cc.Camera.SetOrthographicFarClip(cameraProps["OrthographicFar"].as<float>());
 
-					cc.Primary = cameraComponent["Primary"].as<bool>();
 					cc.FixedAspectRatio = cameraComponent["FixedAspectRatio"].as<bool>();
 				}
 
@@ -310,6 +361,25 @@ namespace Flora {
 						BindScriptToComponent(newNativeScript, std::filesystem::path(newNativeScript.Path).filename().stem().string());
 						smc.NativeScripts.emplace_back(newNativeScript);
 					}
+				}
+
+				auto rigidBody2DComponent = entity["RigidBody2DComponent"];
+				if (rigidBody2DComponent) {
+					auto& rb2dc = deserializedEntity.AddComponent<RigidBody2DComponent>();
+					rb2dc.Type = (RigidBody2DComponent::BodyType)rigidBody2DComponent["Type"].as<int>();
+					rb2dc.FixedRotation = rigidBody2DComponent["FixedRotation"].as<bool>();
+				}
+
+				auto boxCollider2DComponent = entity["BoxCollider2DComponent"];
+				if (boxCollider2DComponent) {
+					auto& bc2dc = deserializedEntity.AddComponent<BoxCollider2DComponent>();
+					bc2dc.Offset = boxCollider2DComponent["Offset"].as<glm::vec2>();
+					bc2dc.Size = boxCollider2DComponent["Size"].as<glm::vec2>();
+					bc2dc.Density = boxCollider2DComponent["Density"].as<float>();
+					bc2dc.Friction = boxCollider2DComponent["Friction"].as<float>();
+					bc2dc.Restitution = boxCollider2DComponent["Restitution"].as<float>();
+					bc2dc.RestitutionThreshold = boxCollider2DComponent["RestitutionThreshold"].as<float>();
+
 				}
 			}
 		}

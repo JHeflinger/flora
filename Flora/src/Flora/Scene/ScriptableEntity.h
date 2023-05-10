@@ -9,6 +9,9 @@ namespace Flora {
 		T& GetComponent() {
 			return m_Entity.GetComponent<T>();
 		}
+		Scene* GetScene() {
+			return m_Entity.GetScene();
+		}
 	protected:
 		virtual void OnCreate() {}
 		virtual void OnDestroy() {}

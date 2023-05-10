@@ -98,12 +98,12 @@ namespace Flora {
 
 	void Application::Close() {
 		m_Running = false;
+		for (Layer* layer : m_LayerStack)
+			layer->ProcessWindowClose();
 	}
 
 	bool Application::OnWindowClosed(WindowCloseEvent& e) {
-		m_Running = false;
-		for (Layer* layer : m_LayerStack)
-			layer->ProcessWindowClose();
+		Close();
 		return true;
 	}
 

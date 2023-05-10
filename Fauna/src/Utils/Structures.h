@@ -24,7 +24,11 @@ namespace Flora {
 		FRAMETIME = 4,
 		FPS = 5,
 		LOWEST_FPS = 6,
-		HIGHEST_FPS = 7
+		HIGHEST_FPS = 7,
+		CPU_USAGE = 8,
+		GPU_USAGE = 9,
+		MEM_USAGE = 10,
+		DISK_USAGE = 11
 	};
 
 	struct Clipboard {
@@ -47,9 +51,12 @@ namespace Flora {
 		Panels HoveredPanel = Panels::NONE;
 		Clipboard Clipboard;
 		SceneState SceneState = SceneState::EDIT;
+		std::string Error = "";
 		
 		// stats panel settings
 		float Timeframe = 5.0f;
+		float AxisScale = 1.0f;
+		float AxisMinimum = 0.0f;
 		bool ShowGraphKey = true;
 		std::map<Stats, bool> ShowStatMap;
 	};

@@ -23,6 +23,8 @@ namespace Flora {
 		void Fatal(std::string log);
 		void Clear() { m_Logs.clear(); }
 	private:
+		std::string SnipLog(std::string log, int snips = 1);
+	private:
 		std::vector<ConsoleLog> m_Logs;
 		std::vector<std::string> m_CoreLogs;
 		std::vector<std::string> m_ClientLogs;

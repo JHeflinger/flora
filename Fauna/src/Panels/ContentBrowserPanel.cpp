@@ -134,7 +134,8 @@ namespace Flora {
 					} else FL_CORE_ERROR("Error renaming file");
 				}
 			} else {
-				ImGui::SetCursorPosX(ImGui::GetCursorPosX() + thumbnailSize / 2 - ImGui::CalcTextSize(filenameString.c_str()).x / 2);
+				if (filenameString.size() > 15) filenameString = filenameString.substr(0, 12) + "...";
+				ImGui::SetCursorPosX(ImGui::GetCursorPosX() + (thumbnailSize / 2.0f) - ImGui::CalcTextSize(filenameString.c_str()).x / 2.0f);
 				ImGui::TextWrapped(filenameString.c_str());
 			}
 			ImGui::NextColumn();

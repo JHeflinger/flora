@@ -5,6 +5,10 @@
 #include <glm/glm.hpp>
 #include <filesystem>
 #include "Flora/Scene/Components.h"
+#include "box2d/b2_world.h"
+#include "box2d/b2_body.h"
+#include "box2d/b2_fixture.h"
+#include "box2d/b2_polygon_shape.h"
 
 // temp until stable alternative is implemented
 #include "../../Fauna/assets/scripts/MasterNativeScript.h"
@@ -29,6 +33,54 @@ namespace Flora {
 	}
 
 	Scene::~Scene() {
+	}
+
+	void Scene::OnRuntimeStart() {
+		m_PhysicsWorld = new b2World({0.0f, -m_Gravity });
+		auto view = m_Registry.view<RigidBody2DComponent>();
+		for (auto e : view) {
+			Entity entity = { e, this };
+			auto& transform = entity.GetComponent<TransformComponent>();
+			auto& rb2d = entity.GetComponent<RigidBody2DComponent>();
+			b2BodyDef bodyDef;
+			bodyDef.type = (b2BodyType)rb2d.Type;
+			bodyDef.position.Set(transform.Translation.x, transform.Translation.y);
+			bodyDef.angle = transform.Rotation.z;
+			b2Body* body = m_PhysicsWorld->CreateBody(&bodyDef);
+			body->SetFixedRotation(rb2d.FixedRotation);
+			rb2d.RuntimeBody = body;
+
+			if (entity.HasComponent<BoxCollider2DComponent>()) {
+				auto& bc2d = entity.GetComponent<BoxCollider2DComponent>();
+				b2PolygonShape polygonShape;
+				polygonShape.SetAsBox(transform.Scale.x * bc2d.Size.x, transform.Scale.y * bc2d.Size.y);
+				b2FixtureDef fixtureDef;
+				fixtureDef.shape = &polygonShape;
+				fixtureDef.density = bc2d.Density;
+				fixtureDef.friction = bc2d.Friction;
+				fixtureDef.restitution = bc2d.Restitution;
+				fixtureDef.restitutionThreshold = bc2d.RestitutionThreshold;
+				b2Fixture* fixture = body->CreateFixture(&fixtureDef);
+				bc2d.RuntimeFixture = fixture;
+			}
+		}
+
+	}
+
+	void Scene::OnRuntimeStop() {
+		delete m_PhysicsWorld;
+		m_PhysicsWorld = nullptr;
+	}
+
+	std::vector<Entity> Scene::GetEntitiesByTag(std::string tag) {
+		std::vector<Entity> entities;
+		auto view = m_Registry.view<TagComponent>();
+		for (auto entity : view) {
+			Entity foundEntity = Entity{ entity, this };
+			if (foundEntity.GetComponent<TagComponent>().Tag == tag)
+				entities.emplace_back(foundEntity);
+		}
+		return entities;
 	}
 
 	Entity Scene::CreateEntity(const std::string& name) {
@@ -60,6 +112,8 @@ namespace Flora {
 		CopyComponent<CameraComponent>(entity, newEntity);
 		CopyComponent<NativeScriptComponent>(entity, newEntity);
 		CopyComponent<ScriptManagerComponent>(entity, newEntity);
+		CopyComponent<RigidBody2DComponent>(entity, newEntity);
+		CopyComponent<BoxCollider2DComponent>(entity, newEntity);
 	}
 
 	Entity Scene::CopyEntity(Entity entity) {
@@ -141,6 +195,37 @@ namespace Flora {
 		});
 	}
 
+	void Scene::RenderRuntime() {
+		if (m_PrimaryCameraHandle >= 0) {
+			Entity cameraEntity = Entity{ (entt::entity)(uint32_t)m_PrimaryCameraHandle, this };
+			Camera* primaryCamera = &(cameraEntity.GetComponent<CameraComponent>().Camera);
+			glm::mat4 cameraTransform = cameraEntity.GetComponent<TransformComponent>().GetTransform();
+			Renderer2D::BeginScene(primaryCamera->GetProjection(), cameraTransform);
+			auto group = m_Registry.group<TransformComponent>(entt::get<SpriteRendererComponent>);
+			for (auto entity : group) {
+				Entity drawEntity = Entity{ entity, this };
+				if (!drawEntity.HasComponent<ParentComponent>())
+					DrawEntitySprite(drawEntity);
+			}
+			Renderer2D::EndScene();
+		}
+	}
+
+	void Scene::UpdatePhysics(Timestep ts) {
+		m_PhysicsWorld->Step(ts, m_PhysicsVelocityIterations, m_PhysicsPositionIterations);
+		auto view = m_Registry.view<RigidBody2DComponent>();
+		for (auto e : view) {
+			Entity entity = { e, this };
+			auto& transform = entity.GetComponent<TransformComponent>();
+			auto& rb2d = entity.GetComponent<RigidBody2DComponent>();
+			b2Body* body = (b2Body*)rb2d.RuntimeBody;
+			const auto& position = body->GetPosition();
+			transform.Translation.x = position.x;
+			transform.Translation.y = position.y;
+			transform.Rotation.z = body->GetAngle();
+		}
+	}
+
 	void Scene::OnUpdateEditor(Timestep ts, EditorCamera& camera) {
 		// Render 2D Sprites
 		{
@@ -159,30 +244,11 @@ namespace Flora {
 		// Update Scripts
 		UpdateScripts(ts);
 
+		// Update Physics
+		UpdatePhysics(ts);
+
 		// Render 2D Sprites
-		{
-			Camera* primaryCamera = nullptr;
-			glm::mat4 cameraTransform;
-			auto view = m_Registry.view<TransformComponent, CameraComponent>();
-			for (auto entity : view) {
-				auto [transform, camera] = view.get<TransformComponent, CameraComponent>(entity);
-				if (camera.Primary) {
-					primaryCamera = &camera.Camera;
-					cameraTransform = transform.GetTransform();
-					break;
-				}
-			}
-			if (primaryCamera) {
-				Renderer2D::BeginScene(primaryCamera->GetProjection(), cameraTransform);
-				auto group = m_Registry.group<TransformComponent>(entt::get<SpriteRendererComponent>);
-				for (auto entity : group) {
-					Entity drawEntity = Entity{ entity, this };
-					if (!drawEntity.HasComponent<ParentComponent>())
-						DrawEntitySprite(drawEntity);
-				}
-				Renderer2D::EndScene();
-			}
-		}
+		RenderRuntime();
 	}
 
 	void Scene::OnViewportResize(uint32_t width, uint32_t height) {
@@ -196,16 +262,6 @@ namespace Flora {
 			if (!cameraComponent.FixedAspectRatio) 
 				cameraComponent.Camera.SetViewportSize(width, height);
 		}
-	}
-
-	Entity Scene::GetPrimaryCameraEntity() {
-		auto view = m_Registry.view<CameraComponent>();
-		for (auto entity : view) {
-			const auto& camera = view.get<CameraComponent>(entity);
-			if (camera.Primary)
-				return Entity{ entity, this };
-		}
-		return {};
 	}
 
 	Entity Scene::GetEntityFromID(uint32_t id) {
@@ -256,5 +312,15 @@ namespace Flora {
 	void Scene::OnComponentAdded<CameraComponent>(Entity entity, CameraComponent& component) {
 		if (m_ViewportWidth > 0 && m_ViewportHeight > 0)
 			component.Camera.SetViewportSize(m_ViewportWidth, m_ViewportHeight);
+	}
+
+	template<>
+	void Scene::OnComponentAdded<RigidBody2DComponent>(Entity entity, RigidBody2DComponent& component) {
+
+	}
+
+	template<>
+	void Scene::OnComponentAdded<BoxCollider2DComponent>(Entity entity, BoxCollider2DComponent& component) {
+
 	}
 }
