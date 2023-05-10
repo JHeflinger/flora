@@ -9,7 +9,7 @@ Entities:
     TagComponent:
       Tag: Trampoline
     TransformComponent:
-      Translation: [-3.87484789, -1.16933262, 0]
+      Translation: [-5.50042391, -3.42841792, 0]
       Rotation: [0, 0, -0.623741388]
       Scale: [20.7999954, 0.400000185, 1]
     SpriteRendererComponent:
@@ -37,7 +37,7 @@ Entities:
       Size: [0.5, 0.5]
       Density: 1
       Friction: 0.5
-      Restitution: 2.0999999
+      Restitution: 5.0999999
       RestitutionThreshold: 0.5
   - Entity: 16
     TagComponent:
@@ -421,7 +421,7 @@ Entities:
     TagComponent:
       Tag: Angry Bird
     TransformComponent:
-      Translation: [-5.11296511, 4.65440178, 0.400000006]
+      Translation: [-5.42570734, -1.93551004, 0.400000006]
       Rotation: [0, 0, -0.261218935]
       Scale: [1, 1, 1]
     SpriteRendererComponent:

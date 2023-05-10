@@ -70,8 +70,6 @@ TODO:
 
 	- show camera view box
 
-	- indicator if editor camera is ortho or perspective
-
 	- bug: z-index blending isnt working perfectly
 
 	- bug: physics don't work perfectly when it comes to sub-entities
@@ -80,38 +78,10 @@ TODO:
 
 	- physics wrapper to add vectors and etc
 
+	- texture hot reloading
+
 IN PROGRESS:
 
-	- make example project
+	- more texture support
 
 IMPLEMENTED TICKETS:
-
-	- bug: using more than a 3 textured entities causes the fourth to not render its texture (note that this isn't white default texture, its actualy failin)
-
-	- add physics panel
-
-	- make propertiespanel gui look neater for box collider
-
-	- bug: reset button crashed the program
-
-	- 2d physics
-	
-	- 2d physics save in esrializer and update copy component 
-
-	- bug: content browser wigs out sometimes
-
-	- runtime performance in stats panel (cpu/gpu usage, temp, etc)
-
-	- bug: application->close menu button doesnt work
-
-	- application full screen on startup
-
-	- make a more efficient way to ensure only one camera is primary
-
-	- bug: closing while scene is playing will prompt save based on scene play state not editor state
-
-	- need to be able to get entity from tag
-
-	- spdlogged errors should automatically open up a popup
-
-	- added axis minimum and axis scalar settings to stat panel

@@ -35,6 +35,7 @@ namespace Flora {
 		float GetOrthographicSize() const { return m_OrthographicSize; }
 		glm::vec3 GetFocalPoint() const { return m_FocalPoint; }
 		void SetFocalPoint(glm::vec3 focalPoint) { m_FocalPoint = focalPoint; }
+		void ResetCamera();
 	private:
 		void UpdateProjection();
 		void UpdateView();

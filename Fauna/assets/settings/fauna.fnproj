@@ -3,14 +3,14 @@ Selected Entity: -1
 Current Gizmo: 7
 Editor Camera Type: Orthographic
 General Camera Settings:
-  Position: [1.0866915, -0.991843939, 32.5282936]
-  Focal Point: [1.0866915, -0.991843939, 0]
+  Position: [0, 0, 10]
+  Focal Point: [0, 0, 0]
 Perspective Camera Settings:
-  Distance: 32.5282936
+  Distance: 10
   Pitch: 0
   Yaw: 0
 Orthographic Camera Settings:
-  Size: 17.3794956
+  Size: 19.104496
 Closed Panels:
   []
 Stat Panel Settings:

@@ -110,7 +110,7 @@ namespace Flora {
 					PromptSave(SavePromptType::OPEN);
 				}
 
-				if (ImGui::MenuItem("Save As...", "Ctrl+Shift+S	")) {
+				if (ImGui::MenuItem("Save As...", "Ctrl+Shift+S")) {
 					FileUtils::SaveSceneAs(m_EditorParams);
 					m_EditorParams->Time = 0;
 				}
@@ -132,6 +132,22 @@ namespace Flora {
 				for (auto& panel : m_Panels) {
 					ImGui::MenuItem(panel.first.c_str(), NULL, &(panel.second->m_Enabled));
 				}
+				ImGui::EndMenu();
+			}
+
+			if (ImGui::BeginMenu("Editor")) {
+				if (m_EditorParams->EditorCamera.GetCameraTypeString() == "Orthographic") {
+					if (ImGui::MenuItem("Switch to perspective", "Space+Alt")) {
+						m_EditorParams->EditorCamera.SetCameraTypeWithString("Perspective");
+					}
+				}
+				else {
+					if (ImGui::MenuItem("Switch to orthographic", "Space+Alt")) {
+						m_EditorParams->EditorCamera.SetCameraTypeWithString("Orthographic");
+					}
+				}
+				if (ImGui::MenuItem("Reset Editor Camera", "Space+`"))
+					m_EditorParams->EditorCamera.ResetCamera();
 				ImGui::EndMenu();
 			}
 

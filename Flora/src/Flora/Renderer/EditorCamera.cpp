@@ -74,10 +74,7 @@ namespace Flora {
 				MouseZoom(delta.y);
 			
 			if (Input::IsKeyPressed(Key::GraveAccent)) { // reset camera position
-				m_Distance = 10.0f;
-				m_Pitch = 0.0f, m_Yaw = 0.0f;
-				m_Position = { 0.0f, 0.0f, 0.0f };
-				m_FocalPoint = { 0.0f, 0.0f, 0.0f };
+				ResetCamera();
 			}
 
 			if (Input::IsKeyPressed(Key::LeftAlt)) { // toggle camera type
@@ -95,6 +92,13 @@ namespace Flora {
 			}
 		}
 		UpdateView();
+	}
+
+	void EditorCamera::ResetCamera() {
+		m_Distance = 10.0f;
+		m_Pitch = 0.0f, m_Yaw = 0.0f;
+		m_Position = { 0.0f, 0.0f, 0.0f };
+		m_FocalPoint = { 0.0f, 0.0f, 0.0f };
 	}
 
 	void EditorCamera::OnEvent(Event& e) {
@@ -143,6 +147,7 @@ namespace Flora {
 			m_ProjectionType = ProjectionType::Orthographic;
 		else
 			m_ProjectionType = ProjectionType::Perspective;
+		UpdateProjection();
 	}
 
 	std::string EditorCamera::GetCameraTypeString() {
