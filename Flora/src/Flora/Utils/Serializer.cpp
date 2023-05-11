@@ -309,7 +309,7 @@ namespace Flora {
 					src.Color = spriteRendererComponent["Color"].as<glm::vec4>();
 					std::string texturePath = spriteRendererComponent["Path"].as<std::string>();
 					if (texturePath != "NULL")
-						src.Texture = Texture2D::Create(spriteRendererComponent["Path"].as<std::string>());
+						scene->GetAssetManager()->AddTexture(spriteRendererComponent["Path"].as<std::string>());
 					src.Type = (SpriteRendererComponent::SpriteType)spriteRendererComponent["Type"].as<int>();
 					src.TilingFactor = spriteRendererComponent["TilingFactor"].as<float>();
 					src.Rows = spriteRendererComponent["Rows"].as<int>();

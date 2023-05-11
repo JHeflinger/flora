@@ -5,6 +5,7 @@
 #include "Flora/Renderer/Camera.h"
 #include "Flora/Renderer/EditorCamera.h"
 #include "Flora/Scene/Components.h"
+#include "Flora/Renderer/AssetManager.h"
 
 namespace Flora {
 	class Renderer2D {
@@ -61,7 +62,7 @@ namespace Flora {
 							 const glm::vec4& color = { 1.0f, 1.0f, 1.0f, 1.0f },
 							 float tilingFactor = 1.0f,
 							 int entityID = -1);
-		static void DrawSprite(const glm::mat4& transform, SpriteRendererComponent& src, int entityID = -1);
+		static void DrawSprite(const glm::mat4& transform, SpriteRendererComponent& src, AssetManager* am, int entityID = -1);
 
 		// Stats
 		struct Statistics {

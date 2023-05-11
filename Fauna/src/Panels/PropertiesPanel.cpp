@@ -1,8 +1,6 @@
 #include "flpch.h"
 #include "PropertiesPanel.h"
-#include "Flora/Scene/Components.h"
 #include "Flora/Utils/PlatformUtils.h"
-#include <imgui/imgui.h>
 #include <imgui/imgui_internal.h>
 #include <filesystem>
 #include <glm/gtc/type_ptr.hpp>
@@ -125,14 +123,14 @@ namespace Flora {
 		ImGui::PopID();
 	}
 
-	static void DrawTextureDropbox(const std::string& label, SpriteRendererComponent& component, ImVec2 buttonSize) {
+	void PropertiesPanel::DrawTextureDropbox(const std::string& label, SpriteRendererComponent& component, ImVec2 buttonSize) {
 		if (ImGui::Button(label.c_str(), buttonSize)) {
 			std::string filepath = FileDialogs::OpenFile("Texture Asset (*.png)\0*.png\0");
 			if (!filepath.empty()) {
 				std::filesystem::path texturePath = std::filesystem::path(filepath); // warning this is not relative
 				component.Filename = texturePath.filename().string();
 				component.Path = texturePath.string();
-				component.Texture = Texture2D::Create(texturePath.string());
+				m_EditorContext->ActiveScene->GetAssetManager()->AddTexture(texturePath.string());
 			}
 		}
 		if (ImGui::BeginDragDropTarget()) {
@@ -142,7 +140,7 @@ namespace Flora {
 				if (texturePath.extension().string() == ".png") {
 					component.Filename = texturePath.filename().string();
 					component.Path = texturePath.string();
-					component.Texture = Texture2D::Create(texturePath.string());
+					m_EditorContext->ActiveScene->GetAssetManager()->AddTexture(texturePath.string());
 				} else {
 					FL_CORE_ERROR("Invalid texture type. Please use a .png file");
 				}

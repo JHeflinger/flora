@@ -379,22 +379,24 @@ namespace Flora {
 		s_Data.Stats.QuadCount++;
 	}
 
-	void Renderer2D::DrawSprite(const glm::mat4& transform, SpriteRendererComponent& src, int entityID) {
+	void Renderer2D::DrawSprite(const glm::mat4& transform, SpriteRendererComponent& src, AssetManager* am, int entityID) {
+		Ref<Texture2D> texture = nullptr;
+		if (src.Path != "NULL") texture = am->GetTexture(src.Path);
 		if (src.Type == SpriteRendererComponent::SpriteType::SINGLE) {
-			if (src.Texture)
-				DrawQuad(transform, src.Texture, src.Color, src.TilingFactor, entityID);
+			if (texture)
+				DrawQuad(transform, texture, src.Color, src.TilingFactor, entityID);
 			else
 				DrawQuad(transform, src.Color, entityID);
 		} else if (src.Type == SpriteRendererComponent::SpriteType::SUBTEXTURE) {
-			if (src.Texture) {
+			if (texture) {
 				glm::vec2 coords = { src.ColumnCoordinate - 1, (src.Rows - 1) - (src.RowCoordinate - 1) };
-				glm::vec2 cellSize = { src.Texture->GetWidth() / src.Columns, src.Texture->GetHeight() / src.Rows };
+				glm::vec2 cellSize = { texture->GetWidth() / src.Columns, texture->GetHeight() / src.Rows };
 				glm::vec2 spriteSize = { src.SubtextureWidth, src.SubtextureHeight };
-				Ref<SubTexture2D> subtexture = SubTexture2D::CreateFromCoords(src.Texture, coords, cellSize, spriteSize);
+				Ref<SubTexture2D> subtexture = SubTexture2D::CreateFromCoords(texture, coords, cellSize, spriteSize);
 				DrawQuad(transform, subtexture, src.Color, src.TilingFactor, entityID);
 			} else DrawQuad(transform, src.Color, entityID);
 		} else if (src.Type == SpriteRendererComponent::SpriteType::ANIMATION) {
-			if (src.Texture) {
+			if (texture) {
 				if (src.CurrentFrame > src.EndFrame) src.CurrentFrame = src.StartFrame;
 				else if (src.CurrentFrame < src.StartFrame) src.CurrentFrame = src.StartFrame;
 
@@ -403,8 +405,8 @@ namespace Flora {
 				src.RowCoordinate = ((src.CurrentFrame - 1) / src.Columns) + 1;
 				
 				glm::vec2 coords = { src.ColumnCoordinate - 1, (src.Rows - 1) - (src.RowCoordinate - 1) };
-				glm::vec2 cellSize = { src.Texture->GetWidth() / src.Columns, src.Texture->GetHeight() / src.Rows };
-				Ref<SubTexture2D> subtexture = SubTexture2D::CreateFromCoords(src.Texture, coords, cellSize);
+				glm::vec2 cellSize = { texture->GetWidth() / src.Columns, texture->GetHeight() / src.Rows };
+				Ref<SubTexture2D> subtexture = SubTexture2D::CreateFromCoords(texture, coords, cellSize);
 				DrawQuad(transform, subtexture, src.Color, src.TilingFactor, entityID);
 
 				// this assumes running game at 60 fps

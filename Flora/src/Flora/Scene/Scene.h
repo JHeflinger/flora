@@ -2,6 +2,7 @@
 #include "entt.hpp"
 #include "Flora/Core/Timestep.h"
 #include "Flora/Renderer/EditorCamera.h"
+#include "Flora/Renderer/AssetManager.h"
 
 class b2World;
 
@@ -33,6 +34,7 @@ namespace Flora {
 		void SetPrimaryCamera(int camera) { m_PrimaryCameraHandle = camera; }
 		std::string GetSceneFilepath() { return m_SceneFilepath; }
 		std::string GetSceneName() { return m_SceneName; }
+		AssetManager* GetAssetManager() { return m_AssetManager; }
 	public:
 		template<typename T, typename LoopFunction>
 		void ForAllComponents(LoopFunction loopFunction) {
@@ -57,6 +59,8 @@ namespace Flora {
 		void UpdatePhysics(Timestep ts);
 		void RenderRuntime();
 	private:
+		void DrawEntitySprite(Entity& entity, bool useTransformRef = false, glm::mat4 refTransform = glm::mat4(0.0f));
+	private:
 		entt::registry m_Registry;
 		uint32_t m_ViewportWidth, m_ViewportHeight = 0;
 		bool m_ViewportHovered = false; // temporary solution
@@ -68,6 +72,7 @@ namespace Flora {
 		float m_Gravity = 9.8f;
 		int32_t m_PhysicsVelocityIterations = 6;
 		int32_t m_PhysicsPositionIterations = 2;
+		AssetManager* m_AssetManager;
 		friend class Entity;
 		friend class SceneHierarchyPanel;
 		friend class Serializer;
