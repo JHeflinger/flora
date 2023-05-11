@@ -14,8 +14,8 @@ Entities:
       Scale: [20.7999954, 0.400000185, 1]
     SpriteRendererComponent:
       Color: [1, 1, 1, 1]
-      Path: "NULL"
-      Filename: None Selected
+      Path: assets\game\textures\square-block.png
+      Filename: square-block.png
       Type: 0
       TilingFactor: 1
       Rows: 1
@@ -534,8 +534,8 @@ Entities:
       Scale: [47.707016, 0.149926141, 0.99989444]
     SpriteRendererComponent:
       Color: [1, 1, 1, 1]
-      Path: "NULL"
-      Filename: None Selected
+      Path: assets\game\textures\square-block.png
+      Filename: square-block.png
       Type: 0
       TilingFactor: 1
       Rows: 1

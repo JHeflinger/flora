@@ -11,8 +11,8 @@ namespace Flora {
 	}
 
 	bool AssetManager::AddTexture(std::string texPath) {
-		if (m_TextureMap.find(texPath) == m_TextureMap.end()) return false;
 		m_TextureMap[texPath] = Texture2D::Create(texPath);
+		return true;
 	}
 
 	void AssetManager::RemoveTexture(std::string texPath) {

@@ -123,14 +123,14 @@ namespace Flora {
 		ImGui::PopID();
 	}
 
-	void PropertiesPanel::DrawTextureDropbox(const std::string& label, SpriteRendererComponent& component, ImVec2 buttonSize) {
+	static void DrawTextureDropbox(const std::string& label, SpriteRendererComponent& component, ImVec2 buttonSize) {
 		if (ImGui::Button(label.c_str(), buttonSize)) {
 			std::string filepath = FileDialogs::OpenFile("Texture Asset (*.png)\0*.png\0");
 			if (!filepath.empty()) {
 				std::filesystem::path texturePath = std::filesystem::path(filepath); // warning this is not relative
 				component.Filename = texturePath.filename().string();
 				component.Path = texturePath.string();
-				m_EditorContext->ActiveScene->GetAssetManager()->AddTexture(texturePath.string());
+				component.TextureInitialized = false;
 			}
 		}
 		if (ImGui::BeginDragDropTarget()) {
@@ -140,7 +140,7 @@ namespace Flora {
 				if (texturePath.extension().string() == ".png") {
 					component.Filename = texturePath.filename().string();
 					component.Path = texturePath.string();
-					m_EditorContext->ActiveScene->GetAssetManager()->AddTexture(texturePath.string());
+					component.TextureInitialized = false;
 				} else {
 					FL_CORE_ERROR("Invalid texture type. Please use a .png file");
 				}

@@ -209,7 +209,7 @@ namespace Flora {
 		float textureIndex = 0.0f;
 		if (texture != nullptr) {
 			for (uint32_t i = 1; i < s_Data.TextureSlotIndex; i++) {
-				if (*s_Data.TextureSlots[i].get() == *texture.get()) {
+				if (s_Data.TextureSlots[i] == texture) {
 					textureIndex = (float)i;
 					break;
 				}
@@ -296,9 +296,9 @@ namespace Flora {
 		float textureIndex = 0.0f;
 		if (texture != nullptr) {
 			for (uint32_t i = 1; i < s_Data.TextureSlotIndex; i++) {
-				s_Data.TextureSlots[i];
-				texture;
-				if (s_Data.TextureSlots[i].get() == texture.get()) {
+				if (s_Data.TextureSlots[i] == texture) {
+					texture;
+					s_Data.TextureSlots[i];
 					textureIndex = (float)i;
 					break;
 				}
@@ -347,7 +347,7 @@ namespace Flora {
 		float textureIndex = 0.0f;
 		if (texture != nullptr) {
 			for (uint32_t i = 1; i < s_Data.TextureSlotIndex; i++) {
-				if (*s_Data.TextureSlots[i].get() == *texture.get()) {
+				if (s_Data.TextureSlots[i] == texture) {
 					textureIndex = (float)i;
 					break;
 				}
@@ -381,7 +381,14 @@ namespace Flora {
 
 	void Renderer2D::DrawSprite(const glm::mat4& transform, SpriteRendererComponent& src, AssetManager* am, int entityID) {
 		Ref<Texture2D> texture = nullptr;
-		if (src.Path != "NULL") texture = am->GetTexture(src.Path);
+		if (src.Path != "NULL") {
+			if (!src.TextureInitialized) {
+				am->AddTexture(src.Path);
+				src.TextureInitialized = true;
+			}
+			texture = am->GetTexture(src.Path);
+			if (!texture) FL_CORE_WARN("BRUH");
+		}
 		if (src.Type == SpriteRendererComponent::SpriteType::SINGLE) {
 			if (texture)
 				DrawQuad(transform, texture, src.Color, src.TilingFactor, entityID);

@@ -52,6 +52,7 @@ namespace Flora {
 		int FrameCounter = 0;
 		std::string Path = "NULL";
 		std::string Filename = "None Selected";
+		bool TextureInitialized = false;
 		SpriteRendererComponent() = default;
 		SpriteRendererComponent(const SpriteRendererComponent& other) {
 			Color = other.Color;
@@ -71,6 +72,7 @@ namespace Flora {
 			FrameCounter = other.FrameCounter;
 			Path = other.Path;
 			Filename = other.Filename;
+			TextureInitialized = other.TextureInitialized;
 		}
 		SpriteRendererComponent(const glm::vec4& color) : Color(color) {}
 	};

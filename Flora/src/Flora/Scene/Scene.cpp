@@ -30,6 +30,7 @@ namespace Flora {
 	}
 
 	Scene::Scene() {
+		m_AssetManager = new AssetManager();
 	}
 
 	Scene::~Scene() {
