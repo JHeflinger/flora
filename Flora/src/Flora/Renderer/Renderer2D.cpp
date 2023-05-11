@@ -313,12 +313,6 @@ namespace Flora {
 			}
 		}
 
-		{ // DELETE THIS AFTER DEBUGGING
-			if (entityID == 4) {
-				FL_CORE_WARN("DELETE THIS");
-			}
-		}
-
 		constexpr size_t quadVertexCount = 4;
 		constexpr glm::vec2 textureCoords[] = {
 			{0.0f, 0.0f},
