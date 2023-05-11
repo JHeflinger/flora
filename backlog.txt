@@ -76,10 +76,6 @@ TODO:
 
 IN PROGRESS:
 
-	- asset manager so a new texture won't be used for every entity that uses that texture
-
-	- dont forget about asset manager managing animations and subtextures
-
 	- show camera view box
 
 	- physics wrapper to add vectors and etc
@@ -87,3 +83,5 @@ IN PROGRESS:
 	- bug: physics don't work perfectly when it comes to sub-entities
 
 IMPLEMENTED TICKETS:
+
+	- asset manager so a new texture won't be used for every entity that uses that texture
