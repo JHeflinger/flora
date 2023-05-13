@@ -5,6 +5,7 @@
 #include "Flora/Scene/ScriptableEntity.h"
 #include "Flora/Renderer/Texture.h"
 #include <glm/gtx/quaternion.hpp>
+#include "Flora/Utils/PhysicsUtils.h"
 
 namespace Flora {
 	struct TagComponent {
@@ -152,7 +153,7 @@ namespace Flora {
 		enum class BodyType { STATIC = 0, KINEMATIC = 1, DYNAMIC = 2 };
 		BodyType Type = BodyType::STATIC;
 		bool FixedRotation = false;
-		void* RuntimeBody = nullptr;
+		b2Body* RuntimeBody = nullptr;
 		RigidBody2DComponent() = default;
 		RigidBody2DComponent(const RigidBody2DComponent& other) {
 			Type = other.Type;

@@ -5,10 +5,6 @@
 #include <glm/glm.hpp>
 #include <filesystem>
 #include "Flora/Scene/Components.h"
-#include "box2d/b2_world.h"
-#include "box2d/b2_body.h"
-#include "box2d/b2_fixture.h"
-#include "box2d/b2_polygon_shape.h"
 
 // temp until stable alternative is implemented
 #include "../../Fauna/assets/scripts/MasterNativeScript.h"
@@ -219,7 +215,7 @@ namespace Flora {
 			Entity entity = { e, this };
 			auto& transform = entity.GetComponent<TransformComponent>();
 			auto& rb2d = entity.GetComponent<RigidBody2DComponent>();
-			b2Body* body = (b2Body*)rb2d.RuntimeBody;
+			b2Body* body = rb2d.RuntimeBody;
 			const auto& position = body->GetPosition();
 			transform.Translation.x = position.x;
 			transform.Translation.y = position.y;

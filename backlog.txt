@@ -1,5 +1,7 @@
 TODO:
 
+	- optimization: if something is not being affected for a while, stop simulating it
+
 	- custom editor settings like color scheme, etc
 
 	- bug: there is some instability when dealing with entt handles between int to uint32_t conversions

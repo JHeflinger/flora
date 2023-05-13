@@ -5,40 +5,6 @@ Physics:
   VelocityIterations: 6
   PositionIterations: 2
 Entities:
-  - Entity: 17
-    TagComponent:
-      Tag: Trampoline
-    TransformComponent:
-      Translation: [-5.50042391, -3.42841792, 0]
-      Rotation: [0, 0, -0.623741388]
-      Scale: [20.7999954, 0.400000185, 1]
-    SpriteRendererComponent:
-      Color: [1, 1, 1, 1]
-      Path: assets\game\textures\square-block.png
-      Filename: square-block.png
-      Type: 0
-      TilingFactor: 1
-      Rows: 1
-      Columns: 1
-      RowCoordinate: 1
-      ColumnCoordinate: 1
-      SubtextureWidth: 1
-      SubtextureHeight: 1
-      Frames: 1
-      StartFrame: 1
-      EndFrame: 1
-      CurrentFrame: 1
-      FPS: 1
-    RigidBody2DComponent:
-      Type: 0
-      FixedRotation: false
-    BoxCollider2DComponent:
-      Offset: [0, 0]
-      Size: [0.5, 0.5]
-      Density: 1
-      Friction: 0.5
-      Restitution: 5.0999999
-      RestitutionThreshold: 0.5
   - Entity: 16
     TagComponent:
       Tag: Square block
@@ -421,8 +387,8 @@ Entities:
     TagComponent:
       Tag: Angry Bird
     TransformComponent:
-      Translation: [-5.42570734, -1.93551004, 0.400000006]
-      Rotation: [0, 0, -0.261218935]
+      Translation: [-5.54444361, -3.02392745, 0.400000006]
+      Rotation: [0, 0, 0.0196505804]
       Scale: [1, 1, 1]
     SpriteRendererComponent:
       Color: [1, 1, 1, 1]
