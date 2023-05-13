@@ -6,15 +6,18 @@ namespace Flora {
 	class Launch : public ScriptableEntity {
 	public:
 		void OnCreate() {
-			PhysicsUtils::ApplyImpulse(GetComponent<RigidBody2DComponent>().RuntimeBody, { 100, 75 });
+			PhysicsUtils::ApplyImpulse(GetComponent<RigidBody2DComponent>().RuntimeBody, { 100, 75 }, {1, 1});
+			//PhysicsUtils::ApplyAngularImpulse(GetComponent<RigidBody2DComponent>().RuntimeBody, -20);
+			//PhysicsUtils::WarpBody(GetComponent<RigidBody2DComponent>().RuntimeBody, { 1, 0 });
 		}
 
 		void OnDestroy() {
 		
 		}
 
-		void OnUpdate(Timestep ts) { 
-
+		void OnUpdate(Timestep ts) {
+			//PhysicsUtils::ApplyTorque(GetComponent<RigidBody2DComponent>().RuntimeBody, -80);
+			//PhysicsUtils::ApplyForce(GetComponent<RigidBody2DComponent>().RuntimeBody, { 100, 75 });
 		}
 	};
 }

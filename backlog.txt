@@ -80,10 +80,10 @@ IN PROGRESS:
 
 	- show camera view box
 
-	- physics wrapper to add vectors and etc
-
 	- bug: physics don't work perfectly when it comes to sub-entities
 
 IMPLEMENTED TICKETS:
+
+	- physics wrapper to add vectors and etc
 
 	- asset manager so a new texture won't be used for every entity that uses that texture
