@@ -40,7 +40,7 @@ namespace Flora {
 		void ForAllComponents(LoopFunction loopFunction) {
 			m_Registry.view<T>().each([=](auto entity, auto& component) {
 				loopFunction(entity, component);
-				});
+			});
 		}
 	public:
 		float GetGravity() { return m_Gravity; }
@@ -60,6 +60,8 @@ namespace Flora {
 		void RenderRuntime();
 	private:
 		void DrawEntitySprite(Entity& entity, bool useTransformRef = false, glm::mat4 refTransform = glm::mat4(0.0f));
+		void SimulateEntityPhysics(Entity& entity, bool useTransformRef = false, glm::mat4 refTransform = glm::mat4(0.0f));
+		glm::mat4 GetWorldTransform(Entity& entity);
 	private:
 		entt::registry m_Registry;
 		uint32_t m_ViewportWidth, m_ViewportHeight = 0;

@@ -387,7 +387,6 @@ namespace Flora {
 				src.TextureInitialized = true;
 			}
 			texture = am->GetTexture(src.Path);
-			if (!texture) FL_CORE_WARN("BRUH");
 		}
 		if (src.Type == SpriteRendererComponent::SpriteType::SINGLE) {
 			if (texture)

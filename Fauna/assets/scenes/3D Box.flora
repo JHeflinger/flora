@@ -1,0 +1,185 @@
+Scene: Untitled
+Primary Camera: -1
+Physics:
+  Gravity: 9.80000019
+  VelocityIterations: 6
+  PositionIterations: 2
+Entities:
+  - Entity: 1048581
+    TagComponent:
+      Tag: r1
+    TransformComponent:
+      Translation: [3.90798505e-13, 4.47034871e-08, -1]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    SpriteRendererComponent:
+      Color: [1, 0, 0, 1]
+      Path: "NULL"
+      Filename: None Selected
+      Type: 0
+      TilingFactor: 1
+      Rows: 1
+      Columns: 1
+      RowCoordinate: 1
+      ColumnCoordinate: 1
+      SubtextureWidth: 1
+      SubtextureHeight: 1
+      Frames: 1
+      StartFrame: 1
+      EndFrame: 1
+      CurrentFrame: 1
+      FPS: 1
+    ParentComponent:
+      Parent: 0
+      InheritAll: true
+      InheritTransform: true
+    ChildComponent:
+      []
+  - Entity: 1048580
+    TagComponent:
+      Tag: r1
+    TransformComponent:
+      Translation: [0.5, 0, -0.5]
+      Rotation: [0, 1.57079637, 0]
+      Scale: [1, 1, 0.999984086]
+    SpriteRendererComponent:
+      Color: [0.583011627, 0.108048484, 0.108048484, 1]
+      Path: "NULL"
+      Filename: None Selected
+      Type: 0
+      TilingFactor: 1
+      Rows: 1
+      Columns: 1
+      RowCoordinate: 1
+      ColumnCoordinate: 1
+      SubtextureWidth: 1
+      SubtextureHeight: 1
+      Frames: 1
+      StartFrame: 1
+      EndFrame: 1
+      CurrentFrame: 1
+      FPS: 1
+    ParentComponent:
+      Parent: 0
+      InheritAll: true
+      InheritTransform: true
+    ChildComponent:
+      []
+  - Entity: 1048579
+    TagComponent:
+      Tag: r1
+    TransformComponent:
+      Translation: [-0.499708116, 0, -0.5]
+      Rotation: [1.57079637, 1.57079637, 1.57079589]
+      Scale: [0.999988914, 0.999990046, 0.999991357]
+    SpriteRendererComponent:
+      Color: [0.776061773, 0.140829742, 0.140829742, 1]
+      Path: "NULL"
+      Filename: None Selected
+      Type: 0
+      TilingFactor: 1
+      Rows: 1
+      Columns: 1
+      RowCoordinate: 1
+      ColumnCoordinate: 1
+      SubtextureWidth: 1
+      SubtextureHeight: 1
+      Frames: 1
+      StartFrame: 1
+      EndFrame: 1
+      CurrentFrame: 1
+      FPS: 1
+    ParentComponent:
+      Parent: 0
+      InheritAll: true
+      InheritTransform: true
+    ChildComponent:
+      []
+  - Entity: 2
+    TagComponent:
+      Tag: r1
+    TransformComponent:
+      Translation: [4.32133675e-07, -0.499999851, -0.499999821]
+      Rotation: [1.57079637, 1.63914052e-07, 1.5013037e-06]
+      Scale: [0.999992192, 0.999982238, 0.99998188]
+    SpriteRendererComponent:
+      Color: [1, 0.250965238, 0.250965238, 1]
+      Path: "NULL"
+      Filename: None Selected
+      Type: 0
+      TilingFactor: 1
+      Rows: 1
+      Columns: 1
+      RowCoordinate: 1
+      ColumnCoordinate: 1
+      SubtextureWidth: 1
+      SubtextureHeight: 1
+      Frames: 1
+      StartFrame: 1
+      EndFrame: 1
+      CurrentFrame: 1
+      FPS: 1
+    ParentComponent:
+      Parent: 0
+      InheritAll: true
+      InheritTransform: true
+    ChildComponent:
+      []
+  - Entity: 1
+    TagComponent:
+      Tag: r1
+    TransformComponent:
+      Translation: [0, 0.49999997, -0.5]
+      Rotation: [1.57079637, 0, 0]
+      Scale: [1, 0.999997318, 0.999997318]
+    SpriteRendererComponent:
+      Color: [0.694980681, 0, 0, 1]
+      Path: "NULL"
+      Filename: None Selected
+      Type: 0
+      TilingFactor: 1
+      Rows: 1
+      Columns: 1
+      RowCoordinate: 1
+      ColumnCoordinate: 1
+      SubtextureWidth: 1
+      SubtextureHeight: 1
+      Frames: 1
+      StartFrame: 1
+      EndFrame: 1
+      CurrentFrame: 1
+      FPS: 1
+    ParentComponent:
+      Parent: 0
+      InheritAll: true
+      InheritTransform: true
+  - Entity: 0
+    TagComponent:
+      Tag: r1
+    TransformComponent:
+      Translation: [1.86264515e-09, 3.7252903e-09, -2.32830644e-10]
+      Rotation: [-1.57078028, 1.03049517, -1.57079768]
+      Scale: [1.52030432, 1.78405976, 1.28737032]
+    SpriteRendererComponent:
+      Color: [1, 0, 0, 1]
+      Path: "NULL"
+      Filename: None Selected
+      Type: 0
+      TilingFactor: 1
+      Rows: 1
+      Columns: 1
+      RowCoordinate: 1
+      ColumnCoordinate: 1
+      SubtextureWidth: 1
+      SubtextureHeight: 1
+      Frames: 1
+      StartFrame: 1
+      EndFrame: 1
+      CurrentFrame: 1
+      FPS: 1
+    ChildComponent:
+      - 1
+      - 2
+      - 1048579
+      - 1048581
+      - 1048580

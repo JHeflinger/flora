@@ -2,8 +2,16 @@
 #include "Math.h"
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtx/matrix_decompose.hpp>
+#include <glm/gtx/quaternion.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 
 namespace Flora::Math {
+
+	glm::mat4 ComposeTransform(glm::vec3 translation, glm::vec3 rotation, glm::vec3 scale) {
+		return glm::translate(glm::mat4(1.0f), translation)
+			* glm::toMat4(glm::quat(rotation))
+			* glm::scale(glm::mat4(1.0f), scale);
+	}
 
 	bool DecomposeTransform(const glm::mat4& transform, glm::vec3& translation, glm::vec3& rotation, glm::vec3& scale) {
 		using namespace glm;

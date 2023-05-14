@@ -76,13 +76,19 @@ TODO:
 
 	- more texture support
 
+	- label component
+
 IN PROGRESS:
 
 	- show camera view box
 
-	- bug: physics don't work perfectly when it comes to sub-entities
+	- bug: moving rotation on subentities affects the scale
+
+	- bug: physics don't work perfectly when it comes to sub-entities - something is affecting scale
 
 IMPLEMENTED TICKETS:
+
+	- bug: content browser would not update scene filepath when renaming scene
 
 	- physics wrapper to add vectors and etc
 

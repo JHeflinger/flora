@@ -131,6 +131,8 @@ namespace Flora {
 					std::string completeFilename = m_CurrentDirectory.string() + "/" + std::string(newFilename);
 					if (std::rename(path.string().c_str(), completeFilename.c_str()) == 0) {
 						m_FileToRename = "";
+						if (m_EditorContext->ActiveScene->GetSceneFilepath() == path.string().c_str())
+							m_EditorContext->ActiveScene->SetSceneFilepath(completeFilename);
 					} else FL_CORE_ERROR("Error renaming file");
 				}
 			} else {
