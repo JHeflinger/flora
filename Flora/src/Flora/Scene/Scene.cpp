@@ -43,12 +43,13 @@ namespace Flora {
 		glm::mat4 newTransform = Math::ComposeTransform(translation, rotation, scale); // the world transform
 		glm::mat4 updatedTransform = useTransformRef ? glm::inverse(refTransform) * newTransform : newTransform; // the component transform
 		Math::DecomposeTransform(updatedTransform, translation, rotation, scale);
-		tc.Translation = translation;
-		tc.Rotation = rotation;
+		tc.Translation.x = translation.x;
+		tc.Translation.y = translation.y;
+		tc.Rotation.z = rotation.z;
 		//tc.Scale = scale;
 
 		//for debugging, but could be extended to view hitboxes
-		if (true) {
+		if (false) {
 			Entity cameraEntity = Entity{ (entt::entity)(uint32_t)m_PrimaryCameraHandle, this };
 			Camera* primaryCamera = &(cameraEntity.GetComponent<CameraComponent>().Camera);
 			glm::mat4 cameraTransform = cameraEntity.GetComponent<TransformComponent>().GetTransform();

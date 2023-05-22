@@ -76,15 +76,17 @@ TODO:
 
 	- more texture support
 
-	- label component
+	- bug: moving rotation on subentities affects the scale
+
+	- bug: physics don't work perfectly when it comes to sub-entities - something is affecting scale
 
 IN PROGRESS:
 
 	- show camera view box
 
-	- bug: moving rotation on subentities affects the scale
+	- label component
 
-	- bug: physics don't work perfectly when it comes to sub-entities - something is affecting scale
+	- dev input in console panel
 
 IMPLEMENTED TICKETS:
 

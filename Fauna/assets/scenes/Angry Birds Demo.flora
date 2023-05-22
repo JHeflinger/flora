@@ -491,6 +491,9 @@ Entities:
         OrthographicNear: -1
         OrthographicFar: 1
       FixedAspectRatio: false
+    NativeScriptComponent:
+      Path: assets\scripts\CameraBinder.h
+      Filename: CameraBinder.h
   - Entity: 1
     TagComponent:
       Tag: Ground

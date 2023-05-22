@@ -1,6 +1,6 @@
-Scene Filepath: assets\scenes\Debug.flora
-Selected Entity: -1
-Current Gizmo: 120
+Scene Filepath: D:\Dev\WotA\Scenes\Core.flora
+Selected Entity: 1
+Current Gizmo: 896
 Editor Camera Type: Orthographic
 General Camera Settings:
   Position: [-0.834555626, 1.03017354, 9.91172314]
@@ -10,7 +10,7 @@ Perspective Camera Settings:
   Pitch: 0.103200443
   Yaw: 0.0840006992
 Orthographic Camera Settings:
-  Size: 30.3961182
+  Size: 15.3961182
 Closed Panels:
   []
 Stat Panel Settings:

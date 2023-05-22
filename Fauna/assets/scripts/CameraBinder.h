@@ -13,7 +13,7 @@ namespace Flora {
 		}
 
 		void OnUpdate(Timestep ts) {
-			glm::vec3 translation = GetScene()->GetEntitiesByTag("Projectile")[0].GetComponent<TransformComponent>().Translation;
+			glm::vec3 translation = GetScene()->GetEntitiesByTag("Player")[0].GetComponent<TransformComponent>().Translation;
 			GetComponent<TransformComponent>().Translation = translation;
 		}
 	};

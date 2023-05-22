@@ -32,6 +32,9 @@ namespace Flora {
 			ImGui::PopStyleColor();
 		}
 		ImGui::End();
+
+		ImGui::Begin("Input", &m_Enabled);
+		ImGui::End();
 	}
 
 	void ConsolePanel::OnUpdate() {
