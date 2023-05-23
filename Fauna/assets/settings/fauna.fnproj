@@ -1,16 +1,16 @@
-Scene Filepath: D:\Dev\WotA\Scenes\Core.flora
-Selected Entity: 1
-Current Gizmo: 896
+Scene Filepath: assets\scenes\Angry Birds Demo.flora
+Selected Entity: -1
+Current Gizmo: 120
 Editor Camera Type: Orthographic
 General Camera Settings:
-  Position: [-0.834555626, 1.03017354, 9.91172314]
+  Position: [0, 0, 10]
   Focal Point: [0, 0, 0]
 Perspective Camera Settings:
   Distance: 10
-  Pitch: 0.103200443
-  Yaw: 0.0840006992
+  Pitch: 0
+  Yaw: 0
 Orthographic Camera Settings:
-  Size: 15.3961182
+  Size: 19.104496
 Closed Panels:
   []
 Stat Panel Settings:

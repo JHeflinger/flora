@@ -2,6 +2,7 @@
 #include "ConsolePanel.h"
 #include "Flora/Renderer/Renderer2D.h"
 #include <imgui/imgui.h>
+#include "Flora/Utils/DeveloperUtils.h"
 
 namespace Flora {
 	void ConsolePanel::OnImGuiRender() {
@@ -33,7 +34,47 @@ namespace Flora {
 		}
 		ImGui::End();
 
-		ImGui::Begin("Input", &m_Enabled);
+		RenderDevInput();
+	}
+
+	void ConsolePanel::RenderDevInput() {
+		ImGui::Begin("Developer Input", &m_Enabled);
+		ImVec2 contentRegionMax = ImGui::GetWindowContentRegionMax();
+		ImVec2 contentRegionAvailable = ImGui::GetContentRegionAvail();
+		float remainingHeight = contentRegionAvailable.y;
+		float inputHeight = ImGui::GetFrameHeight();
+		remainingHeight -= inputHeight + ImGui::GetStyle().ItemSpacing.y;
+
+		ImGui::BeginChild("MainContent", ImVec2(contentRegionAvailable.x, remainingHeight), false);
+		std::vector<std::string> commandLogs = DeveloperUtils::ReadLogs();
+		std::vector<std::string> timeLogs = DeveloperUtils::ReadTimeLogs();
+		uint32_t unresolvedCommands = DeveloperUtils::CountQueuedCommands();
+		for (int i = 0; i < commandLogs.size(); i++) {
+			bool isUnresolved = false;
+			if (i >= commandLogs.size() - unresolvedCommands) {
+				ImGui::PushStyleColor(ImGuiCol_Text, { 0.95, 0.95, 0.25, 1 });
+				isUnresolved = true;
+			}
+			ImGui::Text((timeLogs[i] + " " + commandLogs[i]).c_str());
+			if (isUnresolved) ImGui::PopStyleColor();
+		}
+		ImGui::EndChild();
+
+		ImGui::SetCursorPosY(ImGui::GetCursorPosY() + ImGui::GetStyle().ItemSpacing.y);
+
+		static char inputCommand[512] = "";
+		ImGui::SetNextItemWidth(ImGui::GetWindowContentRegionWidth());
+		static bool enterPressed = false;
+		if (enterPressed) {
+			ImGui::SetKeyboardFocusHere();
+			enterPressed = false;
+		}
+		enterPressed = ImGui::InputText("##Input", inputCommand, 512, ImGuiInputTextFlags_EnterReturnsTrue);
+		if (enterPressed) {
+			DeveloperUtils::SendCommand(std::string(inputCommand));
+			inputCommand[0] = '\0';
+		}
+
 		ImGui::End();
 	}
 
