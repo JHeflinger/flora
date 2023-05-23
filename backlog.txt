@@ -86,9 +86,9 @@ IN PROGRESS:
 
 	- label component
 
-	- dev input in console panel
-
 IMPLEMENTED TICKETS:
+
+	- dev input in console panel
 
 	- bug: content browser would not update scene filepath when renaming scene
 
