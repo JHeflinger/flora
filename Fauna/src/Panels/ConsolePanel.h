@@ -12,7 +12,7 @@ namespace Flora {
 	class ConsolePanel : public EditorPanel {
 	public:
 		ConsolePanel() = default;
-		virtual void Initialize() override {};
+		virtual void Initialize() override;
 		virtual void OnUpdate() override;
 		virtual void OnImGuiRender() override;
 		void AddLog(LogType type, std::string log);
@@ -24,6 +24,7 @@ namespace Flora {
 		void Clear() { m_Logs.clear(); }
 	private:
 		std::string SnipLog(std::string log, int snips = 1);
+		void RenderDevInput();
 	private:
 		std::vector<ConsoleLog> m_Logs;
 		std::vector<std::string> m_CoreLogs;

@@ -1,5 +1,5 @@
 Scene Filepath: assets\scenes\Angry Birds Demo.flora
-Selected Entity: -1
+Selected Entity: 13
 Current Gizmo: 7
 Editor Camera Type: Orthographic
 General Camera Settings:
@@ -10,7 +10,7 @@ Perspective Camera Settings:
   Pitch: 0
   Yaw: 0
 Orthographic Camera Settings:
-  Size: 17.3794937
+  Size: 19.104496
 Closed Panels:
   []
 Stat Panel Settings:
