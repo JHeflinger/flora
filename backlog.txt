@@ -86,6 +86,12 @@ IN PROGRESS:
 
 	- label component
 
+	- circle rendering
+
+	- add circle to stats
+
+	- bug: circle not working, note that it is probably the openGLRendererAPI thing with the vertex buffer binding?
+
 IMPLEMENTED TICKETS:
 
 	- dev input in console panel

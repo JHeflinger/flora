@@ -143,6 +143,16 @@ namespace Flora {
 			out << YAML::EndMap;
 		}
 
+		if (entity.HasComponent<CircleRendererComponent>()) {
+			out << YAML::Key << "CircleRendererComponent";
+			out << YAML::BeginMap;
+			auto& circleRendererComponent = entity.GetComponent<CircleRendererComponent>();
+			out << YAML::Key << "Color" << YAML::Value << circleRendererComponent.Color;
+			out << YAML::Key << "Radius" << YAML::Value << circleRendererComponent.Radius;
+			out << YAML::Key << "Thickness" << YAML::Value << circleRendererComponent.Thickness;
+			out << YAML::Key << "Fade" << YAML::Value << circleRendererComponent.Fade;
+		}
+
 		if (entity.HasComponent<NativeScriptComponent>()) {
 			out << YAML::Key << "NativeScriptComponent";
 			out << YAML::BeginMap;
@@ -323,6 +333,15 @@ namespace Flora {
 					src.FPS = spriteRendererComponent["FPS"].as<int>();
 					src.Path = spriteRendererComponent["Path"].as<std::string>();
 					src.Filename = spriteRendererComponent["Filename"].as<std::string>();
+				}
+
+				auto circleRendererComponent = entity["CircleRendererComponent"];
+				if (circleRendererComponent) {
+					auto& crc = deserializedEntity.AddComponent<CircleRendererComponent>();
+					crc.Color = circleRendererComponent["Color"].as<glm::vec4>();
+					crc.Thickness = circleRendererComponent["Thickness"].as<float>();
+					crc.Fade = circleRendererComponent["Fade"].as<float>();
+					crc.Radius = circleRendererComponent["Radius"].as<float>();
 				}
 
 				auto nativeScriptComponent = entity["NativeScriptComponent"];

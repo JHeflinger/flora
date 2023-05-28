@@ -78,6 +78,21 @@ namespace Flora {
 		SpriteRendererComponent(const glm::vec4& color) : Color(color) {}
 	};
 
+	struct CircleRendererComponent {
+		glm::vec4 Color{ 1.0f, 1.0f, 1.0f, 1.0f };
+		float Radius = 0.5f;
+		float Thickness = 1.0f;
+		float Fade = 0.005f;
+		CircleRendererComponent() = default;
+		CircleRendererComponent(const CircleRendererComponent& other) {
+			Color = other.Color;
+			Radius = other.Radius;
+			Thickness = other.Thickness;
+			Fade = other.Fade;
+		}
+		CircleRendererComponent(const glm::vec4& color) : Color(color) {}
+	};
+
 	struct CameraComponent {
 		SceneCamera Camera;
 		bool FixedAspectRatio = false;

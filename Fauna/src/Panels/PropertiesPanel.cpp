@@ -197,6 +197,7 @@ namespace Flora {
 		if (ImGui::BeginPopup("Add Component")) {
 			DrawAddComponentItem<CameraComponent>("Camera", m_EditorContext->SelectedEntity);
 			DrawAddComponentItem<SpriteRendererComponent>("Sprite Renderer", m_EditorContext->SelectedEntity);
+			DrawAddComponentItem<CircleRendererComponent>("Circle Renderer", m_EditorContext->SelectedEntity);
 			DrawAddComponentItem<NativeScriptComponent>("Native Script", m_EditorContext->SelectedEntity);
 			DrawAddComponentItem<ScriptManagerComponent>("Script Manager", m_EditorContext->SelectedEntity);
 			DrawAddComponentItem<RigidBody2DComponent>("Rigid Body 2D", m_EditorContext->SelectedEntity);
@@ -528,6 +529,22 @@ namespace Flora {
 			}
 
 			ImGui::PopStyleVar();
+		});
+
+		DrawComponent<CircleRendererComponent>("Circle", entity, [](auto& entity, auto& component) {
+			float linespacing = 2.0f;
+			ImGui::Columns(2);
+			ImGui::SetColumnWidth(0, 100.0f);
+			ImGui::Text("Thickness");
+			ImGui::Dummy(ImVec2(0, linespacing));
+			ImGui::Text("Fade");
+			ImGui::Dummy(ImVec2(0, linespacing));
+			ImGui::Text("Color");
+			ImGui::NextColumn();
+			ImGui::DragFloat("##Thickness", &component.Thickness, 0.01f, 0.0f, 1000000.0f, "%.3f");
+			ImGui::DragFloat("##Fade", &component.Fade, 0.001f, 0.0f, 1.0f, "%.4f");
+			ImGui::ColorEdit4("##Color", glm::value_ptr(component.Color));
+			ImGui::Columns(1);
 		});
 
 		DrawComponent<NativeScriptComponent>("Native Script", entity, [](auto& entity, auto& component) {

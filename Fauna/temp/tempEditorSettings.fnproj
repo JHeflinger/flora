@@ -10,13 +10,13 @@ Perspective Camera Settings:
   Pitch: 0
   Yaw: 0
 Orthographic Camera Settings:
-  Size: 19.104496
+  Size: 14.104496
 Closed Panels:
   []
 Stat Panel Settings:
   Timeframe: 4.19000006
   Show Key: true
-  Axis Scalar: 0.75999999
+  Axis Scalar: 1.41999996
   Axis Minimum: 0
   Open Graphs:
     DRAWCALLS: false

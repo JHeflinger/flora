@@ -2,10 +2,10 @@
 #include "Flora/Scene/Scene.h"
 #include "Flora/Renderer/Renderer2D.h"
 #include "Flora/Scene/Entity.h"
-#include <glm/glm.hpp>
-#include <filesystem>
 #include "Flora/Scene/Components.h"
 #include "Flora/Math/Math.h"
+#include <glm/glm.hpp>
+#include <filesystem>
 
 // temp until stable alternative is implemented
 #include "../../Fauna/assets/scripts/MasterNativeScript.h"
@@ -254,12 +254,26 @@ namespace Flora {
 			Camera* primaryCamera = &(cameraEntity.GetComponent<CameraComponent>().Camera);
 			glm::mat4 cameraTransform = cameraEntity.GetComponent<TransformComponent>().GetTransform();
 			Renderer2D::BeginScene(primaryCamera->GetProjection(), cameraTransform);
-			auto group = m_Registry.group<TransformComponent>(entt::get<SpriteRendererComponent>);
-			for (auto entity : group) {
-				Entity drawEntity = Entity{ entity, this };
-				if (!drawEntity.HasComponent<ParentComponent>())
-					DrawEntitySprite(drawEntity);
+			
+			//quads
+			{
+				auto group = m_Registry.group<TransformComponent>(entt::get<SpriteRendererComponent>);
+				for (auto entity : group) {
+					Entity drawEntity = Entity{ entity, this };
+					if (!drawEntity.HasComponent<ParentComponent>())
+						DrawEntitySprite(drawEntity);
+				}
 			}
+
+			//circles
+			{
+				auto view = m_Registry.view<TransformComponent, CircleRendererComponent>();
+				for (auto entity : view) {
+					auto [transform, circle] = view.get<TransformComponent, CircleRendererComponent>(entity);
+					Renderer2D::DrawCircle(transform.GetTransform(), circle.Color, circle.Thickness, circle.Fade, (int)(uint32_t)entity);
+				}
+			}
+
 			Renderer2D::EndScene();
 		}
 	}
@@ -278,12 +292,26 @@ namespace Flora {
 		// Render 2D Sprites
 		{
 			Renderer2D::BeginScene(camera);
-			auto group = m_Registry.group<TransformComponent>(entt::get<SpriteRendererComponent>);
-			for (auto entity : group) {
-				Entity drawEntity = Entity{ entity, this };
-				if (!drawEntity.HasComponent<ParentComponent>())
-					DrawEntitySprite(drawEntity);
+
+			//quads
+			{
+				auto group = m_Registry.group<TransformComponent>(entt::get<SpriteRendererComponent>);
+				for (auto entity : group) {
+					Entity drawEntity = Entity{ entity, this };
+					if (!drawEntity.HasComponent<ParentComponent>())
+						DrawEntitySprite(drawEntity);
+				}
 			}
+
+			//circles
+			{
+				auto view = m_Registry.view<TransformComponent, CircleRendererComponent>();
+				for (auto entity : view) {
+					auto [transform, circle] = view.get<TransformComponent, CircleRendererComponent>(entity);
+					Renderer2D::DrawCircle(transform.GetTransform(), circle.Color, circle.Thickness, circle.Fade, (int)(uint32_t)entity);
+				}
+			}
+
 			Renderer2D::EndScene();
 		}
 	}
@@ -318,41 +346,11 @@ namespace Flora {
 
 	template<typename T>
 	void Scene::OnComponentAdded(Entity entity, T& component) {
-		static_assert(false);
+		static_assert(true);
 	}
-
+	
 	template<>
-	void Scene::OnComponentAdded<TransformComponent>(Entity entity, TransformComponent& component) {
-
-	}
-
-	template<>
-	void Scene::OnComponentAdded<SpriteRendererComponent>(Entity entity, SpriteRendererComponent& component) {
-
-	}
-
-	template<>
-	void Scene::OnComponentAdded<NativeScriptComponent>(Entity entity, NativeScriptComponent& component) {
-
-	}
-
-	template<>
-	void Scene::OnComponentAdded<ChildComponent>(Entity entity, ChildComponent& component) {
-
-	}
-
-	template<>
-	void Scene::OnComponentAdded<ParentComponent>(Entity entity, ParentComponent& component) {
-
-	}
-
-	template<>
-	void Scene::OnComponentAdded<TagComponent>(Entity entity, TagComponent& component) {
-
-	}
-
-	template<>
-	void Scene::OnComponentAdded<ScriptManagerComponent>(Entity entity, ScriptManagerComponent& component) {
+	void Scene::OnComponentAdded<CircleRendererComponent>(Entity entity, CircleRendererComponent& component) {
 
 	}
 
@@ -360,15 +358,5 @@ namespace Flora {
 	void Scene::OnComponentAdded<CameraComponent>(Entity entity, CameraComponent& component) {
 		if (m_ViewportWidth > 0 && m_ViewportHeight > 0)
 			component.Camera.SetViewportSize(m_ViewportWidth, m_ViewportHeight);
-	}
-
-	template<>
-	void Scene::OnComponentAdded<RigidBody2DComponent>(Entity entity, RigidBody2DComponent& component) {
-
-	}
-
-	template<>
-	void Scene::OnComponentAdded<BoxCollider2DComponent>(Entity entity, BoxCollider2DComponent& component) {
-
 	}
 }
