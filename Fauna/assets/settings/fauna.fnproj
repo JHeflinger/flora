@@ -1,16 +1,16 @@
 Scene Filepath: assets\scenes\Test.flora
 Selected Entity: 1
 Current Gizmo: 120
-Editor Camera Type: Orthographic
+Editor Camera Type: Perspective
 General Camera Settings:
-  Position: [0, 0, 10]
-  Focal Point: [0, 0, 0]
+  Position: [18.8693771, -3.39133072, 8.79112625]
+  Focal Point: [0.781190634, -0.425818533, 0]
 Perspective Camera Settings:
-  Distance: 10
-  Pitch: 0
-  Yaw: 0
+  Distance: 20.3288136
+  Pitch: -0.146399677
+  Yaw: -1.11839938
 Orthographic Camera Settings:
-  Size: 14.104496
+  Size: 29.104496
 Closed Panels:
   []
 Stat Panel Settings:

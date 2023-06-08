@@ -41,13 +41,12 @@ in flat int v_EntityID;
 
 void main() {
 	float distance = 1.0 - length(v_LocalPosition);
-	vec3 t_color = vec3(smoothstep(0.0, v_Fade, distance));
-	t_color *= vec3(smoothstep(v_Thickness + v_Fade, v_Thickness, distance));
+	float circle = smoothstep(0.0, v_Fade, distance);
+	circle *= smoothstep(v_Thickness + v_Fade, v_Thickness, distance);
+	if (circle == 0.0)
+		discard;
 
 	color = v_Color;
-	color.rgb *= t_color;
-
-	color = vec4(1.0, 1.0, 1.0, 1.0);
-
+	color.a *= circle;
 	entityID = v_EntityID;
 }

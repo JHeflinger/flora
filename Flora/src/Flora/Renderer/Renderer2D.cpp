@@ -121,7 +121,7 @@ namespace Flora {
 			{ ShaderDataType::Float, "a_Thickness" },
 			{ ShaderDataType::Float, "a_Fade" },
 			{ ShaderDataType::Int, "a_EntityID" }
-			});
+		});
 		s_Data.CircleVertexArray->AddVertexBuffer(s_Data.CircleVertexBuffer);
 		s_Data.CircleVertexArray->SetIndexBuffer(quadIB); // using quad ib on purpose
 		s_Data.CircleVertexBufferBase = new CircleVertex[s_Data.MaxVertices];
