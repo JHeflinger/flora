@@ -1,5 +1,7 @@
 TODO:
 
+	- optimization: if something is not being affected for a while, stop simulating it
+
 	- custom editor settings like color scheme, etc
 
 	- bug: there is some instability when dealing with entt handles between int to uint32_t conversions
@@ -64,24 +66,22 @@ TODO:
 
 	- sprites should have the option to linear filter or not
 
-	- asset manager so a new texture won't be used for every entity that uses that texture
-
 	- show hitbox option on collider body
-
-	- show camera view box
-
-	- bug: z-index blending isnt working perfectly
-
-	- bug: physics don't work perfectly when it comes to sub-entities
-
-	- bug: click to select doesn't always work
-
-	- physics wrapper to add vectors and etc
 
 	- texture hot reloading
 
+	- more texture support
+
+	- bug: moving rotation on subentities affects the scale
+
+	- bug: physics don't work perfectly when it comes to sub-entities - something is affecting scale
+
 IN PROGRESS:
 
-	- more texture support
+	- show camera view box
+
+	- label component
+
+	- serialize editor settings for physics collider lines on/off/and thickness
 
 IMPLEMENTED TICKETS:

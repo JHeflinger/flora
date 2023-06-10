@@ -2,22 +2,19 @@
 #include "Flora/Scene/Scene.h"
 #include "Flora/Renderer/Renderer2D.h"
 #include "Flora/Scene/Entity.h"
+#include "Flora/Scene/Components.h"
+#include "Flora/Math/Math.h"
 #include <glm/glm.hpp>
 #include <filesystem>
-#include "Flora/Scene/Components.h"
-#include "box2d/b2_world.h"
-#include "box2d/b2_body.h"
-#include "box2d/b2_fixture.h"
-#include "box2d/b2_polygon_shape.h"
 
 // temp until stable alternative is implemented
 #include "../../Fauna/assets/scripts/MasterNativeScript.h"
 
 namespace Flora {
-	static void DrawEntitySprite(Entity& entity, bool useTransformRef = false, glm::mat4 refTransform = glm::mat4(0.0f)) {
+	void Scene::DrawEntitySprite(Entity& entity, bool useTransformRef, glm::mat4 refTransform) {
 		glm::mat4 transform = entity.GetComponent<TransformComponent>().GetTransform();
 		if (useTransformRef) transform = refTransform * transform;
-		Renderer2D::DrawSprite(transform, entity.GetComponent<SpriteRendererComponent>(), (int)(uint32_t)entity);
+		Renderer2D::DrawSprite(transform, entity.GetComponent<SpriteRendererComponent>(), m_AssetManager, (int)(uint32_t)entity);
 		if (entity.HasComponent<ChildComponent>()) {
 			std::vector<Entity> children = entity.GetComponent<ChildComponent>().Children;
 			for (int i = 0; i < children.size(); i++) {
@@ -29,7 +26,61 @@ namespace Flora {
 		}
 	}
 
+	void Scene::SimulateEntityPhysics(Entity& entity, bool useTransformRef, glm::mat4 refTransform) {
+		// get correct transform based on parent tree
+		TransformComponent& tc = entity.GetComponent<TransformComponent>();
+		glm::mat4 transform = tc.GetTransform();
+		if (useTransformRef) transform = refTransform * transform;
+
+		//calculate new transform and set it based on physics
+		glm::vec3 translation, rotation, scale;
+		Math::DecomposeTransform(transform, translation, rotation, scale);
+		b2Body* body = entity.GetComponent<RigidBody2DComponent>().RuntimeBody;
+		const auto& position = body->GetPosition();
+		translation.x = position.x;
+		translation.y = position.y;
+		rotation.z = body->GetAngle();
+		glm::mat4 newTransform = Math::ComposeTransform(translation, rotation, scale); // the world transform
+		glm::mat4 updatedTransform = useTransformRef ? glm::inverse(refTransform) * newTransform : newTransform; // the component transform
+		Math::DecomposeTransform(updatedTransform, translation, rotation, scale);
+		tc.Translation.x = translation.x;
+		tc.Translation.y = translation.y;
+		tc.Rotation.z = rotation.z;
+		//tc.Scale = scale;
+
+		//for debugging, but could be extended to view hitboxes
+		if (false) {
+			Entity cameraEntity = Entity{ (entt::entity)(uint32_t)m_PrimaryCameraHandle, this };
+			Camera* primaryCamera = &(cameraEntity.GetComponent<CameraComponent>().Camera);
+			glm::mat4 cameraTransform = cameraEntity.GetComponent<TransformComponent>().GetTransform();
+			Renderer2D::BeginScene(primaryCamera->GetProjection(), cameraTransform);
+			Renderer2D::DrawQuad(newTransform, { 1, 1, 1, 1 }, (int)(uint32_t)entity);
+			Renderer2D::EndScene();
+		}
+
+		//simulate children entities
+		if (entity.HasComponent<ChildComponent>()) {
+			std::vector<Entity> children = entity.GetComponent<ChildComponent>().Children;
+			for (int i = 0; i < children.size(); i++) {
+				if (children[i].HasComponent<RigidBody2DComponent>()) {
+					bool useParentTransform = children[i].GetComponent<ParentComponent>().InheritAll || (!children[i].GetComponent<ParentComponent>().InheritAll && children[i].GetComponent<ParentComponent>().InheritTransform);
+					SimulateEntityPhysics(children[i], useParentTransform, transform);
+				}
+			}
+		}
+	}
+
+	glm::mat4 Scene::GetWorldTransform(Entity& entity) {
+		if (entity.HasComponent<ParentComponent>()) {
+			if (entity.GetComponent<ParentComponent>().InheritAll || entity.GetComponent<ParentComponent>().InheritTransform) {
+				return GetWorldTransform(entity.GetComponent<ParentComponent>().Parent) * entity.GetComponent<TransformComponent>().GetTransform();
+			}
+		}
+		return entity.GetComponent<TransformComponent>().GetTransform();
+	}
+
 	Scene::Scene() {
+		m_AssetManager = new AssetManager();
 	}
 
 	Scene::~Scene() {
@@ -40,12 +91,14 @@ namespace Flora {
 		auto view = m_Registry.view<RigidBody2DComponent>();
 		for (auto e : view) {
 			Entity entity = { e, this };
-			auto& transform = entity.GetComponent<TransformComponent>();
+			glm::mat4 transform = GetWorldTransform(entity);
+			glm::vec3 translation, rotation, scale;
+			Math::DecomposeTransform(transform, translation, rotation, scale);
 			auto& rb2d = entity.GetComponent<RigidBody2DComponent>();
 			b2BodyDef bodyDef;
 			bodyDef.type = (b2BodyType)rb2d.Type;
-			bodyDef.position.Set(transform.Translation.x, transform.Translation.y);
-			bodyDef.angle = transform.Rotation.z;
+			bodyDef.position.Set(translation.x, translation.y);
+			bodyDef.angle = rotation.z;
 			b2Body* body = m_PhysicsWorld->CreateBody(&bodyDef);
 			body->SetFixedRotation(rb2d.FixedRotation);
 			rb2d.RuntimeBody = body;
@@ -53,7 +106,7 @@ namespace Flora {
 			if (entity.HasComponent<BoxCollider2DComponent>()) {
 				auto& bc2d = entity.GetComponent<BoxCollider2DComponent>();
 				b2PolygonShape polygonShape;
-				polygonShape.SetAsBox(transform.Scale.x * bc2d.Size.x, transform.Scale.y * bc2d.Size.y);
+				polygonShape.SetAsBox(scale.x * bc2d.Size.x, scale.y * bc2d.Size.y);
 				b2FixtureDef fixtureDef;
 				fixtureDef.shape = &polygonShape;
 				fixtureDef.density = bc2d.Density;
@@ -109,6 +162,7 @@ namespace Flora {
 		CopyComponent<TagComponent>(entity, newEntity);
 		CopyComponent<TransformComponent>(entity, newEntity);
 		CopyComponent<SpriteRendererComponent>(entity, newEntity);
+		CopyComponent<CircleRendererComponent>(entity, newEntity);
 		CopyComponent<CameraComponent>(entity, newEntity);
 		CopyComponent<NativeScriptComponent>(entity, newEntity);
 		CopyComponent<ScriptManagerComponent>(entity, newEntity);
@@ -201,12 +255,26 @@ namespace Flora {
 			Camera* primaryCamera = &(cameraEntity.GetComponent<CameraComponent>().Camera);
 			glm::mat4 cameraTransform = cameraEntity.GetComponent<TransformComponent>().GetTransform();
 			Renderer2D::BeginScene(primaryCamera->GetProjection(), cameraTransform);
-			auto group = m_Registry.group<TransformComponent>(entt::get<SpriteRendererComponent>);
-			for (auto entity : group) {
-				Entity drawEntity = Entity{ entity, this };
-				if (!drawEntity.HasComponent<ParentComponent>())
-					DrawEntitySprite(drawEntity);
+			
+			//quads
+			{
+				auto group = m_Registry.group<TransformComponent>(entt::get<SpriteRendererComponent>);
+				for (auto entity : group) {
+					Entity drawEntity = Entity{ entity, this };
+					if (!drawEntity.HasComponent<ParentComponent>())
+						DrawEntitySprite(drawEntity);
+				}
 			}
+
+			//circles
+			{
+				auto view = m_Registry.view<TransformComponent, CircleRendererComponent>();
+				for (auto entity : view) {
+					auto [transform, circle] = view.get<TransformComponent, CircleRendererComponent>(entity);
+					Renderer2D::DrawCircle(transform.GetTransform(), circle.Color, circle.Thickness, circle.Fade, (int)(uint32_t)entity);
+				}
+			}
+
 			Renderer2D::EndScene();
 		}
 	}
@@ -215,14 +283,9 @@ namespace Flora {
 		m_PhysicsWorld->Step(ts, m_PhysicsVelocityIterations, m_PhysicsPositionIterations);
 		auto view = m_Registry.view<RigidBody2DComponent>();
 		for (auto e : view) {
-			Entity entity = { e, this };
-			auto& transform = entity.GetComponent<TransformComponent>();
-			auto& rb2d = entity.GetComponent<RigidBody2DComponent>();
-			b2Body* body = (b2Body*)rb2d.RuntimeBody;
-			const auto& position = body->GetPosition();
-			transform.Translation.x = position.x;
-			transform.Translation.y = position.y;
-			transform.Rotation.z = body->GetAngle();
+			Entity physEntity = Entity{ e, this };
+			if (!physEntity.HasComponent<ParentComponent>())
+				SimulateEntityPhysics(physEntity);
 		}
 	}
 
@@ -230,12 +293,31 @@ namespace Flora {
 		// Render 2D Sprites
 		{
 			Renderer2D::BeginScene(camera);
-			auto group = m_Registry.group<TransformComponent>(entt::get<SpriteRendererComponent>);
-			for (auto entity : group) {
-				Entity drawEntity = Entity{ entity, this };
-				if (!drawEntity.HasComponent<ParentComponent>())
-					DrawEntitySprite(drawEntity);
+
+			//quads
+			{
+				auto group = m_Registry.group<TransformComponent>(entt::get<SpriteRendererComponent>);
+				for (auto entity : group) {
+					Entity drawEntity = Entity{ entity, this };
+					if (!drawEntity.HasComponent<ParentComponent>())
+						DrawEntitySprite(drawEntity);
+				}
 			}
+
+			//circles
+			{
+				auto view = m_Registry.view<TransformComponent, CircleRendererComponent>();
+				for (auto entity : view) {
+					auto [transform, circle] = view.get<TransformComponent, CircleRendererComponent>(entity);
+					Renderer2D::DrawCircle(transform.GetTransform(), circle.Color, circle.Thickness, circle.Fade, (int)(uint32_t)entity);
+				}
+			}
+
+			//lines
+			{
+				Renderer2D::DrawLine(glm::vec3(0.0f), glm::vec3(5.0f), glm::vec4(1, 0, 1, 1));
+			}
+
 			Renderer2D::EndScene();
 		}
 	}
@@ -270,41 +352,11 @@ namespace Flora {
 
 	template<typename T>
 	void Scene::OnComponentAdded(Entity entity, T& component) {
-		static_assert(false);
+		static_assert(true);
 	}
-
+	
 	template<>
-	void Scene::OnComponentAdded<TransformComponent>(Entity entity, TransformComponent& component) {
-
-	}
-
-	template<>
-	void Scene::OnComponentAdded<SpriteRendererComponent>(Entity entity, SpriteRendererComponent& component) {
-
-	}
-
-	template<>
-	void Scene::OnComponentAdded<NativeScriptComponent>(Entity entity, NativeScriptComponent& component) {
-
-	}
-
-	template<>
-	void Scene::OnComponentAdded<ChildComponent>(Entity entity, ChildComponent& component) {
-
-	}
-
-	template<>
-	void Scene::OnComponentAdded<ParentComponent>(Entity entity, ParentComponent& component) {
-
-	}
-
-	template<>
-	void Scene::OnComponentAdded<TagComponent>(Entity entity, TagComponent& component) {
-
-	}
-
-	template<>
-	void Scene::OnComponentAdded<ScriptManagerComponent>(Entity entity, ScriptManagerComponent& component) {
+	void Scene::OnComponentAdded<CircleRendererComponent>(Entity entity, CircleRendererComponent& component) {
 
 	}
 
@@ -312,15 +364,5 @@ namespace Flora {
 	void Scene::OnComponentAdded<CameraComponent>(Entity entity, CameraComponent& component) {
 		if (m_ViewportWidth > 0 && m_ViewportHeight > 0)
 			component.Camera.SetViewportSize(m_ViewportWidth, m_ViewportHeight);
-	}
-
-	template<>
-	void Scene::OnComponentAdded<RigidBody2DComponent>(Entity entity, RigidBody2DComponent& component) {
-
-	}
-
-	template<>
-	void Scene::OnComponentAdded<BoxCollider2DComponent>(Entity entity, BoxCollider2DComponent& component) {
-
 	}
 }

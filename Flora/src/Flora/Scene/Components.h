@@ -5,6 +5,7 @@
 #include "Flora/Scene/ScriptableEntity.h"
 #include "Flora/Renderer/Texture.h"
 #include <glm/gtx/quaternion.hpp>
+#include "Flora/Utils/PhysicsUtils.h"
 
 namespace Flora {
 	struct TagComponent {
@@ -36,7 +37,6 @@ namespace Flora {
 	struct SpriteRendererComponent {
 		enum class SpriteType {SINGLE = 0, SUBTEXTURE = 1, ANIMATION = 2};
 		glm::vec4 Color{1.0f, 1.0f, 1.0f, 1.0f};
-		Ref<Texture2D> Texture;
 		SpriteType Type = SpriteType::SINGLE;
 		float TilingFactor = 1.0f;
 		int Rows = 1;
@@ -53,10 +53,10 @@ namespace Flora {
 		int FrameCounter = 0;
 		std::string Path = "NULL";
 		std::string Filename = "None Selected";
+		bool TextureInitialized = false;
 		SpriteRendererComponent() = default;
 		SpriteRendererComponent(const SpriteRendererComponent& other) {
 			Color = other.Color;
-			Texture = other.Texture;
 			Type = other.Type;
 			TilingFactor = other.TilingFactor;
 			Rows = other.Rows;
@@ -73,8 +73,24 @@ namespace Flora {
 			FrameCounter = other.FrameCounter;
 			Path = other.Path;
 			Filename = other.Filename;
+			TextureInitialized = other.TextureInitialized;
 		}
 		SpriteRendererComponent(const glm::vec4& color) : Color(color) {}
+	};
+
+	struct CircleRendererComponent {
+		glm::vec4 Color{ 1.0f, 1.0f, 1.0f, 1.0f };
+		float Radius = 0.5f;
+		float Thickness = 1.0f;
+		float Fade = 0.005f;
+		CircleRendererComponent() = default;
+		CircleRendererComponent(const CircleRendererComponent& other) {
+			Color = other.Color;
+			Radius = other.Radius;
+			Thickness = other.Thickness;
+			Fade = other.Fade;
+		}
+		CircleRendererComponent(const glm::vec4& color) : Color(color) {}
 	};
 
 	struct CameraComponent {
@@ -152,7 +168,7 @@ namespace Flora {
 		enum class BodyType { STATIC = 0, KINEMATIC = 1, DYNAMIC = 2 };
 		BodyType Type = BodyType::STATIC;
 		bool FixedRotation = false;
-		void* RuntimeBody = nullptr;
+		b2Body* RuntimeBody = nullptr;
 		RigidBody2DComponent() = default;
 		RigidBody2DComponent(const RigidBody2DComponent& other) {
 			Type = other.Type;

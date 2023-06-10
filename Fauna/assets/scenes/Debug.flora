@@ -1,0 +1,174 @@
+Scene: Debug
+Primary Camera: 2
+Physics:
+  Gravity: 9.80000019
+  VelocityIterations: 6
+  PositionIterations: 2
+Entities:
+  - Entity: 4
+    TagComponent:
+      Tag: Untitled Entity
+    TransformComponent:
+      Translation: [-7.27240372, 4.39584255e-07, 0]
+      Rotation: [0, 0, -9.9475983e-14]
+      Scale: [1, 0.999997735, 1]
+    SpriteRendererComponent:
+      Color: [0.868725896, 0.100624628, 0.100624628, 1]
+      Path: "NULL"
+      Filename: None Selected
+      Type: 0
+      TilingFactor: 1
+      Rows: 1
+      Columns: 1
+      RowCoordinate: 1
+      ColumnCoordinate: 1
+      SubtextureWidth: 1
+      SubtextureHeight: 1
+      Frames: 1
+      StartFrame: 1
+      EndFrame: 1
+      CurrentFrame: 1
+      FPS: 1
+    ParentComponent:
+      Parent: 3
+      InheritAll: true
+      InheritTransform: true
+    RigidBody2DComponent:
+      Type: 2
+      FixedRotation: false
+    BoxCollider2DComponent:
+      Offset: [0, 0]
+      Size: [0.5, 0.5]
+      Density: 1
+      Friction: 0.5
+      Restitution: 0
+      RestitutionThreshold: 0.5
+  - Entity: 3
+    TagComponent:
+      Tag: Test
+    TransformComponent:
+      Translation: [1.38963082e-06, 0.352059394, 0]
+      Rotation: [0, 0, -3.14159226]
+      Scale: [0.284213126, 3.47064114, 0.999998689]
+    SpriteRendererComponent:
+      Color: [1, 1, 1, 1]
+      Path: "NULL"
+      Filename: None Selected
+      Type: 0
+      TilingFactor: 1
+      Rows: 1
+      Columns: 1
+      RowCoordinate: 1
+      ColumnCoordinate: 1
+      SubtextureWidth: 1
+      SubtextureHeight: 1
+      Frames: 1
+      StartFrame: 1
+      EndFrame: 1
+      CurrentFrame: 1
+      FPS: 1
+    ChildComponent:
+      - 4
+    RigidBody2DComponent:
+      Type: 2
+      FixedRotation: false
+    BoxCollider2DComponent:
+      Offset: [0, 0]
+      Size: [0.5, 0.5]
+      Density: 1
+      Friction: 0.5
+      Restitution: 0
+      RestitutionThreshold: 0.5
+  - Entity: 2
+    TagComponent:
+      Tag: Main Camera
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    CameraComponent:
+      Camera:
+        ProjectionType: 1
+        PerspectiveFOV: 0.785398185
+        PerspectiveNear: 0.00999999978
+        PerspectiveFar: 1000
+        OrthographicSize: 10
+        OrthographicNear: -1
+        OrthographicFar: 1
+      FixedAspectRatio: false
+    NativeScriptComponent:
+      Path: assets\scripts\CameraBinder.h
+      Filename: CameraBinder.h
+  - Entity: 1
+    TagComponent:
+      Tag: World
+    TransformComponent:
+      Translation: [-0.606143475, -2.50588679, 0]
+      Rotation: [0, 0, 0]
+      Scale: [7337.70459, 1, 1]
+    SpriteRendererComponent:
+      Color: [0.980695009, 1, 0, 1]
+      Path: "NULL"
+      Filename: None Selected
+      Type: 0
+      TilingFactor: 1
+      Rows: 1
+      Columns: 1
+      RowCoordinate: 1
+      ColumnCoordinate: 1
+      SubtextureWidth: 1
+      SubtextureHeight: 1
+      Frames: 1
+      StartFrame: 1
+      EndFrame: 1
+      CurrentFrame: 1
+      FPS: 1
+    ChildComponent:
+      []
+    RigidBody2DComponent:
+      Type: 0
+      FixedRotation: false
+    BoxCollider2DComponent:
+      Offset: [0, 0]
+      Size: [0.5, 0.5]
+      Density: 1
+      Friction: 0.5
+      Restitution: 0.800000012
+      RestitutionThreshold: 0.5
+  - Entity: 0
+    TagComponent:
+      Tag: Projectile
+    TransformComponent:
+      Translation: [-2.97158265, -0.657887936, 0]
+      Rotation: [0, 0, 0]
+      Scale: [0.75, 0.75, 0.75]
+    SpriteRendererComponent:
+      Color: [0.494208574, 1, 0, 1]
+      Path: "NULL"
+      Filename: None Selected
+      Type: 0
+      TilingFactor: 1
+      Rows: 1
+      Columns: 1
+      RowCoordinate: 1
+      ColumnCoordinate: 1
+      SubtextureWidth: 1
+      SubtextureHeight: 1
+      Frames: 1
+      StartFrame: 1
+      EndFrame: 1
+      CurrentFrame: 1
+      FPS: 1
+    NativeScriptComponent:
+      Path: assets\scripts\Launch.h
+      Filename: Launch.h
+    RigidBody2DComponent:
+      Type: 2
+      FixedRotation: false
+    BoxCollider2DComponent:
+      Offset: [0, 0]
+      Size: [0.5, 0.5]
+      Density: 1
+      Friction: 0.5
+      Restitution: 0.300000012
+      RestitutionThreshold: 0.5

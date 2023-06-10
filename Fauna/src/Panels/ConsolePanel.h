@@ -12,7 +12,7 @@ namespace Flora {
 	class ConsolePanel : public EditorPanel {
 	public:
 		ConsolePanel() = default;
-		virtual void Initialize() override;
+		virtual void Initialize() override {};
 		virtual void OnUpdate() override;
 		virtual void OnImGuiRender() override;
 		void AddLog(LogType type, std::string log);

@@ -22,6 +22,7 @@ project "Fauna"
 		"%{IncludeDir.entt}",
 		"%{IncludeDir.ImGuizmo}",
 		"%{IncludeDir.yaml_cpp}",
+		"%{IncludeDir.Box2D}",
 	}
 
 	links

@@ -5,10 +5,6 @@
 #include "Flora/Utils/DeveloperUtils.h"
 
 namespace Flora {
-	void ConsolePanel::Initialize() {
-		DeveloperUtils::Init();
-	}
-
 	void ConsolePanel::OnImGuiRender() {
 		auto rendererStats = Renderer2D::GetStats();
 		ImGui::Begin("Console", &m_Enabled);

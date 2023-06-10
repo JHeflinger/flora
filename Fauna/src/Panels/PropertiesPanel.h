@@ -1,5 +1,7 @@
 #pragma once
 #include "EditorPanel.h"
+#include "Flora/Scene/Components.h"
+#include <imgui/imgui.h>
 
 namespace Flora {
 	class PropertiesPanel : public EditorPanel {

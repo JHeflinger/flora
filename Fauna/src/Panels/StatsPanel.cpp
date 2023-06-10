@@ -12,6 +12,8 @@ namespace Flora {
 		// initialize datamap
 		m_DataMap[Stats::DRAWCALLS] = {};
 		m_DataMap[Stats::QUADS] = {};
+		m_DataMap[Stats::CIRCLES] = {};
+		m_DataMap[Stats::LINES] = {};
 		m_DataMap[Stats::VERTICES] = {};
 		m_DataMap[Stats::INDICES] = {};
 		m_DataMap[Stats::FRAMETIME] = {};
@@ -50,6 +52,8 @@ namespace Flora {
 		if (m_EditorContext->ShowStatMap.size() <= 0) {
 			m_EditorContext->ShowStatMap[Stats::DRAWCALLS] = true;
 			m_EditorContext->ShowStatMap[Stats::QUADS] = true;
+			m_EditorContext->ShowStatMap[Stats::CIRCLES] = true;
+			m_EditorContext->ShowStatMap[Stats::LINES] = true;
 			m_EditorContext->ShowStatMap[Stats::VERTICES] = true;
 			m_EditorContext->ShowStatMap[Stats::INDICES] = true;
 			m_EditorContext->ShowStatMap[Stats::FRAMETIME] = true;
@@ -79,6 +83,10 @@ namespace Flora {
 			ImGui::Dummy({ 0, 2 });
 			ImGui::Text("Quads");
 			ImGui::Dummy({ 0, 2 });
+			ImGui::Text("Circles");
+			ImGui::Dummy({ 0, 2 });
+			ImGui::Text("Lines");
+			ImGui::Dummy({ 0, 2 });
 			ImGui::Text("Vertices");
 			ImGui::Dummy({ 0, 2 });
 			ImGui::Text("Indices");
@@ -86,11 +94,15 @@ namespace Flora {
 			ImGui::NextColumn();
 			ImGui::Button(std::to_string(m_RendererStats.DrawCalls).c_str(), buttonSize);
 			ImGui::Button(std::to_string(m_RendererStats.QuadCount).c_str(), buttonSize);
+			ImGui::Button(std::to_string(m_RendererStats.CircleCount).c_str(), buttonSize);
+			ImGui::Button(std::to_string(m_RendererStats.LineCount).c_str(), buttonSize);
 			ImGui::Button(std::to_string(m_RendererStats.GetTotalVertexCount()).c_str(), buttonSize);
 			ImGui::Button(std::to_string(m_RendererStats.GetTotalIndexCount()).c_str(), buttonSize);
 			ImGui::NextColumn();
 			ImGui::Checkbox("##drawcalls", &m_EditorContext->ShowStatMap[Stats::DRAWCALLS]);
 			ImGui::Checkbox("##quads", &m_EditorContext->ShowStatMap[Stats::QUADS]);
+			ImGui::Checkbox("##circles", &m_EditorContext->ShowStatMap[Stats::CIRCLES]);
+			ImGui::Checkbox("##lines", &m_EditorContext->ShowStatMap[Stats::LINES]);
 			ImGui::Checkbox("##vertices", &m_EditorContext->ShowStatMap[Stats::VERTICES]);
 			ImGui::Checkbox("##indices", &m_EditorContext->ShowStatMap[Stats::INDICES]);
 			ImGui::Columns(1);
@@ -241,6 +253,16 @@ namespace Flora {
 					ImPlot::PlotLine("Quads", frameCountData, drawQuadData, m_FrameCountData.size());
 				}
 
+				if (m_EditorContext->ShowStatMap[Stats::CIRCLES]) {
+					float* drawCircleData = &m_DataMap[Stats::CIRCLES][0];
+					ImPlot::PlotLine("Circles", frameCountData, drawCircleData, m_FrameCountData.size());
+				}
+
+				if (m_EditorContext->ShowStatMap[Stats::LINES]) {
+					float* drawLineData = &m_DataMap[Stats::LINES][0];
+					ImPlot::PlotLine("Lines", frameCountData, drawLineData, m_FrameCountData.size());
+				}
+
 				if (m_EditorContext->ShowStatMap[Stats::VERTICES]) {
 					float* vertexData = &m_DataMap[Stats::VERTICES][0];
 					ImPlot::PlotLine("Vertices", frameCountData, vertexData, m_FrameCountData.size());
@@ -349,6 +371,8 @@ namespace Flora {
 		EmplaceAndPop(m_DataMap[Stats::FRAMETIME], 1000 * m_Frametime, pop);
 		EmplaceAndPop(m_DataMap[Stats::DRAWCALLS], (float)(m_RendererStats.DrawCalls), pop);
 		EmplaceAndPop(m_DataMap[Stats::QUADS], (float)(m_RendererStats.QuadCount), pop);
+		EmplaceAndPop(m_DataMap[Stats::CIRCLES], (float)(m_RendererStats.CircleCount), pop);
+		EmplaceAndPop(m_DataMap[Stats::LINES], (float)(m_RendererStats.LineCount), pop);
 		EmplaceAndPop(m_DataMap[Stats::VERTICES], (float)(m_RendererStats.GetTotalVertexCount()), pop);
 		EmplaceAndPop(m_DataMap[Stats::INDICES], (float)(m_RendererStats.GetTotalIndexCount()), pop);
 		EmplaceAndPop(m_DataMap[Stats::FPS], fps, pop);
@@ -373,6 +397,8 @@ namespace Flora {
 		if (m_EditorContext->ShowStatMap[Stats::FRAMETIME]) max = CascadeMax(max, 60.0f);
 		if (m_EditorContext->ShowStatMap[Stats::DRAWCALLS]) max = CascadeMax(max, 10.0f);
 		if (m_EditorContext->ShowStatMap[Stats::QUADS]) max = CascadeMax(max, GetMaxFromVector(m_DataMap[Stats::QUADS]) * 1.1f);
+		if (m_EditorContext->ShowStatMap[Stats::CIRCLES]) max = CascadeMax(max, GetMaxFromVector(m_DataMap[Stats::CIRCLES]) * 1.1f);
+		if (m_EditorContext->ShowStatMap[Stats::LINES]) max = CascadeMax(max, GetMaxFromVector(m_DataMap[Stats::LINES]) * 1.1f);
 		if (m_EditorContext->ShowStatMap[Stats::VERTICES]) max = CascadeMax(max, GetMaxFromVector(m_DataMap[Stats::VERTICES]) * 1.1f);
 		if (m_EditorContext->ShowStatMap[Stats::INDICES]) max = CascadeMax(max, GetMaxFromVector(m_DataMap[Stats::INDICES]) * 1.1f);
 		if (m_EditorContext->ShowStatMap[Stats::FPS]) max = CascadeMax(max, 144);

@@ -1,0 +1,43 @@
+Scene: Testing
+Primary Camera: -1
+Physics:
+  Gravity: 9.80000019
+  VelocityIterations: 6
+  PositionIterations: 2
+Entities:
+  - Entity: 1
+    TagComponent:
+      Tag: Square
+    TransformComponent:
+      Translation: [5.9000001, 0, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    SpriteRendererComponent:
+      Color: [1, 0, 0, 1]
+      Path: "NULL"
+      Filename: None Selected
+      Type: 0
+      TilingFactor: 1
+      Rows: 1
+      Columns: 1
+      RowCoordinate: 1
+      ColumnCoordinate: 1
+      SubtextureWidth: 1
+      SubtextureHeight: 1
+      Frames: 1
+      StartFrame: 1
+      EndFrame: 1
+      CurrentFrame: 1
+      FPS: 1
+  - Entity: 0
+    TagComponent:
+      Tag: Circle
+    TransformComponent:
+      Translation: [1.58518839, 0.795534432, 0.44665271]
+      Rotation: [0, 0.0506152734, 0]
+      Scale: [17.0999985, 17.1000004, 1.71000004]
+    CircleRendererComponent:
+      Color: [0, 1, 0.0154440403, 1]
+      Radius: 0.5
+      Thickness: 0.389999986
+      Fade: 0.167999998
