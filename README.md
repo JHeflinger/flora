@@ -6,15 +6,33 @@ open-source game engine for new developers who desire an easy way to start game 
 to the game engine itself!
 
 ## Features
+
+### Current Features
+
 Flora includes but is not limited to the following features:
-- Intuitive Graphical Interface
-- Entity Component System
-- OpenGL, DirectX, and Vulkan support
-- Scripting with C# or native scripting with C++
-- Asset Library
-- Build capablities
-- 2D and 3D Renderer
+- Intuitive graphical interface
+- Entity component system
+- OpenGL rendering support
+- 2D and 3D renderer
+- Custom textures and animations
+- Precompiled entity components
+- Scene serialization
+- 2D physics
+- Developer tools and stats
 - And so much more!
+
+### Features to Come
+
+Currently Flora has these major features planned for development:
+- DirectX and Vulkan support
+- Scripting with C# or native scripting with C++
+- Build capablities
+- Asset library
+- Reflection system
+- Particle system
+- Text rendering
+- Audio capabilities
+- Network capabilities
 
 ## How to Use
 Flora itself is split into 2 main components! This makes it easier for developers to branch out and use flora as not just 
