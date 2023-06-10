@@ -1,6 +1,33 @@
 # Change Log
 All notable changes to this project will be documented in this file as of Fauna Version 0.1.1 and Flora Version 0.1.1
 
+## Fauna [0.2.1] - 2023-06-10
+
+### Added
+
+- Stats for line rendering and circle rendering have been integrated into the stats panel
+- Editor settings now save line and circle rendering stats
+- Added new circle renderer component to render circles with thickness, radius, and fade
+- Console panel now features a developer input which can be handled and interacted with in scripts
+
+### Fixed
+
+- Fixed issue in shaders that blocked select clicking in the editor
+- Fixed issue in shaders that cause blending to not work sometimes
+- Fixed bug in content browser that cause scene filepath to not update when renaming scenes
+
+## Flora [0.2.0] - 2023-06-10
+
+### Added
+
+- Renderer2D can now render circles
+- Renderer2D can now render lines
+- PhysicsWrapper around box2D vendor library to easily call flora functions to manipulate physics objects
+
+### Changed
+
+- An AssetManager class was added so every entity that used a texture wouldn't create a new texture object despite using an already loaded texture
+
 ## Fauna [0.2.0] - 2023-05-10
 
 ### Added

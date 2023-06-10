@@ -82,28 +82,6 @@ IN PROGRESS:
 
 	- label component
 
-	- line stats
-
 	- serialize editor settings for physics collider lines on/off/and thickness
 
 IMPLEMENTED TICKETS:
-
-	- serialize editor settings for turning on circle and line stats
-
-	- lines rendering
-
-	- bug: z-index blending isnt working correctly
-
-	- bug: click to select doesn't always work
-
-	- add circle to stats
-
-	- circle rendering
-
-	- dev input in console panel
-
-	- bug: content browser would not update scene filepath when renaming scene
-
-	- physics wrapper to add vectors and etc
-
-	- asset manager so a new texture won't be used for every entity that uses that texture
