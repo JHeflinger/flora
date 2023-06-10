@@ -1,14 +1,14 @@
-Scene Filepath: assets\scenes\Test.flora
-Selected Entity: 1
-Current Gizmo: 120
+Scene Filepath: assets\scenes\Angry Birds Demo.flora
+Selected Entity: -1
+Current Gizmo: 7
 Editor Camera Type: Perspective
 General Camera Settings:
-  Position: [18.8693771, -3.39133072, 8.79112625]
-  Focal Point: [0.781190634, -0.425818533, 0]
+  Position: [-3.12901211, 1.23253882, 15.7941885]
+  Focal Point: [4.04717016, -0.528600931, -0.0702425316]
 Perspective Camera Settings:
-  Distance: 20.3288136
-  Pitch: -0.146399677
-  Yaw: -1.11839938
+  Distance: 17.5008392
+  Pitch: 0.100802355
+  Yaw: 0.424801588
 Orthographic Camera Settings:
   Size: 29.104496
 Closed Panels:
@@ -21,6 +21,8 @@ Stat Panel Settings:
   Open Graphs:
     DRAWCALLS: false
     QUADS: false
+    CIRCLES: true
+    LINES: true
     VERTICES: false
     INDICES: false
     FRAMETIME: false

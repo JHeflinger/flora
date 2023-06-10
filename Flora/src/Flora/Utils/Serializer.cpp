@@ -151,6 +151,7 @@ namespace Flora {
 			out << YAML::Key << "Radius" << YAML::Value << circleRendererComponent.Radius;
 			out << YAML::Key << "Thickness" << YAML::Value << circleRendererComponent.Thickness;
 			out << YAML::Key << "Fade" << YAML::Value << circleRendererComponent.Fade;
+			out << YAML::EndMap;
 		}
 
 		if (entity.HasComponent<NativeScriptComponent>()) {

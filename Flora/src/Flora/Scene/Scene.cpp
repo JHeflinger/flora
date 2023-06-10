@@ -162,6 +162,7 @@ namespace Flora {
 		CopyComponent<TagComponent>(entity, newEntity);
 		CopyComponent<TransformComponent>(entity, newEntity);
 		CopyComponent<SpriteRendererComponent>(entity, newEntity);
+		CopyComponent<CircleRendererComponent>(entity, newEntity);
 		CopyComponent<CameraComponent>(entity, newEntity);
 		CopyComponent<NativeScriptComponent>(entity, newEntity);
 		CopyComponent<ScriptManagerComponent>(entity, newEntity);
@@ -310,6 +311,11 @@ namespace Flora {
 					auto [transform, circle] = view.get<TransformComponent, CircleRendererComponent>(entity);
 					Renderer2D::DrawCircle(transform.GetTransform(), circle.Color, circle.Thickness, circle.Fade, (int)(uint32_t)entity);
 				}
+			}
+
+			//lines
+			{
+				Renderer2D::DrawLine(glm::vec3(0.0f), glm::vec3(5.0f), glm::vec4(1, 0, 1, 1));
 			}
 
 			Renderer2D::EndScene();

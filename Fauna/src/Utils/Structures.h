@@ -5,30 +5,32 @@
 
 namespace Flora {
 	enum class Panels {
-		NONE = 0,
-		CONSOLE = 1,
-		CONTENTBROWSER = 2,
-		PROPERTIES = 3,
-		SCENEHIERARCHY = 4,
-		STATS = 5,
-		VIEWPORT = 6
+		NONE            = 0,
+		CONSOLE         = 1,
+		CONTENTBROWSER  = 2,
+		PROPERTIES      = 3,
+		SCENEHIERARCHY  = 4,
+		STATS           = 5,
+		VIEWPORT        = 6
 	};
 
 	enum class SceneState { EDIT = 0, PLAY = 1 };
 
 	enum class Stats {
-		DRAWCALLS = 0,
-		QUADS = 1,
-		VERTICES = 2,
-		INDICES = 3,
-		FRAMETIME = 4,
-		FPS = 5,
-		LOWEST_FPS = 6,
-		HIGHEST_FPS = 7,
-		CPU_USAGE = 8,
-		GPU_USAGE = 9,
-		MEM_USAGE = 10,
-		DISK_USAGE = 11
+		DRAWCALLS       = 0,
+		QUADS           = 1,
+		CIRCLES         = 2,
+		LINES           = 3,
+		VERTICES        = 4,
+		INDICES         = 5,
+		FRAMETIME       = 6,
+		FPS             = 7,
+		LOWEST_FPS      = 8,
+		HIGHEST_FPS     = 9,
+		CPU_USAGE       = 10,
+		GPU_USAGE       = 11,
+		MEM_USAGE       = 12,
+		DISK_USAGE      = 13
 	};
 
 	struct Clipboard {

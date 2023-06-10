@@ -5,6 +5,30 @@ Physics:
   VelocityIterations: 6
   PositionIterations: 2
 Entities:
+  - Entity: 18
+    TagComponent:
+      Tag: Circle
+    TransformComponent:
+      Translation: [1.58481002, -0.478843629, 0.510632277]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    CircleRendererComponent:
+      Color: [0.992993534, 1, 0.637065649, 1]
+      Radius: 0.5
+      Thickness: 1.25999999
+      Fade: 0.497999996
+  - Entity: 1048593
+    TagComponent:
+      Tag: Circle
+    TransformComponent:
+      Translation: [-0.403312594, 1.45151925, 0.0854614154]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    CircleRendererComponent:
+      Color: [0.992993534, 1, 0.637065649, 1]
+      Radius: 0.5
+      Thickness: 1.25999999
+      Fade: 0.497999996
   - Entity: 16
     TagComponent:
       Tag: Square block
@@ -387,8 +411,8 @@ Entities:
     TagComponent:
       Tag: Angry Bird
     TransformComponent:
-      Translation: [-5.54444361, -3.02392745, 0.400000006]
-      Rotation: [0, 0, 0.0196505804]
+      Translation: [-5.42570734, -1.93551004, 0.400000006]
+      Rotation: [0, 0, -0.261218935]
       Scale: [1, 1, 1]
     SpriteRendererComponent:
       Color: [1, 1, 1, 1]
@@ -491,9 +515,6 @@ Entities:
         OrthographicNear: -1
         OrthographicFar: 1
       FixedAspectRatio: false
-    NativeScriptComponent:
-      Path: assets\scripts\CameraBinder.h
-      Filename: CameraBinder.h
   - Entity: 1
     TagComponent:
       Tag: Ground
@@ -503,8 +524,8 @@ Entities:
       Scale: [47.707016, 0.149926141, 0.99989444]
     SpriteRendererComponent:
       Color: [1, 1, 1, 1]
-      Path: assets\game\textures\square-block.png
-      Filename: square-block.png
+      Path: "NULL"
+      Filename: None Selected
       Type: 0
       TilingFactor: 1
       Rows: 1

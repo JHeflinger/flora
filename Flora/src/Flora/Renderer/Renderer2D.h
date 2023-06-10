@@ -62,16 +62,22 @@ namespace Flora {
 							 const glm::vec4& color = { 1.0f, 1.0f, 1.0f, 1.0f },
 							 float tilingFactor = 1.0f,
 							 int entityID = -1);
+		static void DrawRect(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color = { 1.0f, 1.0f, 1.0f, 1.0f }, float rotation = 0.0f, int entityID = -1);
+		static void DrawRect(const glm::mat4& transform, const glm::vec4& color = { 1.0f, 1.0f, 1.0f, 1.0f }, int entityID = -1);
 		static void DrawSprite(const glm::mat4& transform, SpriteRendererComponent& src, AssetManager* am, int entityID = -1);
 		static void DrawCircle(const glm::mat4& transform, const glm::vec4& color = { 1.0f, 1.0f, 1.0f, 1.0f }, float thickness = 1.0f, float fade = 0.005f, int entityID = -1);
+		static void DrawLine(const glm::vec3& p1, const glm::vec3& p2, const glm::vec4& color = { 1.0f, 1.0f, 1.0f, 1.0f }, int entityID = -1);
+		static float GetLineWidth();
+		static void SetLineWidth(float width);
 
 		// Stats
 		struct Statistics {
 			uint32_t DrawCalls = 0;
 			uint32_t QuadCount = 0;
 			uint32_t CircleCount = 0;
+			uint32_t LineCount = 0;
 
-			uint32_t GetTotalVertexCount() { return (QuadCount + CircleCount) * 4; }
+			uint32_t GetTotalVertexCount() { return (QuadCount + CircleCount) * 4 + (LineCount * 2); }
 			uint32_t GetTotalIndexCount() { return (QuadCount + CircleCount) * 6; }
 		};
 		static Statistics GetStats();

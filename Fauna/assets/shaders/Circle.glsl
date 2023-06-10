@@ -24,7 +24,7 @@ void main() {
 	v_Thickness = a_Thickness;
 	v_Fade = a_Fade;
 	v_EntityID = a_EntityID;
-	gl_Position = u_ViewProjection * vec4(0.0, 0.0, 0.0, 1.0);
+	gl_Position = u_ViewProjection * vec4(a_WorldPosition, 1.0);
 }
 
 #type fragment

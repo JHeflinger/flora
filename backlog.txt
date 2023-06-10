@@ -68,10 +68,6 @@ TODO:
 
 	- show hitbox option on collider body
 
-	- bug: z-index blending isnt working perfectly
-
-	- bug: click to select doesn't always work
-
 	- texture hot reloading
 
 	- more texture support
@@ -86,13 +82,23 @@ IN PROGRESS:
 
 	- label component
 
-	- circle rendering
+	- line stats
+
+	- serialize editor settings for physics collider lines on/off/and thickness
+
+IMPLEMENTED TICKETS:
+
+	- serialize editor settings for turning on circle and line stats
+
+	- lines rendering
+
+	- bug: z-index blending isnt working correctly
+
+	- bug: click to select doesn't always work
 
 	- add circle to stats
 
-	- bug: circle not working, note that it is probably the openGLRendererAPI thing with the vertex buffer binding?
-
-IMPLEMENTED TICKETS:
+	- circle rendering
 
 	- dev input in console panel
 

@@ -49,6 +49,8 @@ namespace Flora {
 		out << YAML::BeginMap;
 		out << YAML::Key << "DRAWCALLS" << YAML::Value << params->ShowStatMap[Stats::DRAWCALLS];
 		out << YAML::Key << "QUADS" << YAML::Value << params->ShowStatMap[Stats::QUADS];
+		out << YAML::Key << "CIRCLES" << YAML::Value << params->ShowStatMap[Stats::CIRCLES];
+		out << YAML::Key << "LINES" << YAML::Value << params->ShowStatMap[Stats::LINES];
 		out << YAML::Key << "VERTICES" << YAML::Value << params->ShowStatMap[Stats::VERTICES];
 		out << YAML::Key << "INDICES" << YAML::Value << params->ShowStatMap[Stats::INDICES];
 		out << YAML::Key << "FRAMETIME" << YAML::Value << params->ShowStatMap[Stats::FRAMETIME];
@@ -116,6 +118,8 @@ namespace Flora {
 		params->AxisScale = data["Stat Panel Settings"]["Axis Scalar"].as<float>();
 		params->ShowStatMap[Stats::DRAWCALLS] = data["Stat Panel Settings"]["Open Graphs"]["DRAWCALLS"].as<bool>();
 		params->ShowStatMap[Stats::QUADS] = data["Stat Panel Settings"]["Open Graphs"]["QUADS"].as<bool>();
+		params->ShowStatMap[Stats::CIRCLES] = data["Stat Panel Settings"]["Open Graphs"]["CIRCLES"].as<bool>();
+		params->ShowStatMap[Stats::LINES] = data["Stat Panel Settings"]["Open Graphs"]["LINES"].as<bool>();
 		params->ShowStatMap[Stats::VERTICES] = data["Stat Panel Settings"]["Open Graphs"]["VERTICES"].as<bool>();
 		params->ShowStatMap[Stats::INDICES] = data["Stat Panel Settings"]["Open Graphs"]["INDICES"].as<bool>();
 		params->ShowStatMap[Stats::FRAMETIME] = data["Stat Panel Settings"]["Open Graphs"]["FRAMETIME"].as<bool>();

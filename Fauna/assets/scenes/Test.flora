@@ -33,11 +33,11 @@ Entities:
     TagComponent:
       Tag: Circle
     TransformComponent:
-      Translation: [0, 0, 0]
-      Rotation: [0, 0, 0]
-      Scale: [1, 1, 1]
+      Translation: [1.58518839, 0.795534432, 0.44665271]
+      Rotation: [0, 0.0506152734, 0]
+      Scale: [17.0999985, 17.1000004, 1.71000004]
     CircleRendererComponent:
-      Color: [1, 1, 1, 1]
+      Color: [0, 1, 0.0154440403, 1]
       Radius: 0.5
-      Thickness: 1
-      Fade: 0.00499999989
+      Thickness: 0.389999986
+      Fade: 0.167999998
