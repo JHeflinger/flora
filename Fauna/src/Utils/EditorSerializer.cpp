@@ -19,6 +19,7 @@ namespace Flora {
 		out << YAML::BeginMap;
 		out << YAML::Key << "Position" << YAML::Value << params->EditorCamera.GetPosition();
 		out << YAML::Key << "Focal Point" << YAML::Value << params->EditorCamera.GetFocalPoint();
+		out << YAML::Key << "Camera Bound" << YAML::Value << *(params->EditorCamera.GetCameraBound());
 		out << YAML::EndMap;
 
 		out << YAML::Key << "Perspective Camera Settings" << YAML::Value;
@@ -98,6 +99,7 @@ namespace Flora {
 		params->EditorCamera.SetCameraTypeWithString(data["Editor Camera Type"].as<std::string>());
 		params->EditorCamera.SetPosition(Serializer::GetNodeAsVec3(data["General Camera Settings"]["Position"]));
 		params->EditorCamera.SetFocalPoint(Serializer::GetNodeAsVec3(data["General Camera Settings"]["Focal Point"]));
+		*(params->EditorCamera.GetCameraBound()) = data["General Camera Settings"]["Camera Bound"].as<bool>();
 		params->EditorCamera.SetDistance(data["Perspective Camera Settings"]["Distance"].as<float>());
 		params->EditorCamera.SetPitch(data["Perspective Camera Settings"]["Pitch"].as<float>());
 		params->EditorCamera.SetYaw(data["Perspective Camera Settings"]["Yaw"].as<float>());

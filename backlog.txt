@@ -82,6 +82,18 @@ IN PROGRESS:
 
 	- label component
 
+	- circle physics collider
+
+	- circle physcis collider copy paste
+
+	- serialize circle physics collider
+
+	- visualized physics colliders
+
 	- serialize editor settings for physics collider lines on/off/and thickness
 
 IMPLEMENTED TICKETS:
+
+	- fix drag camera by mouse
+
+	- option to use editor camera to navigate runtime.

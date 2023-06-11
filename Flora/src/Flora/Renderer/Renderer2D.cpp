@@ -168,48 +168,24 @@ namespace Flora {
 		delete[] s_Data.QuadVertexBufferBase;
 	}
 
-	void Renderer2D::BeginScene(const OrthographicCamera& camera) {
+	void Renderer2D::BeginScene(const glm::mat4 viewProjection) {
 		FL_PROFILE_FUNCTION();
 		s_Data.TextureShader->Bind();
-		s_Data.TextureShader->SetMat4("u_ViewProjection", camera.GetViewProjectionMatrix());
+		s_Data.TextureShader->SetMat4("u_ViewProjection", viewProjection);
 
 		s_Data.CircleShader->Bind();
-		s_Data.CircleShader->SetMat4("u_ViewProjection", camera.GetViewProjectionMatrix());
+		s_Data.CircleShader->SetMat4("u_ViewProjection", viewProjection);
 
 		s_Data.LineShader->Bind();
-		s_Data.LineShader->SetMat4("u_ViewProjection", camera.GetViewProjectionMatrix());
-
-		StartBatch();
-	}
-
-	void Renderer2D::BeginScene(const EditorCamera& camera) {
-		FL_PROFILE_FUNCTION();
-		s_Data.TextureShader->Bind();
-		s_Data.TextureShader->SetMat4("u_ViewProjection", camera.GetViewProjection());
-
-		s_Data.CircleShader->Bind();
-		s_Data.CircleShader->SetMat4("u_ViewProjection", camera.GetViewProjection());
-
-		s_Data.LineShader->Bind();
-		s_Data.LineShader->SetMat4("u_ViewProjection", camera.GetViewProjection());
+		s_Data.LineShader->SetMat4("u_ViewProjection", viewProjection);
 
 		StartBatch();
 	}
 
 	void Renderer2D::BeginScene(const Camera& camera, const glm::mat4& transform) {
 		FL_PROFILE_FUNCTION();
-
 		glm::mat4 viewProj = camera.GetProjection() * glm::inverse(transform);
-		s_Data.TextureShader->Bind();
-		s_Data.TextureShader->SetMat4("u_ViewProjection", viewProj);
-
-		s_Data.CircleShader->Bind();
-		s_Data.CircleShader->SetMat4("u_ViewProjection", viewProj);
-
-		s_Data.LineShader->Bind();
-		s_Data.LineShader->SetMat4("u_ViewProjection", viewProj);
-
-		StartBatch();
+		BeginScene(viewProj);
 	}
 
 	void Renderer2D::EndScene() {

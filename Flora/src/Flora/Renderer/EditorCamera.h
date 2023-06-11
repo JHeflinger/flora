@@ -36,6 +36,7 @@ namespace Flora {
 		glm::vec3 GetFocalPoint() const { return m_FocalPoint; }
 		void SetFocalPoint(glm::vec3 focalPoint) { m_FocalPoint = focalPoint; }
 		void ResetCamera();
+		bool* GetCameraBound() { return &m_BindCamera; }
 	private:
 		void UpdateProjection();
 		void UpdateView();
@@ -63,5 +64,6 @@ namespace Flora {
 		float m_OrthographicFar = 1000.0f;
 		//temp
 		bool m_ToggleEnable = true;
+		bool m_BindCamera = false;
 	};
 }

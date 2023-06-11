@@ -249,34 +249,28 @@ namespace Flora {
 		});
 	}
 
-	void Scene::RenderRuntime() {
-		if (m_PrimaryCameraHandle >= 0) {
-			Entity cameraEntity = Entity{ (entt::entity)(uint32_t)m_PrimaryCameraHandle, this };
-			Camera* primaryCamera = &(cameraEntity.GetComponent<CameraComponent>().Camera);
-			glm::mat4 cameraTransform = cameraEntity.GetComponent<TransformComponent>().GetTransform();
-			Renderer2D::BeginScene(primaryCamera->GetProjection(), cameraTransform);
-			
-			//quads
-			{
-				auto group = m_Registry.group<TransformComponent>(entt::get<SpriteRendererComponent>);
-				for (auto entity : group) {
-					Entity drawEntity = Entity{ entity, this };
-					if (!drawEntity.HasComponent<ParentComponent>())
-						DrawEntitySprite(drawEntity);
-				}
+	void Scene::RenderRuntime(glm::mat4 viewProjection) {
+		Renderer2D::BeginScene(viewProjection);
+		//quads
+		{
+			auto group = m_Registry.group<TransformComponent>(entt::get<SpriteRendererComponent>);
+			for (auto entity : group) {
+				Entity drawEntity = Entity{ entity, this };
+				if (!drawEntity.HasComponent<ParentComponent>())
+					DrawEntitySprite(drawEntity);
 			}
-
-			//circles
-			{
-				auto view = m_Registry.view<TransformComponent, CircleRendererComponent>();
-				for (auto entity : view) {
-					auto [transform, circle] = view.get<TransformComponent, CircleRendererComponent>(entity);
-					Renderer2D::DrawCircle(transform.GetTransform(), circle.Color, circle.Thickness, circle.Fade, (int)(uint32_t)entity);
-				}
-			}
-
-			Renderer2D::EndScene();
 		}
+
+		//circles
+		{
+			auto view = m_Registry.view<TransformComponent, CircleRendererComponent>();
+			for (auto entity : view) {
+				auto [transform, circle] = view.get<TransformComponent, CircleRendererComponent>(entity);
+				Renderer2D::DrawCircle(transform.GetTransform(), circle.Color, circle.Thickness, circle.Fade, (int)(uint32_t)entity);
+			}
+		}
+
+		Renderer2D::EndScene();
 	}
 
 	void Scene::UpdatePhysics(Timestep ts) {
@@ -289,40 +283,11 @@ namespace Flora {
 		}
 	}
 
-	void Scene::OnUpdateEditor(Timestep ts, EditorCamera& camera) {
-		// Render 2D Sprites
-		{
-			Renderer2D::BeginScene(camera);
-
-			//quads
-			{
-				auto group = m_Registry.group<TransformComponent>(entt::get<SpriteRendererComponent>);
-				for (auto entity : group) {
-					Entity drawEntity = Entity{ entity, this };
-					if (!drawEntity.HasComponent<ParentComponent>())
-						DrawEntitySprite(drawEntity);
-				}
-			}
-
-			//circles
-			{
-				auto view = m_Registry.view<TransformComponent, CircleRendererComponent>();
-				for (auto entity : view) {
-					auto [transform, circle] = view.get<TransformComponent, CircleRendererComponent>(entity);
-					Renderer2D::DrawCircle(transform.GetTransform(), circle.Color, circle.Thickness, circle.Fade, (int)(uint32_t)entity);
-				}
-			}
-
-			//lines
-			{
-				Renderer2D::DrawLine(glm::vec3(0.0f), glm::vec3(5.0f), glm::vec4(1, 0, 1, 1));
-			}
-
-			Renderer2D::EndScene();
-		}
+	void Scene::OnUpdateEditor(Timestep ts, glm::mat4 viewProjection) {
+		RenderRuntime(viewProjection);
 	}
 
-	void Scene::OnUpdateRuntime(Timestep ts) {
+	void Scene::OnUpdateRuntime(Timestep ts, glm::mat4 viewProjection) {
 		// Update Scripts
 		UpdateScripts(ts);
 
@@ -330,7 +295,16 @@ namespace Flora {
 		UpdatePhysics(ts);
 
 		// Render 2D Sprites
-		RenderRuntime();
+		RenderRuntime(viewProjection);
+	}
+
+	void Scene::OnUpdateRuntime(Timestep ts) {
+		if (m_PrimaryCameraHandle >= 0) {
+			Entity cameraEntity = Entity{ (entt::entity)(uint32_t)m_PrimaryCameraHandle, this };
+			Camera* primaryCamera = &(cameraEntity.GetComponent<CameraComponent>().Camera);
+			glm::mat4 cameraTransform = cameraEntity.GetComponent<TransformComponent>().GetTransform();
+			OnUpdateRuntime(ts, primaryCamera->GetProjection() * glm::inverse(cameraTransform));
+		}
 	}
 
 	void Scene::OnViewportResize(uint32_t width, uint32_t height) {

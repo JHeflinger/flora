@@ -194,4 +194,23 @@ namespace Flora {
 			RestitutionThreshold = other.RestitutionThreshold;
 		}
 	};
+
+	struct CircleCollider2DComponent {
+		glm::vec2 Offset = { 0.0f, 0.0f };
+		glm::vec2 Size = { 0.5f, 0.5f };
+		float Density = 1.0f;
+		float Friction = 0.5;
+		float Restitution = 0.0f;
+		float RestitutionThreshold = 0.5f;
+		void* RuntimeFixture = nullptr;
+		CircleCollider2DComponent() = default;
+		CircleCollider2DComponent(const CircleCollider2DComponent& other) {
+			Offset = other.Offset;
+			Size = other.Size;
+			Density = other.Density;
+			Friction = other.Friction;
+			Restitution = other.Restitution;
+			RestitutionThreshold = other.RestitutionThreshold;
+		}
+	};
 }

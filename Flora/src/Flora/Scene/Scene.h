@@ -25,7 +25,8 @@ namespace Flora {
 		void OnRuntimeStart();
 		void OnRuntimeStop();
 		void OnUpdateRuntime(Timestep ts);
-		void OnUpdateEditor(Timestep ts, EditorCamera& Camera);
+		void OnUpdateRuntime(Timestep ts, glm::mat4 viewProjection);
+		void OnUpdateEditor(Timestep ts, glm::mat4 viewProjection);
 		void OnViewportResize(uint32_t width, uint32_t height);
 		void SetSceneFilepath(const std::string& filepath) { m_SceneFilepath = filepath; }
 		void SetViewportHovered(bool hovered) { m_ViewportHovered = hovered; }
@@ -57,7 +58,7 @@ namespace Flora {
 		void OnComponentAdded(Entity entity, T& component);
 		void UpdateScripts(Timestep ts);
 		void UpdatePhysics(Timestep ts);
-		void RenderRuntime();
+		void RenderRuntime(glm::mat4 viewProjection);
 	private:
 		void DrawEntitySprite(Entity& entity, bool useTransformRef = false, glm::mat4 refTransform = glm::mat4(0.0f));
 		void SimulateEntityPhysics(Entity& entity, bool useTransformRef = false, glm::mat4 refTransform = glm::mat4(0.0f));

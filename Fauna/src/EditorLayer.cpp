@@ -146,8 +146,12 @@ namespace Flora {
 						m_EditorParams->EditorCamera.SetCameraTypeWithString("Orthographic");
 					}
 				}
+
 				if (ImGui::MenuItem("Reset Editor Camera", "Space+`"))
 					m_EditorParams->EditorCamera.ResetCamera();
+
+				ImGui::MenuItem("Bind Editor Camera", "Space+Ctrl", m_EditorParams->EditorCamera.GetCameraBound());
+
 				ImGui::EndMenu();
 			}
 
@@ -649,9 +653,13 @@ namespace Flora {
 		// update params
 		m_EditorParams->EditorCamera.OnUpdate(ts, m_EditorParams->FocusedPanel == Panels::VIEWPORT);
 		if (m_EditorParams->SceneState == SceneState::EDIT)
-			m_EditorParams->ActiveScene->OnUpdateEditor(ts, m_EditorParams->EditorCamera);
-		else if (m_EditorParams->SceneState == SceneState::PLAY)
-			m_EditorParams->ActiveScene->OnUpdateRuntime(ts);
+			m_EditorParams->ActiveScene->OnUpdateEditor(ts, m_EditorParams->EditorCamera.GetViewProjection());
+		else if (m_EditorParams->SceneState == SceneState::PLAY) {
+			if (*(m_EditorParams->EditorCamera.GetCameraBound()))
+				m_EditorParams->ActiveScene->OnUpdateRuntime(ts, m_EditorParams->EditorCamera.GetViewProjection());
+			else
+				m_EditorParams->ActiveScene->OnUpdateRuntime(ts);
+		}
 		m_EditorParams->Time += ts.GetSeconds();
 		m_EditorParams->HoveredPanel = Panels::NONE;
 		m_EditorParams->FocusedPanel = Panels::NONE;
@@ -696,6 +704,5 @@ namespace Flora {
 	void EditorLayer::DevEvent() {
 		FL_CORE_INFO("DEV EVENT FIRED");
 		int entityHandle = (int)(uint32_t)m_EditorParams->SelectedEntity;
-		FL_CORE_INFO("Selected Entity ID: {0}", entityHandle);
 	}
 }
