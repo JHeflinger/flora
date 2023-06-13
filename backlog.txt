@@ -82,6 +82,8 @@ TODO:
 
 IN PROGRESS:
 
+	- show camera view box for perspective
+
 	- label component
 
 IMPLEMENTED TICKETS:

@@ -545,12 +545,48 @@ namespace Flora {
 		for (auto entity : view) {
 			auto [tc, cc] = view.get<TransformComponent, CameraComponent>(entity);
 			if (cc.ShowBorder) {
+				glm::vec4 color = { 1, 1, 1, 0.7f };
 				if (cc.Camera.GetProjectionType() == SceneCamera::ProjectionType::Orthographic) {
 					float size = cc.Camera.GetOrthographicSize();
 					glm::mat4 p1_mat = glm::translate(tc.GetTransform(), { size,  size, 0 });
 					glm::mat4 p2_mat = glm::translate(tc.GetTransform(), { size, -size, 0 });
 					glm::mat4 p3_mat = glm::translate(tc.GetTransform(), { -size,  size, 0 });
 					glm::mat4 p4_mat = glm::translate(tc.GetTransform(), { -size, -size, 0 });
+					glm::mat4 p5_mat = glm::translate(p1_mat, { 0, 0, -100 });
+					glm::mat4 p6_mat = glm::translate(p2_mat, { 0, 0, -100 });
+					glm::mat4 p7_mat = glm::translate(p3_mat, { 0, 0, -100 });
+					glm::mat4 p8_mat = glm::translate(p4_mat, { 0, 0, -100 });
+					glm::vec3 p1_coord, p2_coord, p3_coord, p4_coord, p5_coord, p6_coord, p7_coord, p8_coord;
+					glm::vec3 rotation, scale;
+					Math::DecomposeTransform(p1_mat, p1_coord, rotation, scale);
+					Math::DecomposeTransform(p2_mat, p2_coord, rotation, scale);
+					Math::DecomposeTransform(p3_mat, p3_coord, rotation, scale);
+					Math::DecomposeTransform(p4_mat, p4_coord, rotation, scale);
+					Math::DecomposeTransform(p5_mat, p5_coord, rotation, scale);
+					Math::DecomposeTransform(p6_mat, p6_coord, rotation, scale);
+					Math::DecomposeTransform(p7_mat, p7_coord, rotation, scale);
+					Math::DecomposeTransform(p8_mat, p8_coord, rotation, scale);
+
+					Renderer2D::DrawLine(p3_coord, p1_coord, color);
+					Renderer2D::DrawLine(p2_coord, p4_coord, color);
+					Renderer2D::DrawLine(p1_coord, p2_coord, color);
+					Renderer2D::DrawLine(p2_coord, p3_coord, color);
+					Renderer2D::DrawLine(p3_coord, p4_coord, color);
+					Renderer2D::DrawLine(p1_coord, p4_coord, color);
+					Renderer2D::DrawLine(p1_coord, p5_coord, color);
+					Renderer2D::DrawLine(p2_coord, p6_coord, color);
+					Renderer2D::DrawLine(p3_coord, p7_coord, color);
+					Renderer2D::DrawLine(p4_coord, p8_coord, color);
+					Renderer2D::DrawLine(p5_coord, p6_coord, color);
+					Renderer2D::DrawLine(p8_coord, p6_coord, color);
+					Renderer2D::DrawLine(p8_coord, p7_coord, color);
+					Renderer2D::DrawLine(p5_coord, p7_coord, color);
+				} else {
+					// -z direction
+					glm::mat4 p1_mat = glm::translate(glm::rotate(tc.GetTransform(), cc.Camera.GetPerspectiveVerticalFOV(), {1, 1, 0}), { 0, 0, -100 });
+					glm::mat4 p2_mat = glm::translate(glm::rotate(tc.GetTransform(), cc.Camera.GetPerspectiveVerticalFOV(), { 1, -1, 0 }), { 0, 0, -100 });
+					glm::mat4 p3_mat = glm::translate(glm::rotate(tc.GetTransform(), cc.Camera.GetPerspectiveVerticalFOV(), { -1, 1, 0 }), { 0, 0, -100 });
+					glm::mat4 p4_mat = glm::translate(glm::rotate(tc.GetTransform(), cc.Camera.GetPerspectiveVerticalFOV(), { -1, -1, 0 }), { 0, 0, -100 });
 					glm::vec3 p1_coord, p2_coord, p3_coord, p4_coord;
 					glm::vec3 rotation, scale;
 					Math::DecomposeTransform(p1_mat, p1_coord, rotation, scale);
@@ -558,13 +594,16 @@ namespace Flora {
 					Math::DecomposeTransform(p3_mat, p3_coord, rotation, scale);
 					Math::DecomposeTransform(p4_mat, p4_coord, rotation, scale);
 
-					glm::vec4 color = { 1, 1, 1, 0.7f };
-					Renderer2D::DrawLine(p3_coord, p1_coord, color);
-					Renderer2D::DrawLine(p2_coord, p4_coord, color);
+					Renderer2D::DrawLine(p1_coord, tc.Translation, color);
+					Renderer2D::DrawLine(p2_coord, tc.Translation, color);
+					Renderer2D::DrawLine(p3_coord, tc.Translation, color);
+					Renderer2D::DrawLine(p4_coord, tc.Translation, color);
 					Renderer2D::DrawLine(p1_coord, p2_coord, color);
-					Renderer2D::DrawLine(p2_coord, p3_coord, color);
+					Renderer2D::DrawLine(p1_coord, p3_coord, color);
 					Renderer2D::DrawLine(p3_coord, p4_coord, color);
+					Renderer2D::DrawLine(p2_coord, p4_coord, color);
 					Renderer2D::DrawLine(p1_coord, p4_coord, color);
+					Renderer2D::DrawLine(p2_coord, p3_coord, color);
 				}
 			}
 		}
