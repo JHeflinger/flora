@@ -51,6 +51,9 @@ namespace Flora {
 		// Update editor params
 		UpdateEditor(ts);
 
+		// Render debug overlay
+		RenderDebugOverlay();
+
 		// Process viewport
 		GetSpecificPanel<ViewportPanel>("Viewport")->PostUpdate();
 
@@ -485,6 +488,88 @@ namespace Flora {
 			if (panel.second->m_Enabled)
 				panel.second->OnImGuiRender();
 		}
+	}
+
+	void EditorLayer::RenderDebugOverlay() {
+		switch (m_EditorParams->SceneState) {
+			case SceneState::EDIT:
+				Renderer2D::BeginScene(m_EditorParams->EditorCamera.GetViewProjection());
+				break;
+			case SceneState::PLAY:
+				if (*(m_EditorParams->EditorCamera.GetCameraBound())) {
+					Renderer2D::BeginScene(m_EditorParams->EditorCamera.GetViewProjection());
+				} else {
+					Entity primaryCameraEntity = m_EditorParams->ActiveScene->GetEntityFromID((uint32_t)m_EditorParams->ActiveScene->GetPrimaryCamera());
+					Camera* primaryCamera = &(primaryCameraEntity.GetComponent<CameraComponent>().Camera);
+					glm::mat4 cameraTransform = primaryCameraEntity.GetComponent<TransformComponent>().GetTransform();
+					Renderer2D::BeginScene(primaryCamera->GetProjection() * glm::inverse(cameraTransform));
+				}
+				break;
+			default:
+				FL_CORE_ERROR("Invalid scene state detected!");
+				return;
+		}
+
+		if (m_EditorParams->VisibleColliders) {
+			// Circle collider visualizer
+			{
+				auto view = m_EditorParams->ActiveScene->GetAllEntitiesWith<TransformComponent, CircleCollider2DComponent>();
+				for (auto entity : view) {
+					auto [tc, cc2d] = view.get<TransformComponent, CircleCollider2DComponent>(entity);
+					glm::vec3 translation = tc.Translation + glm::vec3(cc2d.Offset, 0.0f);
+					float thickness = 0.05f; // TODO: make this look constant despite camera depth
+					glm::vec3 scale = tc.Scale * glm::vec3((cc2d.Radius) * 2.0f + thickness);
+					glm::mat4 transform = glm::translate(glm::mat4(1.0f), translation)
+						* glm::scale(glm::mat4(1.0f), scale);
+					Renderer2D::DrawCircle(transform, glm::vec4(0, 1, 0, 1), thickness);
+				}
+			}
+
+			// Box collider visualizer
+			{
+				auto view = m_EditorParams->ActiveScene->GetAllEntitiesWith<TransformComponent, BoxCollider2DComponent>();
+				for (auto entity : view) {
+					auto [tc, bc2d] = view.get<TransformComponent, BoxCollider2DComponent>(entity);
+					glm::vec3 translation = tc.Translation + glm::vec3(bc2d.Offset, 0.0f);
+					glm::vec3 scale = tc.Scale * glm::vec3(bc2d.Size * 2.0f, 1.0f);
+					glm::mat4 transform = glm::translate(glm::mat4(1.0f), translation)
+						* glm::rotate(glm::mat4(1.0f), tc.Rotation.z, glm::vec3(0.0f, 0.0f, 1.0f))
+						* glm::scale(glm::mat4(1.0f), scale);
+					Renderer2D::DrawRect(transform, glm::vec4(0, 1, 0, 1));
+				}
+			}
+		}
+
+		// camera borders
+		auto view = m_EditorParams->ActiveScene->GetAllEntitiesWith<TransformComponent, CameraComponent>();
+		for (auto entity : view) {
+			auto [tc, cc] = view.get<TransformComponent, CameraComponent>(entity);
+			if (cc.ShowBorder) {
+				if (cc.Camera.GetProjectionType() == SceneCamera::ProjectionType::Orthographic) {
+					float size = cc.Camera.GetOrthographicSize();
+					glm::mat4 p1_mat = glm::translate(tc.GetTransform(), { size,  size, 0 });
+					glm::mat4 p2_mat = glm::translate(tc.GetTransform(), { size, -size, 0 });
+					glm::mat4 p3_mat = glm::translate(tc.GetTransform(), { -size,  size, 0 });
+					glm::mat4 p4_mat = glm::translate(tc.GetTransform(), { -size, -size, 0 });
+					glm::vec3 p1_coord, p2_coord, p3_coord, p4_coord;
+					glm::vec3 rotation, scale;
+					Math::DecomposeTransform(p1_mat, p1_coord, rotation, scale);
+					Math::DecomposeTransform(p2_mat, p2_coord, rotation, scale);
+					Math::DecomposeTransform(p3_mat, p3_coord, rotation, scale);
+					Math::DecomposeTransform(p4_mat, p4_coord, rotation, scale);
+
+					glm::vec4 color = { 1, 1, 1, 0.7f };
+					Renderer2D::DrawLine(p3_coord, p1_coord, color);
+					Renderer2D::DrawLine(p2_coord, p4_coord, color);
+					Renderer2D::DrawLine(p1_coord, p2_coord, color);
+					Renderer2D::DrawLine(p2_coord, p3_coord, color);
+					Renderer2D::DrawLine(p3_coord, p4_coord, color);
+					Renderer2D::DrawLine(p1_coord, p4_coord, color);
+				}
+			}
+		}
+
+		Renderer2D::EndScene();
 	}
 
 	void EditorLayer::UpdateEditor(Timestep ts) {

@@ -14,6 +14,7 @@ namespace Flora {
 		out << YAML::Key << "Selected Entity" << YAML::Value << selectedEntity;
 		out << YAML::Key << "Current Gizmo" << YAML::Value << params->GizmoType;
 		out << YAML::Key << "Editor Camera Type" << YAML::Value << params->EditorCamera.GetCameraTypeString();
+		out << YAML::Key << "Visible Physics Colliders" << YAML::Value << params->VisibleColliders;
 
 		out << YAML::Key << "General Camera Settings" << YAML::Value;
 		out << YAML::BeginMap;
@@ -94,6 +95,9 @@ namespace Flora {
 
 		// set closed panels
 		params->ClosedPanels = data["Closed Panels"].as<std::vector<std::string>>();
+
+		// set visible colliders
+		params->VisibleColliders = data["Visible Physics Colliders"].as<bool>();
 
 		// set camera settings
 		params->EditorCamera.SetCameraTypeWithString(data["Editor Camera Type"].as<std::string>());

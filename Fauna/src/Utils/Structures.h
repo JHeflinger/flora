@@ -47,6 +47,7 @@ namespace Flora {
 		Ref<Scene> ActiveScene;
 		EditorCamera EditorCamera;
 		bool Resized = true;
+		bool VisibleColliders = false;
 		std::vector<std::string> ClosedPanels; //more runtime-efficient way to do this would be with a hashmap
 		float Time; // in seconds
 		Panels FocusedPanel = Panels::NONE;

@@ -1,7 +1,7 @@
 Scene: Testing
 Primary Camera: 2
 Physics:
-  Gravity: 9.80000019
+  Gravity: 34
   VelocityIterations: 6
   PositionIterations: 2
 Entities:
@@ -9,7 +9,7 @@ Entities:
     TagComponent:
       Tag: Square
     TransformComponent:
-      Translation: [-5.03113794, 3.81107974, -0.124717116]
+      Translation: [-5.03113794, 3.81107974, 0]
       Rotation: [0, 0, -0.508756816]
       Scale: [34.0223694, 1, 1]
     SpriteRendererComponent:
@@ -29,11 +29,21 @@ Entities:
       EndFrame: 1
       CurrentFrame: 1
       FPS: 1
+    RigidBody2DComponent:
+      Type: 0
+      FixedRotation: false
+    BoxCollider2DComponent:
+      Offset: [0, 0]
+      Size: [0.5, 0.5]
+      Density: 1
+      Friction: 0.5
+      Restitution: 0
+      RestitutionThreshold: 0.5
   - Entity: 3
     TagComponent:
       Tag: Square
     TransformComponent:
-      Translation: [5.9000001, 0, 0]
+      Translation: [5.9000001, 0, 2.38418579e-07]
       Rotation: [0, 0, 0.647309065]
       Scale: [34.0223732, 0.999999881, 1]
     SpriteRendererComponent:
@@ -53,16 +63,26 @@ Entities:
       EndFrame: 1
       CurrentFrame: 1
       FPS: 1
+    RigidBody2DComponent:
+      Type: 0
+      FixedRotation: false
+    BoxCollider2DComponent:
+      Offset: [0, 0]
+      Size: [0.5, 0.5]
+      Density: 1
+      Friction: 0.5
+      Restitution: 0
+      RestitutionThreshold: 0.5
   - Entity: 2
     TagComponent:
       Tag: Camera
     TransformComponent:
-      Translation: [6.95443726, 7.70957184, 23.3686543]
+      Translation: [1.58036804, 5.03522491, 23.4795551]
       Rotation: [0, 0, 0]
       Scale: [1, 1, 1]
     CameraComponent:
       Camera:
-        ProjectionType: 0
+        ProjectionType: 1
         PerspectiveFOV: 0.785398185
         PerspectiveNear: 0.00999999978
         PerspectiveFar: 1000
@@ -70,11 +90,12 @@ Entities:
         OrthographicNear: -384
         OrthographicFar: 188
       FixedAspectRatio: false
+      Visible Borders: true
   - Entity: 1
     TagComponent:
       Tag: Square
     TransformComponent:
-      Translation: [5.9000001, 0, 0]
+      Translation: [5.90000057, -1.49011612e-08, 0]
       Rotation: [0, 0, 0]
       Scale: [34.0224037, 1, 1]
     SpriteRendererComponent:
@@ -94,15 +115,35 @@ Entities:
       EndFrame: 1
       CurrentFrame: 1
       FPS: 1
+    RigidBody2DComponent:
+      Type: 0
+      FixedRotation: false
+    BoxCollider2DComponent:
+      Offset: [0, 0]
+      Size: [0.5, 0.5]
+      Density: 1
+      Friction: 0.5
+      Restitution: 0
+      RestitutionThreshold: 0.5
   - Entity: 0
     TagComponent:
       Tag: Circle
     TransformComponent:
-      Translation: [-1.7334013, 13.208437, -1.56111586]
-      Rotation: [0, 0.0506158546, 0]
-      Scale: [4.71959877, 4.7196002, 0.471960068]
+      Translation: [0.393624783, 2.95771384, -1.04510498]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1.09494722]
     CircleRendererComponent:
-      Color: [0, 1, 0.0154440403, 1]
+      Color: [0.517374516, 0, 1, 1]
       Radius: 0.5
-      Thickness: 0.389999986
-      Fade: 0.167999998
+      Thickness: 1
+      Fade: 4.99999987e-05
+    RigidBody2DComponent:
+      Type: 2
+      FixedRotation: false
+    CircleCollider2DComponent:
+      Offset: [0, 0]
+      Radius: 0.5
+      Density: 1
+      Friction: 0.5
+      Restitution: 1.10000002
+      RestitutionThreshold: 0.5

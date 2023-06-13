@@ -96,6 +96,7 @@ namespace Flora {
 	struct CameraComponent {
 		SceneCamera Camera;
 		bool FixedAspectRatio = false;
+		bool ShowBorder = false; // TODO: move out of components since this is part of the debug overlay
 		CameraComponent() = default;
 		CameraComponent(const CameraComponent& other) {
 			Camera = other.Camera;
@@ -197,7 +198,7 @@ namespace Flora {
 
 	struct CircleCollider2DComponent {
 		glm::vec2 Offset = { 0.0f, 0.0f };
-		glm::vec2 Size = { 0.5f, 0.5f };
+		float Radius = 0.5f;
 		float Density = 1.0f;
 		float Friction = 0.5;
 		float Restitution = 0.0f;
@@ -206,7 +207,7 @@ namespace Flora {
 		CircleCollider2DComponent() = default;
 		CircleCollider2DComponent(const CircleCollider2DComponent& other) {
 			Offset = other.Offset;
-			Size = other.Size;
+			Radius = other.Radius;
 			Density = other.Density;
 			Friction = other.Friction;
 			Restitution = other.Restitution;

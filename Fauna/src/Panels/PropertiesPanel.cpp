@@ -202,6 +202,7 @@ namespace Flora {
 			DrawAddComponentItem<ScriptManagerComponent>("Script Manager", m_EditorContext->SelectedEntity);
 			DrawAddComponentItem<RigidBody2DComponent>("Rigid Body 2D", m_EditorContext->SelectedEntity);
 			DrawAddComponentItem<BoxCollider2DComponent>("Box Collider 2D", m_EditorContext->SelectedEntity);
+			DrawAddComponentItem<CircleCollider2DComponent>("Circle Collider 2D", m_EditorContext->SelectedEntity);
 			ImGui::EndPopup();
 		}
 		ImGui::PopItemWidth();
@@ -256,6 +257,8 @@ namespace Flora {
 			ImGui::Text("Projection Type");
 			ImGui::Dummy(ImVec2(0, linespacing));
 			ImGui::Text("Primary Camera");
+			ImGui::Dummy(ImVec2(0, linespacing));
+			ImGui::Text("Visible Borders");
 			ImGui::NextColumn();
 			if (ImGui::BeginCombo("##Projection", currentProjectionTypeString)) {
 				for (int i = 0; i < 2; i++) {
@@ -282,6 +285,8 @@ namespace Flora {
 					entity.GetScene()->SetPrimaryCamera(-1);
 				}
 			}
+
+			ImGui::Checkbox("##visible", &component.ShowBorder);
 			ImGui::Columns(1);
 
 			ImGui::Dummy(ImVec2(0, 10));
@@ -754,6 +759,71 @@ namespace Flora {
 			ImGui::DragFloat("##Restitution", &component.Restitution, 0.1, 0.0f, 10000.0f, "%.2f");
 			ImGui::DragFloat("##RestitutionThreshold", &component.RestitutionThreshold, 0.1, 0.0f, 10000.0f, "%.2f");
 			ImGui::PopItemWidth();
+			ImGui::Columns(1);
+		});
+
+		DrawComponent<CircleCollider2DComponent>("Circle Collider 2D", entity, [](auto& entity, auto& component) {
+			ImGuiIO& io = ImGui::GetIO();
+			ImGuiStyle& style = ImGui::GetStyle();
+			auto boldFont = io.Fonts->Fonts[0];
+			float lineHeight = GImGui->Font->FontSize + GImGui->Style.FramePadding.y * 2.0f;
+			ImVec2 smallButtonSize = { lineHeight + 3.0f, lineHeight };
+			float linespacing = 2.0f;
+			ImGui::Columns(2);
+			ImGui::SetColumnWidth(0, 150.0f);
+			ImGui::Text("Offset");
+			ImGui::Dummy(ImVec2(0, linespacing));
+			ImGui::Text("Radius");
+			ImGui::Dummy(ImVec2(0, linespacing));
+			ImGui::Text("Density");
+			ImGui::Dummy(ImVec2(0, linespacing));
+			ImGui::Text("Friction");
+			ImGui::Dummy(ImVec2(0, linespacing));
+			ImGui::Text("Restitution");
+			ImGui::Dummy(ImVec2(0, linespacing));
+			ImGui::Text("Rest. Threshold");
+			ImGui::NextColumn();
+
+			ImGui::PushItemWidth(50);
+			style.ItemSpacing = ImVec2(0, 0); // remove spacing
+
+			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.8f, 0.2f, 0.3f, 1.0f });
+			ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.9f, 0.2f, 0.2f, 1.0f });
+			ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.7f, 0.1f, 0.1f, 1.0f });
+			ImGui::PushFont(boldFont);
+			if (ImGui::Button("X", smallButtonSize))
+				component.Offset.x = 0;
+			ImGui::PopStyleColor(3);
+			ImGui::PopFont();
+
+			ImGui::SameLine();
+			ImGui::DragFloat("##Xoffset", &component.Offset.x, 0.1f, 1, 10000);
+			ImGui::SameLine();
+
+			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.2f, 0.3f, 0.8f, 1.0f });
+			ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.2f, 0.2f, 0.9f, 1.0f });
+			ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.1f, 0.1f, 0.7f, 1.0f });
+			ImGui::PushFont(boldFont);
+			if (ImGui::Button("Y", smallButtonSize))
+				component.Offset.y = 0;
+			ImGui::PopStyleColor(3);
+			ImGui::PopFont();
+
+			ImGui::SameLine();
+			ImGui::DragFloat("##Yoffset", &component.Offset.y, 0.1f, 1, 10000);
+			ImGui::Dummy(ImVec2(0, linespacing));
+
+			ImGui::PopItemWidth();
+			style.ItemSpacing = ImVec2(8.0f, 4.0f); // Add back spacing
+
+			ImGui::PushItemWidth(154);
+			ImGui::DragFloat("##Radius", &component.Radius, 0.1, 0.0f, 10000.0f, "%.2f");
+			ImGui::DragFloat("##Density", &component.Density, 0.1, 0.0f, 10000.0f, "%.2f");
+			ImGui::DragFloat("##Friction", &component.Friction, 0.1, 0.0f, 10000.0f, "%.2f");
+			ImGui::DragFloat("##Restitution", &component.Restitution, 0.1, 0.0f, 10000.0f, "%.2f");
+			ImGui::DragFloat("##RestitutionThreshold", &component.RestitutionThreshold, 0.1, 0.0f, 10000.0f, "%.2f");
+			ImGui::PopItemWidth();
+			ImGui::Columns(1);
 		});
 	}
 }

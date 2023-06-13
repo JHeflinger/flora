@@ -43,6 +43,10 @@ namespace Flora {
 				loopFunction(entity, component);
 			});
 		}
+		template<typename... Components>
+		auto GetAllEntitiesWith() {
+			return m_Registry.view<Components...>();
+		}
 	public:
 		float GetGravity() { return m_Gravity; }
 		int32_t GetVelocityIterations() { return m_PhysicsVelocityIterations; }

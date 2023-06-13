@@ -116,6 +116,21 @@ namespace Flora {
 				b2Fixture* fixture = body->CreateFixture(&fixtureDef);
 				bc2d.RuntimeFixture = fixture;
 			}
+
+			if (entity.HasComponent<CircleCollider2DComponent>()) {
+				auto& cc2d = entity.GetComponent<CircleCollider2DComponent>();
+				b2CircleShape circleShape;
+				circleShape.m_p.Set(cc2d.Offset.x, cc2d.Offset.y);
+				circleShape.m_radius = scale.x * cc2d.Radius;
+				b2FixtureDef fixtureDef;
+				fixtureDef.shape = &circleShape;
+				fixtureDef.density = cc2d.Density;
+				fixtureDef.friction = cc2d.Friction;
+				fixtureDef.restitution = cc2d.Restitution;
+				fixtureDef.restitutionThreshold = cc2d.RestitutionThreshold;
+				b2Fixture* fixture = body->CreateFixture(&fixtureDef);
+				cc2d.RuntimeFixture = fixture;
+			}
 		}
 
 	}
@@ -168,6 +183,7 @@ namespace Flora {
 		CopyComponent<ScriptManagerComponent>(entity, newEntity);
 		CopyComponent<RigidBody2DComponent>(entity, newEntity);
 		CopyComponent<BoxCollider2DComponent>(entity, newEntity);
+		CopyComponent<CircleCollider2DComponent>(entity, newEntity);
 	}
 
 	Entity Scene::CopyEntity(Entity entity) {

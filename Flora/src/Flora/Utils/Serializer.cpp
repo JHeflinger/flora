@@ -109,6 +109,7 @@ namespace Flora {
 			out << YAML::Key << "OrthographicFar" << YAML::Value << camera.GetOrthographicFarClip();
 			out << YAML::EndMap;
 			out << YAML::Key << "FixedAspectRatio" << YAML::Value << cameraComponent.FixedAspectRatio;
+			out << YAML::Key << "Visible Borders" << YAML::Value << cameraComponent.ShowBorder;
 			out << YAML::EndMap;
 		}
 
@@ -220,6 +221,19 @@ namespace Flora {
 			out << YAML::EndMap;
 		}
 
+		if (entity.HasComponent<CircleCollider2DComponent>()) {
+			out << YAML::Key << "CircleCollider2DComponent";
+			auto& circleCollider2DComponent = entity.GetComponent<CircleCollider2DComponent>();
+			out << YAML::BeginMap;
+			out << YAML::Key << "Offset" << YAML::Value << circleCollider2DComponent.Offset;
+			out << YAML::Key << "Radius" << YAML::Value << circleCollider2DComponent.Radius;
+			out << YAML::Key << "Density" << YAML::Value << circleCollider2DComponent.Density;
+			out << YAML::Key << "Friction" << YAML::Value << circleCollider2DComponent.Friction;
+			out << YAML::Key << "Restitution" << YAML::Value << circleCollider2DComponent.Restitution;
+			out << YAML::Key << "RestitutionThreshold" << YAML::Value << circleCollider2DComponent.RestitutionThreshold;
+			out << YAML::EndMap;
+		}
+
 		out << YAML::EndMap;
 	}
 
@@ -312,6 +326,7 @@ namespace Flora {
 					cc.Camera.SetOrthographicFarClip(cameraProps["OrthographicFar"].as<float>());
 
 					cc.FixedAspectRatio = cameraComponent["FixedAspectRatio"].as<bool>();
+					cc.ShowBorder = cameraComponent["Visible Borders"].as<bool>();
 				}
 
 				auto spriteRendererComponent = entity["SpriteRendererComponent"];
@@ -397,7 +412,17 @@ namespace Flora {
 					bc2dc.Friction = boxCollider2DComponent["Friction"].as<float>();
 					bc2dc.Restitution = boxCollider2DComponent["Restitution"].as<float>();
 					bc2dc.RestitutionThreshold = boxCollider2DComponent["RestitutionThreshold"].as<float>();
+				}
 
+				auto circleCollider2DComponent = entity["CircleCollider2DComponent"];
+				if (circleCollider2DComponent) {
+					auto& cc2dc = deserializedEntity.AddComponent<CircleCollider2DComponent>();
+					cc2dc.Offset = circleCollider2DComponent["Offset"].as<glm::vec2>();
+					cc2dc.Radius = circleCollider2DComponent["Radius"].as<float>();
+					cc2dc.Density = circleCollider2DComponent["Density"].as<float>();
+					cc2dc.Friction = circleCollider2DComponent["Friction"].as<float>();
+					cc2dc.Restitution = circleCollider2DComponent["Restitution"].as<float>();
+					cc2dc.RestitutionThreshold = circleCollider2DComponent["RestitutionThreshold"].as<float>();
 				}
 			}
 		}

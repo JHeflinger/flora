@@ -76,23 +76,29 @@ TODO:
 
 	- bug: physics don't work perfectly when it comes to sub-entities - something is affecting scale
 
+	- bug: offset circle collider is kinda weird, are we sure we're using the body transform and not the entity transform during physics simulation?
+
+	- circle physics collider visual consistent line width
+
 IN PROGRESS:
 
-	- show camera view box
-
 	- label component
+
+IMPLEMENTED TICKETS:
+
+	- show camera view box for orthographic
+
+	- visualized physics colliders
+
+	- UI for toggling collider visuals
+
+	- serialize editor settings for physics collider lines on/off
 
 	- circle physics collider
 
 	- circle physcis collider copy paste
 
 	- serialize circle physics collider
-
-	- visualized physics colliders
-
-	- serialize editor settings for physics collider lines on/off/and thickness
-
-IMPLEMENTED TICKETS:
 
 	- fix drag camera by mouse
 

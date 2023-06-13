@@ -14,6 +14,7 @@ namespace Flora {
 		EditorCamera(float fov, float aspectRatio, float nearClip, float farClip);
 		void OnUpdate(Timestep ts, bool updateControl = true);
 		void OnEvent(Event& e);
+		inline float GetDependantDistance() const { if (m_ProjectionType == ProjectionType::Perspective) return m_Distance; else return 2.0f * m_OrthographicSize; }
 		inline float GetDistance() const { return m_Distance; }
 		inline void SetDistance(float distance) { m_Distance = distance; }
 		inline void SetViewportSize(float width, float height) { m_ViewportWidth = width; m_ViewportHeight = height; UpdateProjection(); }

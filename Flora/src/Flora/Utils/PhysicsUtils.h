@@ -3,6 +3,7 @@
 #include "box2d/b2_body.h"
 #include "box2d/b2_fixture.h"
 #include "box2d/b2_polygon_shape.h"
+#include "box2d/b2_circle_shape.h"
 #include "glm/glm.hpp"
 
 namespace Flora {
