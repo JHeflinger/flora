@@ -20,8 +20,6 @@ TODO:
 
 	- particle system
 
-	- gravity
-
 	- vfx graph
 
 	- undo and redo
@@ -52,9 +50,7 @@ TODO:
 
 	- move some editor settings to scene settings (like editor camera) or separate it into a sceneEditorSetting file specific to scene
 
-	- content browser select multiple 
-
-	- copy and paste can select multiple files/entities
+	- content browser select multiple
 
 	- move editor dependent assets into a protected assets folder
 
@@ -62,15 +58,13 @@ TODO:
 
 	- bug: gpu monitoring doesn't really work depending on graphics card
 
-	- add hardware monitoring error handling
-
 	- sprites should have the option to linear filter or not
-
-	- show hitbox option on collider body
 
 	- texture hot reloading
 
 	- more texture support
+
+	- bug: gpu not being detected in stats dynamically
 
 	- bug: moving rotation on subentities affects the scale
 
@@ -80,13 +74,19 @@ TODO:
 
 	- circle physics collider visual consistent line width
 
-IN PROGRESS:
-
-	- show camera view box for perspective
-
 	- label component
 
+	- simulate physics button?
+
+	- pause / step scene button
+
+IN PROGRESS:
+	
+	- c# scripting!
+
 IMPLEMENTED TICKETS:
+
+	- show camera view box for perspective
 
 	- show camera view box for orthographic
 
