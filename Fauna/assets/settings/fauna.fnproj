@@ -4,13 +4,13 @@ Current Gizmo: 7
 Editor Camera Type: Perspective
 Visible Physics Colliders: false
 General Camera Settings:
-  Position: [-21.1544914, 28.1534805, 156.673813]
+  Position: [-3.34912038, 10.5336647, 159.593262]
   Focal Point: [-0.272790492, 5.14807129, -0.599217474]
   Camera Bound: false
 Perspective Camera Settings:
   Distance: 160.3125
-  Pitch: 0.144000664
-  Yaw: 0.132001489
+  Pitch: 0.0336006694
+  Yaw: 0.0192016009
 Orthographic Camera Settings:
   Size: 82.3417969
 Closed Panels:
