@@ -66,6 +66,14 @@ project "Flora"
 		{
 		}
 
+		links
+		{
+			"%{Library.WinSock}",
+			"%{Library.Winmm}",
+			"%{Library.WinVersion}",
+			"%{Library.WinBCrypt}"
+		}
+
 	filter "configurations:Debug"
 		defines "FL_DEBUG"
 		runtime "Debug"

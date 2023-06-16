@@ -33,6 +33,15 @@ group "Dependencies"
 	include "Flora/vendor/yaml-cpp"
 group ""
 
-include "Flora"
-include "Sandbox"
-include "Fauna"
+group "Core"
+	include "Flora"
+	include "Flora-ScriptCore"
+group ""
+
+group "Tools"
+	include "Fauna"
+group ""
+
+group "Misc"
+	include "Sandbox"
+group ""

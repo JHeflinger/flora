@@ -15,3 +15,9 @@ LibraryDir["mono"] = "%{wks.location}/Flora/vendor/mono/lib/%{cfg.buildcfg}"
 
 Library = {}
 Library["mono"] = "%{LibraryDir.mono}/libmono-static-sgen.lib"
+
+-- Windows only
+Library["WinSock"] = "Ws2_32.lib"
+Library["Winmm"] = "Winmm.lib"
+Library["WinVersion"] = "Version.lib"
+Library["WinBCrypt"] = "Bcrypt.lib"

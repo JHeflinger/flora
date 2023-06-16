@@ -3,6 +3,7 @@
 #include "Flora/Core/Log.h"
 #include "Flora/Core/Input.h"
 #include "Flora/Renderer/Renderer.h"
+#include "Flora/Scripting/ScriptEngine.h"
 
 #include <glfw/glfw3.h> //remove later
 
@@ -23,6 +24,7 @@ namespace Flora {
 		m_Window->SetEventCallback(BIND_EVENT_FN(OnEvent));
 
 		Renderer::Init();
+		ScriptEngine::Init();
 
 		m_ImGuiLayer = new ImGuiLayer();
 		PushOverlay(m_ImGuiLayer);
