@@ -80,6 +80,8 @@ TODO:
 
 	- pause / step scene button
 
+	- bug: mono is not seeing namespaces
+
 IN PROGRESS:
 	
 	- c# scripting!

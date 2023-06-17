@@ -31,7 +31,7 @@ namespace Flora {
 	}
 
 	Application::~Application() {
-
+		ScriptEngine::Shutdown();
 	}
 
 	void Application::PushLayer(Layer* layer) {

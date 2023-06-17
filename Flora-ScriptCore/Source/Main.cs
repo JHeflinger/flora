@@ -16,6 +16,11 @@ namespace Flora
             Console.WriteLine("Hello World From C#!");
         }
 
+        public void PrintInt(int value)
+        {
+            Console.WriteLine($"C# says integer is: {value}");
+        }
+
         public void PrintCustomMessage(string message)
         {
             Console.WriteLine($"C# Says: {message}");
