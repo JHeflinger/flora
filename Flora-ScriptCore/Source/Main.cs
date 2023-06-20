@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.CompilerServices;
 
 namespace Flora
 {
@@ -6,9 +7,22 @@ namespace Flora
     {
         public float FloatVar { get; set; }
 
+        public struct Vector3
+        {
+            public float X, Y, Z;
+            public Vector3(float x, float y, float z)
+            {
+                X = x;
+                Y = y;
+                Z = z;
+            }
+        }
+
         public Main()
         {
             Console.WriteLine("Main Constructor!");
+
+            Vector3 position = new Vector3(1, 2, 3);
         }
 
         public void PrintMessage()
@@ -25,5 +39,15 @@ namespace Flora
         {
             Console.WriteLine($"C# Says: {message}");
         }
+
+        /*
+        [MethodImplAttribute(MethodImplOptions.InternalCall)]
+        extern static void CppFunc();
+
+        [MethodImplAttribute(MethodImplOptions.InternalCall)]
+        extern static void NativePrint(string text, int num);
+
+        [MethodImplAttribute(MethodImplOptions.InternalCall)]
+        extern static void PrintVec(ref Vector3 vec);*/
     }
 }
