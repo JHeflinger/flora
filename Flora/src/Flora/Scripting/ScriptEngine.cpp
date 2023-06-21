@@ -2,8 +2,8 @@
 #include "ScriptEngine.h"
 #include "mono/jit/jit.h"
 #include "mono/metadata/assembly.h"
-#include "mono/metadata/object.h"
 #include <glm/glm.hpp>
+#include "ScriptGlue.h"
 
 namespace Flora {
 	namespace Utils {
@@ -17,7 +17,7 @@ namespace Flora {
 
 			std::streampos end = stream.tellg();
 			stream.seekg(0, std::ios::beg);
-			uint32_t size = end - stream.tellg();
+			uint64_t size = end - stream.tellg();
 			if (size == 0) {
 				FL_CORE_ERROR("File is empty");
 				return nullptr;
@@ -27,7 +27,7 @@ namespace Flora {
 			stream.read((char*)buffer, size);
 			stream.close();
 
-			*outSize = size;
+			*outSize = (uint32_t)size;
 			return buffer;
 		}
 
@@ -67,6 +67,7 @@ namespace Flora {
 		MonoDomain* AppDomain = nullptr;
 		MonoAssembly* CoreAssembly = nullptr;
 		MonoImage* CoreAssemblyImage = nullptr;
+		ScriptClass EntityClass;
 	};
 
 	static ScriptEngineData* s_Data = nullptr;
@@ -76,10 +77,10 @@ namespace Flora {
 		InitMono();
 		LoadAssembly("resources/Scripts/Flora-ScriptCore.dll");
 
+		ScriptGlue::RegisterFunctions();
 
-		MonoClass* monoClass = mono_class_from_name(s_Data->CoreAssemblyImage, "Flora", "Main");
-		MonoObject* instance = mono_object_new(s_Data->AppDomain, monoClass);
-		mono_runtime_object_init(instance);
+		s_Data->EntityClass = ScriptClass("Flora", "Entity");
+		s_Data->EntityClass.Instantiate();
 	}
 
 	void ScriptEngine::Shutdown() {
@@ -107,5 +108,28 @@ namespace Flora {
 		s_Data->AppDomain = nullptr;
 		//mono_jit_cleanup(s_Data->RootDomain);
 		s_Data->RootDomain = nullptr;
+	}
+
+	MonoObject* ScriptEngine::InstantiateClass(MonoClass* monoClass) {
+		MonoObject* instance = mono_object_new(s_Data->AppDomain, monoClass);
+		mono_runtime_object_init(instance);
+		return instance;
+	}
+
+	ScriptClass::ScriptClass(const std::string& classNamespace, const std::string& className)
+		: m_Namespace(classNamespace), m_ClassName(className) {
+		m_MonoClass = mono_class_from_name(s_Data->CoreAssemblyImage, classNamespace.c_str(), className.c_str());
+	}
+
+	MonoObject* ScriptClass::Instantiate() {
+		return ScriptEngine::InstantiateClass(m_MonoClass);
+	}
+
+	MonoMethod* ScriptClass::GetMethod(const std::string& methodName, int parameterCount) {
+		return mono_class_get_method_from_name(m_MonoClass, methodName.c_str(), parameterCount);
+	}
+
+	MonoObject* ScriptClass::InvokeMethod(MonoObject* instance, MonoMethod* method, void** params) {
+		return mono_runtime_invoke(method, instance, params, nullptr);
 	}
 }

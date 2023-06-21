@@ -1,16 +1,16 @@
 Scene Filepath: assets\scenes\Test.flora
-Selected Entity: -1
+Selected Entity: 2
 Current Gizmo: 7
 Editor Camera Type: Perspective
 Visible Physics Colliders: false
 General Camera Settings:
-  Position: [189.476471, 68.0076294, -13.5989342]
+  Position: [-28.2334671, 34.9544983, 101.863579]
   Focal Point: [-0.272790492, 5.14807129, -0.599217474]
   Camera Bound: false
 Perspective Camera Settings:
-  Distance: 200.3125
-  Pitch: 0.319200456
-  Yaw: -1.63919938
+  Distance: 110.3125
+  Pitch: 0.273600727
+  Yaw: 0.26639992
 Orthographic Camera Settings:
   Size: 82.3417969
 Closed Panels:
