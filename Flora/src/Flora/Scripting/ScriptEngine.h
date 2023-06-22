@@ -6,6 +6,8 @@ extern "C" {
 	typedef struct _MonoClass MonoClass;
 	typedef struct _MonoObject MonoObject;
 	typedef struct _MonoMethod MonoMethod;
+	typedef struct _MonoAssembly MonoAssembly;
+	typedef struct _MonoImage MonoImage;
 }
 
 namespace Flora {
@@ -18,6 +20,8 @@ namespace Flora {
 		static void InitMono();
 		static void ShutdownMono();
 		static MonoObject* InstantiateClass(MonoClass* monoClass);
+		static void LoadAssemblyClasses();
+		static void LoadAssemblyClasses(MonoAssembly* assembly);
 		friend class ScriptClass;
 	};
 
