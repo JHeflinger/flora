@@ -4,6 +4,7 @@
 #include "mono/metadata/assembly.h"
 #include <glm/glm.hpp>
 #include "ScriptGlue.h"
+#include "Flora/Scene/Components.h"
 
 namespace Flora {
 	namespace Utils {
@@ -68,9 +69,11 @@ namespace Flora {
 		MonoDomain* AppDomain        = nullptr;
 		MonoAssembly* CoreAssembly   = nullptr;
 		MonoImage* CoreAssemblyImage = nullptr;
+		Scene* SceneContext          = nullptr;
 
 		ScriptClass EntityClass;
 		std::unordered_map<std::string, Ref<ScriptClass>> EntityClasses;
+		std::unordered_map<uint32_t, Ref<ScriptInstance>> EntityInstances;
 	};
 
 	static ScriptEngineData* s_Data = nullptr;
@@ -84,12 +87,7 @@ namespace Flora {
 
 		s_Data->EntityClass = ScriptClass("Flora", "Entity");
 		s_Data->EntityClass.Instantiate();
-
-		// testing
-		{
-			LoadAssemblyClasses();
-			auto& classes = s_Data->EntityClasses;
-		}
+		LoadAssemblyClasses();
 	}
 
 	void ScriptEngine::Shutdown() {
@@ -125,6 +123,10 @@ namespace Flora {
 		return instance;
 	}
 
+	std::unordered_map<std::string, Ref<ScriptClass>> ScriptEngine::GetEntityClasses() {
+		return s_Data->EntityClasses;
+	}
+
 	void ScriptEngine::LoadAssemblyClasses() {
 		LoadAssemblyClasses(s_Data->CoreAssembly);
 	}
@@ -156,6 +158,27 @@ namespace Flora {
 		}
 	}
 
+	void ScriptEngine::OnRuntimeStart(Scene* scene) {
+		s_Data->SceneContext = scene;
+	}
+
+	void ScriptEngine::OnRuntimeStop() {
+		s_Data->SceneContext = nullptr;
+	}
+
+	void ScriptEngine::CreateEntity(Entity entity) {
+		const auto& sc = entity.GetComponent<ScriptComponent>();
+		if (ScriptEngine::EntityClassExists(sc.ClassName)) {
+			Ref<ScriptInstance> instance = CreateRef<ScriptInstance>(s_Data->EntityClasses[sc.ClassName]);
+			s_Data->EntityInstances[(uint32_t)entity] = instance;
+			instance->InvokeOnCreate();
+		}
+	}
+
+	bool ScriptEngine::EntityClassExists(const std::string& fullName) {
+		return s_Data->EntityClasses.find(fullName) != s_Data->EntityClasses.end();
+	}
+
 	ScriptClass::ScriptClass(const std::string& classNamespace, const std::string& className)
 		: m_Namespace(classNamespace), m_ClassName(className) {
 		m_MonoClass = mono_class_from_name(s_Data->CoreAssemblyImage, classNamespace.c_str(), className.c_str());
@@ -171,5 +194,26 @@ namespace Flora {
 
 	MonoObject* ScriptClass::InvokeMethod(MonoObject* instance, MonoMethod* method, void** params) {
 		return mono_runtime_invoke(method, instance, params, nullptr);
+	}
+
+	ScriptInstance::ScriptInstance(Ref<ScriptClass> scriptClass)
+		: m_ScriptClass(scriptClass) {
+		m_Instance = m_ScriptClass->Instantiate();
+		m_OnCreateMethod = m_ScriptClass->GetMethod("OnCreate", 0);
+		m_OnDestroyMethod = m_ScriptClass->GetMethod("OnDestroy", 0);
+		m_OnUpdateMethod = m_ScriptClass->GetMethod("OnUpdate", 1);
+	}
+
+	void ScriptInstance::InvokeOnCreate() {
+		m_ScriptClass->InvokeMethod(m_Instance, m_OnCreateMethod);
+	}
+
+	void ScriptInstance::InvokeOnDestroy() {
+		m_ScriptClass->InvokeMethod(m_Instance, m_OnDestroyMethod);
+	}
+
+	void ScriptInstance::InvokeOnUpdate(float ts) {
+		void* param = &ts;
+		m_ScriptClass->InvokeMethod(m_Instance, m_OnUpdateMethod, &param);
 	}
 }

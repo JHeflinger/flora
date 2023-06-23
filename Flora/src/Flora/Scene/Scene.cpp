@@ -4,6 +4,7 @@
 #include "Flora/Scene/Entity.h"
 #include "Flora/Scene/Components.h"
 #include "Flora/Math/Math.h"
+#include "Flora/Scripting/ScriptEngine.h"
 #include <glm/glm.hpp>
 #include <filesystem>
 
@@ -86,8 +87,8 @@ namespace Flora {
 	Scene::~Scene() {
 	}
 
-	void Scene::OnRuntimeStart() {
-		m_PhysicsWorld = new b2World({0.0f, -m_Gravity });
+	void Scene::StartPhysics() {
+		m_PhysicsWorld = new b2World({ 0.0f, -m_Gravity });
 		auto view = m_Registry.view<RigidBody2DComponent>();
 		for (auto e : view) {
 			Entity entity = { e, this };
@@ -132,12 +133,27 @@ namespace Flora {
 				cc2d.RuntimeFixture = fixture;
 			}
 		}
+	}
 
+	void Scene::OnRuntimeStart() {
+		StartPhysics();
+
+		// Scripting
+		{
+			ScriptEngine::OnRuntimeStart(this);
+
+			auto view = m_Registry.view<ScriptComponent>();
+			for (auto e : view) {
+				Entity entity = { e, this };
+				ScriptEngine::CreateEntity(entity);
+			}
+		}
 	}
 
 	void Scene::OnRuntimeStop() {
 		delete m_PhysicsWorld;
 		m_PhysicsWorld = nullptr;
+		ScriptEngine::OnRuntimeStop();
 	}
 
 	std::vector<Entity> Scene::GetEntitiesByTag(std::string tag) {
@@ -346,9 +362,10 @@ namespace Flora {
 	}
 	
 	template<>
-	void Scene::OnComponentAdded<CircleRendererComponent>(Entity entity, CircleRendererComponent& component) {
+	void Scene::OnComponentAdded<CircleRendererComponent>(Entity entity, CircleRendererComponent& component) { }
 
-	}
+	template<>
+	void Scene::OnComponentAdded<ScriptComponent>(Entity entity, ScriptComponent& component) { }
 
 	template<>
 	void Scene::OnComponentAdded<CameraComponent>(Entity entity, CameraComponent& component) {

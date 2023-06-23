@@ -104,6 +104,15 @@ namespace Flora {
 		}
 	};
 
+	struct ScriptComponent {
+		std::string ClassName;
+
+		ScriptComponent() = default;
+		ScriptComponent(const ScriptComponent& other) {
+			ClassName = other.ClassName;
+		}
+	};
+
 	struct NativeScriptComponent {
 		ScriptableEntity* Instance = nullptr;
 		ScriptableEntity*(*InstantiateScript)();

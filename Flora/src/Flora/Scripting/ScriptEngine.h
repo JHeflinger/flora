@@ -1,4 +1,6 @@
 #pragma once
+#include "Flora/Scene/Scene.h"
+#include "Flora/Scene/Entity.h"
 #include <filesystem>
 #include <string>
 
@@ -11,20 +13,6 @@ extern "C" {
 }
 
 namespace Flora {
-	class ScriptEngine {
-	public:
-		static void Init();
-		static void Shutdown();
-		static void LoadAssembly(const std::filesystem::path& filepath);
-	private:
-		static void InitMono();
-		static void ShutdownMono();
-		static MonoObject* InstantiateClass(MonoClass* monoClass);
-		static void LoadAssemblyClasses();
-		static void LoadAssemblyClasses(MonoAssembly* assembly);
-		friend class ScriptClass;
-	};
-
 	class ScriptClass {
 	public:
 		ScriptClass() = default;
@@ -35,5 +23,38 @@ namespace Flora {
 	private:
 		std::string m_Namespace, m_ClassName;
 		MonoClass* m_MonoClass = nullptr;
+	};
+
+	class ScriptInstance {
+	public:
+		ScriptInstance(Ref<ScriptClass> scriptClass);
+		void InvokeOnCreate();
+		void InvokeOnDestroy();
+		void InvokeOnUpdate(float ts);
+	private:
+		Ref<ScriptClass> m_ScriptClass;
+		MonoObject* m_Instance = nullptr;
+		MonoMethod* m_OnCreateMethod = nullptr;
+		MonoMethod* m_OnDestroyMethod = nullptr;
+		MonoMethod* m_OnUpdateMethod = nullptr;
+	};
+
+	class ScriptEngine {
+	public:
+		static void Init();
+		static void Shutdown();
+		static void LoadAssembly(const std::filesystem::path& filepath);
+		static void OnRuntimeStart(Scene* scene);
+		static void OnRuntimeStop();
+		static bool EntityClassExists(const std::string& fullName);
+		static void CreateEntity(Entity entity);
+		static std::unordered_map<std::string, Ref<ScriptClass>> GetEntityClasses();
+	private:
+		static void InitMono();
+		static void ShutdownMono();
+		static MonoObject* InstantiateClass(MonoClass* monoClass);
+		static void LoadAssemblyClasses();
+		static void LoadAssemblyClasses(MonoAssembly* assembly);
+		friend class ScriptClass;
 	};
 }

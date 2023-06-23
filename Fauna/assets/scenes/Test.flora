@@ -137,6 +137,8 @@ Entities:
       Radius: 0.5
       Thickness: 1
       Fade: 4.99999987e-05
+    ScriptComponent:
+      ClassName: Sandbox.Player
     RigidBody2DComponent:
       Type: 2
       FixedRotation: false

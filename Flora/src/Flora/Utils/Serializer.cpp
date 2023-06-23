@@ -155,6 +155,14 @@ namespace Flora {
 			out << YAML::EndMap;
 		}
 
+		if (entity.HasComponent<ScriptComponent>()) {
+			out << YAML::Key << "ScriptComponent";
+			out << YAML::BeginMap;
+			auto& scriptComponent = entity.GetComponent<ScriptComponent>();
+			out << YAML::Key << "ClassName" << YAML::Value << scriptComponent.ClassName;
+			out << YAML::EndMap;
+		}
+
 		if (entity.HasComponent<NativeScriptComponent>()) {
 			out << YAML::Key << "NativeScriptComponent";
 			out << YAML::BeginMap;
@@ -358,6 +366,12 @@ namespace Flora {
 					crc.Thickness = circleRendererComponent["Thickness"].as<float>();
 					crc.Fade = circleRendererComponent["Fade"].as<float>();
 					crc.Radius = circleRendererComponent["Radius"].as<float>();
+				}
+
+				auto scriptComponent = entity["ScriptComponent"];
+				if (scriptComponent) {
+					auto& sc = deserializedEntity.AddComponent<ScriptComponent>();
+					sc.ClassName = scriptComponent["ClassName"].as<std::string>();
 				}
 
 				auto nativeScriptComponent = entity["NativeScriptComponent"];

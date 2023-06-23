@@ -60,6 +60,7 @@ namespace Flora {
 	private:
 		template<typename T>
 		void OnComponentAdded(Entity entity, T& component);
+		void StartPhysics();
 		void UpdateScripts(Timestep ts);
 		void UpdatePhysics(Timestep ts);
 		void RenderRuntime(glm::mat4 viewProjection);

@@ -1,6 +1,7 @@
 #include "flpch.h"
 #include "PropertiesPanel.h"
 #include "Flora/Utils/PlatformUtils.h"
+#include "Flora/Scripting/ScriptEngine.h"
 #include <imgui/imgui_internal.h>
 #include <filesystem>
 #include <glm/gtc/type_ptr.hpp>
@@ -198,6 +199,7 @@ namespace Flora {
 			DrawAddComponentItem<CameraComponent>("Camera", m_EditorContext->SelectedEntity);
 			DrawAddComponentItem<SpriteRendererComponent>("Sprite Renderer", m_EditorContext->SelectedEntity);
 			DrawAddComponentItem<CircleRendererComponent>("Circle Renderer", m_EditorContext->SelectedEntity);
+			DrawAddComponentItem<ScriptComponent>("Script", m_EditorContext->SelectedEntity);
 			DrawAddComponentItem<NativeScriptComponent>("Native Script", m_EditorContext->SelectedEntity);
 			DrawAddComponentItem<ScriptManagerComponent>("Script Manager", m_EditorContext->SelectedEntity);
 			DrawAddComponentItem<RigidBody2DComponent>("Rigid Body 2D", m_EditorContext->SelectedEntity);
@@ -550,6 +552,18 @@ namespace Flora {
 			ImGui::DragFloat("##Fade", &component.Fade, 0.001f, 0.0f, 1.0f, "%.4f");
 			ImGui::ColorEdit4("##Color", glm::value_ptr(component.Color));
 			ImGui::Columns(1);
+		});
+
+		DrawComponent<ScriptComponent>("Script", entity, [](auto& entity, auto& component) {
+			bool classExists = ScriptEngine::EntityClassExists(component.ClassName);
+			static char buffer[128];
+			strcpy(buffer, component.ClassName.c_str());
+			if (!classExists)
+				ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.9f, 0.2f, 0.3f, 1.0f));
+			if (ImGui::InputText("Class", buffer, sizeof(buffer)))
+				component.ClassName = buffer;
+			if (!classExists)
+				ImGui::PopStyleColor();
 		});
 
 		DrawComponent<NativeScriptComponent>("Native Script", entity, [](auto& entity, auto& component) {
