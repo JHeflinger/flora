@@ -84,6 +84,7 @@ namespace Flora {
 		LoadAssembly("resources/Scripts/Flora-ScriptCore.dll");
 
 		ScriptGlue::RegisterFunctions();
+		ScriptGlue::RegisterComponents();
 
 		s_Data->EntityClass = ScriptClass("Flora", "Entity");
 		s_Data->EntityClass.Instantiate();
@@ -131,6 +132,10 @@ namespace Flora {
 		LoadAssemblyClasses(s_Data->CoreAssembly);
 	}
 
+	MonoImage* ScriptEngine::GetCoreAssemblyImage() {
+		return s_Data->CoreAssemblyImage;
+	}
+
 	void ScriptEngine::LoadAssemblyClasses(MonoAssembly* assembly) {
 		s_Data->EntityClasses.clear();
 
@@ -164,15 +169,29 @@ namespace Flora {
 
 	void ScriptEngine::OnRuntimeStop() {
 		s_Data->SceneContext = nullptr;
+		s_Data->EntityInstances.clear();
 	}
 
 	void ScriptEngine::CreateEntity(Entity entity) {
 		const auto& sc = entity.GetComponent<ScriptComponent>();
 		if (ScriptEngine::EntityClassExists(sc.ClassName)) {
-			Ref<ScriptInstance> instance = CreateRef<ScriptInstance>(s_Data->EntityClasses[sc.ClassName]);
+			Ref<ScriptInstance> instance = CreateRef<ScriptInstance>(s_Data->EntityClasses[sc.ClassName], entity);
 			s_Data->EntityInstances[(uint32_t)entity] = instance;
 			instance->InvokeOnCreate();
 		}
+	}
+
+	void ScriptEngine::UpdateEntity(Entity entity, float ts) {
+		FL_CORE_ASSERT(s_Data->EntityInstances.find((uint32_t)entity) != s_Data->EntityInstances.end(), "Entity script object not found");
+		s_Data->EntityInstances[(uint32_t)entity]->InvokeOnUpdate(ts);
+	}
+
+	void ScriptEngine::DestroyEntity(Entity entity) {
+
+	}
+
+	Scene* ScriptEngine::GetSceneContext() {
+		return s_Data->SceneContext;
 	}
 
 	bool ScriptEngine::EntityClassExists(const std::string& fullName) {
@@ -196,12 +215,18 @@ namespace Flora {
 		return mono_runtime_invoke(method, instance, params, nullptr);
 	}
 
-	ScriptInstance::ScriptInstance(Ref<ScriptClass> scriptClass)
+	ScriptInstance::ScriptInstance(Ref<ScriptClass> scriptClass, Entity entity)
 		: m_ScriptClass(scriptClass) {
 		m_Instance = m_ScriptClass->Instantiate();
+		m_Constructor = s_Data->EntityClass.GetMethod(".ctor", 1);
 		m_OnCreateMethod = m_ScriptClass->GetMethod("OnCreate", 0);
 		m_OnDestroyMethod = m_ScriptClass->GetMethod("OnDestroy", 0);
 		m_OnUpdateMethod = m_ScriptClass->GetMethod("OnUpdate", 1);
+
+		// Call entity constructor here
+		uint32_t eid = (uint32_t)entity;
+		void* param = &eid;
+		m_ScriptClass->InvokeMethod(m_Instance, m_Constructor, &param);
 	}
 
 	void ScriptInstance::InvokeOnCreate() {

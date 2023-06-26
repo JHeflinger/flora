@@ -223,4 +223,13 @@ namespace Flora {
 			RestitutionThreshold = other.RestitutionThreshold;
 		}
 	};
+
+	template<typename... Component>
+	struct ComponentGroup{};
+
+	using AllComponents =
+		ComponentGroup<TagComponent, TransformComponent, SpriteRendererComponent,
+		CircleRendererComponent, CameraComponent, ScriptComponent, NativeScriptComponent,
+		ScriptManagerComponent, ChildComponent, ParentComponent, RigidBody2DComponent, 
+		BoxCollider2DComponent, CircleCollider2DComponent>;
 }

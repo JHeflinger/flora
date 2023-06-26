@@ -27,13 +27,14 @@ namespace Flora {
 
 	class ScriptInstance {
 	public:
-		ScriptInstance(Ref<ScriptClass> scriptClass);
+		ScriptInstance(Ref<ScriptClass> scriptClass, Entity entity);
 		void InvokeOnCreate();
 		void InvokeOnDestroy();
 		void InvokeOnUpdate(float ts);
 	private:
 		Ref<ScriptClass> m_ScriptClass;
 		MonoObject* m_Instance = nullptr;
+		MonoMethod* m_Constructor = nullptr;
 		MonoMethod* m_OnCreateMethod = nullptr;
 		MonoMethod* m_OnDestroyMethod = nullptr;
 		MonoMethod* m_OnUpdateMethod = nullptr;
@@ -48,6 +49,9 @@ namespace Flora {
 		static void OnRuntimeStop();
 		static bool EntityClassExists(const std::string& fullName);
 		static void CreateEntity(Entity entity);
+		static void UpdateEntity(Entity entity, float ts);
+		static void DestroyEntity(Entity entity);
+		static Scene* GetSceneContext();
 		static std::unordered_map<std::string, Ref<ScriptClass>> GetEntityClasses();
 	private:
 		static void InitMono();
@@ -55,6 +59,9 @@ namespace Flora {
 		static MonoObject* InstantiateClass(MonoClass* monoClass);
 		static void LoadAssemblyClasses();
 		static void LoadAssemblyClasses(MonoAssembly* assembly);
+		static MonoImage* GetCoreAssemblyImage();
+	private:
 		friend class ScriptClass;
+		friend class ScriptGlue;
 	};
 }

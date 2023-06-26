@@ -98,6 +98,16 @@ TODO:
 
 	- documentation?
 
+	- script component in propertiespanel looks ugly, fix it
+
+	- should scripts be before or after physics calculations?
+
+	- outline on selected entity
+
+	- refactor some things to use component group so we only have one place we need to add a new component to
+
+	- script component copy paste etc
+
 IN PROGRESS:
 	
 	- c# scripting!

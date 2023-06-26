@@ -279,6 +279,13 @@ namespace Flora {
 				}
 			}
 		});
+
+		// mono scripts
+		auto view = m_Registry.view<ScriptComponent>();
+		for (auto e : view) {
+			Entity entity = { e, this };
+			ScriptEngine::UpdateEntity(entity, ts);
+		}
 	}
 
 	void Scene::RenderRuntime(glm::mat4 viewProjection) {

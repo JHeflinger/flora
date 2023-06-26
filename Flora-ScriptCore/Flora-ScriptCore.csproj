@@ -52,7 +52,12 @@
   <ItemGroup>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Source\Main.cs" />
+    <Compile Include="Source\Components.cs" />
+    <Compile Include="Source\Input.cs" />
+    <Compile Include="Source\Internal.cs" />
+    <Compile Include="Source\KeyCode.cs" />
+    <Compile Include="Source\Entity.cs" />
+    <Compile Include="Source\Math.cs" />
     <Compile Include="Source\Player.cs" />
   </ItemGroup>
   <ItemGroup>
