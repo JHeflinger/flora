@@ -23,5 +23,8 @@ namespace Flora
 
         [MethodImplAttribute(MethodImplOptions.InternalCall)]
         internal extern static bool Entity_HasComponent(uint eid, Type componentType);
+
+        [MethodImplAttribute(MethodImplOptions.InternalCall)]
+        internal extern static void RigidBody2DComponent_SetTranslation(uint eid, ref Vector2 translation);
     }
 }

@@ -26,4 +26,20 @@ namespace Flora
             }
         }
     }
+
+    public class RigidBody2DComponent : Component
+    {
+        public Vector2 Translation
+        {
+            get
+            {
+                InternalCalls.TransformComponent_GetTranslation(Entity.ID, out Vector3 translation);
+                return new Vector2(translation);
+            }
+            set
+            {
+                InternalCalls.RigidBody2DComponent_SetTranslation(Entity.ID, ref value);
+            }
+        }
+    }
 }

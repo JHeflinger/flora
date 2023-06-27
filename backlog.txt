@@ -108,6 +108,8 @@ TODO:
 
 	- script component copy paste etc
 
+	- refine copy and paste
+
 IN PROGRESS:
 	
 	- c# scripting!

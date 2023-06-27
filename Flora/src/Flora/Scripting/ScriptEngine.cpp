@@ -230,15 +230,24 @@ namespace Flora {
 	}
 
 	void ScriptInstance::InvokeOnCreate() {
-		m_ScriptClass->InvokeMethod(m_Instance, m_OnCreateMethod);
+		if (m_OnCreateMethod)
+			m_ScriptClass->InvokeMethod(m_Instance, m_OnCreateMethod);
+		else
+			FL_CORE_WARN("Create method is missing");
 	}
 
 	void ScriptInstance::InvokeOnDestroy() {
-		m_ScriptClass->InvokeMethod(m_Instance, m_OnDestroyMethod);
+		if (m_OnCreateMethod)
+			m_ScriptClass->InvokeMethod(m_Instance, m_OnDestroyMethod);
+		else
+			FL_CORE_WARN("Destroy method is missing");
 	}
 
 	void ScriptInstance::InvokeOnUpdate(float ts) {
-		void* param = &ts;
-		m_ScriptClass->InvokeMethod(m_Instance, m_OnUpdateMethod, &param);
+		if (m_OnUpdateMethod) {
+			void* param = &ts;
+			m_ScriptClass->InvokeMethod(m_Instance, m_OnUpdateMethod, &param);
+		} else
+			FL_CORE_WARN("Update method is missing");
 	}
 }

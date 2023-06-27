@@ -10,12 +10,17 @@ namespace Sandbox
     public class Player : Entity
     {
         private TransformComponent m_Transform;
+        private RigidBody2DComponent m_RigidBody;
 
         void OnCreate()
         {
             Console.WriteLine($"Player.OnCreate - {ID}");
             m_Transform = GetComponent<TransformComponent>();
-            m_Transform.Translation = new Vector3(0.0f);
+            m_RigidBody = GetComponent<RigidBody2DComponent>();
+            bool hasTransform = HasComponent<TransformComponent>();
+            bool hasBody = HasComponent<RigidBody2DComponent>();
+            Console.WriteLine($"Player has transform: {hasTransform}");
+            //m_Transform.Translation = new Vector3(0.0f);
         }
 
         void OnDestroy()
@@ -25,8 +30,6 @@ namespace Sandbox
 
         void OnUpdate(float ts)
         {
-            Console.WriteLine($"Plsyer.OnUpdate({ts})");
-
             float speed = 15.0f;
 
             if (Input.IsKeyDown(KeyCode.W))
@@ -34,24 +37,28 @@ namespace Sandbox
                 Vector3 translation = Translation;
                 translation.Y += speed * ts;
                 Translation = translation;
+                m_RigidBody.Translation = translation.XY;
             }
             if (Input.IsKeyDown(KeyCode.A))
             {
                 Vector3 translation = Translation;
                 translation.X -= speed * ts;
                 Translation = translation;
+                m_RigidBody.Translation = translation.XY;
             }
             if (Input.IsKeyDown(KeyCode.S))
             {
                 Vector3 translation = Translation;
                 translation.Y -= speed * ts;
                 Translation = translation;
+                m_RigidBody.Translation = translation.XY;
             }
             if (Input.IsKeyDown(KeyCode.D))
             {
                 Vector3 translation = Translation;
                 translation.X += speed * ts;
                 Translation = translation;
+                m_RigidBody.Translation = translation.XY;
             }
         }
     }

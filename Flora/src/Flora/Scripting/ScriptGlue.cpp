@@ -6,6 +6,7 @@
 #include "Flora/Scene/Entity.h"
 #include "Flora/Scripting/ScriptEngine.h"
 #include "Flora/Core/Input.h"
+#include "Flora/Utils/PhysicsUtils.h"
 #include <glm/glm.hpp>
 
 namespace Flora {
@@ -46,12 +47,23 @@ namespace Flora {
 		return s_HasComponentFunctions.at(monoComponentType)(entity);
 	}
 
+	static void RigidBody2DComponent_SetTranslation(uint32_t eid, glm::vec2* translation) {
+		Scene* scene = ScriptEngine::GetSceneContext();
+		FL_CORE_ASSERT(scene != nullptr);
+		Entity entity = scene->GetEntityFromID(eid);
+		FL_CORE_ASSERT(entity != nullptr);
+
+		auto& rb2d = entity.GetComponent<RigidBody2DComponent>();
+		PhysicsUtils::WarpBody(rb2d.RuntimeBody, *translation);
+	}
+
 	void ScriptGlue::RegisterFunctions() {
 		FL_ADD_INTERNAL_CALL(CoreTrace);
 		FL_ADD_INTERNAL_CALL(TransformComponent_GetTranslation);
 		FL_ADD_INTERNAL_CALL(TransformComponent_SetTranslation);
 		FL_ADD_INTERNAL_CALL(Input_IsKeyDown);
 		FL_ADD_INTERNAL_CALL(Entity_HasComponent);
+		FL_ADD_INTERNAL_CALL(RigidBody2DComponent_SetTranslation);
 	}
 
 	template<typename... Component>
