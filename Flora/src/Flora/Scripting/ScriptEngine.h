@@ -16,7 +16,7 @@ namespace Flora {
 	class ScriptClass {
 	public:
 		ScriptClass() = default;
-		ScriptClass(const std::string& classNamespace, const std::string& className);
+		ScriptClass(const std::string& classNamespace, const std::string& className, bool isCore = false);
 		MonoObject* Instantiate();
 		MonoMethod* GetMethod(const std::string& methodName, int parameterCount);
 		MonoObject* InvokeMethod(MonoObject* instance, MonoMethod* method, void** params = nullptr);
@@ -45,6 +45,7 @@ namespace Flora {
 		static void Init();
 		static void Shutdown();
 		static void LoadAssembly(const std::filesystem::path& filepath);
+		static void LoadAppAssembly(const std::filesystem::path& filepath);
 		static void OnRuntimeStart(Scene* scene);
 		static void OnRuntimeStop();
 		static bool EntityClassExists(const std::string& fullName);
@@ -58,7 +59,6 @@ namespace Flora {
 		static void ShutdownMono();
 		static MonoObject* InstantiateClass(MonoClass* monoClass);
 		static void LoadAssemblyClasses();
-		static void LoadAssemblyClasses(MonoAssembly* assembly);
 		static MonoImage* GetCoreAssemblyImage();
 	private:
 		friend class ScriptClass;

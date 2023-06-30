@@ -3,8 +3,8 @@ project "Flora-ScriptCore"
 	language "C#"
 	dotnetframework "4.7.2"
 
-	targetdir ("%{wks.location}/Fauna/resources/Scripts")
-	objdir ("%{wks.location}/Fauna/resources/Scripts/Intermediates")
+	targetdir ("../Fauna/resources/Scripts")
+	objdir ("../Fauna/resources/Scripts/Intermediates")
 
 	files {
 		"Source/**.cs",
