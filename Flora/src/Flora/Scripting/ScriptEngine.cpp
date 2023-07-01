@@ -153,18 +153,31 @@ namespace Flora {
 			uint32_t cols[MONO_TYPEDEF_SIZE];
 			mono_metadata_decode_row(typeDefinitionsTable, i, cols, MONO_TYPEDEF_SIZE);
 			const char* nameSpace = mono_metadata_string_heap(s_Data->AppAssemblyImage, cols[MONO_TYPEDEF_NAMESPACE]);
-			const char* name = mono_metadata_string_heap(s_Data->AppAssemblyImage, cols[MONO_TYPEDEF_NAME]);
+			const char* className = mono_metadata_string_heap(s_Data->AppAssemblyImage, cols[MONO_TYPEDEF_NAME]);
 			std::string fullName;
 			if (strlen(nameSpace) != 0)
-				fullName = fmt::format("{}.{}", nameSpace, name);
+				fullName = fmt::format("{}.{}", nameSpace, className);
 			else
-				fullName = name;
+				fullName = className;
 
-			MonoClass* monoClass = mono_class_from_name(s_Data->AppAssemblyImage, nameSpace, name);
+			MonoClass* monoClass = mono_class_from_name(s_Data->AppAssemblyImage, nameSpace, className);
 			if (monoClass == entityClass) continue;
 			bool isEntity = mono_class_is_subclass_of(monoClass, entityClass, false);
-			if (isEntity)
-				s_Data->EntityClasses[fullName] = CreateRef<ScriptClass>(nameSpace, name);
+			if (!isEntity)
+				continue;
+
+			s_Data->EntityClasses[fullName] = CreateRef<ScriptClass>(nameSpace, className);
+			mono_class_num_fields(monoClass);
+			FL_CORE_WARN("{} fields:", className);
+			void* iterator = nullptr;
+			while (MonoClassField* field = mono_class_get_fields(monoClass, &iterator)) {
+				const char* fieldName = mono_field_get_name(field);
+				FL_CORE_WARN("\t- {}", fieldName);
+			} 
+			/*
+			* Reference: https://www.youtube.com/watch?v=YEPkLqPW15I&list=PLlrATfBNZ98dC-V-N3m0Go4deliWHPFwT&index=123
+			* currently at: 29:30
+			*/
 		}
 	}
 

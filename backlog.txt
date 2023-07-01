@@ -110,6 +110,8 @@ TODO:
 
 	- refine copy and paste
 
+	- script hot reloading should detect when save file even on not runtime and update serialized fields in properties panel instantly!
+
 IN PROGRESS:
 	
 	- c# scripting!
