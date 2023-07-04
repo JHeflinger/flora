@@ -1,6 +1,7 @@
 # binaries
 **/bin/
 bin-int/
+**/Intermediates/
 
 # VS files and folders
 .vs/
@@ -8,6 +9,7 @@ bin-int/
 **.vcxproj
 **.vcxproj.filters
 **.vcxproj.user
+**.cache
 
 # personal
 *.ini
