@@ -42,7 +42,7 @@ project "Flora"
 		"%{IncludeDir.entt}",
 		"%{IncludeDir.yaml_cpp}",
 		"%{IncludeDir.ImGuizmo}",
-		"%{IncludeDir.mono}"
+		"%{IncludeDir.mono}",
 	}
 
 	links

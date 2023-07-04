@@ -9,7 +9,7 @@ Entities:
     TagComponent:
       Tag: Circle
     TransformComponent:
-      Translation: [0.397592157, 2.92161131, -1.03546143]
+      Translation: [0.402001977, 2.84376097, -1.01757812]
       Rotation: [0, 0, 0]
       Scale: [1, 1, 1.09494722]
     CircleRendererComponent:
