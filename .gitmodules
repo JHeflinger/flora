@@ -23,6 +23,3 @@
 [submodule "Flora/vendor/box2D"]
 	path = Flora/vendor/box2D
 	url = git@github.com:JHeflinger/box2D.git
-[submodule "Flora/vendor/openal-soft"]
-	path = Flora/vendor/openal-soft
-	url = https://github.com/JHeflinger/openal-soft.git
