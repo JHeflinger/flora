@@ -8,6 +8,7 @@
 #include "Flora/Math/Math.h"
 #include "Utils/FileUtils.h"
 #include "ImGuizmo.h"
+#include "Flora/Audio/AudioCommand.h"
 
 namespace Flora {
 	//temp, remove when projects are implemented
@@ -827,6 +828,6 @@ namespace Flora {
 
 	void EditorLayer::DevEvent() {
 		FL_CORE_INFO("DEV EVENT FIRED");
-		int entityHandle = (int)(uint32_t)m_EditorParams->SelectedEntity;
+		AudioCommand::test();
 	}
 }

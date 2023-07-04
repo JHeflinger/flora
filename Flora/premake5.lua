@@ -43,6 +43,7 @@ project "Flora"
 		"%{IncludeDir.yaml_cpp}",
 		"%{IncludeDir.ImGuizmo}",
 		"%{IncludeDir.mono}",
+		"%{IncludeDir.openAL}"
 	}
 
 	links
@@ -71,7 +72,9 @@ project "Flora"
 			"%{Library.WinSock}",
 			"%{Library.Winmm}",
 			"%{Library.WinVersion}",
-			"%{Library.WinBCrypt}"
+			"%{Library.WinBCrypt}",
+			"%{Library.openAL}",
+			"%{Library.efx}"
 		}
 
 	filter "configurations:Debug"

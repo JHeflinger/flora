@@ -30,7 +30,7 @@ TODO:
 
 	- standalone runtime and standalone serialization
 
-	- audio (openal)
+	- audio
 
 	- networking
 
