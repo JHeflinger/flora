@@ -1,107 +1,15 @@
 Scene: Testing
-Primary Camera: 2
+Primary Camera: 4
 Physics:
   Gravity: 34
   VelocityIterations: 6
   PositionIterations: 2
 Entities:
-  - Entity: 69420
-    TagComponent:
-      Tag: Circle
-    TransformComponent:
-      Translation: [0.393624783, 2.95771384, -1.04510498]
-      Rotation: [0, 0, 0]
-      Scale: [1, 1, 1.09494722]
-    CircleRendererComponent:
-      Color: [0.517374516, 0, 1, 1]
-      Radius: 0.5
-      Thickness: 1
-      Fade: 4.99999987e-05
-    ScriptComponent:
-      ClassName: Sandbox.Player
-    RigidBody2DComponent:
-      Type: 2
-      FixedRotation: false
-    CircleCollider2DComponent:
-      Offset: [0, 0]
-      Radius: 0.5
-      Density: 1
-      Friction: 0.5
-      Restitution: 1.10000002
-      RestitutionThreshold: 0.5
   - Entity: 4
-    TagComponent:
-      Tag: Square
-    TransformComponent:
-      Translation: [-5.03113794, 3.81107974, 0]
-      Rotation: [0, 0, -0.508756816]
-      Scale: [34.0223694, 1, 1]
-    SpriteRendererComponent:
-      Color: [1, 0, 0, 1]
-      Path: "NULL"
-      Filename: None Selected
-      Type: 0
-      TilingFactor: 1
-      Rows: 1
-      Columns: 1
-      RowCoordinate: 1
-      ColumnCoordinate: 1
-      SubtextureWidth: 1
-      SubtextureHeight: 1
-      Frames: 1
-      StartFrame: 1
-      EndFrame: 1
-      CurrentFrame: 1
-      FPS: 1
-    RigidBody2DComponent:
-      Type: 0
-      FixedRotation: false
-    BoxCollider2DComponent:
-      Offset: [0, 0]
-      Size: [0.5, 0.5]
-      Density: 1
-      Friction: 0.5
-      Restitution: 0
-      RestitutionThreshold: 0.5
-  - Entity: 3
-    TagComponent:
-      Tag: Square
-    TransformComponent:
-      Translation: [5.9000001, 0, 2.38418579e-07]
-      Rotation: [0, 0, 0.647309065]
-      Scale: [34.0223732, 0.999999881, 1]
-    SpriteRendererComponent:
-      Color: [1, 0, 0, 1]
-      Path: "NULL"
-      Filename: None Selected
-      Type: 0
-      TilingFactor: 1
-      Rows: 1
-      Columns: 1
-      RowCoordinate: 1
-      ColumnCoordinate: 1
-      SubtextureWidth: 1
-      SubtextureHeight: 1
-      Frames: 1
-      StartFrame: 1
-      EndFrame: 1
-      CurrentFrame: 1
-      FPS: 1
-    RigidBody2DComponent:
-      Type: 0
-      FixedRotation: false
-    BoxCollider2DComponent:
-      Offset: [0, 0]
-      Size: [0.5, 0.5]
-      Density: 1
-      Friction: 0.5
-      Restitution: 0
-      RestitutionThreshold: 0.5
-  - Entity: 2
     TagComponent:
       Tag: Camera
     TransformComponent:
-      Translation: [1.58036804, 5.03522491, 23.4795551]
+      Translation: [33.3099632, -9.23724556, 9.64788818]
       Rotation: [0, 0, 0]
       Scale: [1, 1, 1]
     CameraComponent:
@@ -111,21 +19,45 @@ Entities:
         PerspectiveNear: 0.00999999978
         PerspectiveFar: 1000
         OrthographicSize: 10
-        OrthographicNear: -384
-        OrthographicFar: 188
+        OrthographicNear: -81
+        OrthographicFar: 136
       FixedAspectRatio: false
       Visible Borders: true
-  - Entity: 1
+  - Entity: 1048579
     TagComponent:
-      Tag: Square
+      Tag: Background
     TransformComponent:
-      Translation: [5.90000057, -1.49011612e-08, 0]
+      Translation: [0, 0, -9.18760395]
       Rotation: [0, 0, 0]
-      Scale: [34.0224037, 1, 1]
+      Scale: [20, 20, 1]
     SpriteRendererComponent:
-      Color: [1, 0, 0, 1]
-      Path: "NULL"
-      Filename: None Selected
+      Color: [1, 1, 1, 1]
+      Path: assets\game\textures\comical-explosion.png
+      Filename: comical-explosion.png
+      Type: 2
+      TilingFactor: 1
+      Rows: 5
+      Columns: 10
+      RowCoordinate: 1
+      ColumnCoordinate: 1
+      SubtextureWidth: 1
+      SubtextureHeight: 1
+      Frames: 1
+      StartFrame: 1
+      EndFrame: 50
+      CurrentFrame: 1
+      FPS: 30
+  - Entity: 1048578
+    TagComponent:
+      Tag: Child
+    TransformComponent:
+      Translation: [2.55889869, -0.142464757, -0.66784656]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    SpriteRendererComponent:
+      Color: [1, 1, 1, 1]
+      Path: assets\game\textures\piggy.png
+      Filename: piggy.png
       Type: 0
       TilingFactor: 1
       Rows: 1
@@ -139,13 +71,55 @@ Entities:
       EndFrame: 1
       CurrentFrame: 1
       FPS: 1
-    RigidBody2DComponent:
+  - Entity: 1048577
+    TagComponent:
+      Tag: Parent
+    TransformComponent:
+      Translation: [0.0283815376, 0.300759256, -0.0164795406]
+      Rotation: [-0.164266706, -0.0805599242, -0.0432953984]
+      Scale: [0.999999762, 1, 1]
+    SpriteRendererComponent:
+      Color: [1, 1, 1, 1]
+      Path: assets\game\textures\bird.png
+      Filename: bird.png
       Type: 0
-      FixedRotation: false
-    BoxCollider2DComponent:
-      Offset: [0, 0]
-      Size: [0.5, 0.5]
-      Density: 1
-      Friction: 0.5
-      Restitution: 0
-      RestitutionThreshold: 0.5
+      TilingFactor: 1
+      Rows: 1
+      Columns: 1
+      RowCoordinate: 1
+      ColumnCoordinate: 1
+      SubtextureWidth: 1
+      SubtextureHeight: 1
+      Frames: 1
+      StartFrame: 1
+      EndFrame: 1
+      CurrentFrame: 1
+      FPS: 1
+    ChildComponent:
+      []
+  - Entity: 0
+    TagComponent:
+      Tag: Controllable Player
+    TransformComponent:
+      Translation: [34.7155571, -8.6109314, -3.61065674]
+      Rotation: [0, 0, 0]
+      Scale: [9.75839996, 9.75839996, 9.75839996]
+    SpriteRendererComponent:
+      Color: [1, 1, 1, 1]
+      Path: assets\game\textures\comical-explosion.png
+      Filename: comical-explosion.png
+      Type: 2
+      TilingFactor: 1
+      Rows: 5
+      Columns: 10
+      RowCoordinate: 1
+      ColumnCoordinate: 1
+      SubtextureWidth: 1
+      SubtextureHeight: 1
+      Frames: 1
+      StartFrame: 1
+      EndFrame: 50
+      CurrentFrame: 1
+      FPS: 30
+    ScriptComponent:
+      ClassName: Sandbox.Player

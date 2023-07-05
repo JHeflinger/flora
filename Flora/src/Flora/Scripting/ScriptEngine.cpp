@@ -2,11 +2,18 @@
 #include "ScriptEngine.h"
 #include "mono/jit/jit.h"
 #include "mono/metadata/assembly.h"
+#include "mono/metadata/tabledefs.h"
 #include <glm/glm.hpp>
 #include "ScriptGlue.h"
 #include "Flora/Scene/Components.h"
 
 namespace Flora {
+
+	static std::unordered_map<const char*, ScriptFieldType> s_ScriptFieldTypeMap = {
+		{ "System.Single", ScriptFieldType::Float },
+		{ "System.Double", ScriptFieldType::Double },
+	};
+
 	namespace Utils {
 		//TODO: move to general utils file
 		static char* ReadBytes(const std::filesystem::path& filepath, uint32_t* outSize) {
@@ -61,6 +68,20 @@ namespace Flora {
 
 				FL_CORE_TRACE("{}.{}", nameSpace, name);
 			}
+		}
+
+		ScriptFieldType MonoTypeToScriptType(MonoType* type) {
+			const char* typeName = mono_type_get_name(type);
+			FL_CORE_ASSERT(s_ScriptFieldTypeMap.find(typeName) != s_ScriptFieldTypeMap.end(), "Type is not a registered field type");
+			return s_ScriptFieldTypeMap.at(typeName);
+		}
+
+		const char* ScriptFieldTypeToString(ScriptFieldType type) {
+			switch (type) {
+			case ScriptFieldType::Float: return "Float";
+			case ScriptFieldType::Double: return "Double";
+			}
+			return "<Invalid>";
 		}
 	}
 
@@ -172,12 +193,13 @@ namespace Flora {
 			void* iterator = nullptr;
 			while (MonoClassField* field = mono_class_get_fields(monoClass, &iterator)) {
 				const char* fieldName = mono_field_get_name(field);
-				FL_CORE_WARN("\t- {}", fieldName);
-			} 
-			/*
-			* Reference: https://www.youtube.com/watch?v=YEPkLqPW15I&list=PLlrATfBNZ98dC-V-N3m0Go4deliWHPFwT&index=123
-			* currently at: 29:30
-			*/
+				uint32_t flags = mono_field_get_flags(field);
+				if (flags & FIELD_ATTRIBUTE_PUBLIC) {
+					MonoType* type = mono_field_get_type(field);
+					ScriptFieldType fieldType = Utils::MonoTypeToScriptType(type);
+					FL_CORE_WARN("\t{} - {}", fieldName, Utils::ScriptFieldTypeToString(fieldType));
+				}
+			}
 		}
 	}
 

@@ -84,7 +84,11 @@ TODO:
 
 	- redo flpch
 
+	- openAL needs to be installed or else OpenAL32.dll not found error will appear
+
 	- redo includes, .h should be relative, everything else absolute
+
+	- get rid of all flora warnings
 
 	- since nativescripts are pre compiled, you should just be able to select from the available ones when adding them (this can also resolve nativescript stability issues)
 
@@ -112,11 +116,16 @@ TODO:
 
 	- organize premake
 
+	- orthographic near and far clip should affect the orthographic border box
+
 	- script hot reloading should detect when save file even on not runtime and update serialized fields in properties panel instantly!
 
 IN PROGRESS:
 	
 	- c# scripting!
+		- doing all component functions
+		- doing all physics and util functions
+		- doing all field types
 
 IMPLEMENTED TICKETS:
 

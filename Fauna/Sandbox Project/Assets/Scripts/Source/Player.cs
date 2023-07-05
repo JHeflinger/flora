@@ -11,6 +11,7 @@ namespace Sandbox
     {
         private TransformComponent m_Transform;
         private RigidBody2DComponent m_RigidBody;
+        public float speed = 15.0f;
 
         void OnCreate()
         {
@@ -30,35 +31,37 @@ namespace Sandbox
 
         void OnUpdate(float ts)
         {
-            float speed = 15.0f;
-
             if (Input.IsKeyDown(KeyCode.W))
             {
                 Vector3 translation = Translation;
                 translation.Y += speed * ts;
                 Translation = translation;
-                m_RigidBody.Translation = translation.XY;
+                if (HasComponent<RigidBody2DComponent>())
+                    m_RigidBody.Translation = translation.XY;
             }
             if (Input.IsKeyDown(KeyCode.A))
             {
                 Vector3 translation = Translation;
                 translation.X -= speed * ts;
                 Translation = translation;
-                m_RigidBody.Translation = translation.XY;
+                if (HasComponent<RigidBody2DComponent>())
+                    m_RigidBody.Translation = translation.XY;
             }
             if (Input.IsKeyDown(KeyCode.S))
             {
                 Vector3 translation = Translation;
                 translation.Y -= speed * ts;
                 Translation = translation;
-                m_RigidBody.Translation = translation.XY;
+                if (HasComponent<RigidBody2DComponent>())
+                    m_RigidBody.Translation = translation.XY;
             }
             if (Input.IsKeyDown(KeyCode.D))
             {
                 Vector3 translation = Translation;
                 translation.X += speed * ts;
                 Translation = translation;
-                m_RigidBody.Translation = translation.XY;
+                if (HasComponent<RigidBody2DComponent>())
+                    m_RigidBody.Translation = translation.XY;
             }
         }
     }

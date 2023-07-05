@@ -13,6 +13,20 @@ extern "C" {
 }
 
 namespace Flora {
+	enum class ScriptFieldType {
+		None = 0,
+		Float,
+		Vector2,
+		Vector3,
+		Vector4,
+		Int,
+		UInt,
+		Bool,
+		Double,
+		Short,
+		Byte
+	};
+
 	class ScriptClass {
 	public:
 		ScriptClass() = default;
