@@ -13,7 +13,7 @@ IncludeDir["openAL"] = "%{wks.location}/Flora/vendor/openAL/include"
 
 LibraryDir = {}
 LibraryDir["mono"] = "%{wks.location}/Flora/vendor/mono/lib/%{cfg.buildcfg}"
-LibraryDir["openAL"] = "%{wks.location}/Flora/vendor/openAL/libs/Win32"
+LibraryDir["openAL"] = "%{wks.location}/Flora/vendor/openAL/libs/Win64"
 
 Library = {}
 Library["mono"] = "%{LibraryDir.mono}/libmono-static-sgen.lib"

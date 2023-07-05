@@ -1,8 +1,13 @@
 #include "flpch.h"
 #include "AudioCommand.h"
+#include "alc.h"
+#include "al.h"
 
 namespace Flora {
-	void AudioCommand::test() {
-		FL_CORE_INFO("poobug");
+
+	static ALCcontext* s_Context = nullptr;
+	static ALCdevice* s_Device = nullptr;
+
+	void AudioCommand::Init() {
 	}
 }

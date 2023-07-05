@@ -31,6 +31,7 @@ group "Dependencies"
 	include "Flora/vendor/Glad"
 	include "Flora/vendor/imgui"
 	include "Flora/vendor/yaml-cpp"
+	include "Flora/vendor/openAL"
 group ""
 
 group "Core"
