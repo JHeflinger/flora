@@ -549,14 +549,17 @@ namespace Flora {
 				glm::vec4 color = { 1, 1, 1, 0.7f };
 				if (cc.Camera.GetProjectionType() == SceneCamera::ProjectionType::Orthographic) {
 					float size = cc.Camera.GetOrthographicSize();
-					glm::mat4 p1_mat = glm::translate(tc.GetTransform(), { size,  size, 0 });
-					glm::mat4 p2_mat = glm::translate(tc.GetTransform(), { size, -size, 0 });
-					glm::mat4 p3_mat = glm::translate(tc.GetTransform(), { -size,  size, 0 });
-					glm::mat4 p4_mat = glm::translate(tc.GetTransform(), { -size, -size, 0 });
-					glm::mat4 p5_mat = glm::translate(p1_mat, { 0, 0, -100 });
-					glm::mat4 p6_mat = glm::translate(p2_mat, { 0, 0, -100 });
-					glm::mat4 p7_mat = glm::translate(p3_mat, { 0, 0, -100 });
-					glm::mat4 p8_mat = glm::translate(p4_mat, { 0, 0, -100 });
+					float nearBorder = cc.Camera.GetOrthographicNearClip() * -1.0f;
+					float farBorder =  (-1.0f * cc.Camera.GetOrthographicFarClip()) - nearBorder;
+					glm::mat4 transform = tc.GetTransform();
+					glm::mat4 p1_mat = glm::translate(transform, { size,  size, nearBorder });
+					glm::mat4 p2_mat = glm::translate(transform, { size, -size, nearBorder });
+					glm::mat4 p3_mat = glm::translate(transform, { -size,  size, nearBorder });
+					glm::mat4 p4_mat = glm::translate(transform, { -size, -size, nearBorder });
+					glm::mat4 p5_mat = glm::translate(p1_mat, { 0, 0, farBorder });
+					glm::mat4 p6_mat = glm::translate(p2_mat, { 0, 0, farBorder });
+					glm::mat4 p7_mat = glm::translate(p3_mat, { 0, 0, farBorder });
+					glm::mat4 p8_mat = glm::translate(p4_mat, { 0, 0, farBorder });
 					glm::vec3 p1_coord, p2_coord, p3_coord, p4_coord, p5_coord, p6_coord, p7_coord, p8_coord;
 					glm::vec3 rotation, scale;
 					Math::DecomposeTransform(p1_mat, p1_coord, rotation, scale);
@@ -584,10 +587,11 @@ namespace Flora {
 					Renderer2D::DrawLine(p5_coord, p7_coord, color);
 				} else {
 					// -z direction
-					glm::mat4 p1_mat = glm::translate(glm::rotate(tc.GetTransform(), cc.Camera.GetPerspectiveVerticalFOV(), {1, 1, 0}), { 0, 0, -100 });
-					glm::mat4 p2_mat = glm::translate(glm::rotate(tc.GetTransform(), cc.Camera.GetPerspectiveVerticalFOV(), { 1, -1, 0 }), { 0, 0, -100 });
-					glm::mat4 p3_mat = glm::translate(glm::rotate(tc.GetTransform(), cc.Camera.GetPerspectiveVerticalFOV(), { -1, 1, 0 }), { 0, 0, -100 });
-					glm::mat4 p4_mat = glm::translate(glm::rotate(tc.GetTransform(), cc.Camera.GetPerspectiveVerticalFOV(), { -1, -1, 0 }), { 0, 0, -100 });
+					glm::mat4 transform = tc.GetTransform();
+					glm::mat4 p1_mat = glm::translate(glm::rotate(transform, cc.Camera.GetPerspectiveVerticalFOV(), {1, 1, 0}), { 0, 0, -100 });
+					glm::mat4 p2_mat = glm::translate(glm::rotate(transform, cc.Camera.GetPerspectiveVerticalFOV(), { 1, -1, 0 }), { 0, 0, -100 });
+					glm::mat4 p3_mat = glm::translate(glm::rotate(transform, cc.Camera.GetPerspectiveVerticalFOV(), { -1, 1, 0 }), { 0, 0, -100 });
+					glm::mat4 p4_mat = glm::translate(glm::rotate(transform, cc.Camera.GetPerspectiveVerticalFOV(), { -1, -1, 0 }), { 0, 0, -100 });
 					glm::vec3 p1_coord, p2_coord, p3_coord, p4_coord;
 					glm::vec3 rotation, scale;
 					Math::DecomposeTransform(p1_mat, p1_coord, rotation, scale);

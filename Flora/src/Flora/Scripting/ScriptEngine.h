@@ -27,6 +27,11 @@ namespace Flora {
 		Byte
 	};
 
+	struct ScriptField {
+		ScriptFieldType Type;
+		std::string Name;
+	};
+
 	class ScriptClass {
 	public:
 		ScriptClass() = default;
@@ -35,8 +40,11 @@ namespace Flora {
 		MonoMethod* GetMethod(const std::string& methodName, int parameterCount);
 		MonoObject* InvokeMethod(MonoObject* instance, MonoMethod* method, void** params = nullptr);
 	private:
+		std::map<std::string, ScriptField> m_Fields;
 		std::string m_Namespace, m_ClassName;
 		MonoClass* m_MonoClass = nullptr;
+	private:
+		friend class ScriptEngine;
 	};
 
 	class ScriptInstance {

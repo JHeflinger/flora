@@ -9,9 +9,9 @@
 
 namespace Flora {
 
-	static std::unordered_map<const char*, ScriptFieldType> s_ScriptFieldTypeMap = {
+	static std::unordered_map<std::string, ScriptFieldType> s_ScriptFieldTypeMap = {
 		{ "System.Single", ScriptFieldType::Float },
-		{ "System.Double", ScriptFieldType::Double },
+		{ "System.Double", ScriptFieldType::Double }
 	};
 
 	namespace Utils {
@@ -71,9 +71,11 @@ namespace Flora {
 		}
 
 		ScriptFieldType MonoTypeToScriptType(MonoType* type) {
-			const char* typeName = mono_type_get_name(type);
-			FL_CORE_ASSERT(s_ScriptFieldTypeMap.find(typeName) != s_ScriptFieldTypeMap.end(), "Type is not a registered field type");
-			return s_ScriptFieldTypeMap.at(typeName);
+			std::string typeName = mono_type_get_name(type);
+			auto it = s_ScriptFieldTypeMap.find(typeName);
+			if(it == s_ScriptFieldTypeMap.end())
+				return ScriptFieldType::None;
+			return it->second;
 		}
 
 		const char* ScriptFieldTypeToString(ScriptFieldType type) {
@@ -187,7 +189,8 @@ namespace Flora {
 			if (!isEntity)
 				continue;
 
-			s_Data->EntityClasses[fullName] = CreateRef<ScriptClass>(nameSpace, className);
+			Ref<ScriptClass> scriptClass = CreateRef<ScriptClass>(nameSpace, className);
+			s_Data->EntityClasses[fullName] = scriptClass;
 			mono_class_num_fields(monoClass);
 			FL_CORE_WARN("{} fields:", className);
 			void* iterator = nullptr;
@@ -198,8 +201,12 @@ namespace Flora {
 					MonoType* type = mono_field_get_type(field);
 					ScriptFieldType fieldType = Utils::MonoTypeToScriptType(type);
 					FL_CORE_WARN("\t{} - {}", fieldName, Utils::ScriptFieldTypeToString(fieldType));
+					scriptClass->m_Fields[fieldName] = { fieldType, fieldName };
 				}
 			}
+
+			//https://www.youtube.com/watch?v=YEPkLqPW15I&list=PLlrATfBNZ98dC-V-N3m0Go4deliWHPFwT&index=123
+			//1:16:06
 		}
 	}
 

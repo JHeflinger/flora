@@ -19,8 +19,8 @@ Entities:
         PerspectiveNear: 0.00999999978
         PerspectiveFar: 1000
         OrthographicSize: 10
-        OrthographicNear: -81
-        OrthographicFar: 136
+        OrthographicNear: -16
+        OrthographicFar: 34
       FixedAspectRatio: false
       Visible Borders: true
   - Entity: 1048579

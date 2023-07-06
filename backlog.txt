@@ -4,19 +4,13 @@ TODO:
 
 	- custom editor settings like color scheme, etc
 
-	- bug: there is some instability when dealing with entt handles between int to uint32_t conversions
+	- bug: there is some instability when dealing with entt handles between int to uint32_t conversions	
 
 	- integrate SPIR-V shaders
-
-	- implement projects
 
 	- custom shaders, post processing, materials
 
 	- implement layers
-	
-	- c# scripting
-
-	- reflection system (serialize values and show them in properties panel!)
 
 	- particle system
 
@@ -28,41 +22,49 @@ TODO:
 
 	- layout system
 
-	- standalone runtime and standalone serialization
-
-	- audio
-
 	- networking
 
 	- optimization for multithreading!
 
-	- simplify popup menus (New __ options should be condensed into an expandable "New..")
-
 	- optick profiler
-
-	- support distrubution (custom formats)
 
 	- overhaul animations to include things like flags and extra functionality, or even calling functions on certain frames
 
 	- make native scripting more stable
 
-	- project settings?
-
-	- move some editor settings to scene settings (like editor camera) or separate it into a sceneEditorSetting file specific to scene
-
 	- content browser select multiple
 
-	- move editor dependent assets into a protected assets folder
-
 	- startup splash screen oooooo
-
-	- bug: gpu monitoring doesn't really work depending on graphics card
-
-	- sprites should have the option to linear filter or not
 
 	- texture hot reloading
 
 	- more texture support
+
+	- label component
+
+	- circle physics collider visual consistent line width
+
+1.0 RELEASE:
+
+	- implement projects
+	
+	- c# scripting
+
+	- reflection system (serialize values and show them in properties panel!)
+
+	- audio
+
+	- simplify popup menus (New __ options should be condensed into an expandable "New..")
+
+	- support distrubution (custom formats)
+
+	- move some editor settings to scene settings (like editor camera) or separate it into a sceneEditorSetting file specific to scene
+
+	- move editor dependent assets into resources folder
+
+	- bug: gpu monitoring doesn't really work depending on graphics card
+
+	- sprites should have the option to linear filter or not
 
 	- bug: gpu not being detected in stats dynamically
 
@@ -72,15 +74,9 @@ TODO:
 
 	- bug: offset circle collider is kinda weird, are we sure we're using the body transform and not the entity transform during physics simulation?
 
-	- circle physics collider visual consistent line width
-
-	- label component
-
 	- simulate physics button?
 
 	- pause / step scene button
-
-	- bug: mono is not seeing namespaces
 
 	- redo flpch
 
@@ -119,6 +115,10 @@ TODO:
 	- orthographic near and far clip should affect the orthographic border box
 
 	- script hot reloading should detect when save file even on not runtime and update serialized fields in properties panel instantly!
+
+	- clean github
+
+	- outline selected entities!
 
 IN PROGRESS:
 	
