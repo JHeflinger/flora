@@ -201,12 +201,9 @@ namespace Flora {
 					MonoType* type = mono_field_get_type(field);
 					ScriptFieldType fieldType = Utils::MonoTypeToScriptType(type);
 					FL_CORE_WARN("\t{} - {}", fieldName, Utils::ScriptFieldTypeToString(fieldType));
-					scriptClass->m_Fields[fieldName] = { fieldType, fieldName };
+					scriptClass->m_Fields[fieldName] = { fieldType, fieldName, field };
 				}
 			}
-
-			//https://www.youtube.com/watch?v=YEPkLqPW15I&list=PLlrATfBNZ98dC-V-N3m0Go4deliWHPFwT&index=123
-			//1:16:06
 		}
 	}
 
@@ -239,6 +236,13 @@ namespace Flora {
 
 	Scene* ScriptEngine::GetSceneContext() {
 		return s_Data->SceneContext;
+	}
+
+	Ref<ScriptInstance> ScriptEngine::GetEntityScriptInstance(Entity entity) {
+		auto it = s_Data->EntityInstances.find((uint32_t)entity);
+		if (it == s_Data->EntityInstances.end())
+			return nullptr;
+		return it->second;
 	}
 
 	bool ScriptEngine::EntityClassExists(const std::string& fullName) {
@@ -296,5 +300,25 @@ namespace Flora {
 			m_ScriptClass->InvokeMethod(m_Instance, m_OnUpdateMethod, &param);
 		} else
 			FL_CORE_WARN("Update method is missing");
+	}
+
+	bool ScriptInstance::GetFieldValueInternal(const std::string& name, void* buffer) {
+		const auto& fields = m_ScriptClass->GetFields();
+		auto it = fields.find(name);
+		if (it == fields.end())
+			return false;
+		const ScriptField& field = it->second;
+		mono_field_get_value(m_Instance, field.ClassField, buffer);
+		return true;
+	}
+
+	bool ScriptInstance::SetFieldValueInternal(const std::string& name, const void* value) {
+		const auto& fields = m_ScriptClass->GetFields();
+		auto it = fields.find(name);
+		if (it == fields.end())
+			return false;
+		const ScriptField& field = it->second;
+		mono_field_set_value(m_Instance, field.ClassField, (void*)value);
+		return true;
 	}
 }

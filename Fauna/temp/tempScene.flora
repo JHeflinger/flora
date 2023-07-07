@@ -9,7 +9,7 @@ Entities:
     TagComponent:
       Tag: Camera
     TransformComponent:
-      Translation: [33.3099632, -9.23724556, 9.64788818]
+      Translation: [34.8339119, -7.45363808, 6.16546631]
       Rotation: [0, 0, 0]
       Scale: [1, 1, 1]
     CameraComponent:
@@ -34,12 +34,12 @@ Entities:
       Color: [1, 1, 1, 1]
       Path: assets\game\textures\comical-explosion.png
       Filename: comical-explosion.png
-      Type: 2
+      Type: 1
       TilingFactor: 1
       Rows: 5
       Columns: 10
-      RowCoordinate: 1
-      ColumnCoordinate: 1
+      RowCoordinate: 3
+      ColumnCoordinate: 6
       SubtextureWidth: 1
       SubtextureHeight: 1
       Frames: 1
@@ -75,9 +75,9 @@ Entities:
     TagComponent:
       Tag: Parent
     TransformComponent:
-      Translation: [0.0283815376, 0.300759256, -0.0164795406]
-      Rotation: [-0.164266706, -0.0805599242, -0.0432953984]
-      Scale: [0.999999762, 1, 1]
+      Translation: [1.58190143, 0.233456969, 0.109060928]
+      Rotation: [0.131144509, -0.670775592, -0.116787709]
+      Scale: [1, 0.999999881, 1.00000012]
     SpriteRendererComponent:
       Color: [1, 1, 1, 1]
       Path: assets\game\textures\bird.png

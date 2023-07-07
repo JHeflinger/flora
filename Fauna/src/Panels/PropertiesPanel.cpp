@@ -564,6 +564,20 @@ namespace Flora {
 				component.ClassName = buffer;
 			if (!classExists)
 				ImGui::PopStyleColor();
+
+			// Fields
+			Ref<ScriptInstance> scriptInstance = ScriptEngine::GetEntityScriptInstance(entity);
+			if (scriptInstance) {
+				const auto& fields = scriptInstance->GetScriptClass()->GetFields();
+				for (const auto& [name, field] : fields) {
+					if (field.Type == ScriptFieldType::Float) {
+						float data = scriptInstance->GetFieldValue<float>(name);
+						if (ImGui::DragFloat(name.c_str(), &data)) {
+							scriptInstance->SetFieldValue(name, data);
+						}
+					}
+				}
+			}
 		});
 
 		DrawComponent<NativeScriptComponent>("Native Script", entity, [](auto& entity, auto& component) {

@@ -495,6 +495,33 @@ namespace Flora {
 		switch (m_EditorParams->SceneState) {
 			case SceneState::EDIT:
 				Renderer2D::BeginScene(m_EditorParams->EditorCamera.GetViewProjection());
+
+				//highlight selected entity
+				if (m_EditorParams->SelectedEntity) {
+					glm::vec4 color = { 1.0f, 1.0f, 1.0f, 1.0f };
+					glm::mat4 transform = m_EditorParams->SelectedEntity.GetComponent<TransformComponent>().GetTransform();
+					if (m_EditorParams->SelectedEntity.HasComponent<SpriteRendererComponent>()) {
+						glm::mat4 p1_mat = glm::translate(transform, { 1,  1, 0 });
+						glm::mat4 p2_mat = glm::translate(transform, { 1, -1, 0 });
+						glm::mat4 p3_mat = glm::translate(transform, { -1,  1, 0 });
+						glm::mat4 p4_mat = glm::translate(transform, { -1, -1, 0 });
+						glm::vec3 p1_coord, p2_coord, p3_coord, p4_coord;
+						glm::vec3 rotation, scale;
+						Math::DecomposeTransform(p1_mat, p1_coord, rotation, scale);
+						Math::DecomposeTransform(p2_mat, p2_coord, rotation, scale);
+						Math::DecomposeTransform(p3_mat, p3_coord, rotation, scale);
+						Math::DecomposeTransform(p4_mat, p4_coord, rotation, scale);
+						Renderer2D::DrawLine(p1_coord, p2_coord, color);
+						Renderer2D::DrawLine(p4_coord, p2_coord, color);
+						Renderer2D::DrawLine(p1_coord, p3_coord, color);
+						Renderer2D::DrawLine(p3_coord, p4_coord, color);
+					} else if (m_EditorParams->SelectedEntity.HasComponent<CircleRendererComponent>()) {
+						float thickness = 0.05f;
+						transform = glm::scale(transform, { 1.0f + thickness*2.0f, 1.0f + thickness*2.0f, 1.0f });
+						Renderer2D::DrawCircle(transform, color, thickness);
+					}
+				}
+
 				break;
 			case SceneState::PLAY:
 				if (*(m_EditorParams->EditorCamera.GetCameraBound())) {

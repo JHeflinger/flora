@@ -10,6 +10,7 @@ extern "C" {
 	typedef struct _MonoMethod MonoMethod;
 	typedef struct _MonoAssembly MonoAssembly;
 	typedef struct _MonoImage MonoImage;
+	typedef struct _MonoClassField MonoClassField;
 }
 
 namespace Flora {
@@ -30,6 +31,7 @@ namespace Flora {
 	struct ScriptField {
 		ScriptFieldType Type;
 		std::string Name;
+		MonoClassField* ClassField;
 	};
 
 	class ScriptClass {
@@ -39,6 +41,7 @@ namespace Flora {
 		MonoObject* Instantiate();
 		MonoMethod* GetMethod(const std::string& methodName, int parameterCount);
 		MonoObject* InvokeMethod(MonoObject* instance, MonoMethod* method, void** params = nullptr);
+		const std::map<std::string, ScriptField>& GetFields() const { return m_Fields; }
 	private:
 		std::map<std::string, ScriptField> m_Fields;
 		std::string m_Namespace, m_ClassName;
@@ -53,6 +56,22 @@ namespace Flora {
 		void InvokeOnCreate();
 		void InvokeOnDestroy();
 		void InvokeOnUpdate(float ts);
+		Ref<ScriptClass> GetScriptClass() { return m_ScriptClass; }
+	public:
+		template<typename T>
+		T GetFieldValue(const std::string& name) {
+			bool success = GetFieldValueInternal(name, s_FieldValueBuffer);
+			if (!success) return T();
+			return *(T*)s_FieldValueBuffer;
+		}
+		
+		template<typename T>
+		void SetFieldValue(const std::string& name, const T& value) {
+			bool success = SetFieldValueInternal(name, &value);
+		}
+	private:
+		bool GetFieldValueInternal(const std::string& name, void* buffer);
+		bool SetFieldValueInternal(const std::string& name, const void* value);
 	private:
 		Ref<ScriptClass> m_ScriptClass;
 		MonoObject* m_Instance = nullptr;
@@ -60,6 +79,7 @@ namespace Flora {
 		MonoMethod* m_OnCreateMethod = nullptr;
 		MonoMethod* m_OnDestroyMethod = nullptr;
 		MonoMethod* m_OnUpdateMethod = nullptr;
+		inline static char s_FieldValueBuffer[8];
 	};
 
 	class ScriptEngine {
@@ -75,6 +95,7 @@ namespace Flora {
 		static void UpdateEntity(Entity entity, float ts);
 		static void DestroyEntity(Entity entity);
 		static Scene* GetSceneContext();
+		static Ref<ScriptInstance> GetEntityScriptInstance(Entity entity);
 		static std::unordered_map<std::string, Ref<ScriptClass>> GetEntityClasses();
 	private:
 		static void InitMono();
