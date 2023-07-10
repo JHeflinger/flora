@@ -566,14 +566,29 @@ namespace Flora {
 				ImGui::PopStyleColor();
 
 			// Fields
-			Ref<ScriptInstance> scriptInstance = ScriptEngine::GetEntityScriptInstance(entity);
-			if (scriptInstance) {
-				const auto& fields = scriptInstance->GetScriptClass()->GetFields();
-				for (const auto& [name, field] : fields) {
-					if (field.Type == ScriptFieldType::Float) {
-						float data = scriptInstance->GetFieldValue<float>(name);
+			//m_EditorContext->SceneState == SceneState::PLAY
+			if (false) {
+				Ref<ScriptInstance> scriptInstance = ScriptEngine::GetEntityScriptInstance(entity);
+				if (scriptInstance) {
+					const auto& fields = scriptInstance->GetScriptClass()->GetFields();
+					for (const auto& [name, field] : fields) {
+						if (field.Type == ScriptFieldType::Float) {
+							float data = scriptInstance->GetFieldValue<float>(name);
+							if (ImGui::DragFloat(name.c_str(), &data)) {
+								scriptInstance->SetFieldValue(name, data);
+							}
+						}
+					}
+				}
+			} else {
+				//1:11:27
+				//https://www.youtube.com/watch?v=Mjk7ew_gJOc
+				const auto& fields = ScriptEngine::GetScriptFieldMap(entity);
+				for (const auto& [name, fieldInstance] : fields) {
+					if (fieldInstance.Field.Type == ScriptFieldType::Float) {
+						float data = fieldInstance->GetValue<float>(name);
 						if (ImGui::DragFloat(name.c_str(), &data)) {
-							scriptInstance->SetFieldValue(name, data);
+							fieldInstance->SetValue(name, data);
 						}
 					}
 				}

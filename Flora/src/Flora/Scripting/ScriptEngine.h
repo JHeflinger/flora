@@ -34,6 +34,25 @@ namespace Flora {
 		MonoClassField* ClassField;
 	};
 
+	struct ScriptFieldInstance {
+		ScriptField Field;
+
+		template<typename T>
+		T GetValue() {
+			return *(T*)m_DataBuffer;
+		}
+
+		template<typename T>
+		void SetValue(T value) {
+			FL_CORE_ASSERT(sizeof(T) <= 8, "type too large!");
+			memcpy(m_DataBuffer, value, sizeof(T));
+		}
+	private:
+		char m_DataBuffer[8];
+	};
+
+	using ScriptFieldMap = std::unordered_map<std::string, ScriptFieldInstance>;
+
 	class ScriptClass {
 	public:
 		ScriptClass() = default;
@@ -97,6 +116,7 @@ namespace Flora {
 		static Scene* GetSceneContext();
 		static Ref<ScriptInstance> GetEntityScriptInstance(Entity entity);
 		static std::unordered_map<std::string, Ref<ScriptClass>> GetEntityClasses();
+		static const ScriptFieldMap& GetScriptFieldMap(Entity entity);
 	private:
 		static void InitMono();
 		static void ShutdownMono();

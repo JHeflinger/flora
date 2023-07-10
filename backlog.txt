@@ -47,10 +47,6 @@ TODO:
 1.0 RELEASE:
 
 	- implement projects
-	
-	- c# scripting
-
-	- reflection system (serialize values and show them in properties panel!)
 
 	- audio
 

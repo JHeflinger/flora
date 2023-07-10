@@ -99,6 +99,7 @@ namespace Flora {
 		ScriptClass EntityClass;
 		std::unordered_map<std::string, Ref<ScriptClass>> EntityClasses;
 		std::unordered_map<uint32_t, Ref<ScriptInstance>> EntityInstances;
+		std::unordered_map<uint32_t, ScriptFieldMap> EntityScriptFields;
 	};
 
 	static ScriptEngineData* s_Data = nullptr;
@@ -264,6 +265,12 @@ namespace Flora {
 
 	MonoObject* ScriptClass::InvokeMethod(MonoObject* instance, MonoMethod* method, void** params) {
 		return mono_runtime_invoke(method, instance, params, nullptr);
+	}
+
+	const ScriptFieldMap& ScriptEngine::GetScriptFieldMap(Entity entity) {
+		FL_CORE_ASSERT(entity);
+		FL_CORE_ASSERT(s_Data->EntityScriptFields.find((uint32_t)entity) != s_Data->EntityScriptFields.end());
+		return s_Data->EntityScriptFields[(uint32_t)entity];
 	}
 
 	ScriptInstance::ScriptInstance(Ref<ScriptClass> scriptClass, Entity entity)
