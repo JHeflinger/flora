@@ -554,7 +554,7 @@ namespace Flora {
 			ImGui::Columns(1);
 		});
 
-		DrawComponent<ScriptComponent>("Script", entity, [](auto& entity, auto& component) {
+		DrawComponent<ScriptComponent>("Script", entity, [this](auto& entity, auto& component) {
 			bool classExists = ScriptEngine::EntityClassExists(component.ClassName);
 			static char buffer[128];
 			strcpy(buffer, component.ClassName.c_str());
@@ -566,8 +566,7 @@ namespace Flora {
 				ImGui::PopStyleColor();
 
 			// Fields
-			//m_EditorContext->SceneState == SceneState::PLAY
-			if (false) {
+			if (m_EditorContext->SceneState == SceneState::PLAY) {
 				Ref<ScriptInstance> scriptInstance = ScriptEngine::GetEntityScriptInstance(entity);
 				if (scriptInstance) {
 					const auto& fields = scriptInstance->GetScriptClass()->GetFields();
@@ -581,14 +580,27 @@ namespace Flora {
 					}
 				}
 			} else {
-				//1:11:27
-				//https://www.youtube.com/watch?v=Mjk7ew_gJOc
-				const auto& fields = ScriptEngine::GetScriptFieldMap(entity);
-				for (const auto& [name, fieldInstance] : fields) {
-					if (fieldInstance.Field.Type == ScriptFieldType::Float) {
-						float data = fieldInstance->GetValue<float>(name);
-						if (ImGui::DragFloat(name.c_str(), &data)) {
-							fieldInstance->SetValue(name, data);
+				if (classExists) {
+					Ref<ScriptClass> entityClass = ScriptEngine::GetEntityClass(component.ClassName);
+					const auto& fields = entityClass->GetFields();
+					auto& entityFields = ScriptEngine::GetScriptFieldMap(entity);
+					for (const auto& [name, field] : fields) {
+						if (entityFields.find(name) != entityFields.end()) {
+							ScriptFieldInstance& scriptField = entityFields.at(name);
+							if (field.Type == ScriptFieldType::Float) {
+								float data = scriptField.GetValue<float>();
+								if (ImGui::DragFloat(name.c_str(), &data))
+									scriptField.SetValue(data);
+							}
+						} else {
+							if (field.Type == ScriptFieldType::Float) {
+								float data = 0.0f;
+								if (ImGui::DragFloat(name.c_str(), &data)) {
+									ScriptFieldInstance& fieldInstance = entityFields[name];
+									fieldInstance.Field = field;
+									fieldInstance.SetValue(data);
+								}
+							}
 						}
 					}
 				}

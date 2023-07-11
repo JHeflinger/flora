@@ -110,6 +110,10 @@ TODO:
 
 	- clean github
 
+	- make sure OnDestroy works
+
+	- optimize type dependent script field functionality (use switch case stuff, make it just easier to add in new)
+
 
 IN PROGRESS:
 	

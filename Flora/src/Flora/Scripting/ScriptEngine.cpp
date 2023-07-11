@@ -222,6 +222,14 @@ namespace Flora {
 		if (ScriptEngine::EntityClassExists(sc.ClassName)) {
 			Ref<ScriptInstance> instance = CreateRef<ScriptInstance>(s_Data->EntityClasses[sc.ClassName], entity);
 			s_Data->EntityInstances[(uint32_t)entity] = instance;
+
+			// Copy field values
+			if (s_Data->EntityScriptFields.find((uint32_t)entity) != s_Data->EntityScriptFields.end()) {
+				const ScriptFieldMap& fieldMap = s_Data->EntityScriptFields.at((uint32_t)entity);
+				for (const auto& [name, fieldInstance] : fieldMap)
+					instance->SetFieldValueInternal(name, fieldInstance.m_DataBuffer);
+			}
+
 			instance->InvokeOnCreate();
 		}
 	}
@@ -232,7 +240,14 @@ namespace Flora {
 	}
 
 	void ScriptEngine::DestroyEntity(Entity entity) {
+		FL_CORE_ASSERT(s_Data->EntityInstances.find((uint32_t)entity) != s_Data->EntityInstances.end(), "Entity script object not found");
+		s_Data->EntityInstances[(uint32_t)entity]->InvokeOnDestroy();
+	}
 
+	Ref<ScriptClass> ScriptEngine::GetEntityClass(const std::string& name) {
+		if (s_Data->EntityClasses.find(name) == s_Data->EntityClasses.end())
+			return nullptr;
+		return s_Data->EntityClasses.at(name);
 	}
 
 	Scene* ScriptEngine::GetSceneContext() {
@@ -267,9 +282,9 @@ namespace Flora {
 		return mono_runtime_invoke(method, instance, params, nullptr);
 	}
 
-	const ScriptFieldMap& ScriptEngine::GetScriptFieldMap(Entity entity) {
+	ScriptFieldMap& ScriptEngine::GetScriptFieldMap(Entity entity) {
 		FL_CORE_ASSERT(entity);
-		FL_CORE_ASSERT(s_Data->EntityScriptFields.find((uint32_t)entity) != s_Data->EntityScriptFields.end());
+		//FL_CORE_ASSERT(s_Data->EntityScriptFields.find((uint32_t)entity) != s_Data->EntityScriptFields.end());
 		return s_Data->EntityScriptFields[(uint32_t)entity];
 	}
 

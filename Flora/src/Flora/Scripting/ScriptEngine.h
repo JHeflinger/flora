@@ -37,6 +37,10 @@ namespace Flora {
 	struct ScriptFieldInstance {
 		ScriptField Field;
 
+		ScriptFieldInstance() {
+			memset(m_DataBuffer, 0, sizeof(m_DataBuffer));
+		}
+
 		template<typename T>
 		T GetValue() {
 			return *(T*)m_DataBuffer;
@@ -45,10 +49,12 @@ namespace Flora {
 		template<typename T>
 		void SetValue(T value) {
 			FL_CORE_ASSERT(sizeof(T) <= 8, "type too large!");
-			memcpy(m_DataBuffer, value, sizeof(T));
+			memcpy(m_DataBuffer, &value, sizeof(T));
 		}
 	private:
-		char m_DataBuffer[8];
+		uint8_t m_DataBuffer[8];
+		friend class ScriptInstance;
+		friend class ScriptEngine;
 	};
 
 	using ScriptFieldMap = std::unordered_map<std::string, ScriptFieldInstance>;
@@ -99,6 +105,8 @@ namespace Flora {
 		MonoMethod* m_OnDestroyMethod = nullptr;
 		MonoMethod* m_OnUpdateMethod = nullptr;
 		inline static char s_FieldValueBuffer[8];
+		friend class ScriptFieldInstance;
+		friend class ScriptEngine;
 	};
 
 	class ScriptEngine {
@@ -116,7 +124,8 @@ namespace Flora {
 		static Scene* GetSceneContext();
 		static Ref<ScriptInstance> GetEntityScriptInstance(Entity entity);
 		static std::unordered_map<std::string, Ref<ScriptClass>> GetEntityClasses();
-		static const ScriptFieldMap& GetScriptFieldMap(Entity entity);
+		static ScriptFieldMap& GetScriptFieldMap(Entity entity);
+		static Ref<ScriptClass> GetEntityClass(const std::string& name);
 	private:
 		static void InitMono();
 		static void ShutdownMono();
