@@ -105,7 +105,7 @@ namespace Flora {
 		MonoMethod* m_OnDestroyMethod = nullptr;
 		MonoMethod* m_OnUpdateMethod = nullptr;
 		inline static char s_FieldValueBuffer[8];
-		friend class ScriptFieldInstance;
+		friend struct ScriptFieldInstance;
 		friend class ScriptEngine;
 	};
 
