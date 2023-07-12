@@ -2,6 +2,7 @@
 #include "Flora/Utils/Serializer.h"
 #include "Flora/Scene/Entity.h"
 #include "Flora/Scene/Components.h"
+#include "Flora/Scripting/ScriptEngine.h"
 #include <fstream>
 #include <filesystem>
 
@@ -160,6 +161,36 @@ namespace Flora {
 			out << YAML::BeginMap;
 			auto& scriptComponent = entity.GetComponent<ScriptComponent>();
 			out << YAML::Key << "ClassName" << YAML::Value << scriptComponent.ClassName;
+			
+			// fields
+			Ref<ScriptClass> entityClass = ScriptEngine::GetEntityClass(scriptComponent.ClassName);
+			const auto& fields = entityClass->GetFields();
+			if (fields.size() > 0) {
+				out << YAML::Key << "ScriptFields" << YAML::Value;
+				auto& entityFields = ScriptEngine::GetScriptFieldMap(entity);
+				out << YAML::BeginSeq;
+				for (const auto& [name, field] : fields) {
+					if (entityFields.find(name) == entityFields.end())
+						continue;
+
+					out << YAML::BeginMap;
+					out << YAML::Key << "Name" << YAML::Value << name;
+					out << YAML::Key << "Type" << YAML::Value << Utils::ScriptFieldTypeToString(field.Type);
+
+					ScriptFieldInstance& scriptField = entityFields.at(name);
+					#define FIELD_TYPE(FieldType, Type) case ScriptFieldType::FieldType:\
+															out << YAML::Key << "Data" << YAML::Value << scriptField.GetValue<Type>();\
+															break;
+					switch (field.Type) {
+						FIELD_TYPE(Float, float);
+					}
+					#undef FIELD_TYPE
+					
+					out << YAML::EndMap;
+				}
+				out << YAML::EndSeq;
+			}
+			
 			out << YAML::EndMap;
 		}
 
@@ -372,6 +403,30 @@ namespace Flora {
 				if (scriptComponent) {
 					auto& sc = deserializedEntity.AddComponent<ScriptComponent>();
 					sc.ClassName = scriptComponent["ClassName"].as<std::string>();
+
+					// fields
+					auto scriptFields = scriptComponent["ScriptFields"];
+					if (scriptFields) {
+						Ref<ScriptClass> entityClass = ScriptEngine::GetEntityClass(sc.ClassName);
+						const auto& fields = entityClass->GetFields();
+						auto& entityFields = ScriptEngine::GetScriptFieldMap(deserializedEntity);
+						for (auto scriptField : scriptFields) {
+							std::string name = scriptField["Name"].as<std::string>();
+							ScriptFieldType type = Utils::ScriptFieldTypeFromSting(scriptField["Type"].as<std::string>());
+							ScriptFieldInstance& fieldInstance = entityFields[name];
+							fieldInstance.Field = fields.at(name);
+
+							#define FIELD_DATA(FieldType, Type) case ScriptFieldType::FieldType:\
+															Type data = scriptField["Data"].as<Type>();\
+															fieldInstance.SetValue(data);\
+															break;
+							switch (type) {
+								FIELD_DATA(Float, float);
+							}
+
+							#undef FIELD_DATA
+						}
+					}
 				}
 
 				auto nativeScriptComponent = entity["NativeScriptComponent"];

@@ -5,99 +5,7 @@ Physics:
   VelocityIterations: 6
   PositionIterations: 2
 Entities:
-  - Entity: 4
-    TagComponent:
-      Tag: Camera
-    TransformComponent:
-      Translation: [34.8339119, -7.45363808, 6.16546631]
-      Rotation: [0, 0, 0]
-      Scale: [1, 1, 1]
-    CameraComponent:
-      Camera:
-        ProjectionType: 1
-        PerspectiveFOV: 0.785398185
-        PerspectiveNear: 0.00999999978
-        PerspectiveFar: 1000
-        OrthographicSize: 10
-        OrthographicNear: -16
-        OrthographicFar: 34
-      FixedAspectRatio: false
-      Visible Borders: true
-  - Entity: 1048579
-    TagComponent:
-      Tag: Background
-    TransformComponent:
-      Translation: [0, 0, -9.18760395]
-      Rotation: [0, 0, 0]
-      Scale: [20, 20, 1]
-    SpriteRendererComponent:
-      Color: [1, 1, 1, 1]
-      Path: assets\game\textures\comical-explosion.png
-      Filename: comical-explosion.png
-      Type: 1
-      TilingFactor: 1
-      Rows: 5
-      Columns: 10
-      RowCoordinate: 3
-      ColumnCoordinate: 6
-      SubtextureWidth: 1
-      SubtextureHeight: 1
-      Frames: 1
-      StartFrame: 1
-      EndFrame: 50
-      CurrentFrame: 1
-      FPS: 30
-  - Entity: 1048578
-    TagComponent:
-      Tag: Child
-    TransformComponent:
-      Translation: [2.55889869, -0.142464757, -0.66784656]
-      Rotation: [0, 0, 0]
-      Scale: [1, 1, 1]
-    SpriteRendererComponent:
-      Color: [1, 1, 1, 1]
-      Path: assets\game\textures\piggy.png
-      Filename: piggy.png
-      Type: 0
-      TilingFactor: 1
-      Rows: 1
-      Columns: 1
-      RowCoordinate: 1
-      ColumnCoordinate: 1
-      SubtextureWidth: 1
-      SubtextureHeight: 1
-      Frames: 1
-      StartFrame: 1
-      EndFrame: 1
-      CurrentFrame: 1
-      FPS: 1
-  - Entity: 1048577
-    TagComponent:
-      Tag: Parent
-    TransformComponent:
-      Translation: [1.58190143, 0.233456969, 0.109060928]
-      Rotation: [0.131144509, -0.670775592, -0.116787709]
-      Scale: [1, 0.999999881, 1.00000012]
-    SpriteRendererComponent:
-      Color: [1, 1, 1, 1]
-      Path: assets\game\textures\bird.png
-      Filename: bird.png
-      Type: 0
-      TilingFactor: 1
-      Rows: 1
-      Columns: 1
-      RowCoordinate: 1
-      ColumnCoordinate: 1
-      SubtextureWidth: 1
-      SubtextureHeight: 1
-      Frames: 1
-      StartFrame: 1
-      EndFrame: 1
-      CurrentFrame: 1
-      FPS: 1
-    ChildComponent:
-      []
-  - Entity: 0
+  - Entity: 19
     TagComponent:
       Tag: Controllable Player
     TransformComponent:
@@ -123,3 +31,25 @@ Entities:
       FPS: 30
     ScriptComponent:
       ClassName: Sandbox.Player
+      ScriptFields:
+        - Name: speed
+          Type: Float
+          Data: 54
+  - Entity: 15
+    TagComponent:
+      Tag: Camera
+    TransformComponent:
+      Translation: [34.8339119, -7.45363808, 6.16546631]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    CameraComponent:
+      Camera:
+        ProjectionType: 1
+        PerspectiveFOV: 0.785398185
+        PerspectiveNear: 0.00999999978
+        PerspectiveFar: 1000
+        OrthographicSize: 10
+        OrthographicNear: -16
+        OrthographicFar: 34
+      FixedAspectRatio: false
+      Visible Borders: true

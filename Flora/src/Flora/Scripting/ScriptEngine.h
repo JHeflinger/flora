@@ -14,6 +14,7 @@ extern "C" {
 }
 
 namespace Flora {
+
 	enum class ScriptFieldType {
 		None = 0,
 		Float,
@@ -136,4 +137,48 @@ namespace Flora {
 		friend class ScriptClass;
 		friend class ScriptGlue;
 	};
+
+	namespace Utils {
+		inline const char* ScriptFieldTypeToString(ScriptFieldType type) {
+			switch (type) {
+			case ScriptFieldType::Float:
+				return "Float";
+			case ScriptFieldType::Vector2:
+				return "Vector2";
+			case ScriptFieldType::Vector3:
+				return "Vector3";
+			case ScriptFieldType::Vector4:
+				return "Vector4";
+			case ScriptFieldType::Int:
+				return "Int";
+			case ScriptFieldType::UInt:
+				return "UInt";
+			case ScriptFieldType::Bool:
+				return "Bool";
+			case ScriptFieldType::Double:
+				return "Double";
+			case ScriptFieldType::Short:
+				return "Short";
+			case ScriptFieldType::Byte:
+				return "Byte";
+			}
+			FL_CORE_ASSERT(false, "Unknown field type!");
+			return "None";
+		}
+
+		inline ScriptFieldType ScriptFieldTypeFromSting(std::string_view type) {
+			if (type == "Float") return ScriptFieldType::Float;
+			if (type == "Vector2") return ScriptFieldType::Vector2;
+			if (type == "Vector3") return ScriptFieldType::Vector3;
+			if (type == "Vector4") return ScriptFieldType::Vector4;
+			if (type == "Int") return ScriptFieldType::Int;
+			if (type == "UInt") return ScriptFieldType::UInt;
+			if (type == "Bool") return ScriptFieldType::Bool;
+			if (type == "Double") return ScriptFieldType::Double;
+			if (type == "Short") return ScriptFieldType::Short;
+			if (type == "Byte") return ScriptFieldType::Byte;
+			FL_CORE_ASSERT(false, "Unknown field type!");
+			return ScriptFieldType::None;
+		}
+	}
 }

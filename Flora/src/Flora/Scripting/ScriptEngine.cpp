@@ -77,14 +77,6 @@ namespace Flora {
 				return ScriptFieldType::None;
 			return it->second;
 		}
-
-		const char* ScriptFieldTypeToString(ScriptFieldType type) {
-			switch (type) {
-			case ScriptFieldType::Float: return "Float";
-			case ScriptFieldType::Double: return "Double";
-			}
-			return "<Invalid>";
-		}
 	}
 
 	struct ScriptEngineData {
@@ -193,7 +185,6 @@ namespace Flora {
 			Ref<ScriptClass> scriptClass = CreateRef<ScriptClass>(nameSpace, className);
 			s_Data->EntityClasses[fullName] = scriptClass;
 			mono_class_num_fields(monoClass);
-			FL_CORE_WARN("{} fields:", className);
 			void* iterator = nullptr;
 			while (MonoClassField* field = mono_class_get_fields(monoClass, &iterator)) {
 				const char* fieldName = mono_field_get_name(field);
@@ -201,7 +192,6 @@ namespace Flora {
 				if (flags & FIELD_ATTRIBUTE_PUBLIC) {
 					MonoType* type = mono_field_get_type(field);
 					ScriptFieldType fieldType = Utils::MonoTypeToScriptType(type);
-					FL_CORE_WARN("\t{} - {}", fieldName, Utils::ScriptFieldTypeToString(fieldType));
 					scriptClass->m_Fields[fieldName] = { fieldType, fieldName, field };
 				}
 			}

@@ -41,11 +41,13 @@ namespace Flora {
 	}
 
 	void FileUtils::OpenTempScene(Ref<EditorParams> context) {
+		uint32_t selectedEntityID = context->SelectedEntity;
 		EditorSerializer::Deserialize(context, "temp/tempEditorSettings.fnproj");
 		std::string sceneFilepath = context->ActiveScene->GetSceneFilepath();
 		NewScene(context);
 		context->ActiveScene->SetSceneFilepath(sceneFilepath);
 		Serializer::DeserializeScene(context->ActiveScene, "temp/tempscene.flora");
+		context->SelectedEntity = Entity{ (entt::entity)selectedEntityID, &(*(context->ActiveScene)) };
 	}
 
 	void FileUtils::OpenScene(Ref<EditorParams> context, const std::filesystem::path& path){

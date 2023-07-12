@@ -124,6 +124,8 @@ IN PROGRESS:
 
 IMPLEMENTED TICKETS:
 
+	- fixed issue where stopping a simulated scene would unselect the selected entity
+
 	- outline selected entities!
 
 	- orthographic near and far clip should affect the orthographic border box

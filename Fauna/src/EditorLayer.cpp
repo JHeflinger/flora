@@ -259,7 +259,7 @@ namespace Flora {
 	}
 
 	void EditorLayer::OnEvent(Event& e) {
-		if (m_EditorParams->FocusedPanel == Panels::VIEWPORT)
+		if (m_EditorParams->HoveredPanel == Panels::VIEWPORT)
 			m_EditorParams->EditorCamera.OnEvent(e);
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<KeyPressedEvent>(FL_BIND_EVENT_FN(EditorLayer::OnKeyPressed));
