@@ -43,5 +43,18 @@ namespace Flora
             T component = new T() { Entity = this };
             return component;
         }
+
+        public Entity FindEntityByName(string name)
+        {
+            uint eid = InternalCalls.Entity_FindEntityByName(name);
+            if (eid == 0) return null;
+            return new Entity(eid);
+        }
+
+        public T As<T>() where T : Entity, new()
+        {
+            object instance = InternalCalls.Entity_GetScriptInstance(ID);
+            return instance as T;
+        }
     }
 }

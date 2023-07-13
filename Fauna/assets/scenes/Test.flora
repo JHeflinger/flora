@@ -145,3 +145,7 @@ Entities:
         OrthographicFar: 34
       FixedAspectRatio: false
       Visible Borders: true
+    ScriptComponent:
+      ClassName: Sandbox.Camera
+      ScriptFields:
+        []

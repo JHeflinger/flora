@@ -255,6 +255,11 @@ namespace Flora {
 		return s_Data->EntityClasses.find(fullName) != s_Data->EntityClasses.end();
 	}
 
+	MonoObject* ScriptEngine::GetManagedInstance(uint32_t eid) {
+		FL_CORE_ASSERT(s_Data->EntityInstances.find(entity) != s_Data->EntityInstances.end());
+		return s_Data->EntityInstances.at(eid)->GetManagedObject();
+	}
+
 	ScriptClass::ScriptClass(const std::string& classNamespace, const std::string& className, bool isCore)
 		: m_Namespace(classNamespace), m_ClassName(className) {
 		m_MonoClass = mono_class_from_name(isCore ? s_Data->CoreAssemblyImage : s_Data->AppAssemblyImage, classNamespace.c_str(), className.c_str());

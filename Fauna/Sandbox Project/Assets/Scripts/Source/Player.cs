@@ -22,6 +22,7 @@ namespace Sandbox
             bool hasBody = HasComponent<RigidBody2DComponent>();
             Console.WriteLine($"Player has transform: {hasTransform}");
             //m_Transform.Translation = new Vector3(0.0f);
+            Testfunc();
         }
 
         void OnDestroy()
@@ -63,6 +64,11 @@ namespace Sandbox
                 if (HasComponent<RigidBody2DComponent>())
                     m_RigidBody.Translation = translation.XY;
             }
+        }
+
+        public void Testfunc()
+        {
+            Console.WriteLine("Wassup dawg");
         }
     }
 }

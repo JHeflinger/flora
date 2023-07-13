@@ -57,12 +57,25 @@ namespace Flora {
 		PhysicsUtils::WarpBody(rb2d.RuntimeBody, *translation);
 	}
 
+	static uint32_t Entity_FindEntityByName(MonoString* name) {
+		Scene* scene = ScriptEngine::GetSceneContext();
+		auto& entities = scene->GetEntitiesByTag(mono_string_to_utf8(name));
+		if (entities.size() == 0) return 0;
+		return entities[0];
+	}
+
+	static MonoObject* Entity_GetScriptInstance(uint32_t id) {
+		return ScriptEngine::GetManagedInstance(id);
+	}
+
 	void ScriptGlue::RegisterFunctions() {
 		FL_ADD_INTERNAL_CALL(CoreTrace);
 		FL_ADD_INTERNAL_CALL(TransformComponent_GetTranslation);
 		FL_ADD_INTERNAL_CALL(TransformComponent_SetTranslation);
 		FL_ADD_INTERNAL_CALL(Input_IsKeyDown);
 		FL_ADD_INTERNAL_CALL(Entity_HasComponent);
+		FL_ADD_INTERNAL_CALL(Entity_FindEntityByName);
+		FL_ADD_INTERNAL_CALL(Entity_GetScriptInstance);
 		FL_ADD_INTERNAL_CALL(RigidBody2DComponent_SetTranslation);
 	}
 

@@ -83,6 +83,7 @@ namespace Flora {
 		void InvokeOnDestroy();
 		void InvokeOnUpdate(float ts);
 		Ref<ScriptClass> GetScriptClass() { return m_ScriptClass; }
+		MonoObject* GetManagedObject() { return m_Instance; }
 	public:
 		template<typename T>
 		T GetFieldValue(const std::string& name) {
@@ -127,6 +128,7 @@ namespace Flora {
 		static std::unordered_map<std::string, Ref<ScriptClass>> GetEntityClasses();
 		static ScriptFieldMap& GetScriptFieldMap(Entity entity);
 		static Ref<ScriptClass> GetEntityClass(const std::string& name);
+		static MonoObject* GetManagedInstance(uint32_t eid);
 	private:
 		static void InitMono();
 		static void ShutdownMono();

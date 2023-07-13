@@ -114,6 +114,8 @@ TODO:
 
 	- optimize type dependent script field functionality (use switch case stuff, make it just easier to add in new)
 
+	- stabalize entity id to use uint32_t always, and 0 is an invalid entity
+
 
 IN PROGRESS:
 	
@@ -121,6 +123,7 @@ IN PROGRESS:
 		- doing all component functions
 		- doing all physics and util functions
 		- doing all field types
+		- findentitiesbyname (plural version)
 
 IMPLEMENTED TICKETS:
 

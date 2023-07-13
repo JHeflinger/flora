@@ -10,6 +10,12 @@ namespace Flora
     public static class InternalCalls
     {
         [MethodImplAttribute(MethodImplOptions.InternalCall)]
+        internal extern static uint Entity_FindEntityByName(string name);
+
+        [MethodImplAttribute(MethodImplOptions.InternalCall)]
+        internal extern static object Entity_GetScriptInstance(uint id);
+
+        [MethodImplAttribute(MethodImplOptions.InternalCall)]
         internal extern static void CoreTrace(string log);
 
         [MethodImplAttribute(MethodImplOptions.InternalCall)]
