@@ -1,5 +1,5 @@
 Scene: Testing
-Primary Camera: 4
+Primary Camera: 15
 Physics:
   Gravity: 34
   VelocityIterations: 6
@@ -35,6 +35,98 @@ Entities:
         - Name: speed
           Type: Float
           Data: 54
+  - Entity: 18
+    TagComponent:
+      Tag: ground
+    TransformComponent:
+      Translation: [31.700079, -8.21304226, 9.29279804]
+      Rotation: [0, 0, -0.263376147]
+      Scale: [22.6991749, 0.999999106, 1]
+    SpriteRendererComponent:
+      Color: [0.109704301, 0.772200763, 0.0357776061, 1]
+      Path: "NULL"
+      Filename: None Selected
+      Type: 0
+      TilingFactor: 1
+      Rows: 1
+      Columns: 1
+      RowCoordinate: 1
+      ColumnCoordinate: 1
+      SubtextureWidth: 1
+      SubtextureHeight: 1
+      Frames: 1
+      StartFrame: 1
+      EndFrame: 1
+      CurrentFrame: 1
+      FPS: 1
+    ChildComponent:
+      []
+    RigidBody2DComponent:
+      Type: 0
+      FixedRotation: false
+    BoxCollider2DComponent:
+      Offset: [0, 0]
+      Size: [0.5, 0.5]
+      Density: 1
+      Friction: 0.5
+      Restitution: 0.600000024
+      RestitutionThreshold: 0.5
+  - Entity: 17
+    TagComponent:
+      Tag: ball
+    TransformComponent:
+      Translation: [35.2040634, -2.55051994, 9.87065697]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    CircleRendererComponent:
+      Color: [1, 0, 0, 1]
+      Radius: 0.5
+      Thickness: 1
+      Fade: 0.00499999989
+    RigidBody2DComponent:
+      Type: 2
+      FixedRotation: false
+    CircleCollider2DComponent:
+      Offset: [0, 0]
+      Radius: 0.5
+      Density: 1
+      Friction: 0.5
+      Restitution: 0
+      RestitutionThreshold: 0.5
+  - Entity: 16
+    TagComponent:
+      Tag: ground
+    TransformComponent:
+      Translation: [38.4325333, -10.0283813, 8.48150635]
+      Rotation: [0.106140882, 0.0466156453, 0.247675568]
+      Scale: [22.6991425, 1, 0.999999881]
+    SpriteRendererComponent:
+      Color: [0, 0.177606106, 1, 1]
+      Path: "NULL"
+      Filename: None Selected
+      Type: 0
+      TilingFactor: 1
+      Rows: 1
+      Columns: 1
+      RowCoordinate: 1
+      ColumnCoordinate: 1
+      SubtextureWidth: 1
+      SubtextureHeight: 1
+      Frames: 1
+      StartFrame: 1
+      EndFrame: 1
+      CurrentFrame: 1
+      FPS: 1
+    RigidBody2DComponent:
+      Type: 0
+      FixedRotation: false
+    BoxCollider2DComponent:
+      Offset: [0, 0]
+      Size: [0.5, 0.5]
+      Density: 1
+      Friction: 4.4000001
+      Restitution: 0
+      RestitutionThreshold: 0.5
   - Entity: 15
     TagComponent:
       Tag: Camera

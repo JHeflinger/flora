@@ -526,7 +526,7 @@ namespace Flora {
 			case SceneState::PLAY:
 				if (*(m_EditorParams->EditorCamera.GetCameraBound())) {
 					Renderer2D::BeginScene(m_EditorParams->EditorCamera.GetViewProjection());
-				} else {
+				} else if (m_EditorParams->ActiveScene->GetPrimaryCamera() >= 0) {
 					Entity primaryCameraEntity = m_EditorParams->ActiveScene->GetEntityFromID((uint32_t)m_EditorParams->ActiveScene->GetPrimaryCamera());
 					Camera* primaryCamera = &(primaryCameraEntity.GetComponent<CameraComponent>().Camera);
 					glm::mat4 cameraTransform = primaryCameraEntity.GetComponent<TransformComponent>().GetTransform();

@@ -1,12 +1,12 @@
 Scene Filepath: assets\scenes\Test.flora
-Selected Entity: 15
+Selected Entity: -1
 Current Gizmo: 7
 Editor Camera Type: Perspective
 Visible Physics Colliders: false
 General Camera Settings:
   Position: [63.4706078, 15.5119495, 104.376236]
   Focal Point: [-7.27023602, -13.6524334, -1.18550014]
-  Camera Bound: true
+  Camera Bound: false
 Perspective Camera Settings:
   Distance: 130.376801
   Pitch: 0.225601882
