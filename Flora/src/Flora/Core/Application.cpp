@@ -78,6 +78,8 @@ namespace Flora {
 					if (layer->ConfirmClose())
 						m_ProtectClose = false;
 
+			ExecuteMainThreadQueue();
+
 			if (!m_Minimized) {
 				{
 					FL_PROFILE_SCOPE("LayerStack OnUpdate");
@@ -104,6 +106,11 @@ namespace Flora {
 			layer->ProcessWindowClose();
 	}
 
+	void Application::SubmitToMainThread(const std::function<void()>& function) {
+		std::scoped_lock<std::mutex> lock(m_MainThreadQueueMutex);
+		m_MainThreadQueue.emplace_back(function);
+	}
+
 	bool Application::OnWindowClosed(WindowCloseEvent& e) {
 		Close();
 		return true;
@@ -120,5 +127,12 @@ namespace Flora {
 		Renderer::OnWindowResize(e.GetWidth(), e.GetHeight());
 
 		return false;
+	}
+
+	void Application::ExecuteMainThreadQueue() {
+		std::scoped_lock<std::mutex> lock(m_MainThreadQueueMutex);
+		for (auto& func : m_MainThreadQueue)
+			func();
+		m_MainThreadQueue.clear();
 	}
 }

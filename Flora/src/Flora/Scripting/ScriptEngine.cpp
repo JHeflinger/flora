@@ -7,6 +7,9 @@
 #include <glm/glm.hpp>
 #include "ScriptGlue.h"
 #include "Flora/Scene/Components.h"
+#include "FileWatch.h"
+#include "Flora/Core/Application.h"
+#include "Flora/Core/Timer.h"
 
 namespace Flora {
 
@@ -96,9 +99,22 @@ namespace Flora {
 		std::unordered_map<std::string, Ref<ScriptClass>> EntityClasses;
 		std::unordered_map<uint32_t, Ref<ScriptInstance>> EntityInstances;
 		std::unordered_map<uint32_t, ScriptFieldMap> EntityScriptFields;
+
+		Scope<filewatch::FileWatch<std::string>> AppAssemblyFileWatcher;
+		bool AssemblyReloadPending = false;
 	};
 
 	static ScriptEngineData* s_Data = nullptr;
+
+	static void OnAppAssemblyFileSystemEvent(const std::string& path, const filewatch::Event change_type) {
+		if (!s_Data->AssemblyReloadPending && change_type == filewatch::Event::modified) {
+			s_Data->AssemblyReloadPending = true;
+			Application::Get().SubmitToMainThread([]() {
+				s_Data->AppAssemblyFileWatcher.reset();
+				ScriptEngine::ReloadAssembly();
+			});
+		}
+	}
 
 	void ScriptEngine::Init() {
 		s_Data = new ScriptEngineData();
@@ -134,6 +150,8 @@ namespace Flora {
 		s_Data->AppAssemblyImage = mono_assembly_get_image(s_Data->AppAssembly);
 		auto assemblyi = s_Data->AppAssemblyImage;
 		s_Data->AppAssemblyFilepath = filepath;
+		s_Data->AppAssemblyFileWatcher = CreateScope<filewatch::FileWatch<std::string>>(filepath.string(), OnAppAssemblyFileSystemEvent);
+		s_Data->AssemblyReloadPending = false;
 	}
 
 	void ScriptEngine::ReloadAssembly() {

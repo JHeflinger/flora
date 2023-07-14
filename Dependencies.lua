@@ -9,6 +9,7 @@ IncludeDir["ImGuizmo"] = "%{wks.location}/Flora/vendor/ImGuizmo"
 IncludeDir["glm"] = "%{wks.location}/Flora/vendor/glm"
 IncludeDir["entt"] = "%{wks.location}/Flora/vendor/entt/include"
 IncludeDir["mono"] = "%{wks.location}/Flora/vendor/mono/include"
+IncludeDir["filewatch"] = "%{wks.location}/Flora/vendor/filewatch"
 IncludeDir["openAL"] = "%{wks.location}/Flora/vendor/openAL/include"
 
 LibraryDir = {}

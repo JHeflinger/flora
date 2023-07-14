@@ -23,6 +23,7 @@ project "Fauna"
 		"%{IncludeDir.ImGuizmo}",
 		"%{IncludeDir.yaml_cpp}",
 		"%{IncludeDir.Box2D}",
+		"%{IncludeDir.filewatch}",
 		"%{IncludeDir.openAL}"
 	}
 

@@ -43,6 +43,7 @@ project "Flora"
 		"%{IncludeDir.yaml_cpp}",
 		"%{IncludeDir.ImGuizmo}",
 		"%{IncludeDir.mono}",
+		"%{IncludeDir.filewatch}",
 		"%{IncludeDir.openAL}"
 	}
 
