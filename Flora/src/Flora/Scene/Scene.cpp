@@ -135,6 +135,10 @@ namespace Flora {
 		}
 	}
 
+	void Scene::StepScene(uint32_t steps) {
+		m_StepFrames += steps;
+	}
+
 	void Scene::OnRuntimeStart() {
 		StartPhysics();
 
@@ -148,12 +152,16 @@ namespace Flora {
 				ScriptEngine::CreateEntity(entity);
 			}
 		}
+
+		m_Paused = false;
+		m_StepFrames = 0;
 	}
 
 	void Scene::OnRuntimeStop() {
 		delete m_PhysicsWorld;
 		m_PhysicsWorld = nullptr;
 		ScriptEngine::OnRuntimeStop();
+		m_Paused = false;
 	}
 
 	std::vector<Entity> Scene::GetEntitiesByTag(std::string tag) {
@@ -327,14 +335,18 @@ namespace Flora {
 	}
 
 	void Scene::OnUpdateRuntime(Timestep ts, glm::mat4 viewProjection) {
-		// Update Scripts
-		UpdateScripts(ts);
+		if (!m_Paused || m_StepFrames > 0) {
+			// Update Scripts
+			UpdateScripts(ts);
 
-		// Update Physics
-		UpdatePhysics(ts);
+			// Update Physics
+			UpdatePhysics(ts);
+		}
 
 		// Render 2D Sprites
 		RenderRuntime(viewProjection);
+
+		if (m_StepFrames > 0) m_StepFrames--;
 	}
 
 	void Scene::OnUpdateRuntime(Timestep ts) {

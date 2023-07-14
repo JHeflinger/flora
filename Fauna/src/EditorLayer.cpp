@@ -214,18 +214,28 @@ namespace Flora {
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, { 0, 2 });
 		ImGui::PushStyleVar(ImGuiStyleVar_ItemInnerSpacing, { 0, 0 });
 		ImGui::Begin("##Toolbar", nullptr, ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse);
-		Ref<Texture2D> icon = m_EditorParams->SceneState == SceneState::EDIT ? m_IconPlay : m_IconStop;
 		float size = ImGui::GetWindowHeight() - 4.0f;
 		ImGui::SameLine((ImGui::GetContentRegionMax().x * 0.5f) - (size * 0.5f));
 		ImGui::SetCursorPosY(ImGui::GetCursorPosY() - 2);
 		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 0));
 		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0, 0, 0, 0));
 		ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0, 0, 0, 0));
-		if (ImGui::ImageButton((ImTextureID)icon->GetRendererID(), {size, size})) {
-			if (m_EditorParams->SceneState == SceneState::EDIT) {
+		if (m_EditorParams->SceneState == SceneState::EDIT) {
+			if (ImGui::ImageButton((ImTextureID)m_IconPlay->GetRendererID(), { size, size }))
 				OnScenePlay();
-			}else if (m_EditorParams->SceneState == SceneState::PLAY) {
+		} else {
+			ImGui::SetCursorPosX(ImGui::GetCursorPosX() - size - 16);
+			if (ImGui::ImageButton((ImTextureID)m_IconStop->GetRendererID(), { size, size })) {
 				OnSceneStop();
+			}
+			ImGui::SameLine();
+			Ref<Texture2D> icon = m_EditorParams->ActiveScene->IsScenePaused() ? m_IconPlay : m_IconPause;
+			if (ImGui::ImageButton((ImTextureID)icon->GetRendererID(), { size, size })) {
+				OnScenePause();
+			}
+			ImGui::SameLine();
+			if (ImGui::ImageButton((ImTextureID)m_IconStep->GetRendererID(), { size, size })) {
+				OnSceneStep();
 			}
 		}
 		ImGui::PopStyleColor(3);
@@ -240,6 +250,17 @@ namespace Flora {
 
 		// warnings
 		if (!m_EditorParams->ActiveScene->GetPrimaryCamera()) FL_WARN("No primary camera selected");
+	}
+
+	void EditorLayer::OnScenePause() {
+		if (m_EditorParams->ActiveScene->IsScenePaused())
+			m_EditorParams->ActiveScene->SetScenePaused(false);
+		else
+			m_EditorParams->ActiveScene->SetScenePaused(true);
+	}
+
+	void EditorLayer::OnSceneStep() {
+		m_EditorParams->ActiveScene->StepScene(1);
 	}
 
 	void EditorLayer::OnSceneStop() {
@@ -447,6 +468,8 @@ namespace Flora {
 		// Set icons
 		m_IconPlay = Texture2D::Create("resources/icons/Editor/PlayButton.png");
 		m_IconStop = Texture2D::Create("resources/icons/Editor/StopButton.png");
+		m_IconPause = Texture2D::Create("resources/icons/Editor/PauseButton.png");
+		m_IconStep = Texture2D::Create("resources/icons/Editor/StepButton.png");
 	}
 
 	void EditorLayer::InitializePanels() {

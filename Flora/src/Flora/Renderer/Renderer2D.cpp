@@ -531,6 +531,7 @@ namespace Flora {
 				DrawQuad(transform, subtexture, src.Color, src.TilingFactor, entityID);
 
 				// this assumes running game at 60 fps
+				//TODO: use timestep in this 
 				src.FrameCounter++;
 				if (src.FrameCounter >= 60 / src.FPS) {
 					src.CurrentFrame++;

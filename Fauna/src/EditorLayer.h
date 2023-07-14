@@ -46,6 +46,8 @@ namespace Flora {
 		void RenderUIBar();
 		void OnScenePlay();
 		void OnSceneStop();
+		void OnScenePause();
+		void OnSceneStep();
 	private:
 		void DevEvent();
 	private:
@@ -70,5 +72,7 @@ namespace Flora {
 		// Toolbar Icons
 		Ref<Texture2D> m_IconPlay;
 		Ref<Texture2D> m_IconStop;
+		Ref<Texture2D> m_IconPause;
+		Ref<Texture2D> m_IconStep;
 	};
 }

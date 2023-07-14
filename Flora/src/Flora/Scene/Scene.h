@@ -21,9 +21,11 @@ namespace Flora {
 		int GetPrimaryCamera() { return m_PrimaryCameraHandle; }
 		std::vector<Entity> GetEntitiesByTag(std::string tag);
 		bool EntityExists(uint32_t entityID);
+		bool IsScenePaused() { return m_Paused; }
 		void DestroyEntity(Entity entity);
 		void OnRuntimeStart();
 		void OnRuntimeStop();
+		void StepScene(uint32_t steps = 1);
 		void OnUpdateRuntime(Timestep ts);
 		void OnUpdateRuntime(Timestep ts, glm::mat4 viewProjection);
 		void OnUpdateEditor(Timestep ts, glm::mat4 viewProjection);
@@ -33,6 +35,7 @@ namespace Flora {
 		void SetViewportFocused(bool hovered) { m_ViewportFocused = hovered; }
 		void SetSceneName(std::string name) { m_SceneName = name; }
 		void SetPrimaryCamera(int camera) { m_PrimaryCameraHandle = camera; }
+		void SetScenePaused(bool paused) { m_Paused = paused; }
 		std::string GetSceneFilepath() { return m_SceneFilepath; }
 		std::string GetSceneName() { return m_SceneName; }
 		AssetManager* GetAssetManager() { return m_AssetManager; }
@@ -73,6 +76,7 @@ namespace Flora {
 		uint32_t m_ViewportWidth, m_ViewportHeight = 0;
 		bool m_ViewportHovered = false; // temporary solution
 		bool m_ViewportFocused = false;
+		bool m_Paused = false;
 		std::string m_SceneFilepath = "NULL";
 		std::string m_SceneName = "Untitled";
 		int m_PrimaryCameraHandle = -1;
@@ -81,6 +85,7 @@ namespace Flora {
 		int32_t m_PhysicsVelocityIterations = 6;
 		int32_t m_PhysicsPositionIterations = 2;
 		AssetManager* m_AssetManager;
+		uint32_t m_StepFrames = 0;
 		friend class Entity;
 		friend class SceneHierarchyPanel;
 		friend class Serializer;
