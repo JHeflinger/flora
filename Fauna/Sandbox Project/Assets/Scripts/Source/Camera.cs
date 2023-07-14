@@ -14,7 +14,7 @@ namespace Sandbox
 
         void OnCreate()
         {
-            player = FindEntityByName("Controllable Player");
+            player = FindEntityByName("ball");
             m_Transform = GetComponent<TransformComponent>();
         }
 
@@ -23,8 +23,8 @@ namespace Sandbox
             if (player != null)
             {
                 m_Transform.Translation = new Vector3(player.Translation.X, player.Translation.Y, 0.0f);
-                Player real_player = player.As<Player>();
-                real_player.Testfunc();
+                //Player real_player = player.As<Player>();
+                //real_player.Testfunc();
             }
         }
 

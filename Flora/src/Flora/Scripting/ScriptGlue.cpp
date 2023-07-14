@@ -100,6 +100,7 @@ namespace Flora {
 	}
 
 	void ScriptGlue::RegisterComponents() {
+		s_HasComponentFunctions.clear();
 		RegisterComponent(AllComponents{});
 	}
 }

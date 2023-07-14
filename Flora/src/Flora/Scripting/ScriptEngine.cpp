@@ -2,6 +2,7 @@
 #include "ScriptEngine.h"
 #include "mono/jit/jit.h"
 #include "mono/metadata/assembly.h"
+#include "mono/metadata/object.h"
 #include "mono/metadata/tabledefs.h"
 #include <glm/glm.hpp>
 #include "ScriptGlue.h"
@@ -88,6 +89,9 @@ namespace Flora {
 		MonoImage* CoreAssemblyImage = nullptr;
 		Scene* SceneContext          = nullptr;
 
+		std::filesystem::path CoreAssemblyFilepath;
+		std::filesystem::path AppAssemblyFilepath;
+
 		ScriptClass EntityClass;
 		std::unordered_map<std::string, Ref<ScriptClass>> EntityClasses;
 		std::unordered_map<uint32_t, Ref<ScriptInstance>> EntityInstances;
@@ -99,11 +103,10 @@ namespace Flora {
 	void ScriptEngine::Init() {
 		s_Data = new ScriptEngineData();
 		InitMono();
+		ScriptGlue::RegisterFunctions();
 		LoadAssembly("resources/Scripts/Flora-ScriptCore.dll");
 		LoadAppAssembly("Sandbox Project/Assets/Scripts/Binaries/Sandbox.dll");
 		LoadAssemblyClasses();
-
-		ScriptGlue::RegisterFunctions();
 		ScriptGlue::RegisterComponents();
 
 		s_Data->EntityClass = ScriptClass("Flora", "Entity", true);
@@ -121,6 +124,8 @@ namespace Flora {
 
 		s_Data->CoreAssembly = Utils::LoadMonoAssembly(filepath);
 		s_Data->CoreAssemblyImage = mono_assembly_get_image(s_Data->CoreAssembly);
+		
+		s_Data->CoreAssemblyFilepath = filepath;
 	}
 
 	void ScriptEngine::LoadAppAssembly(const std::filesystem::path& filepath) {
@@ -128,6 +133,17 @@ namespace Flora {
 		auto assembly = s_Data->AppAssembly;
 		s_Data->AppAssemblyImage = mono_assembly_get_image(s_Data->AppAssembly);
 		auto assemblyi = s_Data->AppAssemblyImage;
+		s_Data->AppAssemblyFilepath = filepath;
+	}
+
+	void ScriptEngine::ReloadAssembly() {
+		mono_domain_set(mono_get_root_domain(), false);
+		mono_domain_unload(s_Data->AppDomain);
+		LoadAssembly(s_Data->CoreAssemblyFilepath);
+		LoadAppAssembly(s_Data->AppAssemblyFilepath);
+		LoadAssemblyClasses();
+		ScriptGlue::RegisterComponents();
+		s_Data->EntityClass = ScriptClass("Flora", "Entity", true);
 	}
 
 	void ScriptEngine::InitMono() {
@@ -138,9 +154,10 @@ namespace Flora {
 	}
 
 	void ScriptEngine::ShutdownMono() {
-		//mono_domain_unload(s_Data->AppDomain);
+		mono_domain_set(mono_get_root_domain(), false);
+		mono_domain_unload(s_Data->AppDomain);
 		s_Data->AppDomain = nullptr;
-		//mono_jit_cleanup(s_Data->RootDomain);
+		mono_jit_cleanup(s_Data->RootDomain);
 		s_Data->RootDomain = nullptr;
 	}
 

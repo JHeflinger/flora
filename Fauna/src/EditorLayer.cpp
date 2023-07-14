@@ -9,6 +9,7 @@
 #include "Utils/FileUtils.h"
 #include "ImGuizmo.h"
 #include "Flora/Audio/AudioCommand.h"
+#include "Flora/Scripting/ScriptEngine.h"
 
 namespace Flora {
 	//temp, remove when projects are implemented
@@ -859,6 +860,7 @@ namespace Flora {
 
 	void EditorLayer::DevEvent() {
 		FL_CORE_INFO("DEV EVENT FIRED");
-		AudioCommand::Init();
+		ScriptEngine::ReloadAssembly();
+		//AudioCommand::Init();
 	}
 }
