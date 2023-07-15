@@ -69,7 +69,7 @@ Entities:
       Size: [0.5, 0.5]
       Density: 1
       Friction: 0.5
-      Restitution: 0.600000024
+      Restitution: 1.10000002
       RestitutionThreshold: 0.5
   - Entity: 17
     TagComponent:

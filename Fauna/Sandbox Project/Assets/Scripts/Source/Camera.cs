@@ -14,7 +14,7 @@ namespace Sandbox
 
         void OnCreate()
         {
-            player = FindEntityByName("Controllable Player");
+            player = FindEntityByName("ball");
             m_Transform = GetComponent<TransformComponent>();
         }
 
