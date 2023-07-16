@@ -10,6 +10,7 @@ namespace Flora {
 
 		YAML::Emitter out;
 		out << YAML::BeginMap;
+		out << YAML::Key << "Project Filepath" << YAML::Value << params->ProjectFilepath;
 		out << YAML::Key << "Scene Filepath" << YAML::Value << params->ActiveScene->GetSceneFilepath();
 		out << YAML::Key << "Selected Entity" << YAML::Value << selectedEntity;
 		out << YAML::Key << "Current Gizmo" << YAML::Value << params->GizmoType;
@@ -77,7 +78,8 @@ namespace Flora {
 		strStream << stream.rdbuf();
 
 		YAML::Node data = YAML::Load(strStream.str());
-		if (!data["Scene Filepath"] ||
+		if (!data["Project Filepath"] ||
+			!data["Scene Filepath"] ||
 			!data["Current Gizmo"] ||
 			!data["Selected Entity"] ||
 			!data["Editor Camera Type"] ||
@@ -87,6 +89,11 @@ namespace Flora {
 			!data["Closed Panels"] ||
 			!data["Stat Panel Settings"])
 			return false;
+
+		// set up project
+		if (data["Project Filepath"].as<std::string>() == "") {
+
+		}
 
 		// set up saved scene
 		std::string sceneFilepath = data["Scene Filepath"].as<std::string>();

@@ -466,10 +466,10 @@ namespace Flora {
 			m_Panels[m_EditorParams->ClosedPanels[i]]->m_Enabled = false;
 
 		// Set icons
-		m_IconPlay = Texture2D::Create("resources/icons/Editor/PlayButton.png");
-		m_IconStop = Texture2D::Create("resources/icons/Editor/StopButton.png");
-		m_IconPause = Texture2D::Create("resources/icons/Editor/PauseButton.png");
-		m_IconStep = Texture2D::Create("resources/icons/Editor/StepButton.png");
+		m_IconPlay = Texture2D::Create("Resources/Icons/Editor/PlayButton.png");
+		m_IconStop = Texture2D::Create("Resources/Icons/Editor/StopButton.png");
+		m_IconPause = Texture2D::Create("Resources/Icons/Editor/PauseButton.png");
+		m_IconStep = Texture2D::Create("Resources/Icons/Editor/StepButton.png");
 	}
 
 	void EditorLayer::InitializePanels() {

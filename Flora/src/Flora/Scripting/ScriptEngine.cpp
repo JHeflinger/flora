@@ -93,7 +93,7 @@ namespace Flora {
 
 		Scope<filewatch::FileWatch<std::string>> AppAssemblyFileWatcher;
 		bool AssemblyReloadPending = false;
-		bool EnableDebugging = true;
+		bool EnableDebugging = false;
 	};
 
 	static ScriptEngineData* s_Data = nullptr;
@@ -112,7 +112,7 @@ namespace Flora {
 		s_Data = new ScriptEngineData();
 		InitMono();
 		ScriptGlue::RegisterFunctions();
-		bool status = LoadAssembly("resources/Scripts/Flora-ScriptCore.dll");
+		bool status = LoadAssembly("Resources/Scripts/Flora-ScriptCore.dll");
 		if (!status) {
 			FL_CORE_ERROR("[ScriptEngine] Could not load Hazel-ScriptCore assembly.");
 			return;

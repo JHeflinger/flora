@@ -1,0 +1,1 @@
+Fauna projects are stored here by default

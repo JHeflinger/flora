@@ -12,6 +12,8 @@ TODO:
 
 	- custom shaders, post processing, materials
 
+	- purge native scripts
+
 	- implement layers
 
 	- particle system
@@ -108,6 +110,8 @@ TODO:
 
 	- organize premake
 
+	- modify project settings popup
+
 	- script hot reloading should detect when save file even on not runtime and update serialized fields in properties panel instantly!
 
 	- clean github
@@ -118,8 +122,12 @@ TODO:
 
 	- stabalize entity id to use uint32_t always, and 0 is an invalid entity
 
+	- use std::filesystem::path when able
+
 
 IN PROGRESS:
+
+	- projects
 	
 	- c# scripting!
 		- doing all component functions

@@ -10,10 +10,10 @@ namespace Flora {
 
 	ContentBrowserPanel::ContentBrowserPanel()
 		: m_CurrentDirectory(g_AssetPath) {
-		m_DirectoryIcon = Texture2D::Create("resources/icons/ContentBrowser/DirectoryIcon.png");
-		m_FileIcon = Texture2D::Create("resources/icons/ContentBrowser/FileIcon.png");
-		m_BackIcon = Texture2D::Create("resources/icons/ContentBrowser/BackIcon.png");
-		m_UpIcon = Texture2D::Create("resources/icons/ContentBrowser/UpIcon.png");
+		m_DirectoryIcon = Texture2D::Create("Resources/Icons/ContentBrowser/DirectoryIcon.png");
+		m_FileIcon = Texture2D::Create("Resources/Icons/ContentBrowser/FileIcon.png");
+		m_BackIcon = Texture2D::Create("Resources/Icons/ContentBrowser/BackIcon.png");
+		m_UpIcon = Texture2D::Create("Resources/Icons/ContentBrowser/UpIcon.png");
 	}
 
 	void ContentBrowserPanel::OnImGuiRender() {

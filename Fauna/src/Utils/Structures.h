@@ -2,6 +2,7 @@
 #include "Flora/Scene/Scene.h"
 #include "Flora/Scene/Entity.h"
 #include "Flora/Core/Layer.h"
+#include "Flora/Project/Project.h"
 
 namespace Flora {
 	enum class Panels {
@@ -55,6 +56,8 @@ namespace Flora {
 		Clipboard Clipboard;
 		SceneState SceneState = SceneState::EDIT;
 		std::string Error = "";
+		Ref<Project> Project;
+		std::string ProjectFilepath = "";
 		
 		// stats panel settings
 		float Timeframe = 5.0f;
