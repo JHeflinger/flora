@@ -1,5 +1,6 @@
 #include "EditorLayer.h"
 #include "imgui/imgui.h"
+#include "imgui/imgui_internal.h"
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include "Platform/OpenGL/OpenGLShader.h"
@@ -203,6 +204,9 @@ namespace Flora {
 
 		// Prompt Save
 		RenderSavePrompt();
+
+		// Prompt Project
+		RenderProjectPrompt();
 
 		// Prompt Errors
 		RenderErrorPrompt();
@@ -411,6 +415,57 @@ namespace Flora {
 				break;
 			}
 			m_SavePromptType = SavePromptType::NONE;
+		}
+	}
+
+	void EditorLayer::RenderProjectPrompt() {
+		bool firstProject = m_EditorParams->ProjectFilepath == "";
+		if (firstProject) {
+			ImGui::OpenPopup("New Fauna Project");
+			ImVec2 center = ImGui::GetMainViewport()->GetCenter();
+			ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
+			if (ImGui::BeginPopupModal("New Fauna Project", NULL, ImGuiWindowFlags_AlwaysAutoResize)) {
+				static char filepath_buffer[1024];
+				static char name_buffer[1024];
+				float text_input_width = 300.0f;
+				ImGui::SetItemDefaultFocus();
+				ImGui::Text("Project Name");
+				ImGui::Dummy({ 0, 2 });
+				ImGui::SetNextItemWidth(text_input_width);
+				ImGui::InputText("##ProjectName", name_buffer, sizeof(name_buffer));
+				ImGui::Dummy({ 0, 10 });
+				ImGui::Text("Project Directory");
+				ImGui::Dummy({ 0, 2 });
+				if (ImGui::Button("Browse", {60, 25})) {
+					std::string filepath = FileDialogs::OpenFolder();
+					strcpy(filepath_buffer, filepath.c_str());
+				}
+				ImGui::SameLine();
+				ImGui::SetNextItemWidth(text_input_width - 67);
+				ImGui::InputText("##ProjectDir", filepath_buffer, sizeof(filepath_buffer));
+				ImGui::Dummy({ 0, 7 });
+				ImGui::SetCursorPosX(ImGui::GetContentRegionAvail().x - 53);
+				bool isvalid = std::strlen(name_buffer) != 0;
+				if (isvalid)
+					isvalid = std::filesystem::exists(filepath_buffer) && std::filesystem::is_directory(filepath_buffer);
+				if (!isvalid) {
+					ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
+					ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
+				}
+				if (ImGui::Button("OK", { 60, 25 })) {
+					Project::GenerateProjectDirectory(std::string(name_buffer), std::filesystem::path(filepath_buffer));
+					m_EditorParams->ProjectFilepath = std::string(filepath_buffer);
+					m_EditorParams->Project->GetConfig().AssetDirectory = std::filesystem::path(filepath_buffer) / "Assets";
+					m_EditorParams->Project->GetConfig().Name = std::string(name_buffer);
+					m_EditorParams->Project->SaveActive(std::filesystem::path(filepath_buffer) / (std::string(name_buffer) + ".flproj"));
+					ImGui::CloseCurrentPopup();
+				}
+				if (!isvalid) {
+					ImGui::PopItemFlag();
+					ImGui::PopStyleVar();
+				}
+				ImGui::EndPopup();
+			}
 		}
 	}
 

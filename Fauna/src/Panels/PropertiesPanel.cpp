@@ -6,9 +6,6 @@
 #include <filesystem>
 #include <glm/gtc/type_ptr.hpp>
 
-// temp until stable alternative is implemented
-#include "../../assets/scripts/MasterNativeScript.h"
-
 namespace Flora {
 	extern const std::filesystem::path g_AssetPath;
 
@@ -152,25 +149,6 @@ namespace Flora {
 		ImGui::Text(component.Filename.c_str());
 	}
 
-	static void DrawScriptManagerDropbox(std::vector<NativeScriptComponent>& nscs, int newIndex) {
-		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 0));
-		ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0, 0, 0, 0));
-		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0, 0, 0, 0));
-		ImGui::Button("##index", { ImGui::GetWindowWidth() - 50, 3 });
-		if (ImGui::BeginDragDropTarget()) {
-			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("DRAG_SCRIPT")) {
-				int oldIndex = *(const int*)payload->Data;
-				if (oldIndex < newIndex) newIndex--;
-				FL_CORE_INFO(std::to_string(oldIndex));
-				NativeScriptComponent element = nscs[oldIndex];
-				nscs.erase(nscs.begin() + oldIndex);
-				nscs.insert(nscs.begin() + newIndex, element);
-			}
-			ImGui::EndDragDropTarget();
-		}
-		ImGui::PopStyleColor(3);
-	}
-
 	void PropertiesPanel::OnImGuiRender() {
 		ImGui::Begin("Properties", &m_Enabled);
 		if (ImGui::IsWindowHovered()) m_EditorContext->HoveredPanel = Panels::PROPERTIES;
@@ -200,7 +178,6 @@ namespace Flora {
 			DrawAddComponentItem<SpriteRendererComponent>("Sprite Renderer", m_EditorContext->SelectedEntity);
 			DrawAddComponentItem<CircleRendererComponent>("Circle Renderer", m_EditorContext->SelectedEntity);
 			DrawAddComponentItem<ScriptComponent>("Script", m_EditorContext->SelectedEntity);
-			DrawAddComponentItem<NativeScriptComponent>("Native Script", m_EditorContext->SelectedEntity);
 			DrawAddComponentItem<ScriptManagerComponent>("Script Manager", m_EditorContext->SelectedEntity);
 			DrawAddComponentItem<RigidBody2DComponent>("Rigid Body 2D", m_EditorContext->SelectedEntity);
 			DrawAddComponentItem<BoxCollider2DComponent>("Box Collider 2D", m_EditorContext->SelectedEntity);
@@ -607,98 +584,9 @@ namespace Flora {
 			}
 		});
 
-		DrawComponent<NativeScriptComponent>("Native Script", entity, [](auto& entity, auto& component) {
-			float lineHeight = GImGui->Font->FontSize + GImGui->Style.FramePadding.y * 2.0f;
-			ImVec2 smallButtonSize = { lineHeight + 3.0f, lineHeight };
-			ImVec2 largeButtonSize = { 100, lineHeight };
-
-			ImGui::Columns(2);
-			ImGui::SetColumnWidth(0, 100.0f);
-			ImGui::Text("Script");
-			ImGui::NextColumn();
-
-			if (ImGui::Button("Native Script", largeButtonSize)) {
-				std::string filepath = FileDialogs::OpenFile("Native Script (*.h)\0*.h\0");
-				if (!filepath.empty()) {
-					std::filesystem::path scriptPath = std::filesystem::path(filepath); // warning this is not relative
-					component.Filename = scriptPath.filename().string();
-					component.Path = scriptPath.string();
-					BindScriptToComponent(component, scriptPath.filename().stem().string());
-				}
-			}
-			if (ImGui::BeginDragDropTarget()) {
-				if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM")) {
-					const wchar_t* path = (const wchar_t*)payload->Data;
-					std::filesystem::path scriptPath = std::filesystem::path(g_AssetPath) / path;
-					component.Filename = scriptPath.filename().string();
-					component.Path = scriptPath.string();
-					BindScriptToComponent(component, scriptPath.filename().stem().string());
-				}
-				ImGui::EndDragDropTarget();
-			}
-			ImGui::SameLine();
-			ImGui::Text(component.Filename.c_str());
-
-			ImGui::Columns(1);
-		});
-
 		DrawComponent<ScriptManagerComponent>("Script Manager", entity, [](auto& entity, auto& component) {
-			float lineHeight = GImGui->Font->FontSize + GImGui->Style.FramePadding.y * 2.0f;
-			ImVec2 smallButtonSize = { lineHeight + 3.0f, lineHeight };
-			ImVec2 largeButtonSize = { 100, lineHeight };
-
-			DrawScriptManagerDropbox(component.NativeScripts, 0);
-			for (int i = 0; i < component.NativeScripts.size(); i++) {
-				ImGui::BeginChild(std::to_string(i).c_str(), {0, 25});
-				ImGui::Columns(2);
-				ImGui::SetColumnWidth(0, 120.0f);
-				std::string filename = component.NativeScripts[i].Filename;
-				int extensionPos = filename.find_last_of(".");
-				if (extensionPos != std::string::npos && extensionPos != 0 && extensionPos != filename.length() - 1)
-					filename = filename.substr(0, extensionPos);
-				ImGui::Dummy({ 0, 2 });
-				ImGui::Text(filename.c_str());
-				ImGui::NextColumn();
-
-				if (ImGui::Button("Native Script", largeButtonSize)) {
-					std::string filepath = FileDialogs::OpenFile("Native Script (*.h)\0*.h\0");
-					if (!filepath.empty()) {
-						std::filesystem::path scriptPath = std::filesystem::path(filepath); // warning this is not relative
-						component.NativeScripts[i].Filename = scriptPath.filename().string();
-						component.NativeScripts[i].Path = scriptPath.string();
-						BindScriptToComponent(component.NativeScripts[i], scriptPath.filename().stem().string());
-					}
-				}
-				if (ImGui::BeginDragDropSource()) {
-					int index = i;
-					ImGui::SetDragDropPayload("DRAG_SCRIPT", &index, sizeof(int));
-					ImGui::EndDragDropSource();
-				}
-				if (ImGui::BeginDragDropTarget()) {
-					if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM")) {
-						const wchar_t* path = (const wchar_t*)payload->Data;
-						std::filesystem::path scriptPath = std::filesystem::path(g_AssetPath) / path;
-						component.NativeScripts[i].Filename = scriptPath.filename().string();
-						component.NativeScripts[i].Path = scriptPath.string();
-						BindScriptToComponent(component.NativeScripts[i], scriptPath.filename().stem().string());
-					}
-					ImGui::EndDragDropTarget();
-				}
-				
-				ImGui::SameLine();
-				ImGui::SetCursorPosX(ImGui::GetWindowWidth() - 30);
-				ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 0));
-				if (ImGui::Button("X")) {
-					component.NativeScripts.erase(component.NativeScripts.begin() + i);
-				}
-				ImGui::PopStyleColor();
-				ImGui::Columns(1);
-				ImGui::EndChild();
-				DrawScriptManagerDropbox(component.NativeScripts, i + 1);
-			}
-			ImGui::Dummy({ 0, 10 });
-			if (ImGui::Button("Add", { 60, lineHeight }))
-				component.NativeScripts.emplace_back(NativeScriptComponent());
+			//TODO
+			ImGui::Text("TODO");
 		});
 
 		DrawComponent<RigidBody2DComponent>("Rigid Body 2D", entity, [](auto& entity, auto& component) {

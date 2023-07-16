@@ -9,7 +9,6 @@ namespace Flora {
 		std::string Name = "Untitled";
 		std::filesystem::path StartScene;
 		std::filesystem::path AssetDirectory;
-		std::filesystem::path ScriptModulePath;
 	};
 
 	class Project {
@@ -34,6 +33,7 @@ namespace Flora {
 		static Ref<Project> New();
 		static Ref<Project> Load(const std::filesystem::path& path);
 		static bool SaveActive(const std::filesystem::path& path);
+		static bool GenerateProjectDirectory(const std::string name, const std::filesystem::path& path);
 	private:
 		ProjectConfig m_Config;
 		std::filesystem::path m_ProjectDirectory;

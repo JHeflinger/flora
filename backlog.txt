@@ -50,9 +50,21 @@ TODO:
 
 1.0 RELEASE:
 
+	- make it so the top bar dialogs (Scene, Application, Windows, etc) all get file dialog based on project
+
 	- implement projects
 
+	- double clicking scripts opens them up in visual studio
+
+	- no paths ANYWHERE in code should be plain text, should be all dynamic and in variables
+
+	- open visual studio button
+
 	- audio
+
+	- content browser primary folders cannot be deleted
+
+	- refactor content browser panel popup
 
 	- simplify popup menus (New __ options should be condensed into an expandable "New..")
 

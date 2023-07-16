@@ -122,9 +122,9 @@ namespace Flora {
 			samplers[i] = i;
 		}
 
-		s_Data.TextureShader = Shader::Create("assets/shaders/Texture.glsl");
-		s_Data.CircleShader = Shader::Create("assets/shaders/Circle.glsl");
-		s_Data.LineShader = Shader::Create("assets/shaders/Line.glsl");
+		s_Data.TextureShader = Shader::Create("Resources/Shaders/Texture.glsl");
+		s_Data.CircleShader = Shader::Create("Resources/Shaders/Circle.glsl");
+		s_Data.LineShader = Shader::Create("Resources/Shaders/Line.glsl");
 		s_Data.TextureShader->Bind();
 		s_Data.TextureShader->SetIntArray("u_Textures", samplers, s_Data.MaxTextureSlots);
 

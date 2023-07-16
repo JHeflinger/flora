@@ -8,9 +8,6 @@
 #include <glm/glm.hpp>
 #include <filesystem>
 
-// temp until stable alternative is implemented
-#include "../../Fauna/assets/scripts/MasterNativeScript.h"
-
 namespace Flora {
 	void Scene::DrawEntitySprite(Entity& entity, bool useTransformRef, glm::mat4 refTransform) {
 		glm::mat4 transform = entity.GetComponent<TransformComponent>().GetTransform();
@@ -203,7 +200,6 @@ namespace Flora {
 		CopyComponent<SpriteRendererComponent>(entity, newEntity);
 		CopyComponent<CircleRendererComponent>(entity, newEntity);
 		CopyComponent<CameraComponent>(entity, newEntity);
-		CopyComponent<NativeScriptComponent>(entity, newEntity);
 		CopyComponent<ScriptManagerComponent>(entity, newEntity);
 		CopyComponent<RigidBody2DComponent>(entity, newEntity);
 		CopyComponent<BoxCollider2DComponent>(entity, newEntity);
@@ -258,35 +254,8 @@ namespace Flora {
 	}
 
 	void Scene::UpdateScripts(Timestep ts) {
-		// update native scripts
-		m_Registry.view<NativeScriptComponent>().each([=](auto entity, auto& nsc) {
-			if (nsc.Path != "NULL" && !nsc.Bound) {
-				BindScriptToComponent(nsc, std::filesystem::path(nsc.Path).filename().stem().string());
-			} else if (nsc.Bound) {
-				if (!nsc.Instance) {
-					nsc.Instance = nsc.InstantiateScript();
-					nsc.Instance->m_Entity = Entity{ entity, this };
-					nsc.Instance->OnCreate();
-				}
-				nsc.Instance->OnUpdate(ts);
-			}
-		});
-
 		// script manager
-		m_Registry.view<ScriptManagerComponent>().each([=](auto entity, auto& smc) {
-			for (int i = 0; i < smc.NativeScripts.size(); i++) {
-				if (smc.NativeScripts[i].Path != "NULL" && !smc.NativeScripts[i].Bound) {
-					BindScriptToComponent(smc.NativeScripts[i], std::filesystem::path(smc.NativeScripts[i].Path).filename().stem().string());
-				} else if (smc.NativeScripts[i].Bound) {
-					if (!smc.NativeScripts[i].Instance) {
-						smc.NativeScripts[i].Instance = smc.NativeScripts[i].InstantiateScript();
-						smc.NativeScripts[i].Instance->m_Entity = Entity{ entity, this };
-						smc.NativeScripts[i].Instance->OnCreate();
-					}
-					smc.NativeScripts[i].Instance->OnUpdate(ts);
-				}
-			}
-		});
+		//TODO
 
 		// mono scripts
 		auto view = m_Registry.view<ScriptComponent>();

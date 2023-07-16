@@ -5,6 +5,8 @@
 #define GLFW_EXPOSE_NATIVE_WIN32
 #include <GLFW/glfw3native.h>
 #include "Flora/Core/Application.h"
+#include <Windows.h>
+#include <shlobj.h>
 
 namespace Flora {
 	std::string FileDialogs::OpenFile(const char* filter) {
@@ -20,6 +22,25 @@ namespace Flora {
 		ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST | OFN_NOCHANGEDIR;
 		if (GetOpenFileNameA(&ofn) == TRUE)
 			return ofn.lpstrFile;
+		return std::string();
+	}
+
+	std::string FileDialogs::OpenFolder() {
+		BROWSEINFOA bi;
+		ZeroMemory(&bi, sizeof(BROWSEINFO));
+		bi.hwndOwner = glfwGetWin32Window((GLFWwindow*)Application::Get().GetWindow().GetNativeWindow());
+		bi.ulFlags = BIF_RETURNONLYFSDIRS | BIF_NEWDIALOGSTYLE;
+		LPITEMIDLIST pidl = SHBrowseForFolderA(&bi);
+
+		if (pidl != NULL) {
+			CHAR szFolder[MAX_PATH] = { 0 };
+			if (SHGetPathFromIDListA(pidl, szFolder)) {
+				std::string folderPath = szFolder;
+				CoTaskMemFree(pidl);
+				return folderPath;
+			}
+		}
+
 		return std::string();
 	}
 

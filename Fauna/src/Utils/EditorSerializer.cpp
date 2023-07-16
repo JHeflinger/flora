@@ -1,6 +1,7 @@
 #include "flpch.h"
 #include "EditorSerializer.h"
 #include "Flora/Utils/Serializer.h"
+#include "Flora/Project/Project.h"
 
 namespace Flora {
 	std::string EditorSerializer::Serialize(Ref<EditorParams> params) {
@@ -91,9 +92,12 @@ namespace Flora {
 			return false;
 
 		// set up project
-		if (data["Project Filepath"].as<std::string>() == "") {
-
-		}
+		std::string projectFilepath = data["Project Filepath"].as<std::string>();
+		if (projectFilepath == "")
+			params->Project = Project::New();
+		else
+			params->Project = Project::Load(projectFilepath);
+		params->ProjectFilepath = projectFilepath;
 
 		// set up saved scene
 		std::string sceneFilepath = data["Scene Filepath"].as<std::string>();

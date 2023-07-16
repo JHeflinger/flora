@@ -114,7 +114,7 @@ namespace Flora {
 		ScriptGlue::RegisterFunctions();
 		bool status = LoadAssembly("Resources/Scripts/Flora-ScriptCore.dll");
 		if (!status) {
-			FL_CORE_ERROR("[ScriptEngine] Could not load Hazel-ScriptCore assembly.");
+			FL_CORE_ERROR("[ScriptEngine] Could not load Flora-ScriptCore assembly.");
 			return;
 		}
 		status = LoadAppAssembly("Sandbox Project/Assets/Scripts/Binaries/Sandbox.dll");

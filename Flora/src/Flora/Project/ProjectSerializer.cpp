@@ -18,7 +18,6 @@ namespace Flora {
 		out << YAML::Key << "Name" << YAML::Value << config.Name;
 		out << YAML::Key << "StartScene" << YAML::Value << config.StartScene.string();
 		out << YAML::Key << "AssetDirectory" << YAML::Value << config.AssetDirectory.string();
-		out << YAML::Key << "ScriptModulePath" << YAML::Value << config.ScriptModulePath.string();
 		out << YAML::EndMap;
 		out << YAML::EndMap;
 		std::ofstream fout(filepath);
@@ -43,7 +42,6 @@ namespace Flora {
 		config.Name = projectNode["Name"].as<std::string>();
 		config.StartScene = projectNode["StartScene"].as<std::string>();
 		config.AssetDirectory = projectNode["AssetDirectory"].as<std::string>();
-		config.ScriptModulePath = projectNode["ScriptModulePath"].as<std::string>();
 		return true;
 	}
 

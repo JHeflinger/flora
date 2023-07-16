@@ -42,6 +42,7 @@ namespace Flora {
 		void PromptSave(SavePromptType type) { m_SavePromptType = type; }
 		void RenderSavePrompt();
 		void RenderErrorPrompt();
+		void RenderProjectPrompt();
 		void RenderDebugOverlay();
 		void RenderUIBar();
 		void OnScenePlay();

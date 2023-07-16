@@ -35,19 +35,19 @@ namespace Flora {
 
 	void FileUtils::SaveTempScene(Ref<EditorParams> context) {
 		std::string sceneContent = Serializer::SerializeScene(context->ActiveScene);
-		Serializer::SerializeFile(sceneContent, "temp/tempScene.flora");
+		Serializer::SerializeFile(sceneContent, "Resources/Temp/tempScene.flora");
 		std::string editorContent = EditorSerializer::Serialize(context);
-		Serializer::SerializeFile(editorContent, "temp/tempEditorSettings.fnproj");
+		Serializer::SerializeFile(editorContent, "Resources/Temp/tempEditorSettings.fnproj");
 	}
 
 	void FileUtils::OpenTempScene(Ref<EditorParams> context) {
 		bool entitySelected = context->SelectedEntity;
 		uint32_t selectedEntityID = context->SelectedEntity;
-		EditorSerializer::Deserialize(context, "temp/tempEditorSettings.fnproj");
+		EditorSerializer::Deserialize(context, "Resources/Temp/tempEditorSettings.fnproj");
 		std::string sceneFilepath = context->ActiveScene->GetSceneFilepath();
 		NewScene(context);
 		context->ActiveScene->SetSceneFilepath(sceneFilepath);
-		Serializer::DeserializeScene(context->ActiveScene, "temp/tempscene.flora");
+		Serializer::DeserializeScene(context->ActiveScene, "Resources/Temp/tempscene.flora");
 		if (entitySelected)
 			context->SelectedEntity = Entity{ (entt::entity)selectedEntityID, &(*(context->ActiveScene)) };
 		else
@@ -60,7 +60,7 @@ namespace Flora {
 		context->SelectedEntity = {};
 		Serializer::DeserializeScene(context->ActiveScene, path.string());
 		std::string editorContent = EditorSerializer::Serialize(context);
-		Serializer::SerializeFile(editorContent, "assets/settings/fauna.fnproj");
+		Serializer::SerializeFile(editorContent, "Resources/Settings/fauna.fnproj");
 	}
 
 	void FileUtils::NewScene(Ref<EditorParams> context){
@@ -153,7 +153,7 @@ namespace Flora {
 	}
 
 	void FileUtils::SaveEditor(Ref<EditorParams> context) {
-		Serializer::SerializeFile(EditorSerializer::Serialize(context), "assets/settings/fauna.fnproj"); 
+		Serializer::SerializeFile(EditorSerializer::Serialize(context), "Resources/Settings/fauna.fnproj"); 
 	}
 
 	void FileUtils::LoadEditor(Ref<EditorParams> context) {

@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x64</Platform>
-    <ProjectGuid>{649C3F2E-5095-5E80-79C7-4305651F3E8C}</ProjectGuid>
+    <ProjectGuid>{EC4539AC-D813-2DB2-C1A7-9DD8AD140917}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Flora-ScriptCore</RootNamespace>
-    <AssemblyName>Flora-ScriptCore</AssemblyName>
+    <RootNamespace>Sandbox Studio</RootNamespace>
+    <AssemblyName>Sandbox Studio</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -17,8 +17,8 @@
     <PlatformTarget>x64</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\Fauna\Resources\Scripts\</OutputPath>
-    <BaseIntermediateOutputPath>..\Fauna\Resources\Scripts\Intermediates\Debug\</BaseIntermediateOutputPath>
+    <OutputPath>Binaries\</OutputPath>
+    <BaseIntermediateOutputPath>Project Intermediates\Sandbox Studio\Debug\</BaseIntermediateOutputPath>
     <IntermediateOutputPath>$(BaseIntermediateOutputPath)</IntermediateOutputPath>
     <DefineConstants></DefineConstants>
     <ErrorReport>prompt</ErrorReport>
@@ -28,8 +28,8 @@
     <PlatformTarget>x64</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\Fauna\Resources\Scripts\</OutputPath>
-    <BaseIntermediateOutputPath>..\Fauna\Resources\Scripts\Intermediates\Release\</BaseIntermediateOutputPath>
+    <OutputPath>Binaries\</OutputPath>
+    <BaseIntermediateOutputPath>Project Intermediates\Sandbox Studio\Release\</BaseIntermediateOutputPath>
     <IntermediateOutputPath>$(BaseIntermediateOutputPath)</IntermediateOutputPath>
     <DefineConstants></DefineConstants>
     <ErrorReport>prompt</ErrorReport>
@@ -39,8 +39,8 @@
     <PlatformTarget>x64</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\Fauna\Resources\Scripts\</OutputPath>
-    <BaseIntermediateOutputPath>..\Fauna\Resources\Scripts\Intermediates\Dist\</BaseIntermediateOutputPath>
+    <OutputPath>Binaries\</OutputPath>
+    <BaseIntermediateOutputPath>Project Intermediates\Sandbox Studio\Dist\</BaseIntermediateOutputPath>
     <IntermediateOutputPath>$(BaseIntermediateOutputPath)</IntermediateOutputPath>
     <DefineConstants></DefineConstants>
     <ErrorReport>prompt</ErrorReport>
@@ -49,14 +49,12 @@
   <ItemGroup>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Source\Components.cs" />
-    <Compile Include="Source\Entity.cs" />
-    <Compile Include="Source\Input.cs" />
-    <Compile Include="Source\Internal.cs" />
-    <Compile Include="Source\KeyCode.cs" />
-    <Compile Include="Source\Math.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\Flora-ScriptCore\Flora-ScriptCore.csproj">
+      <Project>{649C3F2E-5095-5E80-79C7-4305651F3E8C}</Project>
+      <Name>Flora-ScriptCore</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.

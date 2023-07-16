@@ -7,9 +7,6 @@
 #include <fstream>
 #include <filesystem>
 
-// temp until better native scripting system
-#include "../../Fauna/assets/scripts/MasterNativeScript.h"
-
 namespace YAML {
 	template<>
 	struct convert<glm::vec2> {
@@ -195,29 +192,10 @@ namespace Flora {
 			out << YAML::EndMap;
 		}
 
-		if (entity.HasComponent<NativeScriptComponent>()) {
-			out << YAML::Key << "NativeScriptComponent";
-			out << YAML::BeginMap;
-			auto& nativeScriptComponent = entity.GetComponent<NativeScriptComponent>();
-			out << YAML::Key << "Path" << YAML::Value << nativeScriptComponent.Path;
-			out << YAML::Key << "Filename" << YAML::Value << nativeScriptComponent.Filename;
-			out << YAML::EndMap;
-		}
-
 		if (entity.HasComponent<ScriptManagerComponent>()) {
 			out << YAML::Key << "ScriptManagerComponent";
 			auto& scriptManager = entity.GetComponent<ScriptManagerComponent>();
-			out << YAML::BeginMap;
-			out << YAML::Key << "NativeScripts";
-			out << YAML::BeginSeq;
-			for (int i = 0; i < scriptManager.NativeScripts.size(); i++) {
-				out << YAML::BeginMap;
-				out << YAML::Key << "Path" << YAML::Value << scriptManager.NativeScripts[i].Path;
-				out << YAML::Key << "Filename" << YAML::Value << scriptManager.NativeScripts[i].Filename;
-				out << YAML::EndMap;
-			}
-			out << YAML::EndSeq;
-			out << YAML::EndMap;
+			//TODO
 		}
 
 		if (entity.HasComponent<ParentComponent>()) {
@@ -430,14 +408,6 @@ namespace Flora {
 					}
 				}
 
-				auto nativeScriptComponent = entity["NativeScriptComponent"];
-				if (nativeScriptComponent) {
-					auto& nsc = deserializedEntity.AddComponent<NativeScriptComponent>();
-					nsc.Path = nativeScriptComponent["Path"].as<std::string>();
-					nsc.Filename = nativeScriptComponent["Filename"].as<std::string>();
-					BindScriptToComponent(nsc, std::filesystem::path(nsc.Path).filename().stem().string());
-				}
-
 				auto parentComponent = entity["ParentComponent"];
 				if (parentComponent) {
 					auto& pc = deserializedEntity.AddComponent<ParentComponent>();
@@ -456,14 +426,7 @@ namespace Flora {
 				auto scriptManager = entity["ScriptManagerComponent"];
 				if (scriptManager) {
 					auto& smc = deserializedEntity.AddComponent<ScriptManagerComponent>();
-					auto nativeScripts = scriptManager["NativeScripts"];
-					for (auto nsc : nativeScripts) {
-						NativeScriptComponent newNativeScript;
-						newNativeScript.Path = nsc["Path"].as<std::string>();
-						newNativeScript.Filename = nsc["Filename"].as<std::string>();
-						BindScriptToComponent(newNativeScript, std::filesystem::path(newNativeScript.Path).filename().stem().string());
-						smc.NativeScripts.emplace_back(newNativeScript);
-					}
+					//TODO
 				}
 
 				auto rigidBody2DComponent = entity["RigidBody2DComponent"];

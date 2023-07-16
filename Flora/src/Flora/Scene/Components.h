@@ -113,40 +113,12 @@ namespace Flora {
 		}
 	};
 
-	struct NativeScriptComponent {
-		ScriptableEntity* Instance = nullptr;
-		ScriptableEntity*(*InstantiateScript)();
-		void (*DestroyScript)(NativeScriptComponent*);
-
-		std::string Path = "NULL";
-		std::string Filename = "None Selected";
-
-		bool Bound = false;
-
-		template<typename T>
-		void Bind() {
-			Bound = true;
-			InstantiateScript = []() { return static_cast<ScriptableEntity*>(new T()); };
-			DestroyScript = [](NativeScriptComponent* nsc) { delete nsc->Instance; nsc->Instance = nullptr; };
-		}
-
-		NativeScriptComponent() = default;
-		NativeScriptComponent(const NativeScriptComponent& other) {
-			Path = other.Path;
-			Filename = other.Filename;
-		}
-	};
-
 	struct ScriptManagerComponent {
-		std::vector<NativeScriptComponent> NativeScripts;
+		//TODO
+		int TODO = 1;
 		ScriptManagerComponent() = default;
 		ScriptManagerComponent(const ScriptManagerComponent& other) {
-			for (int i = 0; i < other.NativeScripts.size(); i++) {
-				NativeScriptComponent nsc;
-				nsc.Path = other.NativeScripts[i].Path;
-				nsc.Filename = other.NativeScripts[i].Filename;
-				NativeScripts.emplace_back(nsc);
-			}
+			TODO = 2;
 		}
 	};
 
@@ -229,7 +201,7 @@ namespace Flora {
 
 	using AllComponents =
 		ComponentGroup<TagComponent, TransformComponent, SpriteRendererComponent,
-		CircleRendererComponent, CameraComponent, ScriptComponent, NativeScriptComponent,
+		CircleRendererComponent, CameraComponent, ScriptComponent,
 		ScriptManagerComponent, ChildComponent, ParentComponent, RigidBody2DComponent, 
 		BoxCollider2DComponent, CircleCollider2DComponent>;
 }
