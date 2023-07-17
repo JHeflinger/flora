@@ -13,9 +13,6 @@
 #include "Flora/Scripting/ScriptEngine.h"
 
 namespace Flora {
-	//temp, remove when projects are implemented
-	extern const std::filesystem::path g_AssetPath;
-
 	EditorLayer::EditorLayer()
 		: Layer("Editor") {
 		m_Panels["Stats"] = CreateScope<StatsPanel>();
@@ -31,14 +28,14 @@ namespace Flora {
 		// Set up editor params
 		ResetEditorParams();
 
-		// Initialize panels
-		InitializePanels();
+		// Initialize editor
+		InitializeEditor();
 
 		// Set panel context
 		SetPanelContext();
 
-		// Initialize editor
-		InitializeEditor();
+		// Initialize panels
+		InitializePanels();
 	}
 
 	void EditorLayer::OnDetatch() {
@@ -454,7 +451,7 @@ namespace Flora {
 				}
 				if (ImGui::Button("OK", { 60, 25 })) {
 					Project::GenerateProjectDirectory(std::string(name_buffer), std::filesystem::path(filepath_buffer));
-					m_EditorParams->ProjectFilepath = std::string(filepath_buffer);
+					m_EditorParams->ProjectFilepath = std::string(filepath_buffer) + std::string(name_buffer) + ".flproj";
 					m_EditorParams->Project->GetConfig().AssetDirectory = std::filesystem::path(filepath_buffer) / "Assets";
 					m_EditorParams->Project->GetConfig().Name = std::string(name_buffer);
 					m_EditorParams->Project->SaveActive(std::filesystem::path(filepath_buffer) / (std::string(name_buffer) + ".flproj"));

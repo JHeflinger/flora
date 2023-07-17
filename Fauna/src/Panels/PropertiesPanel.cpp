@@ -7,8 +7,6 @@
 #include <glm/gtc/type_ptr.hpp>
 
 namespace Flora {
-	extern const std::filesystem::path g_AssetPath;
-
 	template<typename T, typename UIFunction>
 	static void DrawComponent(const std::string& name, Entity entity, UIFunction uifunction, bool removeable = true) {
 		const ImGuiTreeNodeFlags treeNodeFlags = ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_Framed | ImGuiTreeNodeFlags_SpanAvailWidth | ImGuiTreeNodeFlags_AllowItemOverlap | ImGuiTreeNodeFlags_FramePadding;
@@ -134,7 +132,7 @@ namespace Flora {
 		if (ImGui::BeginDragDropTarget()) {
 			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM")) {
 				const wchar_t* path = (const wchar_t*)payload->Data;
-				std::filesystem::path texturePath = std::filesystem::path(g_AssetPath) / path;
+				std::filesystem::path texturePath = Project::GetAssetDirectory() / path;
 				if (texturePath.extension().string() == ".png") {
 					component.Filename = texturePath.filename().string();
 					component.Path = texturePath.string();

@@ -12,9 +12,6 @@
 #include "ImGuizmo.h"
 
 namespace Flora {
-	//temp, remove when projects are implemented
-	extern const std::filesystem::path g_AssetPath;
-
 	void ViewportPanel::Initialize() {
 		FramebufferSpecification fbSpec;
 		fbSpec.Attachments = { FramebufferTextureFormat::RGBA8, FramebufferTextureFormat::RED_INTEGER, FramebufferTextureFormat::Depth };
@@ -89,7 +86,7 @@ namespace Flora {
 		if (ImGui::BeginDragDropTarget()) {
 			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM")) {
 				const wchar_t* path = (const wchar_t*)payload->Data;
-				std::filesystem::path scenePath = std::filesystem::path(g_AssetPath) / path;
+				std::filesystem::path scenePath = Project::GetAssetDirectory() / path;
 				if (scenePath.extension().string() != ".flora")
 					FL_CORE_ERROR("Not a valid scene file! Please upload a file ending with the .flora extension"); //convert later to popup maybe
 				else {
