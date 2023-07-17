@@ -14,6 +14,7 @@
 #include "mono/metadata/threads.h"
 #include "Flora/Core/Buffer.h"
 #include "Flora/Core/FileSystem.h"
+#include "Flora/Project/Project.h"
 
 namespace Flora {
 
@@ -117,7 +118,8 @@ namespace Flora {
 			FL_CORE_ERROR("[ScriptEngine] Could not load Flora-ScriptCore assembly.");
 			return;
 		}
-		status = LoadAppAssembly("Sandbox Project/Assets/Scripts/Binaries/Sandbox.dll");
+		
+		status = LoadAppAssembly("Sandbox Project/Assets/Scripts/Binaries/" + Project::GetActive()->GetConfig().Name + ".dll");
 		if (!status) {
 			FL_CORE_ERROR("[ScriptEngine] Could not load app assembly.");
 			return;
@@ -127,11 +129,13 @@ namespace Flora {
 
 		s_Data->EntityClass = ScriptClass("Flora", "Entity", true);
 		s_Data->EntityClass.Instantiate();
+		m_Initialized = true;
 	}
 
 	void ScriptEngine::Shutdown() {
 		ShutdownMono();
 		delete s_Data;
+		m_Initialized = false;
 	}
 
 	bool ScriptEngine::LoadAssembly(const std::filesystem::path& filepath) {

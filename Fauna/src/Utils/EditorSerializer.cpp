@@ -2,6 +2,7 @@
 #include "EditorSerializer.h"
 #include "Flora/Utils/Serializer.h"
 #include "Flora/Project/Project.h"
+#include "Flora/Scripting/ScriptEngine.h"
 
 namespace Flora {
 	std::string EditorSerializer::Serialize(Ref<EditorParams> params) {
@@ -98,6 +99,10 @@ namespace Flora {
 		else
 			params->Project = Project::Load(projectFilepath);
 		params->ProjectFilepath = projectFilepath;
+
+		// TODO: HORRIBLE SOLUTION RIGHT NOW... REFACTOR WHEN RESTRUCTURING SCENE SET UP SYSTEM LATER
+		if (!ScriptEngine::IsInitialized())
+			ScriptEngine::Init();
 
 		// set up saved scene
 		std::string sceneFilepath = data["Scene Filepath"].as<std::string>();

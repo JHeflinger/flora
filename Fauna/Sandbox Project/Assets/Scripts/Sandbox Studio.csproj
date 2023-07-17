@@ -49,6 +49,15 @@
   <ItemGroup>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\..\Projects\Sandbox Studio\Assets\Scripts\Camera.cs">
+      <Link>Projects\Sandbox Studio\Assets\Scripts\Camera.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Projects\Sandbox Studio\Assets\Scripts\Doohickey.cs">
+      <Link>Projects\Sandbox Studio\Assets\Scripts\Doohickey.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Projects\Sandbox Studio\Assets\Scripts\Player.cs">
+      <Link>Projects\Sandbox Studio\Assets\Scripts\Player.cs</Link>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\Flora-ScriptCore\Flora-ScriptCore.csproj">

@@ -130,6 +130,7 @@ namespace Flora {
 		static ScriptFieldMap& GetScriptFieldMap(Entity entity);
 		static Ref<ScriptClass> GetEntityClass(const std::string& name);
 		static MonoObject* GetManagedInstance(uint32_t eid);
+		inline static bool IsInitialized() { return m_Initialized; }
 	private:
 		static void InitMono();
 		static void ShutdownMono();
@@ -137,6 +138,7 @@ namespace Flora {
 		static void LoadAssemblyClasses();
 		static MonoImage* GetCoreAssemblyImage();
 	private:
+		inline static bool m_Initialized = false;
 		friend class ScriptClass;
 		friend class ScriptGlue;
 	};

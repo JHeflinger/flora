@@ -30,7 +30,7 @@ Entities:
       CurrentFrame: 1
       FPS: 30
     ScriptComponent:
-      ClassName: Sandbox.Player
+      ClassName: Sandbox.Doohickey
       ScriptFields:
         - Name: speed
           Type: Float

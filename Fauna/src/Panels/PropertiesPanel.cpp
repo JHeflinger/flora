@@ -539,6 +539,7 @@ namespace Flora {
 				component.ClassName = buffer;
 			if (!classExists)
 				ImGui::PopStyleColor();
+			classExists = ScriptEngine::EntityClassExists(component.ClassName);
 
 			// Fields
 			if (m_EditorContext->SceneState == SceneState::PLAY) {

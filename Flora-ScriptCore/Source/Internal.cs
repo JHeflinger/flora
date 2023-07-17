@@ -10,6 +10,12 @@ namespace Flora
     public static class InternalCalls
     {
         [MethodImplAttribute(MethodImplOptions.InternalCall)]
+        internal extern static string TagComponent_SetTag(uint id, string tag);
+
+        [MethodImplAttribute(MethodImplOptions.InternalCall)]
+        internal extern static string TagComponent_GetTag(uint id);
+
+        [MethodImplAttribute(MethodImplOptions.InternalCall)]
         internal extern static uint Entity_FindEntityByName(string name);
 
         [MethodImplAttribute(MethodImplOptions.InternalCall)]
@@ -17,6 +23,18 @@ namespace Flora
 
         [MethodImplAttribute(MethodImplOptions.InternalCall)]
         internal extern static void CoreTrace(string log);
+
+        [MethodImplAttribute(MethodImplOptions.InternalCall)]
+        internal extern static void TransformComponent_GetRotation(uint eid, out Vector3 rotation);
+
+        [MethodImplAttribute(MethodImplOptions.InternalCall)]
+        internal extern static void TransformComponent_SetRotation(uint eid, ref Vector3 rotation);
+
+        [MethodImplAttribute(MethodImplOptions.InternalCall)]
+        internal extern static void TransformComponent_GetScale(uint eid, out Vector3 scale);
+
+        [MethodImplAttribute(MethodImplOptions.InternalCall)]
+        internal extern static void TransformComponent_SetScale(uint eid, ref Vector3 scale);
 
         [MethodImplAttribute(MethodImplOptions.InternalCall)]
         internal extern static void TransformComponent_GetTranslation(uint eid, out Vector3 translation);
