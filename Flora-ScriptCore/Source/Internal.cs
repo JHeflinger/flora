@@ -9,7 +9,193 @@ namespace Flora
 {
     public static class InternalCalls
     {
-        [MethodImplAttribute(MethodImplOptions.InternalCall)]
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static bool CameraComponent_GetFixedAspectRatio(uint id);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static void CameraComponent_SetFixedAspectRatio(uint id, bool ratio);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static bool CameraComponent_GetShowBorder(uint id);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static void CameraComponent_SetShowBorder(uint id, bool showborder);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static float CameraComponent_GetOrthographicSize(uint id);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static void CameraComponent_SetOrthographicSize(uint id, float size);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static float CameraComponent_GetOrthographicNear(uint id);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static void CameraComponent_SetOrthographicNear(uint id, float nearclip);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static float CameraComponent_GetPerspectiveNear(uint id);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static void CameraComponent_SetPerspectiveNear(uint id, float nearclip);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static float CameraComponent_GetOrthographicFar(uint id);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static void CameraComponent_SetOrthographicFar(uint id, float farclip);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static float CameraComponent_GetPerspectiveFar(uint id);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static void CameraComponent_SetPerspectiveFar(uint id, float farclip);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static float CameraComponent_GetPerspectiveFOV(uint id);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static void CameraComponent_SetPerspectiveFOV(uint id, float fov);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static int CameraComponent_GetProjectionType(uint id);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static void CameraComponent_SetProjectionType(uint id, int projectionType);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static void CircleRendererComponent_GetColor(uint id, out Vector4 color);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static void CircleRendererComponent_SetColor(uint id, ref Vector4 color);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static float CircleRendererComponent_GetRadius(uint id);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static void CircleRendererComponent_SetRadius(uint id, float radius);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static float CircleRendererComponent_GetThickness(uint id);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static void CircleRendererComponent_SetThickness(uint id, float thickness);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static float CircleRendererComponent_GetFade(uint id);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static void CircleRendererComponent_SetFade(uint id, float fade);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static SpriteType SpriteRendererComponent_GetSpriteType(uint id);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static void SpriteRendererComponent_SetSpriteType(uint id, int type);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static void SpriteRendererComponent_GetColor(uint id, out Vector4 color);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static void SpriteRendererComponent_SetColor(uint id, ref Vector4 color);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static float SpriteRendererComponent_GetTilingFactor(uint id);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static void SpriteRendererComponent_SetTilingFactor(uint id, float tilingFactor);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static int SpriteRendererComponent_GetRows(uint id);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static void SpriteRendererComponent_SetRows(uint id, int rows);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static int SpriteRendererComponent_GetColumns(uint id);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static void SpriteRendererComponent_SetColumns(uint id, int columns);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static int SpriteRendererComponent_GetRowCoordinate(uint id);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static void SpriteRendererComponent_SetRowCoordinate(uint id, int rowCoordinatae);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static int SpriteRendererComponent_GetColumnCoordinate(uint id);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static void SpriteRendererComponent_SetColumnCoordinate(uint id, int columnCoordinate);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static float SpriteRendererComponent_GetSubtextureWidth(uint id);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static void SpriteRendererComponent_SetSubtextureWidth(uint id, float width);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static float SpriteRendererComponent_GetSubtextureHeight(uint id);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static void SpriteRendererComponent_SetSubtextureHeight(uint id, float height);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static int SpriteRendererComponent_GetFrames(uint id);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static void SpriteRendererComponent_SetFrames(uint id, int frames);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static int SpriteRendererComponent_GetStartFrame(uint id);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static void SpriteRendererComponent_SetStartFrame(uint id, int startFrame);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static int SpriteRendererComponent_GetEndFrame(uint id);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static void SpriteRendererComponent_SetEndFrame(uint id, int endFrame);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static int SpriteRendererComponent_GetCurrentFrame(uint id);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static void SpriteRendererComponent_SetCurrentFrame(uint id, int currentFrame);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static int SpriteRendererComponent_GetFPS(uint id);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static void SpriteRendererComponent_SetFPS(uint id, int fps);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static int SpriteRendererComponent_GetFrameCounter(uint id);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static void SpriteRendererComponent_SetFrameCounter(uint id, int frameCounter);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static string SpriteRendererComponent_GetPath(uint id);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static void SpriteRendererComponent_SetPath(uint id, string path);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static string SpriteRendererComponent_GetFilename(uint id);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static void SpriteRendererComponent_SetFilename(uint id, string filename);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static bool SpriteRendererComponent_GetTextureInitialized(uint id);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static void SpriteRendererComponent_SetTextureInitialized(uint id, bool initialized);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
         internal extern static string TagComponent_SetTag(uint id, string tag);
 
         [MethodImplAttribute(MethodImplOptions.InternalCall)]

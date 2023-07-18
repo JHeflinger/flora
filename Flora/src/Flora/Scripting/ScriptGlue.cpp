@@ -16,6 +16,14 @@ namespace Flora {
 
 	static std::unordered_map<MonoType*, std::function<bool(Entity)>> s_HasComponentFunctions;
 
+	static Entity GetValidatedEntityFromID(uint32_t eid) {
+		Scene* scene = ScriptEngine::GetSceneContext();
+		FL_CORE_ASSERT(scene != nullptr);
+		Entity entity = scene->GetEntityFromID(eid);
+		FL_CORE_ASSERT(entity != nullptr);
+		return entity;
+	}
+
 	static void CoreTrace(MonoString* monostring) {
 		char* string = mono_string_to_utf8(monostring);
 		FL_CORE_TRACE(string);
@@ -23,62 +31,48 @@ namespace Flora {
 	}
 
 	static void TransformComponent_GetTranslation(uint32_t eid, glm::vec3* outTranslation) {
-		Scene* scene = ScriptEngine::GetSceneContext();
-		Entity entity = scene->GetEntityFromID(eid);
+		Entity entity = GetValidatedEntityFromID(eid);
 		*outTranslation = entity.GetComponent<TransformComponent>().Translation;
 	}
 
 	static void TransformComponent_SetTranslation(uint32_t eid, glm::vec3* inTranslation) {
-		Scene* scene = ScriptEngine::GetSceneContext();
-		Entity entity = scene->GetEntityFromID(eid);
+		Entity entity = GetValidatedEntityFromID(eid);
 		entity.GetComponent<TransformComponent>().Translation = *inTranslation;
 	}
 	
 	static void TransformComponent_GetRotation(uint32_t eid, glm::vec3* outRotation) {
-		Scene* scene = ScriptEngine::GetSceneContext();
-		Entity entity = scene->GetEntityFromID(eid);
+		Entity entity = GetValidatedEntityFromID(eid);
 		*outRotation = entity.GetComponent<TransformComponent>().Rotation;
 	}
 
 	static void TransformComponent_SetRotation(uint32_t eid, glm::vec3* inRotation) {
-		Scene* scene = ScriptEngine::GetSceneContext();
-		Entity entity = scene->GetEntityFromID(eid);
+		Entity entity = GetValidatedEntityFromID(eid);
 		entity.GetComponent<TransformComponent>().Rotation = *inRotation;
 	}
 
 	static void TransformComponent_GetScale(uint32_t eid, glm::vec3* outScale) {
-		Scene* scene = ScriptEngine::GetSceneContext();
-		Entity entity = scene->GetEntityFromID(eid);
+		Entity entity = GetValidatedEntityFromID(eid);
 		*outScale = entity.GetComponent<TransformComponent>().Scale;
 	}
 
 	static void TransformComponent_SetScale(uint32_t eid, glm::vec3* inScale) {
-		Scene* scene = ScriptEngine::GetSceneContext();
-		Entity entity = scene->GetEntityFromID(eid);
+		Entity entity = GetValidatedEntityFromID(eid);
 		entity.GetComponent<TransformComponent>().Scale = *inScale;
 	}
-
 
 	static bool Input_IsKeyDown(KeyCode keycode) {
 		return Input::IsKeyPressed(keycode);
 	}
 
 	static bool Entity_HasComponent(uint32_t eid, MonoReflectionType* componentType) {
-		Scene* scene = ScriptEngine::GetSceneContext();
-		FL_CORE_ASSERT(scene != nullptr);
-		Entity entity = scene->GetEntityFromID(eid);
-		FL_CORE_ASSERT(entity != nullptr);
+		Entity entity = GetValidatedEntityFromID(eid);
 		MonoType* monoComponentType = mono_reflection_type_get_type(componentType);
 		FL_CORE_ASSERT(s_HasComponentFunctions.find(monoComponentType) != s_HasComponentFunctions.end());
 		return s_HasComponentFunctions.at(monoComponentType)(entity);
 	}
 
 	static void RigidBody2DComponent_SetTranslation(uint32_t eid, glm::vec2* translation) {
-		Scene* scene = ScriptEngine::GetSceneContext();
-		FL_CORE_ASSERT(scene != nullptr);
-		Entity entity = scene->GetEntityFromID(eid);
-		FL_CORE_ASSERT(entity != nullptr);
-
+		Entity entity = GetValidatedEntityFromID(eid);
 		auto& rb2d = entity.GetComponent<RigidBody2DComponent>();
 		PhysicsUtils::WarpBody(rb2d.RuntimeBody, *translation);
 	}
@@ -95,21 +89,329 @@ namespace Flora {
 	}
 
 	static MonoString* TagComponent_GetTag(uint32_t eid) {
-		Scene* scene = ScriptEngine::GetSceneContext();
-		FL_CORE_ASSERT(scene != nullptr);
-		Entity entity = scene->GetEntityFromID(eid);
-		FL_CORE_ASSERT(entity != nullptr);
+		Entity entity = GetValidatedEntityFromID(eid);
 		return mono_string_new(mono_get_root_domain(), entity.GetComponent<TagComponent>().Tag.c_str());
 	}
 
 	static void TagComponent_SetTag(uint32_t eid, MonoString* tag) {
-		Scene* scene = ScriptEngine::GetSceneContext();
-		FL_CORE_ASSERT(scene != nullptr);
-		Entity entity = scene->GetEntityFromID(eid);
-		FL_CORE_ASSERT(entity != nullptr);
+		Entity entity = GetValidatedEntityFromID(eid);
 		char* string = mono_string_to_utf8(tag);
 		entity.GetComponent<TagComponent>().Tag = string;
 		mono_free(string);
+	}
+
+	static int SpriteRendererComponent_GetSpriteType(uint32_t eid) {
+		Entity entity = GetValidatedEntityFromID(eid);
+		return (int)entity.GetComponent<SpriteRendererComponent>().Type;
+	}
+
+	static void SpriteRendererComponent_SetSpriteType(uint32_t eid, int type) {
+		Entity entity = GetValidatedEntityFromID(eid);
+		entity.GetComponent<SpriteRendererComponent>().Type = (SpriteRendererComponent::SpriteType)type;
+	}
+
+	static void SpriteRendererComponent_GetColor(uint32_t eid, glm::vec4* outColor) {
+		Entity entity = GetValidatedEntityFromID(eid);
+		*outColor = entity.GetComponent<SpriteRendererComponent>().Color;
+	}
+
+	static void SpriteRendererComponent_SetColor(uint32_t eid, glm::vec4* inColor) {
+		Entity entity = GetValidatedEntityFromID(eid);
+		entity.GetComponent<SpriteRendererComponent>().Color = *inColor;
+	}
+
+	static float SpriteRendererComponent_GetTilingFactor(uint32_t eid) {
+		Entity entity = GetValidatedEntityFromID(eid);
+		return entity.GetComponent<SpriteRendererComponent>().TilingFactor;
+	}
+
+	static void SpriteRendererComponent_SetTilingFactor(uint32_t eid, float tilingFactor) {
+		Entity entity = GetValidatedEntityFromID(eid);
+		entity.GetComponent<SpriteRendererComponent>().TilingFactor = tilingFactor;
+	}
+
+	static int SpriteRendererComponent_GetRows(uint32_t eid) {
+		Entity entity = GetValidatedEntityFromID(eid);
+		return entity.GetComponent<SpriteRendererComponent>().Rows;
+	}
+
+	static void SpriteRendererComponent_SetRows(uint32_t eid, int rows) {
+		Entity entity = GetValidatedEntityFromID(eid);
+		entity.GetComponent<SpriteRendererComponent>().Rows = rows;
+	}
+
+	static int SpriteRendererComponent_GetColumns(uint32_t eid) {
+		Entity entity = GetValidatedEntityFromID(eid);
+		return entity.GetComponent<SpriteRendererComponent>().Columns;
+	}
+
+	static void SpriteRendererComponent_SetColumns(uint32_t eid, int columns) {
+		Entity entity = GetValidatedEntityFromID(eid);
+		entity.GetComponent<SpriteRendererComponent>().Columns = columns;
+	}
+
+	static int SpriteRendererComponent_GetRowCoordinate(uint32_t eid) {
+		Entity entity = GetValidatedEntityFromID(eid);
+		return entity.GetComponent<SpriteRendererComponent>().RowCoordinate;
+	}
+
+	static void SpriteRendererComponent_SetRowCoordinate(uint32_t eid, int rowCoordinate) {
+		Entity entity = GetValidatedEntityFromID(eid);
+		entity.GetComponent<SpriteRendererComponent>().RowCoordinate = rowCoordinate;
+	}
+
+	static int SpriteRendererComponent_GetColumnCoordinate(uint32_t eid) {
+		Entity entity = GetValidatedEntityFromID(eid);
+		return entity.GetComponent<SpriteRendererComponent>().ColumnCoordinate;
+	}
+
+	static void SpriteRendererComponent_SetColumnCoordinate(uint32_t eid, int columnCoordinate) {
+		Entity entity = GetValidatedEntityFromID(eid);
+		entity.GetComponent<SpriteRendererComponent>().ColumnCoordinate = columnCoordinate;
+	}
+
+	static float SpriteRendererComponent_GetSubtextureWidth(uint32_t eid) {
+		Entity entity = GetValidatedEntityFromID(eid);
+		return entity.GetComponent<SpriteRendererComponent>().SubtextureWidth;
+	}
+
+	static void SpriteRendererComponent_SetSubtextureWidth(uint32_t eid, float subtextureWidth) {
+		Entity entity = GetValidatedEntityFromID(eid);
+		entity.GetComponent<SpriteRendererComponent>().SubtextureWidth = subtextureWidth;
+	}
+
+	static float SpriteRendererComponent_GetSubtextureHeight(uint32_t eid) {
+		Entity entity = GetValidatedEntityFromID(eid);
+		return entity.GetComponent<SpriteRendererComponent>().SubtextureHeight;
+	}
+
+	static void SpriteRendererComponent_SetSubtextureHeight(uint32_t eid, float subtextureHeight) {
+		Entity entity = GetValidatedEntityFromID(eid);
+		entity.GetComponent<SpriteRendererComponent>().SubtextureHeight = subtextureHeight;
+	}
+
+	static int SpriteRendererComponent_GetFrames(uint32_t eid) {
+		Entity entity = GetValidatedEntityFromID(eid);
+		return entity.GetComponent<SpriteRendererComponent>().Frames;
+	}
+
+	static void SpriteRendererComponent_SetFrames(uint32_t eid, int frames) {
+		Entity entity = GetValidatedEntityFromID(eid);
+		entity.GetComponent<SpriteRendererComponent>().Frames = frames;
+	}
+
+	static int SpriteRendererComponent_GetStartFrame(uint32_t eid) {
+		Entity entity = GetValidatedEntityFromID(eid);
+		return entity.GetComponent<SpriteRendererComponent>().StartFrame;
+	}
+
+	static void SpriteRendererComponent_SetStartFrame(uint32_t eid, int startFrame) {
+		Entity entity = GetValidatedEntityFromID(eid);
+		entity.GetComponent<SpriteRendererComponent>().StartFrame = startFrame;
+	}
+
+	static int SpriteRendererComponent_GetEndFrame(uint32_t eid) {
+		Entity entity = GetValidatedEntityFromID(eid);
+		return entity.GetComponent<SpriteRendererComponent>().EndFrame;
+	}
+
+	static void SpriteRendererComponent_SetEndFrame(uint32_t eid, int endFrame) {
+		Entity entity = GetValidatedEntityFromID(eid);
+		entity.GetComponent<SpriteRendererComponent>().EndFrame = endFrame;
+	}
+
+	static int SpriteRendererComponent_GetCurrentFrame(uint32_t eid) {
+		Entity entity = GetValidatedEntityFromID(eid);
+		return entity.GetComponent<SpriteRendererComponent>().CurrentFrame;
+	}
+
+	static void SpriteRendererComponent_SetCurrentFrame(uint32_t eid, int currentFrame) {
+		Entity entity = GetValidatedEntityFromID(eid);
+		entity.GetComponent<SpriteRendererComponent>().CurrentFrame = currentFrame;
+	}
+
+	static int SpriteRendererComponent_GetFPS(uint32_t eid) {
+		Entity entity = GetValidatedEntityFromID(eid);
+		return entity.GetComponent<SpriteRendererComponent>().FPS;
+	}
+
+	static void SpriteRendererComponent_SetFPS(uint32_t eid, int fps) {
+		Entity entity = GetValidatedEntityFromID(eid);
+		entity.GetComponent<SpriteRendererComponent>().FPS = fps;
+	}
+
+	static int SpriteRendererComponent_GetFrameCounter(uint32_t eid) {
+		Entity entity = GetValidatedEntityFromID(eid);
+		return entity.GetComponent<SpriteRendererComponent>().FrameCounter;
+	}
+
+	static void SpriteRendererComponent_SetFrameCounter(uint32_t eid, int frameCounter) {
+		Entity entity = GetValidatedEntityFromID(eid);
+		entity.GetComponent<SpriteRendererComponent>().FrameCounter = frameCounter;
+	}
+
+	static MonoString* SpriteRendererComponent_GetPath(uint32_t eid) {
+		Entity entity = GetValidatedEntityFromID(eid);
+		return mono_string_new(mono_get_root_domain(), entity.GetComponent<SpriteRendererComponent>().Path.c_str());
+	}
+
+	static void SpriteRendererComponent_SetPath(uint32_t eid, MonoString* path) {
+		Entity entity = GetValidatedEntityFromID(eid);
+		char* string = mono_string_to_utf8(path);
+		entity.GetComponent<SpriteRendererComponent>().Path = string;
+		mono_free(string);
+	}
+
+	static MonoString* SpriteRendererComponent_GetFilename(uint32_t eid) {
+		Entity entity = GetValidatedEntityFromID(eid);
+		return mono_string_new(mono_get_root_domain(), entity.GetComponent<SpriteRendererComponent>().Filename.c_str());
+	}
+
+	static void SpriteRendererComponent_SetFilename(uint32_t eid, MonoString* filename) {
+		Entity entity = GetValidatedEntityFromID(eid);
+		char* string = mono_string_to_utf8(filename);
+		entity.GetComponent<SpriteRendererComponent>().Filename = string;
+		mono_free(string);
+	}
+
+	static bool SpriteRendererComponent_GetTextureInitialized(uint32_t eid) {
+		Entity entity = GetValidatedEntityFromID(eid);
+		return entity.GetComponent<SpriteRendererComponent>().TextureInitialized;
+	}
+
+	static void SpriteRendererComponent_SetTextureInitialized(uint32_t eid, bool isInitialized) {
+		Entity entity = GetValidatedEntityFromID(eid);
+		entity.GetComponent<SpriteRendererComponent>().TextureInitialized = isInitialized;
+	}
+
+	static void CircleRendererComponent_GetColor(uint32_t eid, glm::vec4* outColor) {
+		Entity entity = GetValidatedEntityFromID(eid);
+		*outColor = entity.GetComponent<CircleRendererComponent>().Color;
+	}
+
+	static void CircleRendererComponent_SetColor(uint32_t eid, glm::vec4* inColor) {
+		Entity entity = GetValidatedEntityFromID(eid);
+		entity.GetComponent<CircleRendererComponent>().Color = *inColor;
+	}
+
+	static float CircleRendererComponent_GetRadius(uint32_t eid) {
+		Entity entity = GetValidatedEntityFromID(eid);
+		return entity.GetComponent<CircleRendererComponent>().Radius;
+	}
+
+	static void CircleRendererComponent_SetRadius(uint32_t eid, float radius) {
+		Entity entity = GetValidatedEntityFromID(eid);
+		entity.GetComponent<CircleRendererComponent>().Radius = radius;
+	}
+
+	static float CircleRendererComponent_GetThickness(uint32_t eid) {
+		Entity entity = GetValidatedEntityFromID(eid);
+		return entity.GetComponent<CircleRendererComponent>().Thickness;
+	}
+
+	static void CircleRendererComponent_SetThickness(uint32_t eid, float thickness) {
+		Entity entity = GetValidatedEntityFromID(eid);
+		entity.GetComponent<CircleRendererComponent>().Thickness = thickness;
+	}
+
+	static float CircleRendererComponent_GetFade(uint32_t eid) {
+		Entity entity = GetValidatedEntityFromID(eid);
+		return entity.GetComponent<CircleRendererComponent>().Fade;
+	}
+
+	static void CircleRendererComponent_SetFade(uint32_t eid, float fade) {
+		Entity entity = GetValidatedEntityFromID(eid);
+		entity.GetComponent<CircleRendererComponent>().Fade = fade;
+	}
+
+	static bool CameraComponent_GetFixedAspectRatio(uint32_t eid) {
+		Entity entity = GetValidatedEntityFromID(eid);
+		return entity.GetComponent<CameraComponent>().FixedAspectRatio;
+	}
+
+	static void CameraComponent_SetFixedAspectRatio(uint32_t eid, bool fixedAspectRatio) {
+		Entity entity = GetValidatedEntityFromID(eid);
+		entity.GetComponent<CameraComponent>().FixedAspectRatio = fixedAspectRatio;
+	}
+
+	static bool CameraComponent_GetShowBorder(uint32_t eid) {
+		Entity entity = GetValidatedEntityFromID(eid);
+		return entity.GetComponent<CameraComponent>().ShowBorder;
+	}
+
+	static void CameraComponent_SetShowBorder(uint32_t eid, bool showBorder) {
+		Entity entity = GetValidatedEntityFromID(eid);
+		entity.GetComponent<CameraComponent>().ShowBorder = showBorder;
+	}
+
+	static float CameraComponent_GetOrthographicSize(uint32_t eid) {
+		Entity entity = GetValidatedEntityFromID(eid);
+		return entity.GetComponent<CameraComponent>().Camera.GetOrthographicSize();
+	}
+
+	static void CameraComponent_SetOrthographicSize(uint32_t eid, float orthographicSize) {
+		Entity entity = GetValidatedEntityFromID(eid);
+		entity.GetComponent<CameraComponent>().Camera.SetOrthographicSize(orthographicSize);
+	}
+
+	static float CameraComponent_GetOrthographicNear(uint32_t eid) {
+		Entity entity = GetValidatedEntityFromID(eid);
+		return entity.GetComponent<CameraComponent>().Camera.GetOrthographicNearClip();
+	}
+
+	static void CameraComponent_SetOrthographicNear(uint32_t eid, float orthographicNear) {
+		Entity entity = GetValidatedEntityFromID(eid);
+		entity.GetComponent<CameraComponent>().Camera.SetOrthographicNearClip(orthographicNear);
+	}
+
+	static float CameraComponent_GetOrthographicFar(uint32_t eid) {
+		Entity entity = GetValidatedEntityFromID(eid);
+		return entity.GetComponent<CameraComponent>().Camera.GetOrthographicFarClip();
+	}
+
+	static void CameraComponent_SetOrthographicFar(uint32_t eid, float orthographicFar) {
+		Entity entity = GetValidatedEntityFromID(eid);
+		entity.GetComponent<CameraComponent>().Camera.SetOrthographicFarClip(orthographicFar);
+	}
+
+	static float CameraComponent_GetPerspectiveFOV(uint32_t eid) {
+		Entity entity = GetValidatedEntityFromID(eid);
+		return entity.GetComponent<CameraComponent>().Camera.GetPerspectiveVerticalFOV();
+	}
+
+	static void CameraComponent_SetPerspectiveFOV(uint32_t eid, float perspectiveFOV) {
+		Entity entity = GetValidatedEntityFromID(eid);
+		entity.GetComponent<CameraComponent>().Camera.SetPerspectiveVerticalFOV(perspectiveFOV);
+	}
+
+	static float CameraComponent_GetPerspectiveNear(uint32_t eid) {
+		Entity entity = GetValidatedEntityFromID(eid);
+		return entity.GetComponent<CameraComponent>().Camera.GetPerspectiveNearClip();
+	}
+
+	static void CameraComponent_SetPerspectiveNear(uint32_t eid, float perspectiveNear) {
+		Entity entity = GetValidatedEntityFromID(eid);
+		entity.GetComponent<CameraComponent>().Camera.SetPerspectiveNearClip(perspectiveNear);
+	}
+
+	static float CameraComponent_GetPerspectiveFar(uint32_t eid) {
+		Entity entity = GetValidatedEntityFromID(eid);
+		return entity.GetComponent<CameraComponent>().Camera.GetPerspectiveFarClip();
+	}
+
+	static void CameraComponent_SetPerspectiveFar(uint32_t eid, float perspectiveFar) {
+		Entity entity = GetValidatedEntityFromID(eid);
+		entity.GetComponent<CameraComponent>().Camera.SetPerspectiveFarClip(perspectiveFar);
+	}
+
+	static int CameraComponent_GetProjectionType(uint32_t eid) {
+		Entity entity = GetValidatedEntityFromID(eid);
+		return (int)(entity.GetComponent<CameraComponent>().Camera.GetProjectionType());
+	}
+
+	static void CameraComponent_SetProjectionType(uint32_t eid, int projectionType) {
+		Entity entity = GetValidatedEntityFromID(eid);
+		entity.GetComponent<CameraComponent>().Camera.SetProjectionType((SceneCamera::ProjectionType)projectionType);
 	}
 
 	void ScriptGlue::RegisterFunctions() {
@@ -120,15 +422,80 @@ namespace Flora {
 		FL_ADD_INTERNAL_CALL(Entity_GetScriptInstance);
 
 		//Component functions
+		FL_ADD_INTERNAL_CALL(TagComponent_GetTag);
+		FL_ADD_INTERNAL_CALL(TagComponent_SetTag);
 		FL_ADD_INTERNAL_CALL(TransformComponent_GetTranslation);
 		FL_ADD_INTERNAL_CALL(TransformComponent_SetTranslation);
 		FL_ADD_INTERNAL_CALL(TransformComponent_GetRotation);
 		FL_ADD_INTERNAL_CALL(TransformComponent_SetRotation);
 		FL_ADD_INTERNAL_CALL(TransformComponent_GetScale);
 		FL_ADD_INTERNAL_CALL(TransformComponent_SetScale);
+		FL_ADD_INTERNAL_CALL(SpriteRendererComponent_GetSpriteType);
+		FL_ADD_INTERNAL_CALL(SpriteRendererComponent_SetSpriteType);
+		FL_ADD_INTERNAL_CALL(SpriteRendererComponent_GetColor);
+		FL_ADD_INTERNAL_CALL(SpriteRendererComponent_SetColor);
+		FL_ADD_INTERNAL_CALL(SpriteRendererComponent_GetTilingFactor);
+		FL_ADD_INTERNAL_CALL(SpriteRendererComponent_SetTilingFactor);
+		FL_ADD_INTERNAL_CALL(SpriteRendererComponent_GetRows);
+		FL_ADD_INTERNAL_CALL(SpriteRendererComponent_SetRows);
+		FL_ADD_INTERNAL_CALL(SpriteRendererComponent_GetColumns);
+		FL_ADD_INTERNAL_CALL(SpriteRendererComponent_SetColumns);
+		FL_ADD_INTERNAL_CALL(SpriteRendererComponent_GetRowCoordinate);
+		FL_ADD_INTERNAL_CALL(SpriteRendererComponent_SetRowCoordinate);
+		FL_ADD_INTERNAL_CALL(SpriteRendererComponent_GetColumnCoordinate);
+		FL_ADD_INTERNAL_CALL(SpriteRendererComponent_SetColumnCoordinate);
+		FL_ADD_INTERNAL_CALL(SpriteRendererComponent_GetSubtextureWidth);
+		FL_ADD_INTERNAL_CALL(SpriteRendererComponent_SetSubtextureWidth);
+		FL_ADD_INTERNAL_CALL(SpriteRendererComponent_GetSubtextureHeight);
+		FL_ADD_INTERNAL_CALL(SpriteRendererComponent_SetSubtextureHeight);
+		FL_ADD_INTERNAL_CALL(SpriteRendererComponent_GetFrames);
+		FL_ADD_INTERNAL_CALL(SpriteRendererComponent_SetFrames);
+		FL_ADD_INTERNAL_CALL(SpriteRendererComponent_GetStartFrame);
+		FL_ADD_INTERNAL_CALL(SpriteRendererComponent_SetStartFrame);
+		FL_ADD_INTERNAL_CALL(SpriteRendererComponent_GetEndFrame);
+		FL_ADD_INTERNAL_CALL(SpriteRendererComponent_SetEndFrame);
+		FL_ADD_INTERNAL_CALL(SpriteRendererComponent_GetCurrentFrame);
+		FL_ADD_INTERNAL_CALL(SpriteRendererComponent_SetCurrentFrame);
+		FL_ADD_INTERNAL_CALL(SpriteRendererComponent_GetFPS);
+		FL_ADD_INTERNAL_CALL(SpriteRendererComponent_SetFPS);
+		FL_ADD_INTERNAL_CALL(SpriteRendererComponent_GetFrameCounter);
+		FL_ADD_INTERNAL_CALL(SpriteRendererComponent_SetFrameCounter);
+		FL_ADD_INTERNAL_CALL(SpriteRendererComponent_GetPath);
+		FL_ADD_INTERNAL_CALL(SpriteRendererComponent_SetPath);
+		FL_ADD_INTERNAL_CALL(SpriteRendererComponent_GetFilename);
+		FL_ADD_INTERNAL_CALL(SpriteRendererComponent_SetFilename);
+		FL_ADD_INTERNAL_CALL(SpriteRendererComponent_GetTextureInitialized);
+		FL_ADD_INTERNAL_CALL(SpriteRendererComponent_SetTextureInitialized);
+		FL_ADD_INTERNAL_CALL(CircleRendererComponent_GetColor);
+		FL_ADD_INTERNAL_CALL(CircleRendererComponent_SetColor);
+		FL_ADD_INTERNAL_CALL(CircleRendererComponent_SetColor);
+		FL_ADD_INTERNAL_CALL(CircleRendererComponent_GetRadius);
+		FL_ADD_INTERNAL_CALL(CircleRendererComponent_SetRadius);
+		FL_ADD_INTERNAL_CALL(CircleRendererComponent_GetThickness);
+		FL_ADD_INTERNAL_CALL(CircleRendererComponent_SetThickness);
+		FL_ADD_INTERNAL_CALL(CircleRendererComponent_GetFade);
+		FL_ADD_INTERNAL_CALL(CircleRendererComponent_SetFade);
+		FL_ADD_INTERNAL_CALL(CameraComponent_GetFixedAspectRatio);
+		FL_ADD_INTERNAL_CALL(CameraComponent_SetFixedAspectRatio);
+		FL_ADD_INTERNAL_CALL(CameraComponent_GetShowBorder);
+		FL_ADD_INTERNAL_CALL(CameraComponent_SetShowBorder);
+		FL_ADD_INTERNAL_CALL(CameraComponent_GetOrthographicSize);
+		FL_ADD_INTERNAL_CALL(CameraComponent_SetOrthographicSize);
+		FL_ADD_INTERNAL_CALL(CameraComponent_GetOrthographicNear);
+		FL_ADD_INTERNAL_CALL(CameraComponent_SetOrthographicNear);
+		FL_ADD_INTERNAL_CALL(CameraComponent_GetPerspectiveNear);
+		FL_ADD_INTERNAL_CALL(CameraComponent_SetPerspectiveNear);
+		FL_ADD_INTERNAL_CALL(CameraComponent_GetOrthographicFar);
+		FL_ADD_INTERNAL_CALL(CameraComponent_SetOrthographicFar);
+		FL_ADD_INTERNAL_CALL(CameraComponent_GetPerspectiveFar);
+		FL_ADD_INTERNAL_CALL(CameraComponent_SetPerspectiveFar);
+		FL_ADD_INTERNAL_CALL(CameraComponent_GetPerspectiveFOV);
+		FL_ADD_INTERNAL_CALL(CameraComponent_SetPerspectiveFOV);
+		FL_ADD_INTERNAL_CALL(CameraComponent_GetProjectionType);
+		FL_ADD_INTERNAL_CALL(CameraComponent_SetProjectionType);
+
+
 		FL_ADD_INTERNAL_CALL(RigidBody2DComponent_SetTranslation);
-		FL_ADD_INTERNAL_CALL(TagComponent_GetTag);
-		FL_ADD_INTERNAL_CALL(TagComponent_SetTag);
 	}
 
 	template<typename... Component>
