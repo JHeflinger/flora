@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Collections;
 
 namespace Flora
 {
@@ -23,6 +24,99 @@ namespace Flora
         Perspective = 0,
         Orthographic = 1
     }
+
+    public class RigidBody2DComponent : Component
+    {
+        public Vector2 Translation
+        {
+            get
+            {
+                InternalCalls.TransformComponent_GetTranslation(Entity.ID, out Vector3 translation);
+                return new Vector2(translation);
+            }
+            set
+            {
+                InternalCalls.RigidBody2DComponent_SetTranslation(Entity.ID, ref value);
+            }
+        }
+
+        public void ApplyForce(Vector2 vector, Vector2 offset = new Vector2(0.0f))
+        {
+
+        }
+    }
+
+    public class ParentComponent : Component
+    {
+        public Entity Parent
+        {
+            get
+            {
+                return Entity.GetEntityByID(InternalCalls.ParentComponent_GetParent(Entity.ID));
+            }
+            set
+            {
+                InternalCalls.ParentComponent_SetParent(Entity.ID, value.ID);
+            }
+        }
+
+        public bool InheritAll
+        {
+            get
+            {
+                return InternalCalls.ParentComponent_GetInheritAll(Entity.ID);
+            }
+            set
+            {
+                InternalCalls.ParentComponent_SetInheritAll(Entity.ID, value);
+            }
+        }
+
+        public bool InheritTransform
+        {
+            get
+            {
+                return InternalCalls.ParentComponent_GetInheritTransform(Entity.ID);
+            }
+            set
+            {
+                InternalCalls.ParentComponent_SetInheritTransform(Entity.ID, value);
+            }
+        }
+    }
+
+    public class ChildComponent : Component
+    {
+        public void RemoveChild(Entity entity)
+        {
+            InternalCalls.ChildComponent_RemoveChild(Entity.ID, entity.ID);
+        }
+
+        public void AddChild(Entity entity)
+        {
+            InternalCalls.ChildComponent_AddChild(Entity.ID, entity.ID);
+        }
+
+        public bool HasChildren()
+        {
+            return InternalCalls.ChildComponent_HasChildren(Entity.ID);
+        }
+
+        public uint GetChildrenSize()
+        {
+            return InternalCalls.ChildComponent_GetChildrenSize(Entity.ID);
+        }
+
+        public Entity GetChild(uint index)
+        {
+            uint entityID = InternalCalls.ChildComponent_GetChild(Entity.ID, index);
+            return Entity.GetEntityByID(entityID);
+        }
+    }
+
+    public class ScriptManagerComponent : Component { }
+
+    public class ScriptComponent : Component { }
 
     public class CameraComponent : Component
     {
@@ -464,19 +558,4 @@ namespace Flora
         }
     }
 
-    public class RigidBody2DComponent : Component
-    {
-        public Vector2 Translation
-        {
-            get
-            {
-                InternalCalls.TransformComponent_GetTranslation(Entity.ID, out Vector3 translation);
-                return new Vector2(translation);
-            }
-            set
-            {
-                InternalCalls.RigidBody2DComponent_SetTranslation(Entity.ID, ref value);
-            }
-        }
-    }
 }

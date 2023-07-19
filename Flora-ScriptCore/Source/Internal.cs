@@ -10,6 +10,39 @@ namespace Flora
     public static class InternalCalls
     {
 		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static uint ParentComponent_GetParent(uint id);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static void ParentComponent_SetParent(uint id, uint parent);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static bool ParentComponent_GetInheritAll(uint id);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static void ParentComponent_SetInheritAll(uint id, bool inheritAll);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static bool ParentComponent_GetInheritTransform(uint id);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static void ParentComponent_SetInheritTransform(uint id, bool inheritTransform);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static void ChildComponent_RemoveChild(uint id, uint childid);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static void ChildComponent_AddChild(uint id, uint childid);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static bool ChildComponent_HasChildren(uint id);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static uint ChildComponent_GetChildrenSize(uint id);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static uint ChildComponent_GetChild(uint id, uint index);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
 		internal extern static bool CameraComponent_GetFixedAspectRatio(uint id);
 
 		[MethodImplAttribute(MethodImplOptions.InternalCall)]

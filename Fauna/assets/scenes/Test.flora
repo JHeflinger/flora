@@ -35,6 +35,9 @@ Entities:
         - Name: speed
           Type: Float
           Data: 54
+    ChildComponent:
+      - 14
+      - 13
   - Entity: 18
     TagComponent:
       Tag: ground
@@ -149,3 +152,25 @@ Entities:
       ClassName: Sandbox.Camera
       ScriptFields:
         []
+  - Entity: 14
+    TagComponent:
+      Tag: Child One
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    ParentComponent:
+      Parent: 19
+      InheritAll: true
+      InheritTransform: true
+  - Entity: 13
+    TagComponent:
+      Tag: Child Two
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    ParentComponent:
+      Parent: 19
+      InheritAll: true
+      InheritTransform: true

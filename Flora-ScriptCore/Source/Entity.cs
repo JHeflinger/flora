@@ -29,6 +29,11 @@ namespace Flora
             }
         }
 
+        public Entity GetEntityByID(uint eid)
+        {
+            return new Entity(eid);
+        }
+
         public bool HasComponent<T>() where T : Component, new()
         {
             Type componentType = typeof(T);

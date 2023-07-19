@@ -414,6 +414,64 @@ namespace Flora {
 		entity.GetComponent<CameraComponent>().Camera.SetProjectionType((SceneCamera::ProjectionType)projectionType);
 	}
 
+	static void ChildComponent_RemoveChild(uint32_t eid, uint32_t child) {
+		Entity entity = GetValidatedEntityFromID(eid);
+		Entity childEntity = GetValidatedEntityFromID(child);
+		entity.GetComponent<ChildComponent>().RemoveChild(childEntity);
+	}
+
+	static void ChildComponent_AddChild(uint32_t eid, uint32_t child) {
+		Entity entity = GetValidatedEntityFromID(eid);
+		Entity childEntity = GetValidatedEntityFromID(child);
+		entity.GetComponent<ChildComponent>().AddChild(childEntity);
+	}
+
+	static bool ChildComponent_HasChildren(uint32_t eid) {
+		Entity entity = GetValidatedEntityFromID(eid);
+		return entity.GetComponent<ChildComponent>().HasChildren();
+	}
+
+	static uint32_t ChildComponent_GetChildrenSize(uint32_t eid) {
+		Entity entity = GetValidatedEntityFromID(eid);
+		return entity.GetComponent<ChildComponent>().Children.size();
+	}
+
+	static uint32_t ChildComponent_GetChild(uint32_t eid, uint32_t index) {
+		Entity entity = GetValidatedEntityFromID(eid);
+		return (uint32_t)entity.GetComponent<ChildComponent>().Children[index];
+	}
+
+	static uint32_t ParentComponent_GetParent(uint32_t eid) {
+		Entity entity = GetValidatedEntityFromID(eid);
+		return (uint32_t)entity.GetComponent<ParentComponent>().Parent;
+	}
+
+	static void ParentComponent_SetParent(uint32_t eid, uint32_t parent) {
+		Entity entity = GetValidatedEntityFromID(eid);
+		Entity parentEntity = GetValidatedEntityFromID(parent);
+		entity.GetComponent<ParentComponent>().Parent = parentEntity;
+	}
+
+	static bool ParentComponent_GetInheritAll(uint32_t eid) {
+		Entity entity = GetValidatedEntityFromID(eid);
+		return entity.GetComponent<ParentComponent>().InheritAll;
+	}
+
+	static void ParentComponent_SetInheritAll(uint32_t eid, bool inheritAll) {
+		Entity entity = GetValidatedEntityFromID(eid);
+		entity.GetComponent<ParentComponent>().InheritAll = inheritAll;
+	}
+
+	static bool ParentComponent_GetInheritTransform(uint32_t eid) {
+		Entity entity = GetValidatedEntityFromID(eid);
+		return entity.GetComponent<ParentComponent>().InheritTransform;
+	}
+
+	static void ParentComponent_SetInheritTransform(uint32_t eid, bool inheritTransform) {
+		Entity entity = GetValidatedEntityFromID(eid);
+		entity.GetComponent<ParentComponent>().InheritTransform = inheritTransform;
+	}
+
 	void ScriptGlue::RegisterFunctions() {
 		FL_ADD_INTERNAL_CALL(CoreTrace);
 		FL_ADD_INTERNAL_CALL(Input_IsKeyDown);
@@ -493,8 +551,17 @@ namespace Flora {
 		FL_ADD_INTERNAL_CALL(CameraComponent_SetPerspectiveFOV);
 		FL_ADD_INTERNAL_CALL(CameraComponent_GetProjectionType);
 		FL_ADD_INTERNAL_CALL(CameraComponent_SetProjectionType);
-
-
+		FL_ADD_INTERNAL_CALL(ChildComponent_RemoveChild);
+		FL_ADD_INTERNAL_CALL(ChildComponent_AddChild);
+		FL_ADD_INTERNAL_CALL(ChildComponent_HasChildren);
+		FL_ADD_INTERNAL_CALL(ChildComponent_GetChildrenSize);
+		FL_ADD_INTERNAL_CALL(ChildComponent_GetChild);
+		FL_ADD_INTERNAL_CALL(ParentComponent_GetParent);
+		FL_ADD_INTERNAL_CALL(ParentComponent_SetParent);
+		FL_ADD_INTERNAL_CALL(ParentComponent_GetInheritAll);
+		FL_ADD_INTERNAL_CALL(ParentComponent_SetInheritAll);
+		FL_ADD_INTERNAL_CALL(ParentComponent_GetInheritTransform);
+		FL_ADD_INTERNAL_CALL(ParentComponent_SetInheritTransform);
 		FL_ADD_INTERNAL_CALL(RigidBody2DComponent_SetTranslation);
 	}
 
