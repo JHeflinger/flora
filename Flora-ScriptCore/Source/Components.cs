@@ -25,6 +25,166 @@ namespace Flora
         Orthographic = 1
     }
 
+    public enum BodyType
+    {
+        STATIC = 0,
+        KINEMATIC = 1,
+        DYNAMIC = 2
+    }
+
+    public class CircleCollider2DComponent : Component
+    {
+        public Vector2 Offset
+        {
+            get
+            {
+                InternalCalls.CircleCollider2DComponent_GetOffset(Entity.ID, out Vector2 offset);
+                return offset;
+            }
+            set
+            {
+                InternalCalls.CircleCollider2DComponent_SetOffset(Entity.ID, ref value);
+            }
+        }
+
+        public float Radius
+        {
+            get
+            {
+                return InternalCalls.CircleCollider2DComponent_GetRadius(Entity.ID);
+            }
+            set
+            {
+                InternalCalls.CircleCollider2DComponent_SetRadius(Entity.ID, value);
+            }
+        }
+
+        public float Density
+        {
+            get
+            {
+                return InternalCalls.CircleCollider2DComponent_GetDensity(Entity.ID);
+            }
+            set
+            {
+                InternalCalls.CircleCollider2DComponent_SetDensity(Entity.ID, value);
+            }
+        }
+
+        public float Friction
+        {
+            get
+            {
+                return InternalCalls.CircleCollider2DComponent_GetFriction(Entity.ID);
+            }
+            set
+            {
+                InternalCalls.CircleCollider2DComponent_SetFriction(Entity.ID, value);
+            }
+        }
+
+        public float Restitution
+        {
+            get
+            {
+                return InternalCalls.CircleCollider2DComponent_GetRestitution(Entity.ID);
+            }
+            set
+            {
+                InternalCalls.CircleCollider2DComponent_SetRestitution(Entity.ID, value);
+            }
+        }
+
+        public float RestitutionThreshold
+        {
+            get
+            {
+                return InternalCalls.CircleCollider2DComponent_GetRestitutionThreshold(Entity.ID);
+            }
+            set
+            {
+                InternalCalls.CircleCollider2DComponent_SetRestitutionThreshold(Entity.ID, value);
+            }
+        }
+    }
+
+    public class BoxCollider2DComponent : Component
+    {
+        public Vector2 Offset
+        {
+            get
+            {
+                InternalCalls.BoxCollider2DComponent_GetOffset(Entity.ID, out Vector2 offset);
+                return offset;
+            }
+            set
+            {
+                InternalCalls.BoxCollider2DComponent_SetOffset(Entity.ID, ref value);
+            }
+        }
+
+        public Vector2 Size
+        {
+            get
+            {
+                InternalCalls.BoxCollider2DComponent_GetSize(Entity.ID, out Vector2 size);
+                return size;
+            }
+            set
+            {
+                InternalCalls.BoxCollider2DComponent_SetSize(Entity.ID, ref value);
+            }
+        }
+
+        public float Density
+        {
+            get
+            {
+                return InternalCalls.BoxCollider2DComponent_GetDensity(Entity.ID);
+            }
+            set
+            {
+                InternalCalls.BoxCollider2DComponent_SetDensity(Entity.ID, value);
+            }
+        }
+
+        public float Friction
+        {
+            get
+            {
+                return InternalCalls.BoxCollider2DComponent_GetFriction(Entity.ID);
+            }
+            set
+            {
+                InternalCalls.BoxCollider2DComponent_SetFriction(Entity.ID, value);
+            }
+        }
+
+        public float Restitution
+        {
+            get
+            {
+                return InternalCalls.BoxCollider2DComponent_GetRestitution(Entity.ID);
+            }
+            set
+            {
+                InternalCalls.BoxCollider2DComponent_SetRestitution(Entity.ID, value);
+            }
+        }
+
+        public float RestitutionThreshold
+        {
+            get
+            {
+                return InternalCalls.BoxCollider2DComponent_GetRestitutionThreshold(Entity.ID);
+            }
+            set
+            {
+                InternalCalls.BoxCollider2DComponent_SetRestitutionThreshold(Entity.ID, value);
+            }
+        }
+    }
+
     public class RigidBody2DComponent : Component
     {
         public Vector2 Translation
@@ -40,9 +200,92 @@ namespace Flora
             }
         }
 
-        public void ApplyForce(Vector2 vector, Vector2 offset = new Vector2(0.0f))
+        public float Rotation
         {
+            get
+            {
+                InternalCalls.TransformComponent_GetRotation(Entity.ID, out Vector3 rotation);
+                return rotation.Z;
+            }
+            set
+            {
+                InternalCalls.RigidBody2DComponent_SetRotation(Entity.ID, value);
+            }
+        }
 
+        public BodyType Type
+        {
+            get
+            {
+                return (BodyType)InternalCalls.RigidBody2DComponent_GetType(Entity.ID);
+            }
+            set
+            {
+                InternalCalls.RigidBody2DComponent_SetType(Entity.ID, (int)value);
+            }
+        }
+
+        public bool FixedRotation
+        {
+            get
+            {
+                return InternalCalls.RigidBody2DComponent_GetFixedRotation(Entity.ID);
+            }
+            set
+            {
+                InternalCalls.RigidBody2DComponent_SetFixedRotation(Entity.ID, value);
+            }
+        }
+
+        public float AngularVelocity
+        {
+            get
+            {
+                return InternalCalls.RigidBody2DComponent_GetAngularVelocity(Entity.ID);
+            }
+            set
+            {
+                InternalCalls.RigidBody2DComponent_SetAngularVelocity(Entity.ID, value);
+            }
+        }
+
+        public Vector2 LinearVelocity
+        {
+            get
+            {
+                InternalCalls.RigidBody2DComponent_GetLinearVelocity(Entity.ID, out Vector2 vector);
+                return vector;
+            }
+            set
+            {
+                InternalCalls.RigidBody2DComponent_SetLinearVelocity(Entity.ID, ref value);
+            }
+        }
+
+        public void ApplyForce(Vector2 vector, Vector2 offset = default)
+        {
+            if (offset.Equals(default(Vector2)))
+                offset = Vector2.Zero;
+
+            InternalCalls.RigidBody2DComponent_ApplyForce(Entity.ID, ref vector, ref offset);
+        }
+
+        public void ApplyImpulse(Vector2 vector, Vector2 offset = default)
+        {
+            if (offset.Equals(default(Vector2)))
+                offset = Vector2.Zero;
+
+            InternalCalls.RigidBody2DComponent_ApplyImpulse(Entity.ID, ref vector, ref offset);
+        }
+
+        public void ApplyTorque(float rotation)
+        {
+            InternalCalls.RigidBody2DComponent_ApplyTorque(Entity.ID, rotation);
+        }
+
+        public void ApplyAngularImpulse(float rotation)
+        {
+            InternalCalls.RigidBody2DComponent_ApplyAngularImpulse(Entity.ID, rotation);
         }
     }
 

@@ -10,6 +10,120 @@ namespace Flora
     public static class InternalCalls
     {
 		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static void CircleCollider2DComponent_GetOffset(uint eid, out Vector2 offset);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static void CircleCollider2DComponent_SetOffset(uint eid, ref Vector2 offset);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static float CircleCollider2DComponent_GetRadius(uint eid);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static void CircleCollider2DComponent_SetRadius(uint eid, float radius);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static float CircleCollider2DComponent_GetDensity(uint eid);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static void CircleCollider2DComponent_SetDensity(uint eid, float density);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static float CircleCollider2DComponent_GetFriction(uint eid);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static void CircleCollider2DComponent_SetFriction(uint eid, float friction);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static float CircleCollider2DComponent_GetRestitution(uint eid);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static void CircleCollider2DComponent_SetRestitution(uint eid, float restitution);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static float CircleCollider2DComponent_GetRestitutionThreshold(uint eid);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static void CircleCollider2DComponent_SetRestitutionThreshold(uint eid, float threshold);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static void BoxCollider2DComponent_GetOffset(uint eid, out Vector2 offset);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static void BoxCollider2DComponent_SetOffset(uint eid, ref Vector2 offset);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static void BoxCollider2DComponent_GetSize(uint eid, out Vector2 size);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static void BoxCollider2DComponent_SetSize(uint eid, ref Vector2 size);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static float BoxCollider2DComponent_GetDensity(uint eid);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static void BoxCollider2DComponent_SetDensity(uint eid, float density);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static float BoxCollider2DComponent_GetFriction(uint eid);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static void BoxCollider2DComponent_SetFriction(uint eid, float friction);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static float BoxCollider2DComponent_GetRestitution(uint eid);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static void BoxCollider2DComponent_SetRestitution(uint eid, float restitution);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static float BoxCollider2DComponent_GetRestitutionThreshold(uint eid);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static void BoxCollider2DComponent_SetRestitutionThreshold(uint eid, float threshold);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static void RigidBody2DComponent_SetTranslation(uint eid, ref Vector2 translation);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static void RigidBody2DComponent_SetRotation(uint id, float rotation);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static int RigidBody2DComponent_GetType(uint id);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static void RigidBody2DComponent_SetType(uint id, int type);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static bool RigidBody2DComponent_GetFixedRotation(uint id);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static void RigidBody2DComponent_SetFixedRotation(uint id, bool fixedRotation);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static float RigidBody2DComponent_GetAngularVelocity(uint id);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static void RigidBody2DComponent_SetAngularVelocity(uint id, float angularVelocity);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static void RigidBody2DComponent_GetLinearVelocity(uint id, out Vector2 outVelocity);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static void RigidBody2DComponent_SetLinearVelocity(uint id, ref Vector2 inVelocity);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static void RigidBody2DComponent_ApplyForce(uint id, ref Vector2 vector, ref Vector2 offset);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static void RigidBody2DComponent_ApplyImpulse(uint id, ref Vector2 vector, ref Vector2 offset);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static void RigidBody2DComponent_ApplyTorque(uint id, float rotation);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static void RigidBody2DComponent_ApplyAngularImpulse(uint id, float rotation);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
 		internal extern static uint ParentComponent_GetParent(uint id);
 
 		[MethodImplAttribute(MethodImplOptions.InternalCall)]
@@ -266,8 +380,5 @@ namespace Flora
 
         [MethodImplAttribute(MethodImplOptions.InternalCall)]
         internal extern static bool Entity_HasComponent(uint eid, Type componentType);
-
-        [MethodImplAttribute(MethodImplOptions.InternalCall)]
-        internal extern static void RigidBody2DComponent_SetTranslation(uint eid, ref Vector2 translation);
     }
 }

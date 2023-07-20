@@ -71,12 +71,6 @@ namespace Flora {
 		return s_HasComponentFunctions.at(monoComponentType)(entity);
 	}
 
-	static void RigidBody2DComponent_SetTranslation(uint32_t eid, glm::vec2* translation) {
-		Entity entity = GetValidatedEntityFromID(eid);
-		auto& rb2d = entity.GetComponent<RigidBody2DComponent>();
-		PhysicsUtils::WarpBody(rb2d.RuntimeBody, *translation);
-	}
-
 	static uint32_t Entity_FindEntityByName(MonoString* name) {
 		Scene* scene = ScriptEngine::GetSceneContext();
 		auto& entities = scene->GetEntitiesByTag(mono_string_to_utf8(name));
@@ -472,6 +466,207 @@ namespace Flora {
 		entity.GetComponent<ParentComponent>().InheritTransform = inheritTransform;
 	}
 
+	static void RigidBody2DComponent_SetTranslation(uint32_t eid, glm::vec2* translation) {
+		Entity entity = GetValidatedEntityFromID(eid);
+		auto& rb2d = entity.GetComponent<RigidBody2DComponent>();
+		PhysicsUtils::WarpBody(rb2d.RuntimeBody, *translation);
+	}
+
+	static void RigidBody2DComponent_SetRotation(uint32_t eid, float rotation) {
+		Entity entity = GetValidatedEntityFromID(eid);
+		auto& rb2d = entity.GetComponent<RigidBody2DComponent>();
+		auto& translation = entity.GetComponent<TransformComponent>().Translation;
+		PhysicsUtils::WarpBody(rb2d.RuntimeBody, { translation.x, translation.y }, rotation);
+	}
+
+	static int RigidBody2DComponent_GetType(uint32_t eid) {
+		Entity entity = GetValidatedEntityFromID(eid);
+		return (int)entity.GetComponent<RigidBody2DComponent>().Type;
+	}
+
+	static void RigidBody2DComponent_SetType(uint32_t eid, int type) {
+		Entity entity = GetValidatedEntityFromID(eid);
+		entity.GetComponent<RigidBody2DComponent>().Type = (RigidBody2DComponent::BodyType)type;
+	}
+
+	static bool RigidBody2DComponent_GetFixedRotation(uint32_t eid) {
+		Entity entity = GetValidatedEntityFromID(eid);
+		return entity.GetComponent<RigidBody2DComponent>().FixedRotation;
+	}
+
+	static void RigidBody2DComponent_SetFixedRotation(uint32_t eid, bool fixedRotation) {
+		Entity entity = GetValidatedEntityFromID(eid);
+		entity.GetComponent<RigidBody2DComponent>().FixedRotation = fixedRotation;
+	}
+
+	static float RigidBody2DComponent_GetAngularVelocity(uint32_t eid) {
+		Entity entity = GetValidatedEntityFromID(eid);
+		auto& rb2d = entity.GetComponent<RigidBody2DComponent>();
+		return PhysicsUtils::GetAngularVelocity(rb2d.RuntimeBody);
+	}
+
+	static void RigidBody2DComponent_SetAngularVelocity(uint32_t eid, float angularVelocity) {
+		Entity entity = GetValidatedEntityFromID(eid);
+		auto& rb2d = entity.GetComponent<RigidBody2DComponent>();
+		return PhysicsUtils::SetAngularVelocity(rb2d.RuntimeBody, angularVelocity);
+	}
+
+	static void RigidBody2DComponent_GetLinearVelocity(uint32_t eid, glm::vec2* outVelocity) {
+		Entity entity = GetValidatedEntityFromID(eid);
+		auto& rb2d = entity.GetComponent<RigidBody2DComponent>();
+		*outVelocity = PhysicsUtils::GetLinearVelocity(rb2d.RuntimeBody);
+	}
+
+	static void RigidBody2DComponent_SetLinearVelocity(uint32_t eid, glm::vec2* linearVelocity) {
+		Entity entity = GetValidatedEntityFromID(eid);
+		auto& rb2d = entity.GetComponent<RigidBody2DComponent>();
+		PhysicsUtils::SetLinearVelocity(rb2d.RuntimeBody, *linearVelocity);
+	}
+
+	static void RigidBody2DComponent_ApplyForce(uint32_t eid, glm::vec2* vector, glm::vec2* offset) {
+		Entity entity = GetValidatedEntityFromID(eid);
+		auto& rb2d = entity.GetComponent<RigidBody2DComponent>();
+		PhysicsUtils::ApplyForce(rb2d.RuntimeBody, *vector, *offset);
+	}
+
+	static void RigidBody2DComponent_ApplyImpulse(uint32_t eid, glm::vec2* vector, glm::vec2* offset) {
+		Entity entity = GetValidatedEntityFromID(eid);
+		auto& rb2d = entity.GetComponent<RigidBody2DComponent>();
+		PhysicsUtils::ApplyImpulse(rb2d.RuntimeBody, *vector, *offset);
+	}
+
+	static void RigidBody2DComponent_ApplyTorque(uint32_t eid, float rotation) {
+		Entity entity = GetValidatedEntityFromID(eid);
+		auto& rb2d = entity.GetComponent<RigidBody2DComponent>();
+		PhysicsUtils::ApplyTorque(rb2d.RuntimeBody, rotation);
+	}
+
+	static void RigidBody2DComponent_ApplyAngularImpulse(uint32_t eid, float rotation) {
+		Entity entity = GetValidatedEntityFromID(eid);
+		auto& rb2d = entity.GetComponent<RigidBody2DComponent>();
+		PhysicsUtils::ApplyAngularImpulse(rb2d.RuntimeBody, rotation);
+	}
+
+	static void BoxCollider2DComponent_GetOffset(uint32_t eid, glm::vec2* outOffset) {
+		Entity entity = GetValidatedEntityFromID(eid);
+		*outOffset = entity.GetComponent<BoxCollider2DComponent>().Offset;
+	}
+
+	static void BoxCollider2DComponent_SetOffset(uint32_t eid, glm::vec2* inOffset) {
+		Entity entity = GetValidatedEntityFromID(eid);
+		entity.GetComponent<BoxCollider2DComponent>().Offset = *inOffset;
+	}
+
+	static void BoxCollider2DComponent_GetSize(uint32_t eid, glm::vec2* outSize) {
+		Entity entity = GetValidatedEntityFromID(eid);
+		*outSize = entity.GetComponent<BoxCollider2DComponent>().Size;
+	}
+
+	static void BoxCollider2DComponent_SetSize(uint32_t eid, glm::vec2* inSize) {
+		Entity entity = GetValidatedEntityFromID(eid);
+		entity.GetComponent<BoxCollider2DComponent>().Size = *inSize;
+	}
+
+	static float BoxCollider2DComponent_GetDensity(uint32_t eid) {
+		Entity entity = GetValidatedEntityFromID(eid);
+		return entity.GetComponent<BoxCollider2DComponent>().Density;
+	}
+
+	static void BoxCollider2DComponent_SetDensity(uint32_t eid, float density) {
+		Entity entity = GetValidatedEntityFromID(eid);
+		entity.GetComponent<BoxCollider2DComponent>().Density = density;
+	}
+
+	static float BoxCollider2DComponent_GetFriction(uint32_t eid) {
+		Entity entity = GetValidatedEntityFromID(eid);
+		return entity.GetComponent<BoxCollider2DComponent>().Friction;
+	}
+
+	static void BoxCollider2DComponent_SetFriction(uint32_t eid, float friction) {
+		Entity entity = GetValidatedEntityFromID(eid);
+		entity.GetComponent<BoxCollider2DComponent>().Friction = friction;
+	}
+
+	static float BoxCollider2DComponent_GetRestitution(uint32_t eid) {
+		Entity entity = GetValidatedEntityFromID(eid);
+		return entity.GetComponent<BoxCollider2DComponent>().Restitution;
+	}
+
+	static void BoxCollider2DComponent_SetRestitution(uint32_t eid, float restitution) {
+		Entity entity = GetValidatedEntityFromID(eid);
+		entity.GetComponent<BoxCollider2DComponent>().Restitution = restitution;
+	}
+
+	static float BoxCollider2DComponent_GetRestitutionThreshold(uint32_t eid) {
+		Entity entity = GetValidatedEntityFromID(eid);
+		return entity.GetComponent<BoxCollider2DComponent>().RestitutionThreshold;
+	}
+
+	static void BoxCollider2DComponent_SetRestitutionThreshold(uint32_t eid, float restitutionThreshold) {
+		Entity entity = GetValidatedEntityFromID(eid);
+		entity.GetComponent<BoxCollider2DComponent>().RestitutionThreshold = restitutionThreshold;
+	}
+
+	static void CircleCollider2DComponent_GetOffset(uint32_t eid, glm::vec2* outOffset) {
+		Entity entity = GetValidatedEntityFromID(eid);
+		*outOffset = entity.GetComponent<CircleCollider2DComponent>().Offset;
+	}
+
+	static void CircleCollider2DComponent_SetOffset(uint32_t eid, glm::vec2* inOffset) {
+		Entity entity = GetValidatedEntityFromID(eid);
+		entity.GetComponent<CircleCollider2DComponent>().Offset = *inOffset;
+	}
+
+	static float CircleCollider2DComponent_GetRadius(uint32_t eid) {
+		Entity entity = GetValidatedEntityFromID(eid);
+		return entity.GetComponent<CircleCollider2DComponent>().Radius;
+	}
+
+	static void CircleCollider2DComponent_SetRadius(uint32_t eid, float radius) {
+		Entity entity = GetValidatedEntityFromID(eid);
+		entity.GetComponent<CircleCollider2DComponent>().Radius = radius;
+	}
+
+	static float CircleCollider2DComponent_GetDensity(uint32_t eid) {
+		Entity entity = GetValidatedEntityFromID(eid);
+		return entity.GetComponent<CircleCollider2DComponent>().Density;
+	}
+
+	static void CircleCollider2DComponent_SetDensity(uint32_t eid, float density) {
+		Entity entity = GetValidatedEntityFromID(eid);
+		entity.GetComponent<CircleCollider2DComponent>().Density = density;
+	}
+
+	static float CircleCollider2DComponent_GetFriction(uint32_t eid) {
+		Entity entity = GetValidatedEntityFromID(eid);
+		return entity.GetComponent<CircleCollider2DComponent>().Friction;
+	}
+
+	static void CircleCollider2DComponent_SetFriction(uint32_t eid, float friction) {
+		Entity entity = GetValidatedEntityFromID(eid);
+		entity.GetComponent<CircleCollider2DComponent>().Friction = friction;
+	}
+
+	static float CircleCollider2DComponent_GetRestitution(uint32_t eid) {
+		Entity entity = GetValidatedEntityFromID(eid);
+		return entity.GetComponent<CircleCollider2DComponent>().Restitution;
+	}
+
+	static void CircleCollider2DComponent_SetRestitution(uint32_t eid, float restitution) {
+		Entity entity = GetValidatedEntityFromID(eid);
+		entity.GetComponent<CircleCollider2DComponent>().Restitution = restitution;
+	}
+
+	static float CircleCollider2DComponent_GetRestitutionThreshold(uint32_t eid) {
+		Entity entity = GetValidatedEntityFromID(eid);
+		return entity.GetComponent<CircleCollider2DComponent>().RestitutionThreshold;
+	}
+
+	static void CircleCollider2DComponent_SetRestitutionThreshold(uint32_t eid, float restitutionThreshold) {
+		Entity entity = GetValidatedEntityFromID(eid);
+		entity.GetComponent<CircleCollider2DComponent>().RestitutionThreshold = restitutionThreshold;
+	}
+
 	void ScriptGlue::RegisterFunctions() {
 		FL_ADD_INTERNAL_CALL(CoreTrace);
 		FL_ADD_INTERNAL_CALL(Input_IsKeyDown);
@@ -563,6 +758,43 @@ namespace Flora {
 		FL_ADD_INTERNAL_CALL(ParentComponent_GetInheritTransform);
 		FL_ADD_INTERNAL_CALL(ParentComponent_SetInheritTransform);
 		FL_ADD_INTERNAL_CALL(RigidBody2DComponent_SetTranslation);
+		FL_ADD_INTERNAL_CALL(RigidBody2DComponent_SetRotation);
+		FL_ADD_INTERNAL_CALL(RigidBody2DComponent_GetType);
+		FL_ADD_INTERNAL_CALL(RigidBody2DComponent_SetType);
+		FL_ADD_INTERNAL_CALL(RigidBody2DComponent_GetFixedRotation);
+		FL_ADD_INTERNAL_CALL(RigidBody2DComponent_SetFixedRotation);
+		FL_ADD_INTERNAL_CALL(RigidBody2DComponent_GetAngularVelocity);
+		FL_ADD_INTERNAL_CALL(RigidBody2DComponent_SetAngularVelocity);
+		FL_ADD_INTERNAL_CALL(RigidBody2DComponent_GetLinearVelocity);
+		FL_ADD_INTERNAL_CALL(RigidBody2DComponent_SetLinearVelocity);
+		FL_ADD_INTERNAL_CALL(RigidBody2DComponent_ApplyForce);
+		FL_ADD_INTERNAL_CALL(RigidBody2DComponent_ApplyImpulse);
+		FL_ADD_INTERNAL_CALL(RigidBody2DComponent_ApplyTorque);
+		FL_ADD_INTERNAL_CALL(RigidBody2DComponent_ApplyAngularImpulse);
+		FL_ADD_INTERNAL_CALL(BoxCollider2DComponent_GetOffset);
+		FL_ADD_INTERNAL_CALL(BoxCollider2DComponent_SetOffset);
+		FL_ADD_INTERNAL_CALL(BoxCollider2DComponent_GetSize);
+		FL_ADD_INTERNAL_CALL(BoxCollider2DComponent_SetSize);
+		FL_ADD_INTERNAL_CALL(BoxCollider2DComponent_GetDensity);
+		FL_ADD_INTERNAL_CALL(BoxCollider2DComponent_SetDensity);
+		FL_ADD_INTERNAL_CALL(BoxCollider2DComponent_GetFriction);
+		FL_ADD_INTERNAL_CALL(BoxCollider2DComponent_SetFriction);
+		FL_ADD_INTERNAL_CALL(BoxCollider2DComponent_GetRestitution);
+		FL_ADD_INTERNAL_CALL(BoxCollider2DComponent_SetRestitution);
+		FL_ADD_INTERNAL_CALL(BoxCollider2DComponent_GetRestitutionThreshold);
+		FL_ADD_INTERNAL_CALL(BoxCollider2DComponent_SetRestitutionThreshold);
+		FL_ADD_INTERNAL_CALL(CircleCollider2DComponent_GetOffset);
+		FL_ADD_INTERNAL_CALL(CircleCollider2DComponent_SetOffset);
+		FL_ADD_INTERNAL_CALL(CircleCollider2DComponent_GetRadius);
+		FL_ADD_INTERNAL_CALL(CircleCollider2DComponent_SetRadius);
+		FL_ADD_INTERNAL_CALL(CircleCollider2DComponent_GetDensity);
+		FL_ADD_INTERNAL_CALL(CircleCollider2DComponent_SetDensity);
+		FL_ADD_INTERNAL_CALL(CircleCollider2DComponent_GetFriction);
+		FL_ADD_INTERNAL_CALL(CircleCollider2DComponent_SetFriction);
+		FL_ADD_INTERNAL_CALL(CircleCollider2DComponent_GetRestitution);
+		FL_ADD_INTERNAL_CALL(CircleCollider2DComponent_SetRestitution);
+		FL_ADD_INTERNAL_CALL(CircleCollider2DComponent_GetRestitutionThreshold);
+		FL_ADD_INTERNAL_CALL(CircleCollider2DComponent_SetRestitutionThreshold);
 	}
 
 	template<typename... Component>
