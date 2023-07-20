@@ -8,6 +8,7 @@
 #include "Flora/Core/Input.h"
 #include "Flora/Utils/PhysicsUtils.h"
 #include <glm/glm.hpp>
+#include "Flora/Utils/DeveloperUtils.h"
 #include "mono/jit/jit.h"
 
 namespace Flora {
@@ -667,12 +668,59 @@ namespace Flora {
 		entity.GetComponent<CircleCollider2DComponent>().RestitutionThreshold = restitutionThreshold;
 	}
 
+	static bool Input_IsMouseButtonPressed(int mouseCode) {
+		return Input::IsMouseButtonPressed((MouseCode)mouseCode);
+	}
+
+	static float Input_GetMouseX() {
+		return Input::GetMouseX();
+	}
+
+	static float Input_GetMouseY() {
+		return Input::GetMouseY();
+	}
+
+	static void Input_GetMousePosition(glm::vec2* position) {
+		*position = Input::GetMousePosition();
+	}
+
+	static void DevTools_SendCommand(MonoString* command) {
+		char* string = mono_string_to_utf8(command);
+		DeveloperUtils::SendCommand(string);
+		mono_free(string);
+	}
+
+	static MonoString* DevTools_GetQueuedCommand() {
+		return mono_string_new(mono_get_root_domain(), DeveloperUtils::GetQueuedCommand().c_str());
+	}
+
+	static bool DevTools_HasQueuedCommand() {
+		return DeveloperUtils::HasQueuedCommand();
+	}
+
+	static void DevTools_ResolveCommand() {
+		DeveloperUtils::ResolveCommand();
+	}
+
+	static uint32_t DevTools_CountQueuedCommands() {
+		return DeveloperUtils::CountQueuedCommands();
+	}
+
 	void ScriptGlue::RegisterFunctions() {
 		FL_ADD_INTERNAL_CALL(CoreTrace);
 		FL_ADD_INTERNAL_CALL(Input_IsKeyDown);
 		FL_ADD_INTERNAL_CALL(Entity_HasComponent);
 		FL_ADD_INTERNAL_CALL(Entity_FindEntityByName);
 		FL_ADD_INTERNAL_CALL(Entity_GetScriptInstance);
+		FL_ADD_INTERNAL_CALL(Input_IsMouseButtonPressed);
+		FL_ADD_INTERNAL_CALL(Input_GetMouseX);
+		FL_ADD_INTERNAL_CALL(Input_GetMouseY);
+		FL_ADD_INTERNAL_CALL(Input_GetMousePosition);
+		FL_ADD_INTERNAL_CALL(DevTools_SendCommand);
+		FL_ADD_INTERNAL_CALL(DevTools_GetQueuedCommand);
+		FL_ADD_INTERNAL_CALL(DevTools_HasQueuedCommand);
+		FL_ADD_INTERNAL_CALL(DevTools_ResolveCommand);
+		FL_ADD_INTERNAL_CALL(DevTools_CountQueuedCommands);
 
 		//Component functions
 		FL_ADD_INTERNAL_CALL(TagComponent_GetTag);

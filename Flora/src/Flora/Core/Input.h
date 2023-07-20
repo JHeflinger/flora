@@ -2,6 +2,7 @@
 #include "Flora/Core/Base.h"
 #include "Flora/Core/KeyCodes.h"
 #include "Flora/Core/MouseCodes.h"
+#include "glm/glm.hpp"
 
 namespace Flora {
 	class FLORA_API Input {
@@ -10,6 +11,6 @@ namespace Flora {
 		static bool IsMouseButtonPressed(MouseCode button);
 		static float GetMouseX();
 		static float GetMouseY();
-		static std::pair<float, float> GetMousePosition();
+		static glm::vec2 GetMousePosition();
 	};
 }

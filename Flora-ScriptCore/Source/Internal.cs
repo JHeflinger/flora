@@ -10,6 +10,33 @@ namespace Flora
     public static class InternalCalls
     {
 		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static void DevTools_SendCommand(string command);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static string DevTools_GetQueuedCommand();
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static bool DevTools_HasQueuedCommand();
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static void DevTools_ResolveCommand();
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static uint DevTools_CountQueuedCommands();
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static bool Input_IsMouseButtonPressed(int mouseCode);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static float Input_GetMouseX();
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static float Input_GetMouseY();
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static void Input_GetMousePosition(out Vector2 position);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
 		internal extern static void CircleCollider2DComponent_GetOffset(uint eid, out Vector2 offset);
 
 		[MethodImplAttribute(MethodImplOptions.InternalCall)]
