@@ -26,7 +26,9 @@ namespace Flora {
 		Bool,
 		Double,
 		Short,
-		Byte
+		Byte,
+		String,
+		Entity
 	};
 
 	struct ScriptField {
@@ -166,6 +168,10 @@ namespace Flora {
 				return "Short";
 			case ScriptFieldType::Byte:
 				return "Byte";
+			case ScriptFieldType::String:
+				return "String";
+			case ScriptFieldType::Entity:
+				return "Entity";
 			}
 			FL_CORE_ASSERT(false, "Unknown field type!");
 			return "None";
@@ -182,6 +188,8 @@ namespace Flora {
 			if (type == "Double") return ScriptFieldType::Double;
 			if (type == "Short") return ScriptFieldType::Short;
 			if (type == "Byte") return ScriptFieldType::Byte;
+			if (type == "String") return ScriptFieldType::String;
+			if (type == "Entity") return ScriptFieldType::Entity;
 			FL_CORE_ASSERT(false, "Unknown field type!");
 			return ScriptFieldType::None;
 		}

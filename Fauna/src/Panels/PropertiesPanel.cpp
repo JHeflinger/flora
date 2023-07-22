@@ -569,13 +569,140 @@ namespace Flora {
 									scriptField.SetValue(data);
 							}
 						} else {
-							if (field.Type == ScriptFieldType::Float) {
-								float data = 0.0f;
-								if (ImGui::DragFloat(name.c_str(), &data)) {
+							bool open = false;
+							const ImGuiTreeNodeFlags treeNodeFlags = ImGuiTreeNodeFlags_SpanAvailWidth | ImGuiTreeNodeFlags_AllowItemOverlap | ImGuiTreeNodeFlags_FramePadding;
+							float data_float = 0.0f;
+							glm::vec2 data_vec2 = { 0.0f, 0.0f };
+							glm::vec3 data_vec3 = { 0.0f, 0.0f, 0.0f };
+							glm::vec4 data_vec4 = { 0.0f, 0.0f, 0.0f, 0.0f };
+							int data_int = 0;
+							uint32_t data_uint = 0;
+							bool data_bool = false;
+							double data_double = 0.0;
+							uint16_t data_short = 0;
+							uint8_t data_byte;
+							std::string data_string = "";
+
+							switch (field.Type) {
+							case ScriptFieldType::Float:
+								if (ImGui::DragFloat(name.c_str(), &data_float)) {
 									ScriptFieldInstance& fieldInstance = entityFields[name];
 									fieldInstance.Field = field;
-									fieldInstance.SetValue(data);
+									fieldInstance.SetValue(data_float);
 								}
+								break;
+							case ScriptFieldType::Vector2:
+								open = ImGui::TreeNodeEx((void*)ScriptFieldType::Vector2, treeNodeFlags, name.c_str());
+								if (open) {
+									bool changed = false;
+									if (ImGui::DragFloat("X", &data_vec2.x))
+										changed = true;
+									if (ImGui::DragFloat("Y", &data_vec2.y))
+										changed = true;
+									if (changed) {
+										ScriptFieldInstance& fieldInstance = entityFields[name];
+										fieldInstance.Field = field;
+										fieldInstance.SetValue(data_vec2);
+									}
+									ImGui::TreePop();
+								}
+								break;
+							case ScriptFieldType::Vector3:
+								open = ImGui::TreeNodeEx((void*)ScriptFieldType::Vector3, treeNodeFlags, name.c_str());
+								if (open) {
+									bool changed = false;
+									if (ImGui::DragFloat("X", &data_vec3.x))
+										changed = true;
+									if (ImGui::DragFloat("Y", &data_vec3.y))
+										changed = true;
+									if (ImGui::DragFloat("Z", &data_vec3.z))
+										changed = true;
+									if (changed) {
+										ScriptFieldInstance& fieldInstance = entityFields[name];
+										fieldInstance.Field = field;
+										fieldInstance.SetValue(data_vec3);
+									}
+									ImGui::TreePop();
+								}
+								break;
+							case ScriptFieldType::Vector4:
+								open = ImGui::TreeNodeEx((void*)ScriptFieldType::Vector4, treeNodeFlags, name.c_str());
+								if (open) {
+									bool changed = false;
+									if (ImGui::DragFloat("X", &data_vec4.x))
+										changed = true;
+									if (ImGui::DragFloat("Y", &data_vec4.y))
+										changed = true;
+									if (ImGui::DragFloat("Z", &data_vec4.z))
+										changed = true;
+									if (ImGui::DragFloat("W", &data_vec4.w))
+										changed = true;
+									if (changed) {
+										ScriptFieldInstance& fieldInstance = entityFields[name];
+										fieldInstance.Field = field;
+										fieldInstance.SetValue(data_vec4);
+									}
+									ImGui::TreePop();
+								}
+								break;
+							case ScriptFieldType::Int:
+								if (ImGui::DragInt(name.c_str(), &data_int)) {
+									ScriptFieldInstance& fieldInstance = entityFields[name];
+									fieldInstance.Field = field;
+									fieldInstance.SetValue(data_int);
+								}
+								break;
+							case ScriptFieldType::UInt:
+								if (ImGui::DragInt(name.c_str(), &(int)data_uint, 1.0f, 0)) {
+									ScriptFieldInstance& fieldInstance = entityFields[name];
+									fieldInstance.Field = field;
+									fieldInstance.SetValue(data_uint);
+								}
+								break;
+							case ScriptFieldType::Bool:
+								if (ImGui::Checkbox(name.c_str(), &data_bool)) {
+									ScriptFieldInstance& fieldInstance = entityFields[name];
+									fieldInstance.Field = field;
+									fieldInstance.SetValue(data_bool);
+								}
+								break;
+							case ScriptFieldType::Double:
+								if (ImGui::InputDouble(name.c_str(), &data_double)) {
+									ScriptFieldInstance& fieldInstance = entityFields[name];
+									fieldInstance.Field = field;
+									fieldInstance.SetValue(data_double);
+								}
+								break;
+							case ScriptFieldType::Short:
+								if (ImGui::DragInt(name.c_str(), &(int)data_short, 1.0f, -32768, 32768 )) {
+									ScriptFieldInstance& fieldInstance = entityFields[name];
+									fieldInstance.Field = field;
+									fieldInstance.SetValue(data_short);
+								}
+								break;
+							case ScriptFieldType::Byte:
+								if (ImGui::DragInt(name.c_str(), &(int)data_byte, 1.0f, 0, 255)) {
+									ScriptFieldInstance& fieldInstance = entityFields[name];
+									fieldInstance.Field = field;
+									fieldInstance.SetValue(data_byte);
+								}
+								break;
+							case ScriptFieldType::String:
+								static char placeholder[2048];
+								if (ImGui::InputText(name.c_str(), placeholder, sizeof(placeholder))) {
+									ScriptFieldInstance& fieldInstance = entityFields[name];
+									fieldInstance.Field = field;
+									fieldInstance.SetValue(placeholder);
+								}
+								break;
+							case ScriptFieldType::Entity:
+								static char placeholder2[2048];
+								if (ImGui::InputText(name.c_str(), placeholder2, sizeof(placeholder2))) {
+									ScriptFieldInstance& fieldInstance = entityFields[name];
+									fieldInstance.Field = field;
+									fieldInstance.SetValue(placeholder2);
+								}
+								break;
 							}
 						}
 					}

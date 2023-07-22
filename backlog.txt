@@ -142,11 +142,7 @@ IN PROGRESS:
 	- projects
 	
 	- c# scripting!
-		- doing all component functions
-		- all static wrappers
-		- doing all physics and util functions
 		- doing all field types
-		- findentitiesbyname (plural version)
 
 IMPLEMENTED TICKETS:
 

@@ -20,7 +20,18 @@ namespace Flora {
 
 	static std::unordered_map<std::string, ScriptFieldType> s_ScriptFieldTypeMap = {
 		{ "System.Single", ScriptFieldType::Float },
-		{ "System.Double", ScriptFieldType::Double }
+		{ "Flora.Vector2", ScriptFieldType::Vector2},
+		{ "Flora.Vector3", ScriptFieldType::Vector3},
+		{ "Flora.Vector4", ScriptFieldType::Vector4},
+		{ "System.Double", ScriptFieldType::Double },
+		{ "System.Int32", ScriptFieldType::Int },
+		{ "System.UInt32", ScriptFieldType::UInt },
+		{ "System.Boolean", ScriptFieldType::Bool },
+		{ "System.Double", ScriptFieldType::Double },
+		{ "System.Int16", ScriptFieldType::Short },
+		{ "System.Byte", ScriptFieldType::Byte },
+		{ "System.String", ScriptFieldType::String },
+		{ "Flora.Entity", ScriptFieldType::Entity }
 	};
 
 	namespace Utils {
