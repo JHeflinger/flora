@@ -56,9 +56,10 @@ namespace Flora {
 		}
 	}
 
-	static void DrawVec3Control(const std::string& label, glm::vec3& values, float resetValue = 0.0f, float columnWidth = 100.0f) {
+	static bool DrawVec3Control(const std::string& label, glm::vec3& values, float resetValue = 0.0f, float columnWidth = 100.0f) {
 		ImGuiIO& io = ImGui::GetIO();
 		auto boldFont = io.Fonts->Fonts[0];
+		bool changed = false;
 
 		ImGui::PushID(label.c_str());
 
@@ -77,13 +78,15 @@ namespace Flora {
 		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.9f, 0.2f, 0.2f, 1.0f });
 		ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.7f, 0.1f, 0.1f, 1.0f });
 		ImGui::PushFont(boldFont);
-		if (ImGui::Button("X", buttonSize))
+		if (ImGui::Button("X", buttonSize)) {
 			values.x = resetValue;
+			changed = true;
+		}
 		ImGui::PopStyleColor(3);
 		ImGui::PopFont();
 
 		ImGui::SameLine();
-		ImGui::DragFloat("##X", &values.x, 0.1f, 0.0f, 0.0f, "%.2f");
+		if (ImGui::DragFloat("##X", &values.x, 0.1f, 0.0f, 0.0f, "%.2f")) changed = true;
 		ImGui::PopItemWidth();
 		ImGui::SameLine();
 
@@ -91,13 +94,15 @@ namespace Flora {
 		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.1f, 0.8f, 0.1f, 1.0f });
 		ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.0f, 0.6f, 0.0f, 1.0f });
 		ImGui::PushFont(boldFont);
-		if (ImGui::Button("Y", buttonSize))
+		if (ImGui::Button("Y", buttonSize)) {
 			values.y = resetValue;
+			changed = true;
+		}
 		ImGui::PopStyleColor(3);
 		ImGui::PopFont();
 
 		ImGui::SameLine();
-		ImGui::DragFloat("##Y", &values.y, 0.1f, 0.0f, 0.0f, "%.2f");
+		if (ImGui::DragFloat("##Y", &values.y, 0.1f, 0.0f, 0.0f, "%.2f")) changed = true;
 		ImGui::PopItemWidth();
 		ImGui::SameLine();
 
@@ -105,18 +110,169 @@ namespace Flora {
 		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.2f, 0.2f, 0.9f, 1.0f });
 		ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.1f, 0.1f, 0.7f, 1.0f });
 		ImGui::PushFont(boldFont);
-		if (ImGui::Button("Z", buttonSize))
+		if (ImGui::Button("Z", buttonSize)) {
 			values.z = resetValue;
+			changed = true;
+		}
 		ImGui::PopStyleColor(3);
 		ImGui::PopFont();
 
 		ImGui::SameLine();
-		ImGui::DragFloat("##Z", &values.z, 0.1f, 0.0f, 0.0f, "%.2f");
+		if (ImGui::DragFloat("##Z", &values.z, 0.1f, 0.0f, 0.0f, "%.2f")) changed = true;
 		ImGui::PopItemWidth();
 
 		ImGui::PopStyleVar();
 		ImGui::Columns(1);
 		ImGui::PopID();
+
+		return changed;
+	}
+
+	static bool DrawVec2Control(const std::string& label, glm::vec2& values, float resetValue = 0.0f, float columnWidth = 100.0f) {
+		ImGuiIO& io = ImGui::GetIO();
+		auto boldFont = io.Fonts->Fonts[0];
+		bool changed = false;
+
+		ImGui::PushID(label.c_str());
+
+		ImGui::Columns(2);
+		ImGui::SetColumnWidth(0, columnWidth);
+		ImGui::Text(label.c_str());
+		ImGui::NextColumn();
+
+		ImGui::PushMultiItemsWidths(2, ImGui::CalcItemWidth());
+		ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2{ 0, 0 });
+
+		float lineHeight = GImGui->Font->FontSize + GImGui->Style.FramePadding.y * 2.0f;
+		ImVec2 buttonSize = { lineHeight + 3.0f, lineHeight };
+
+		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.8f, 0.2f, 0.3f, 1.0f });
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.9f, 0.2f, 0.2f, 1.0f });
+		ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.7f, 0.1f, 0.1f, 1.0f });
+		ImGui::PushFont(boldFont);
+		if (ImGui::Button("X", buttonSize)) {
+			values.x = resetValue;
+			changed = true;
+		}
+		ImGui::PopStyleColor(3);
+		ImGui::PopFont();
+
+		ImGui::SameLine();
+		if (ImGui::DragFloat("##X", &values.x, 0.1f, 0.0f, 0.0f, "%.2f")) changed = true;
+		ImGui::PopItemWidth();
+		ImGui::SameLine();
+
+		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.1f, 0.7f, 0.2f, 1.0f });
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.1f, 0.8f, 0.1f, 1.0f });
+		ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.0f, 0.6f, 0.0f, 1.0f });
+		ImGui::PushFont(boldFont);
+		if (ImGui::Button("Y", buttonSize)) {
+			values.y = resetValue;
+			changed = true;
+		}
+		ImGui::PopStyleColor(3);
+		ImGui::PopFont();
+
+		ImGui::SameLine();
+		if (ImGui::DragFloat("##Y", &values.y, 0.1f, 0.0f, 0.0f, "%.2f")) changed = true;
+		ImGui::PopItemWidth();
+		ImGui::SameLine();
+
+		ImGui::PopStyleVar();
+		ImGui::Columns(1);
+		ImGui::PopID();
+
+		return changed;
+	}
+
+	static bool DrawVec4Control(const std::string& label, glm::vec4& values, float resetValue = 0.0f, float columnWidth = 100.0f) {
+		ImGuiIO& io = ImGui::GetIO();
+		auto boldFont = io.Fonts->Fonts[0];
+		bool changed = false;
+
+		ImGui::PushID(label.c_str());
+
+		ImGui::Columns(2);
+		ImGui::SetColumnWidth(0, columnWidth);
+		ImGui::Dummy(ImVec2(0, 8.0f));
+		ImGui::Text(label.c_str());
+		ImGui::NextColumn();
+
+		ImGui::PushMultiItemsWidths(2, ImGui::CalcItemWidth());
+		ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2{ 0, 0 });
+
+		float lineHeight = GImGui->Font->FontSize + GImGui->Style.FramePadding.y * 2.0f;
+		ImVec2 buttonSize = { lineHeight + 3.0f, lineHeight };
+
+		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.8f, 0.2f, 0.3f, 1.0f });
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.9f, 0.2f, 0.2f, 1.0f });
+		ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.7f, 0.1f, 0.1f, 1.0f });
+		ImGui::PushFont(boldFont);
+		if (ImGui::Button("X", buttonSize)) {
+			values.x = resetValue;
+			changed = true;
+		}
+		ImGui::PopStyleColor(3);
+		ImGui::PopFont();
+
+		ImGui::SameLine();
+		if (ImGui::DragFloat("##X", &values.x, 0.1f, 0.0f, 0.0f, "%.2f")) changed = true;
+		ImGui::PopItemWidth();
+		ImGui::SameLine();
+
+		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.1f, 0.7f, 0.2f, 1.0f });
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.1f, 0.8f, 0.1f, 1.0f });
+		ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.0f, 0.6f, 0.0f, 1.0f });
+		ImGui::PushFont(boldFont);
+		if (ImGui::Button("Y", buttonSize)) {
+			values.y = resetValue;
+			changed = true;
+		}
+		ImGui::PopStyleColor(3);
+		ImGui::PopFont();
+
+		ImGui::SameLine();
+		if (ImGui::DragFloat("##Y", &values.y, 0.1f, 0.0f, 0.0f, "%.2f")) changed = true;
+		ImGui::PopItemWidth();
+
+		ImGui::PushMultiItemsWidths(2, ImGui::CalcItemWidth());
+
+		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.2f, 0.3f, 0.8f, 1.0f });
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.2f, 0.2f, 0.9f, 1.0f });
+		ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.1f, 0.1f, 0.7f, 1.0f });
+		ImGui::PushFont(boldFont);
+		if (ImGui::Button("Z", buttonSize)) {
+			values.z = resetValue;
+			changed = true;
+		}
+		ImGui::PopStyleColor(3);
+		ImGui::PopFont();
+
+		ImGui::SameLine();
+		if (ImGui::DragFloat("##Z", &values.z, 0.1f, 0.0f, 0.0f, "%.2f")) changed = true;
+		ImGui::PopItemWidth();
+		ImGui::SameLine();
+
+		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 1.0f, 0.9f, 0.1f, 1.0f });
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 1.0f, 1.0f, 0.2f, 1.0f });
+		ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.9f, 0.9f, 0.0f, 1.0f });
+		ImGui::PushFont(boldFont);
+		if (ImGui::Button("W", buttonSize)) {
+			values.w = resetValue;
+			changed = true;
+		}
+		ImGui::PopStyleColor(3);
+		ImGui::PopFont();
+
+		ImGui::SameLine();
+		if (ImGui::DragFloat("##W", &values.w, 0.1f, 0.0f, 0.0f, "%.2f")) changed = true;
+		ImGui::PopItemWidth();
+
+		ImGui::PopStyleVar();
+		ImGui::Columns(1);
+		ImGui::PopID();
+
+		return changed;
 	}
 
 	static void DrawTextureDropbox(const std::string& label, SpriteRendererComponent& component, ImVec2 buttonSize) {
@@ -145,6 +301,45 @@ namespace Flora {
 		}
 		ImGui::SameLine();
 		ImGui::Text(component.Filename.c_str());
+	}
+
+	bool CanParseToUint32(const std::string& str) {
+		if (str.empty())
+			return false;
+
+		for (char c : str)
+			if (!std::isdigit(c))
+				return false;
+
+		if (str.length() > 1 && str[0] == '0')
+			return false;
+
+		try {
+			size_t pos;
+			uint32_t value = std::stoul(str, &pos);
+
+			if (pos == str.length())
+				return true;
+		}
+		catch (const std::out_of_range& e) {}
+
+		return false;
+	}
+
+	uint32_t ParseUint32(const std::string& str) {
+		try {
+			size_t pos;
+			uint32_t value = std::stoul(str, &pos);
+
+			if (pos == str.length())
+				return value;
+			else
+				FL_CORE_ASSERT(false, "Invalid 32-bit integer");
+		} catch (const std::invalid_argument& e) {
+			FL_CORE_ASSERT(false, "Invalid 32-bit integer");
+		} catch (const std::out_of_range& e) {
+			FL_CORE_ASSERT(false, "Invalid 32-bit integer");
+		}
 	}
 
 	void PropertiesPanel::OnImGuiRender() {
@@ -582,96 +777,112 @@ namespace Flora {
 							uint16_t data_short = 0;
 							uint8_t data_byte;
 							std::string data_string = "";
+							float linespacing = 1.0f;
+							bool isvalid = false;
 
 							switch (field.Type) {
 							case ScriptFieldType::Float:
-								if (ImGui::DragFloat(name.c_str(), &data_float)) {
+								ImGui::Columns(2);
+								ImGui::SetColumnWidth(0, 100.0f);
+								ImGui::Dummy(ImVec2(0, linespacing));
+								ImGui::Text(name.c_str());
+								ImGui::Dummy(ImVec2(0, linespacing));
+								ImGui::NextColumn();
+								if (ImGui::DragFloat(("##" + name).c_str(), &data_float)) {
 									ScriptFieldInstance& fieldInstance = entityFields[name];
 									fieldInstance.Field = field;
 									fieldInstance.SetValue(data_float);
 								}
+								ImGui::Columns(1);
 								break;
 							case ScriptFieldType::Vector2:
-								open = ImGui::TreeNodeEx((void*)ScriptFieldType::Vector2, treeNodeFlags, name.c_str());
-								if (open) {
-									bool changed = false;
-									if (ImGui::DragFloat("X", &data_vec2.x))
-										changed = true;
-									if (ImGui::DragFloat("Y", &data_vec2.y))
-										changed = true;
-									if (changed) {
-										ScriptFieldInstance& fieldInstance = entityFields[name];
-										fieldInstance.Field = field;
-										fieldInstance.SetValue(data_vec2);
-									}
-									ImGui::TreePop();
+								if (DrawVec2Control(name, data_vec2)) {
+									ScriptFieldInstance& fieldInstance = entityFields[name];
+									fieldInstance.Field = field;
+									fieldInstance.SetValue(data_vec2);
 								}
 								break;
 							case ScriptFieldType::Vector3:
-								open = ImGui::TreeNodeEx((void*)ScriptFieldType::Vector3, treeNodeFlags, name.c_str());
-								if (open) {
-									bool changed = false;
-									if (ImGui::DragFloat("X", &data_vec3.x))
-										changed = true;
-									if (ImGui::DragFloat("Y", &data_vec3.y))
-										changed = true;
-									if (ImGui::DragFloat("Z", &data_vec3.z))
-										changed = true;
-									if (changed) {
-										ScriptFieldInstance& fieldInstance = entityFields[name];
-										fieldInstance.Field = field;
-										fieldInstance.SetValue(data_vec3);
-									}
-									ImGui::TreePop();
+								if (DrawVec3Control(name, data_vec3)) {
+									ScriptFieldInstance& fieldInstance = entityFields[name];
+									fieldInstance.Field = field;
+									fieldInstance.SetValue(data_vec3);
 								}
 								break;
 							case ScriptFieldType::Vector4:
-								open = ImGui::TreeNodeEx((void*)ScriptFieldType::Vector4, treeNodeFlags, name.c_str());
-								if (open) {
-									bool changed = false;
-									if (ImGui::DragFloat("X", &data_vec4.x))
-										changed = true;
-									if (ImGui::DragFloat("Y", &data_vec4.y))
-										changed = true;
-									if (ImGui::DragFloat("Z", &data_vec4.z))
-										changed = true;
-									if (ImGui::DragFloat("W", &data_vec4.w))
-										changed = true;
-									if (changed) {
-										ScriptFieldInstance& fieldInstance = entityFields[name];
-										fieldInstance.Field = field;
-										fieldInstance.SetValue(data_vec4);
-									}
-									ImGui::TreePop();
+								if (DrawVec4Control(name, data_vec4)) {
+									ScriptFieldInstance& fieldInstance = entityFields[name];
+									fieldInstance.Field = field;
+									fieldInstance.SetValue(data_vec4);
 								}
 								break;
 							case ScriptFieldType::Int:
-								if (ImGui::DragInt(name.c_str(), &data_int)) {
+								ImGui::Columns(2);
+								ImGui::SetColumnWidth(0, 100.0f);
+								ImGui::Dummy(ImVec2(0, linespacing));
+								ImGui::Text(name.c_str());
+								ImGui::Dummy(ImVec2(0, linespacing));
+								ImGui::NextColumn();
+								if (ImGui::DragInt(("##" + name).c_str(), &data_int)) {
 									ScriptFieldInstance& fieldInstance = entityFields[name];
 									fieldInstance.Field = field;
 									fieldInstance.SetValue(data_int);
 								}
+								ImGui::Columns(1);
 								break;
 							case ScriptFieldType::UInt:
-								if (ImGui::DragInt(name.c_str(), &(int)data_uint, 1.0f, 0)) {
+								ImGui::Columns(2);
+								ImGui::SetColumnWidth(0, 100.0f);
+								ImGui::Dummy(ImVec2(0, linespacing));
+								ImGui::Text(name.c_str());
+								ImGui::Dummy(ImVec2(0, linespacing));
+								ImGui::NextColumn();
+
+								static char double_string[2048];
+								if (double_string[0] == '\0') {
+									double_string[1] = '\0';
+									double_string[0] = '0';
+								}
+								isvalid = CanParseToUint32(double_string);
+								if (!isvalid)
+									ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.9f, 0.2f, 0.3f, 1.0f));
+								if (ImGui::InputText(("##" + name).c_str(), double_string, sizeof(double_string)) && isvalid) {
 									ScriptFieldInstance& fieldInstance = entityFields[name];
 									fieldInstance.Field = field;
-									fieldInstance.SetValue(data_uint);
+									fieldInstance.SetValue(ParseUint32(double_string));
 								}
+								if (!isvalid)
+									ImGui::PopStyleColor();
+
+								ImGui::Columns(1);
 								break;
 							case ScriptFieldType::Bool:
-								if (ImGui::Checkbox(name.c_str(), &data_bool)) {
+								ImGui::Columns(2);
+								ImGui::SetColumnWidth(0, 100.0f);
+								ImGui::Dummy(ImVec2(0, linespacing));
+								ImGui::Text(name.c_str());
+								ImGui::Dummy(ImVec2(0, linespacing));
+								ImGui::NextColumn();
+								if ((ImGui::Checkbox(("##" + name).c_str(), &data_bool))) {
 									ScriptFieldInstance& fieldInstance = entityFields[name];
 									fieldInstance.Field = field;
 									fieldInstance.SetValue(data_bool);
 								}
+								ImGui::Columns(1);
 								break;
 							case ScriptFieldType::Double:
-								if (ImGui::InputDouble(name.c_str(), &data_double)) {
+								ImGui::Columns(2);
+								ImGui::SetColumnWidth(0, 100.0f);
+								ImGui::Dummy(ImVec2(0, linespacing));
+								ImGui::Text(name.c_str());
+								ImGui::Dummy(ImVec2(0, linespacing));
+								ImGui::NextColumn();
+								if (ImGui::InputDouble(("##" + name).c_str(), &data_double)) {
 									ScriptFieldInstance& fieldInstance = entityFields[name];
 									fieldInstance.Field = field;
 									fieldInstance.SetValue(data_double);
 								}
+								ImGui::Columns(1);
 								break;
 							case ScriptFieldType::Short:
 								if (ImGui::DragInt(name.c_str(), &(int)data_short, 1.0f, -32768, 32768 )) {
