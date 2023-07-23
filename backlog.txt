@@ -12,6 +12,8 @@ TODO:
 
 	- custom shaders, post processing, materials
 
+	- script choose popup reactor to include search, filter, namespace organization, etc
+
 	- purge native scripts
 
 	- implement layers
