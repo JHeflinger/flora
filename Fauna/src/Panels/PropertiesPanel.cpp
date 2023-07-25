@@ -774,37 +774,278 @@ namespace Flora {
 			const ImGuiTreeNodeFlags treeNodeFlags = ImGuiTreeNodeFlags_SpanAvailWidth | ImGuiTreeNodeFlags_AllowItemOverlap | ImGuiTreeNodeFlags_FramePadding;
 			bool open = ImGui::TreeNodeEx((void*)typeid(ScriptComponent).hash_code(), treeNodeFlags, "Public Fields");
 			if (open) {
-				if (m_EditorContext->SceneState == SceneState::PLAY) {
-					Ref<ScriptInstance> scriptInstance = ScriptEngine::GetEntityScriptInstance(entity);
-					if (scriptInstance) {
-						const auto& fields = scriptInstance->GetScriptClass()->GetFields();
-						for (const auto& [name, field] : fields) {
-							if (field.Type == ScriptFieldType::Float) {
-								float data = scriptInstance->GetFieldValue<float>(name);
-								if (ImGui::DragFloat(name.c_str(), &data)) {
-									scriptInstance->SetFieldValue(name, data);
+				Ref<ScriptInstance> scriptInstance = ScriptEngine::GetEntityScriptInstance(entity);
+				Ref<ScriptClass> entityClass = ScriptEngine::GetEntityClass(component.ClassName);
+				const auto& fields = scriptInstance ? scriptInstance->GetScriptClass()->GetFields() : entityClass->GetFields();
+				auto& entityFields = ScriptEngine::GetScriptFieldMap(entity);
+
+				for (const auto& [name, field] : fields) {
+					bool scriptFieldExists = entityFields.find(name) != entityFields.end();
+					float data_float = 0.0f;
+					glm::vec2 data_vec2 = { 0.0f, 0.0f };
+					glm::vec3 data_vec3 = { 0.0f, 0.0f, 0.0f };
+					glm::vec4 data_vec4 = { 0.0f, 0.0f, 0.0f, 0.0f };
+					int data_int = 0;
+					uint32_t data_uint = 0;
+					bool data_bool = false;
+					double data_double = 0.0;
+					uint16_t data_short = 0;
+					uint8_t data_byte = 0;
+					int64_t data_entity = -1;
+					std::string data_string = "";
+					bool isvalid = false;
+					int expanded_int = 0;
+					static bool promptEntitySelect = false;
+					bool scenePlaying = m_EditorContext->SceneState == SceneState::PLAY;
+
+                    #define SET_DATA(Datavar, Type, FieldType) case ScriptFieldType::FieldType:\
+																	if (scenePlaying)\
+																		Datavar = scriptInstance->GetFieldValue<Type>(name);\
+																	else if (scriptFieldExists) {\
+																		ScriptFieldInstance& scriptField = entityFields.at(name);\
+																		Datavar = scriptField.GetValue<Type>(); }\
+																	break;
+
+					switch (field.Type) {
+						SET_DATA(data_float, float, Float);
+						SET_DATA(data_vec2, glm::vec2, Vector2);
+						SET_DATA(data_vec3, glm::vec3, Vector3);
+						SET_DATA(data_vec4, glm::vec4, Vector4);
+						SET_DATA(data_int, int, Int);
+						// note: don't do for uint32_t, thats manually done later!
+						SET_DATA(data_bool, bool, Bool);
+						SET_DATA(data_double, double, Double);
+						SET_DATA(data_short, uint16_t, Short);
+						SET_DATA(data_byte, uint8_t, Byte);
+						SET_DATA(data_entity, int64_t, Entity);
+					}
+
+					#undef SET_DATA
+
+					#define UPDATE_DATA(Datavar) if (scenePlaying) {\
+													scriptInstance->SetFieldValue(name, Datavar);\
+												} else if (scriptFieldExists) {\
+													ScriptFieldInstance& scriptField = entityFields.at(name);\
+													scriptField.SetValue(Datavar);\
+												} else {\
+													ScriptFieldInstance& scriptField = entityFields[name];\
+													scriptField.Field = field;\
+													scriptField.SetValue(Datavar);\
+												}
+
+					bool itemShown = true;
+					switch (field.Type) {
+					case ScriptFieldType::Float:
+						ImGui::Columns(2);
+						ImGui::SetColumnWidth(0, 100.0f);
+						ImGui::Text(name.c_str());
+						ImGui::NextColumn();
+						if (ImGui::DragFloat(("##" + name).c_str(), &data_float))
+							UPDATE_DATA(data_float);
+						ImGui::Columns(1);
+						break;
+					case ScriptFieldType::Vector2:
+						if (DrawVec2Control(name, data_vec2))
+							UPDATE_DATA(data_vec2);
+						ImGui::Dummy(ImVec2(0, linespacing));
+						break;
+					case ScriptFieldType::Vector3:
+						if (DrawVec3Control(name, data_vec3))
+							UPDATE_DATA(data_vec3);
+						ImGui::Dummy(ImVec2(0, linespacing));
+						break;
+					case ScriptFieldType::Vector4:
+						if (DrawVec4Control(name, data_vec4))
+							UPDATE_DATA(data_vec4);
+						ImGui::Dummy(ImVec2(0, linespacing));
+						break;
+					case ScriptFieldType::Int:
+						ImGui::Columns(2);
+						ImGui::SetColumnWidth(0, 100.0f);
+						ImGui::Dummy(ImVec2(0, linespacing));
+						ImGui::Text(name.c_str());
+						ImGui::Dummy(ImVec2(0, linespacing));
+						ImGui::NextColumn();
+						if (ImGui::DragInt(("##" + name).c_str(), &data_int)) {
+							UPDATE_DATA(data_int);
+						}
+						ImGui::Columns(1);
+						break;
+					case ScriptFieldType::UInt:
+						ImGui::Columns(2);
+						ImGui::SetColumnWidth(0, 100.0f);
+						ImGui::Dummy(ImVec2(0, linespacing));
+						ImGui::Text(name.c_str());
+						ImGui::Dummy(ImVec2(0, linespacing));
+						ImGui::NextColumn();
+
+						static char uint_string[2048];
+						if (uint_string[0] == '\0') {
+							uint_string[1] = '\0';
+							uint_string[0] = '0';
+						} else {
+							if (scenePlaying)
+								strcpy(uint_string, std::to_string(scriptInstance->GetFieldValue<uint32_t>(name)).c_str());
+							else if (scriptFieldExists) {
+								ScriptFieldInstance& scriptField = entityFields.at(name);
+								strcpy(uint_string, std::to_string(scriptField.GetValue<uint32_t>()).c_str());
+							}
+						}
+						isvalid = CanParseToUint32(uint_string);
+						if (!isvalid)
+							ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.9f, 0.2f, 0.3f, 1.0f));
+						if (ImGui::InputText(("##" + name).c_str(), uint_string, sizeof(uint_string)) && isvalid) {
+							UPDATE_DATA(ParseUint32(uint_string));
+						}
+						if (!isvalid)
+							ImGui::PopStyleColor();
+						ImGui::Columns(1);
+						break;
+					case ScriptFieldType::Bool:
+						ImGui::Columns(2);
+						ImGui::SetColumnWidth(0, 100.0f);
+						ImGui::Dummy(ImVec2(0, linespacing));
+						ImGui::Text(name.c_str());
+						ImGui::Dummy(ImVec2(0, linespacing));
+						ImGui::NextColumn();
+						if ((ImGui::Checkbox(("##" + name).c_str(), &data_bool))) {
+							UPDATE_DATA(data_bool);
+						}
+						ImGui::Columns(1);
+						break;
+					case ScriptFieldType::Double:
+						ImGui::Columns(2);
+						ImGui::SetColumnWidth(0, 100.0f);
+						ImGui::Dummy(ImVec2(0, linespacing));
+						ImGui::Text(name.c_str());
+						ImGui::Dummy(ImVec2(0, linespacing));
+						ImGui::NextColumn();
+						if (ImGui::InputDouble(("##" + name).c_str(), &data_double)) {
+							UPDATE_DATA(data_double);
+						}
+						ImGui::Columns(1);
+						break;
+					case ScriptFieldType::Short:
+						ImGui::Columns(2);
+						ImGui::SetColumnWidth(0, 100.0f);
+						ImGui::Dummy(ImVec2(0, linespacing));
+						ImGui::Text(name.c_str());
+						ImGui::Dummy(ImVec2(0, linespacing));
+						ImGui::NextColumn();
+						expanded_int = (int)data_short;
+						if (ImGui::DragInt(("##" + name).c_str(), &expanded_int, 1.0f, -32768, 32768)) {
+							data_short = (uint16_t)expanded_int;
+							UPDATE_DATA(data_short);
+						}
+						ImGui::Columns(1);
+						break;
+					case ScriptFieldType::Byte:
+						ImGui::Columns(2);
+						ImGui::SetColumnWidth(0, 100.0f);
+						ImGui::Dummy(ImVec2(0, linespacing));
+						ImGui::Text(name.c_str());
+						ImGui::Dummy(ImVec2(0, linespacing));
+						ImGui::NextColumn();
+						expanded_int = (int)data_byte;
+						if (ImGui::DragInt(("##" + name).c_str(), &expanded_int, 1.0f, 0, 255)) {
+							data_byte = (uint8_t)expanded_int;
+							UPDATE_DATA(data_byte);
+						}
+						ImGui::Columns(1);
+						break;
+					case ScriptFieldType::Entity:
+					{
+						ImGui::Columns(2);
+						ImGui::SetColumnWidth(0, 100.0f);
+						ImGui::Dummy(ImVec2(0, linespacing));
+						ImGui::Text(name.c_str());
+						ImGui::Dummy(ImVec2(0, linespacing));
+						ImGui::NextColumn();
+						ImGuiStyle& style = ImGui::GetStyle();
+						style.FramePadding.x += 10.0f;
+						if (ImGui::Button("Browse..."))
+							promptEntitySelect = true;
+						style.FramePadding.x -= 10.0f;
+						ImGui::Columns(1);
+
+						// entity selection prompt
+
+						if (promptEntitySelect) {
+							ImGui::OpenPopup("Select Entity");
+							ImVec2 center = ImGui::GetMainViewport()->GetCenter();
+							ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
+							if (ImGui::BeginPopupModal("Select Entity", NULL, ImGuiWindowFlags_AlwaysAutoResize)) {
+								auto& entities = entity.GetScene()->GetAllEntitiesWith<TagComponent>();
+								ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.0f, 0.0f, 0.0f, 0.0f });
+								ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 1.0f, 1.0f, 1.0f, 0.15f });
+								ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 1.0f, 1.0f, 1.0f, 0.05f });
+								for (auto entity : entities) {
+									auto tagComponent = entities.get<TagComponent>(entity);
+									if (ImGui::Button(tagComponent.Tag.c_str(), { 500, lineHeight })) {
+										promptEntitySelect = false;
+										//TODO: need to implement this still lol
+										FL_CORE_ERROR("This feature is not implemented yet");
+									}
 								}
+								ImGui::PopStyleColor(3);
+								ImGui::EndPopup();
+							}
+						}
+						break;
+					}
+					default:
+						itemShown = false;
+						break;
+					}
+					if (itemShown) ImGui::Dummy(ImVec2(0, linespacing));
+
+					#undef UPDATE_DATA
+				}
+
+				/*
+				if (m_EditorContext->SceneState == SceneState::PLAY) {
+					if (scriptInstance) {
+						for (const auto& [name, field] : fields) {
+							float data_float = 0.0f;
+							switch (field.Type) {
+							case ScriptFieldType::Float:
+								data_float = scriptInstance->GetFieldValue<float>(name);
+								ImGui::Columns(2);
+								ImGui::SetColumnWidth(0, 100.0f);
+								ImGui::Dummy(ImVec2(0, linespacing));
+								ImGui::Text(name.c_str());
+								ImGui::Dummy(ImVec2(0, linespacing));
+								ImGui::NextColumn();
+								if (ImGui::DragFloat(("##" + name).c_str(), &data_float)) {
+									scriptInstance->SetFieldValue(name, data_float);
+								}
+								ImGui::Columns(1);
+								break;
 							}
 						}
 					}
-				}
-				else {
+				} else {
 					if (ScriptEngine::EntityClassExists(component.ClassName)) {
-						Ref<ScriptClass> entityClass = ScriptEngine::GetEntityClass(component.ClassName);
-						const auto& fields = entityClass->GetFields();
-						auto& entityFields = ScriptEngine::GetScriptFieldMap(entity);
 						for (const auto& [name, field] : fields) {
 							if (entityFields.find(name) != entityFields.end()) {
 								ScriptFieldInstance& scriptField = entityFields.at(name);
-								if (field.Type == ScriptFieldType::Float) {
-									float data = scriptField.GetValue<float>();
-									if (ImGui::DragFloat(name.c_str(), &data))
-										scriptField.SetValue(data);
+								float data_float = 0.0f;
+								switch (field.Type) {
+								case ScriptFieldType::Float:
+									data_float = scriptField.GetValue<float>();
+									ImGui::Columns(2);
+									ImGui::SetColumnWidth(0, 100.0f);
+									ImGui::Dummy(ImVec2(0, linespacing));
+									ImGui::Text(name.c_str());
+									ImGui::Dummy(ImVec2(0, linespacing));
+									ImGui::NextColumn();
+									if (ImGui::DragFloat(("##" + name).c_str(), &data_float)) {
+										scriptField.SetValue(data_float);
+									}
+									ImGui::Columns(1);
+									break;
 								}
-							}
-							else {
-								bool open = false;
-								const ImGuiTreeNodeFlags treeNodeFlags = ImGuiTreeNodeFlags_SpanAvailWidth | ImGuiTreeNodeFlags_AllowItemOverlap | ImGuiTreeNodeFlags_FramePadding;
+							} else {
 								float data_float = 0.0f;
 								glm::vec2 data_vec2 = { 0.0f, 0.0f };
 								glm::vec3 data_vec3 = { 0.0f, 0.0f, 0.0f };
@@ -1014,8 +1255,8 @@ namespace Flora {
 							}
 						}
 					}
-					ImGui::TreePop();
-				}
+				}*/
+				ImGui::TreePop();
 			}
 		});
 

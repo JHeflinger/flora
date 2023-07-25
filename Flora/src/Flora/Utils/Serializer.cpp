@@ -181,6 +181,15 @@ namespace Flora {
 															break;
 					switch (field.Type) {
 						FIELD_TYPE(Float, float);
+						FIELD_TYPE(Vector2, glm::vec2);
+						FIELD_TYPE(Vector3, glm::vec3);
+						FIELD_TYPE(Vector4, glm::vec4);
+						FIELD_TYPE(Int, int);
+						FIELD_TYPE(UInt, uint32_t);
+						FIELD_TYPE(Bool, bool);
+						FIELD_TYPE(Double, double);
+						FIELD_TYPE(Short, uint16_t);
+						FIELD_TYPE(Byte, uint16_t); //uint8_t makes it treated like a char for some reason, YAML lib bug maybe?
 					}
 					#undef FIELD_TYPE
 					
@@ -396,11 +405,20 @@ namespace Flora {
 							fieldInstance.Field = fields.at(name);
 
 							#define FIELD_DATA(FieldType, Type) case ScriptFieldType::FieldType:\
-															Type data = scriptField["Data"].as<Type>();\
-															fieldInstance.SetValue(data);\
-															break;
+															{Type data = scriptField["Data"].as<Type>();\
+															fieldInstance.SetValue<Type>(data);\
+															break;}
 							switch (type) {
 								FIELD_DATA(Float, float);
+								FIELD_DATA(Vector2, glm::vec2);
+								FIELD_DATA(Vector3, glm::vec3);
+								FIELD_DATA(Vector4, glm::vec4);
+								FIELD_DATA(Int, int);
+								FIELD_DATA(UInt, uint32_t);
+								FIELD_DATA(Bool, bool);
+								FIELD_DATA(Double, double);
+								FIELD_DATA(Short, uint16_t);
+								FIELD_DATA(Byte, uint8_t);
 							}
 
 							#undef FIELD_DATA

@@ -35,6 +35,36 @@ Entities:
         - Name: speed
           Type: Float
           Data: 54
+        - Name: variable_Vec3
+          Type: Vector3
+          Data: [0, -2.20000005, 0]
+        - Name: variable_Vec4
+          Type: Vector4
+          Data: [0.200000003, -1.20000005, 0.400000006, 2.29999995]
+        - Name: variable_bool
+          Type: Bool
+          Data: true
+        - Name: variable_byte
+          Type: Byte
+          Data: 21
+        - Name: variable_double
+          Type: Double
+          Data: 58.2983472983749
+        - Name: variable_float
+          Type: Float
+          Data: 6
+        - Name: variable_int
+          Type: Int
+          Data: 51
+        - Name: variable_short
+          Type: Short
+          Data: 195
+        - Name: variable_uint
+          Type: UInt
+          Data: 69
+        - Name: variable_vec2
+          Type: Vector2
+          Data: [1.79999995, 4.5999999]
     ChildComponent:
       - 14
       - 13

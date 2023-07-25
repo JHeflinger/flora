@@ -37,7 +37,9 @@ namespace Sandbox
 
         void OnUpdate(float ts)
         {
-            
+            Console.WriteLine("speed: {0}", speed);
+            Console.WriteLine("variable_float: {0}", variable_float);
+            Console.WriteLine("variable_vec2: {0}, {1}", variable_vec2.X, variable_vec2.Y);
         }
     }
 }

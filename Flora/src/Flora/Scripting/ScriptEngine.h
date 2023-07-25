@@ -51,11 +51,11 @@ namespace Flora {
 
 		template<typename T>
 		void SetValue(T value) {
-			FL_CORE_ASSERT(sizeof(T) <= 8, "type too large!");
+			FL_CORE_ASSERT(sizeof(T) <= 16, "type too large!");
 			memcpy(m_DataBuffer, &value, sizeof(T));
 		}
 	private:
-		uint8_t m_DataBuffer[8];
+		uint8_t m_DataBuffer[16];
 		friend class ScriptInstance;
 		friend class ScriptEngine;
 	};
