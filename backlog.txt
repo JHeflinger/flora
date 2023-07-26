@@ -88,10 +88,6 @@ TODO:
 
 	- bug: offset circle collider is kinda weird, are we sure we're using the body transform and not the entity transform during physics simulation?
 
-	- simulate physics button?
-
-	- pause / step scene button
-
 	- redo flpch
 
 	- openAL needs to be installed or else OpenAL32.dll not found error will appear
@@ -130,7 +126,7 @@ TODO:
 
 	- clean github
 
-	- make sure OnDestroy works
+	- make sure OnDestroy works <- gonna need a destroy entity function
 
 	- optimize type dependent script field functionality (use switch case stuff, make it just easier to add in new)
 

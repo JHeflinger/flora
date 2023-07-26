@@ -936,6 +936,6 @@ namespace Flora {
 	void EditorLayer::DevEvent() {
 		FL_CORE_INFO("DEV EVENT FIRED");
 		ScriptEngine::ReloadAssembly();
-		//AudioCommand::Init();
+		AudioCommand::Init();
 	}
 }
