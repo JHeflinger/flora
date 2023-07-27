@@ -36,6 +36,9 @@ namespace Flora {
 
 		// Initialize panels
 		InitializePanels();
+
+		// Initialize game systems
+		InitializeSystems();
 	}
 
 	void EditorLayer::OnDetatch() {
@@ -530,6 +533,10 @@ namespace Flora {
 		}
 	}
 
+	void EditorLayer::InitializeSystems() {
+		AudioCommand::Init();
+	}
+
 	void EditorLayer::SetPanelContext() {
 		for (auto& panel : m_Panels) {
 			panel.second->SetEditorContext(m_EditorParams);
@@ -936,6 +943,6 @@ namespace Flora {
 	void EditorLayer::DevEvent() {
 		FL_CORE_INFO("DEV EVENT FIRED");
 		ScriptEngine::ReloadAssembly();
-		AudioCommand::Init();
+		AudioCommand::Test();
 	}
 }

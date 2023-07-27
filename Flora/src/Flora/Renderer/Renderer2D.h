@@ -5,7 +5,7 @@
 #include "Flora/Renderer/Camera.h"
 #include "Flora/Renderer/EditorCamera.h"
 #include "Flora/Scene/Components.h"
-#include "Flora/Renderer/AssetManager.h"
+#include "Flora/Core/AssetManager.h"
 
 namespace Flora {
 	class Renderer2D {

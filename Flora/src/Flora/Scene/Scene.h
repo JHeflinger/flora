@@ -2,7 +2,7 @@
 #include "entt.hpp"
 #include "Flora/Core/Timestep.h"
 #include "Flora/Renderer/EditorCamera.h"
-#include "Flora/Renderer/AssetManager.h"
+#include "Flora/Core/AssetManager.h"
 
 class b2World;
 

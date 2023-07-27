@@ -33,6 +33,7 @@ namespace Flora {
 		void ResetEditorParams();
 		void InitializePanels();
 		void InitializeEditor();
+		void InitializeSystems();
 		void SetPanelContext();
 		void UpdatePanels(Timestep ts);
 		void RenderImGuiPanels();

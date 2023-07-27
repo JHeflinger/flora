@@ -16,9 +16,21 @@ TODO:
 
 	- purge native scripts
 
+	- audio on separate thread and better clean up after playing sounds
+
 	- implement layers
 
+	- allow users to tweak the attenuation curve, etc (https://indiegamedev.net/2020/04/12/the-complete-guide-to-openal-with-c-part-3-positioning-sounds/)
+
 	- particle system
+
+	- bug: not all .wav files work in surround sound
+
+	- surround sound should work with scaleable units in the audio component
+
+	- audio hard disk streaming support
+
+	- audio mp3 support
 
 	- vfx graph
 
