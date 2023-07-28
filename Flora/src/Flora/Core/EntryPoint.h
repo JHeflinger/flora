@@ -11,12 +11,7 @@ int main(int argc, char** argv) {
 
 	// warnings
 	{
-		FL_WARN("Session does not indicate save status");
-		FL_WARN("Console messages are only reflected in the terminal, not fauna");
-		FL_CORE_WARN("Files are not checked for validity when uploading to textures, scenes, and scripts");
-		FL_CORE_WARN("There is no assetmanager to minimize texture allocation");
 		FL_WARN("Undo and redo is not currently implemented");
-		FL_CORE_WARN("Native script path is unstable");
 	}
 
 	FL_PROFILE_BEGIN_SESSION("Startup", "debug_log/FloraProfile_Startup.json");

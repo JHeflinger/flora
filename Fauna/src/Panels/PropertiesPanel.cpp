@@ -376,6 +376,7 @@ namespace Flora {
 			DrawAddComponentItem<RigidBody2DComponent>("Rigid Body 2D", m_EditorContext->SelectedEntity);
 			DrawAddComponentItem<BoxCollider2DComponent>("Box Collider 2D", m_EditorContext->SelectedEntity);
 			DrawAddComponentItem<CircleCollider2DComponent>("Circle Collider 2D", m_EditorContext->SelectedEntity);
+			DrawAddComponentItem<AudioSourceComponent>("Audio Source", m_EditorContext->SelectedEntity);
 			ImGui::EndPopup();
 		}
 		ImGui::PopItemWidth();
@@ -1001,261 +1002,6 @@ namespace Flora {
 
 					#undef UPDATE_DATA
 				}
-
-				/*
-				if (m_EditorContext->SceneState == SceneState::PLAY) {
-					if (scriptInstance) {
-						for (const auto& [name, field] : fields) {
-							float data_float = 0.0f;
-							switch (field.Type) {
-							case ScriptFieldType::Float:
-								data_float = scriptInstance->GetFieldValue<float>(name);
-								ImGui::Columns(2);
-								ImGui::SetColumnWidth(0, 100.0f);
-								ImGui::Dummy(ImVec2(0, linespacing));
-								ImGui::Text(name.c_str());
-								ImGui::Dummy(ImVec2(0, linespacing));
-								ImGui::NextColumn();
-								if (ImGui::DragFloat(("##" + name).c_str(), &data_float)) {
-									scriptInstance->SetFieldValue(name, data_float);
-								}
-								ImGui::Columns(1);
-								break;
-							}
-						}
-					}
-				} else {
-					if (ScriptEngine::EntityClassExists(component.ClassName)) {
-						for (const auto& [name, field] : fields) {
-							if (entityFields.find(name) != entityFields.end()) {
-								ScriptFieldInstance& scriptField = entityFields.at(name);
-								float data_float = 0.0f;
-								switch (field.Type) {
-								case ScriptFieldType::Float:
-									data_float = scriptField.GetValue<float>();
-									ImGui::Columns(2);
-									ImGui::SetColumnWidth(0, 100.0f);
-									ImGui::Dummy(ImVec2(0, linespacing));
-									ImGui::Text(name.c_str());
-									ImGui::Dummy(ImVec2(0, linespacing));
-									ImGui::NextColumn();
-									if (ImGui::DragFloat(("##" + name).c_str(), &data_float)) {
-										scriptField.SetValue(data_float);
-									}
-									ImGui::Columns(1);
-									break;
-								}
-							} else {
-								float data_float = 0.0f;
-								glm::vec2 data_vec2 = { 0.0f, 0.0f };
-								glm::vec3 data_vec3 = { 0.0f, 0.0f, 0.0f };
-								glm::vec4 data_vec4 = { 0.0f, 0.0f, 0.0f, 0.0f };
-								int data_int = 0;
-								uint32_t data_uint = 0;
-								bool data_bool = false;
-								double data_double = 0.0;
-								uint16_t data_short = 0;
-								uint8_t data_byte = 0;
-								std::string data_string = "";
-								bool isvalid = false;
-								int expanded_int = 0;
-								static bool promptEntitySelect = false;
-
-								switch (field.Type) {
-								case ScriptFieldType::Float:
-									ImGui::Columns(2);
-									ImGui::SetColumnWidth(0, 100.0f);
-									ImGui::Dummy(ImVec2(0, linespacing));
-									ImGui::Text(name.c_str());
-									ImGui::Dummy(ImVec2(0, linespacing));
-									ImGui::NextColumn();
-									if (ImGui::DragFloat(("##" + name).c_str(), &data_float)) {
-										ScriptFieldInstance& fieldInstance = entityFields[name];
-										fieldInstance.Field = field;
-										fieldInstance.SetValue(data_float);
-									}
-									ImGui::Columns(1);
-									break;
-								case ScriptFieldType::Vector2:
-									if (DrawVec2Control(name, data_vec2)) {
-										ScriptFieldInstance& fieldInstance = entityFields[name];
-										fieldInstance.Field = field;
-										fieldInstance.SetValue(data_vec2);
-									}
-									break;
-								case ScriptFieldType::Vector3:
-									if (DrawVec3Control(name, data_vec3)) {
-										ScriptFieldInstance& fieldInstance = entityFields[name];
-										fieldInstance.Field = field;
-										fieldInstance.SetValue(data_vec3);
-									}
-									break;
-								case ScriptFieldType::Vector4:
-									if (DrawVec4Control(name, data_vec4)) {
-										ScriptFieldInstance& fieldInstance = entityFields[name];
-										fieldInstance.Field = field;
-										fieldInstance.SetValue(data_vec4);
-									}
-									break;
-								case ScriptFieldType::Int:
-									ImGui::Columns(2);
-									ImGui::SetColumnWidth(0, 100.0f);
-									ImGui::Dummy(ImVec2(0, linespacing));
-									ImGui::Text(name.c_str());
-									ImGui::Dummy(ImVec2(0, linespacing));
-									ImGui::NextColumn();
-									if (ImGui::DragInt(("##" + name).c_str(), &data_int)) {
-										ScriptFieldInstance& fieldInstance = entityFields[name];
-										fieldInstance.Field = field;
-										fieldInstance.SetValue(data_int);
-									}
-									ImGui::Columns(1);
-									break;
-								case ScriptFieldType::UInt:
-									ImGui::Columns(2);
-									ImGui::SetColumnWidth(0, 100.0f);
-									ImGui::Dummy(ImVec2(0, linespacing));
-									ImGui::Text(name.c_str());
-									ImGui::Dummy(ImVec2(0, linespacing));
-									ImGui::NextColumn();
-
-									static char double_string[2048];
-									if (double_string[0] == '\0') {
-										double_string[1] = '\0';
-										double_string[0] = '0';
-									}
-									isvalid = CanParseToUint32(double_string);
-									if (!isvalid)
-										ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.9f, 0.2f, 0.3f, 1.0f));
-									if (ImGui::InputText(("##" + name).c_str(), double_string, sizeof(double_string)) && isvalid) {
-										ScriptFieldInstance& fieldInstance = entityFields[name];
-										fieldInstance.Field = field;
-										fieldInstance.SetValue(ParseUint32(double_string));
-									}
-									if (!isvalid)
-										ImGui::PopStyleColor();
-
-									ImGui::Columns(1);
-									break;
-								case ScriptFieldType::Bool:
-									ImGui::Columns(2);
-									ImGui::SetColumnWidth(0, 100.0f);
-									ImGui::Dummy(ImVec2(0, linespacing));
-									ImGui::Text(name.c_str());
-									ImGui::Dummy(ImVec2(0, linespacing));
-									ImGui::NextColumn();
-									if ((ImGui::Checkbox(("##" + name).c_str(), &data_bool))) {
-										ScriptFieldInstance& fieldInstance = entityFields[name];
-										fieldInstance.Field = field;
-										fieldInstance.SetValue(data_bool);
-									}
-									ImGui::Columns(1);
-									break;
-								case ScriptFieldType::Double:
-									ImGui::Columns(2);
-									ImGui::SetColumnWidth(0, 100.0f);
-									ImGui::Dummy(ImVec2(0, linespacing));
-									ImGui::Text(name.c_str());
-									ImGui::Dummy(ImVec2(0, linespacing));
-									ImGui::NextColumn();
-									if (ImGui::InputDouble(("##" + name).c_str(), &data_double)) {
-										ScriptFieldInstance& fieldInstance = entityFields[name];
-										fieldInstance.Field = field;
-										fieldInstance.SetValue(data_double);
-									}
-									ImGui::Columns(1);
-									break;
-								case ScriptFieldType::Short:
-									ImGui::Columns(2);
-									ImGui::SetColumnWidth(0, 100.0f);
-									ImGui::Dummy(ImVec2(0, linespacing));
-									ImGui::Text(name.c_str());
-									ImGui::Dummy(ImVec2(0, linespacing));
-									ImGui::NextColumn();
-									expanded_int = (int)data_short;
-									if (ImGui::DragInt(("##" + name).c_str(), &expanded_int, 1.0f, -32768, 32768)) {
-										ScriptFieldInstance& fieldInstance = entityFields[name];
-										fieldInstance.Field = field;
-										data_short = (uint16_t)expanded_int;
-										fieldInstance.SetValue(data_short);
-									}
-									ImGui::Columns(1);
-									break;
-								case ScriptFieldType::Byte:
-									ImGui::Columns(2);
-									ImGui::SetColumnWidth(0, 100.0f);
-									ImGui::Dummy(ImVec2(0, linespacing));
-									ImGui::Text(name.c_str());
-									ImGui::Dummy(ImVec2(0, linespacing));
-									ImGui::NextColumn();
-									expanded_int = (int)data_byte;
-									if (ImGui::DragInt(("##" + name).c_str(), &expanded_int, 1.0f, 0, 255)) {
-										ScriptFieldInstance& fieldInstance = entityFields[name];
-										fieldInstance.Field = field;
-										data_byte = (uint8_t)expanded_int;
-										fieldInstance.SetValue(data_byte);
-									}
-									ImGui::Columns(1);
-									break;
-								case ScriptFieldType::String:
-									ImGui::Columns(2);
-									ImGui::SetColumnWidth(0, 100.0f);
-									ImGui::Dummy(ImVec2(0, linespacing));
-									ImGui::Text(name.c_str());
-									ImGui::Dummy(ImVec2(0, linespacing));
-									ImGui::NextColumn();
-									static char placeholder[4096];
-									if (ImGui::InputText(("##" + name).c_str(), placeholder, sizeof(placeholder))) {
-										ScriptFieldInstance& fieldInstance = entityFields[name];
-										fieldInstance.Field = field;
-										fieldInstance.SetValue(placeholder);
-									}
-									ImGui::Columns(1);
-									break;
-								case ScriptFieldType::Entity:
-									ImGui::Columns(2);
-									ImGui::SetColumnWidth(0, 100.0f);
-									ImGui::Dummy(ImVec2(0, linespacing));
-									ImGui::Text(name.c_str());
-									ImGui::Dummy(ImVec2(0, linespacing));
-									ImGui::NextColumn();
-									ImGuiStyle& style = ImGui::GetStyle();
-									style.FramePadding.x += 10.0f;
-									if (ImGui::Button("Browse..."))
-										promptEntitySelect = true;
-									style.FramePadding.x -= 10.0f;
-									ImGui::Columns(1);
-
-									// entity selection prompt
-
-									if (promptEntitySelect) {
-										ImGui::OpenPopup("Select Entity");
-										ImVec2 center = ImGui::GetMainViewport()->GetCenter();
-										ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
-										if (ImGui::BeginPopupModal("Select Entity", NULL, ImGuiWindowFlags_AlwaysAutoResize)) {
-											auto& entities = entity.GetScene()->GetAllEntitiesWith<TagComponent>();
-											ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.0f, 0.0f, 0.0f, 0.0f });
-											ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 1.0f, 1.0f, 1.0f, 0.15f });
-											ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 1.0f, 1.0f, 1.0f, 0.05f });
-											for (auto entity : entities) {
-												auto tagComponent = entities.get<TagComponent>(entity);
-												if (ImGui::Button(tagComponent.Tag.c_str(), { 500, lineHeight })) {
-													promptEntitySelect = false;
-													//ScriptFieldInstance& fieldInstance = entityFields[name];
-													//fieldInstance.Field = field;
-													//fieldInstance.SetValue(0);
-												}
-											}
-											ImGui::PopStyleColor(3);
-											ImGui::EndPopup();
-										}
-									}
-									break;
-								}
-							}
-						}
-					}
-				}*/
 				ImGui::TreePop();
 			}
 		});
@@ -1443,6 +1189,54 @@ namespace Flora {
 			ImGui::DragFloat("##RestitutionThreshold", &component.RestitutionThreshold, 0.1, 0.0f, 10000.0f, "%.2f");
 			ImGui::PopItemWidth();
 			ImGui::Columns(1);
+		});
+	
+		DrawComponent<AudioSourceComponent>("Audio Source", entity, [](auto& entity, auto& component) {
+			ImGui::Columns(2);
+			ImGui::SetColumnWidth(0, 150.0f);
+			ImGui::Text("Dev Control");
+			ImGui::Dummy({0, 2});
+			ImGui::Text("Audio File");
+			ImGui::NextColumn();
+			ImGuiStyle& style = ImGui::GetStyle();
+			style.FramePadding.x += 10.0f;
+			if (ImGui::Button("Play", {100.0f, 0.0f})) {
+				component.Play();
+			}
+			if (ImGui::Button("Browse...", { 100.0f, 0.0f })) {
+
+			}
+			style.FramePadding.x -= 10.0f;
+			ImGui::Columns(1);
+
+			ImGui::Dummy(ImVec2(0, 10.0f));
+			ImGui::Separator(); //===========================separator
+			ImGui::Dummy(ImVec2(0, 10.0f));
+
+			const ImGuiTreeNodeFlags treeNodeFlags = ImGuiTreeNodeFlags_SpanAvailWidth | ImGuiTreeNodeFlags_AllowItemOverlap | ImGuiTreeNodeFlags_FramePadding;
+			bool open = ImGui::TreeNodeEx((void*)typeid(ScriptComponent).hash_code(), treeNodeFlags, "Advanced Options");
+			if (open) {
+				ImGui::Columns(2);
+				ImGui::SetColumnWidth(0, 100.0f);
+				ImGui::Text("Scale");
+				ImGui::Dummy({ 0, 2 });
+				ImGui::Text("Loop");
+				ImGui::Dummy({ 0, 2 });
+				ImGui::Text("Pitch");
+				ImGui::Dummy({ 0, 2 });
+				ImGui::Text("Gain");
+				ImGui::NextColumn();
+
+				ImGui::DragFloat("##scale", &component.Scale);
+				ImGui::Checkbox("##loop", &component.Loop);
+				ImGui::DragFloat("##pitch", &component.Pitch);
+				ImGui::DragFloat("##gain", &component.Gain);
+				ImGui::Columns(1);
+				ImGui::Dummy({ 0, 2 });
+
+				DrawVec3Control("Velocity", component.Velocity);
+				ImGui::TreePop();
+			}
 		});
 	}
 }

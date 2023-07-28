@@ -196,6 +196,33 @@ namespace Flora {
 		}
 	};
 
+	struct AudioSourceComponent {
+		float Scale = 1;
+		std::string AudioFile = "";
+		bool Loop = false;
+		float Pitch = 1.0f;
+		float Gain = 1.0f;
+		glm::vec3 Velocity = { 0.0f, 0.0f, 0.0f }; //make a button in editor to play test!
+		AudioSourceComponent() = default;
+		AudioSourceComponent(const AudioSourceComponent& other) {
+			Scale = other.Scale;
+			AudioFile = other.AudioFile;
+			Loop = other.Loop;
+			Pitch = other.Pitch;
+			Gain = other.Gain;
+			Velocity = other.Velocity;
+		}
+		void Play() { StartAudio = true; StopAudio = false; }
+		void Stop() { StartAudio = false; StopAudio = true; }
+	private:
+		bool StartAudio = false;
+		bool StopAudio = false;
+	};
+
+	struct AudioListenerComponent {
+
+	};
+
 	template<typename... Component>
 	struct ComponentGroup{};
 
@@ -203,5 +230,5 @@ namespace Flora {
 		ComponentGroup<TagComponent, TransformComponent, SpriteRendererComponent,
 		CircleRendererComponent, CameraComponent, ScriptComponent,
 		ScriptManagerComponent, ChildComponent, ParentComponent, RigidBody2DComponent, 
-		BoxCollider2DComponent, CircleCollider2DComponent>;
+		BoxCollider2DComponent, CircleCollider2DComponent, AudioSourceComponent>;
 }

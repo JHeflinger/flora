@@ -6,20 +6,16 @@
 namespace Flora {
 	class AssetManager {
 	public:
-		AssetManager();
-		~AssetManager();
+		static void Init();
 	public:
-		bool AddTexture(std::string texPath); //returns false if texture was already added
-		void RemoveTexture(std::string texPath);
-		void ClearTextures();
-		Ref<Texture2D> GetTexture(std::string texPath);
+		static bool AddTexture(std::string texPath); //returns false if texture was already added
+		static void RemoveTexture(std::string texPath);
+		static void ClearTextures();
+		static Ref<Texture2D> GetTexture(std::string texPath);
 	public:
-		bool AddAudio(std::string audioPath); //returns false if audio was already added
-		void RemoveAudio(std::string audioPath);
-		void ClearAudios();
-		Ref<Audio> GetAudio(std::string audioPath);
-	private:
-		std::map<std::string, Ref<Texture2D>> m_TextureMap;
-		std::map<std::string, Ref<Audio>> m_AudioMap;
+		static bool AddAudio(std::string audioPath); //returns false if audio was already added
+		static void RemoveAudio(std::string audioPath);
+		static void ClearAudios();
+		static Ref<Audio> GetAudio(std::string audioPath);
 	};
 }

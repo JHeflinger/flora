@@ -43,12 +43,13 @@ Entities:
           Data: [0.200000003, -1.20000005, 0.400000006, 2.29999995]
         - Name: variable_bool
           Type: Bool
+          Data: true
         - Name: variable_byte
           Type: Byte
+          Data: 21
         - Name: variable_double
           Type: Double
-        - Name: variable_entity
-          Type: Entity
+          Data: 58.2983472983749
         - Name: variable_float
           Type: Float
           Data: 6
@@ -57,10 +58,10 @@ Entities:
           Data: 51
         - Name: variable_short
           Type: Short
-        - Name: variable_string
-          Type: String
+          Data: 195
         - Name: variable_uint
           Type: UInt
+          Data: 69
         - Name: variable_vec2
           Type: Vector2
           Data: [1.79999995, 4.5999999]

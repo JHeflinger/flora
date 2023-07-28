@@ -142,6 +142,21 @@ namespace Flora {
         audio.Data = new char[audio.Size];
         file.read(audio.Data, audio.Size);
         audio.Initialized = true;
+
+        alGenBuffers(1, &audio.BufferID);
+        if (audio.Channels == 1)
+            if (audio.BPS == 8)
+                audio.Format = AL_FORMAT_MONO8;
+            else
+                audio.Format = AL_FORMAT_MONO16;
+        else
+            if (audio.BPS == 8)
+                audio.Format = AL_FORMAT_STEREO8;
+            else
+                audio.Format = AL_FORMAT_STEREO16;
+        alBufferData(audio.BufferID, audio.Format, audio.Data, audio.Size, audio.SampleRate);
+        alGenSources(1, &audio.SourceID);
+
         return audio;
     }
 
@@ -160,52 +175,31 @@ namespace Flora {
 	}
 
 	void AudioCommand::Shutdown() {
-		//alDeleteSources(1, &sourceid);
-		//alDeleteBuffers(1, &bufferid);
-
-		//alcDestroyContext(context);
-		//alcCloseDevice(device);
-		//delete[] data;
+		alcDestroyContext(s_Context);
+		alcCloseDevice(s_Device);
 	}
 
-    void AudioCommand::Play(Audio& audio, glm::vec3 location) {
-        ALuint bufferid, format;
-        alGenBuffers(1, &bufferid);
-        if (audio.Channels == 1)
-            if (audio.BPS == 8)
-                format = AL_FORMAT_MONO8;
-            else
-                format = AL_FORMAT_MONO16;
-        else
-            if (audio.BPS == 8)
-                format = AL_FORMAT_STEREO8;
-            else
-                format = AL_FORMAT_STEREO16;
-        alBufferData(bufferid, format, audio.Data, audio.Size, audio.SampleRate);
-        ALuint sourceid;
-        alGenSources(1, &sourceid);
-        alSourcef(sourceid, AL_PITCH, 1);
-        alSourcef(sourceid, AL_GAIN, 1.0f);
-        alSource3f(sourceid, AL_POSITION, location.x, location.y, location.z);
-        alSource3f(sourceid, AL_VELOCITY, 0, 0, 0);
-        alSourcei(sourceid, AL_LOOPING, AL_FALSE);
-        alSourcei(sourceid, AL_BUFFER, bufferid);
-        alSourcePlay(sourceid);
+    void AudioCommand::Play(Audio& audio, float scale, float pitch, float gain, glm::vec3 velocity, bool loop, glm::vec3 location) {
+        Update(audio, scale, pitch, gain, velocity, loop, location);
+        alSourcePlay(audio.SourceID);
+    }
 
-        /*
-        s_BuffersToSources[bufferid] = sourceid;
+    void AudioCommand::Update(Audio& audio, float scale, float pitch, float gain, glm::vec3 velocity, bool loop, glm::vec3 location) {
+        alSourcef(audio.SourceID, AL_PITCH, pitch);
+        alSourcef(audio.SourceID, AL_GAIN, gain);
+        alSource3f(audio.SourceID, AL_POSITION, location.x * scale, location.y * scale, location.z * scale);
+        alSource3f(audio.SourceID, AL_VELOCITY, velocity.x, velocity.y, velocity.z);
+        alSourcei(audio.SourceID, AL_LOOPING, loop);
+        alSourcei(audio.SourceID, AL_BUFFER, audio.BufferID);
+    }
 
-        // delete any sounds left over that are done playing
-        for (auto& bufferAndSource : s_BuffersToSources) {
-            ALint state = AL_PLAYING;
-            alGetSourcei(bufferAndSource.second, AL_SOURCE_STATE, &state);
-            if (state != AL_PLAYING) {
-                alDeleteBuffers(1, &bufferAndSource.first);
-                alDeleteSources(1, &bufferAndSource.second);
-                s_BuffersToSources.erase(bufferAndSource.first);
-            }
-        }*/ 
-        //TODO: actually finish this cleanup stuff
+    void AudioCommand::Stop(Audio& audio) {
+        alSourceStop(audio.SourceID);
+    }
+
+    void AudioCommand::Delete(Audio& audio) {
+        alDeleteSources(1, &audio.SourceID);
+        alDeleteBuffers(1, &audio.BufferID);
     }
 
     void AudioCommand::Test() {

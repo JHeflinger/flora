@@ -261,6 +261,19 @@ namespace Flora {
 			out << YAML::EndMap;
 		}
 
+		if (entity.HasComponent<AudioSourceComponent>()) {
+			out << YAML::Key << "AudioSourceComponent";
+			auto& audioSourceComponent = entity.GetComponent<AudioSourceComponent>();
+			out << YAML::BeginMap;
+			out << YAML::Key << "Scale" << YAML::Value << audioSourceComponent.Scale;
+			out << YAML::Key << "AudioFile" << YAML::Value << audioSourceComponent.AudioFile;
+			out << YAML::Key << "Loop" << YAML::Value << audioSourceComponent.Loop;
+			out << YAML::Key << "Pitch" << YAML::Value << audioSourceComponent.Pitch;
+			out << YAML::Key << "Gain" << YAML::Value << audioSourceComponent.Gain;
+			out << YAML::Key << "Velocity" << YAML::Value << audioSourceComponent.Velocity;
+			out << YAML::EndMap;
+		}
+
 		out << YAML::EndMap;
 	}
 
@@ -474,6 +487,17 @@ namespace Flora {
 					cc2dc.Friction = circleCollider2DComponent["Friction"].as<float>();
 					cc2dc.Restitution = circleCollider2DComponent["Restitution"].as<float>();
 					cc2dc.RestitutionThreshold = circleCollider2DComponent["RestitutionThreshold"].as<float>();
+				}
+
+				auto audioSourceComponent = entity["AudioSourceComponent"];
+				if (audioSourceComponent) {
+					auto& asc = deserializedEntity.AddComponent<AudioSourceComponent>();
+					asc.Scale = audioSourceComponent["Scale"].as<float>();
+					asc.AudioFile = audioSourceComponent["AudioFile"].as<std::string>();
+					asc.Loop = audioSourceComponent["Loop"].as<bool>();
+					asc.Pitch = audioSourceComponent["Pitch"].as<float>();
+					asc.Gain = audioSourceComponent["Gain"].as<float>();
+					asc.Velocity = audioSourceComponent["Velocity"].as<glm::vec3>();
 				}
 			}
 		}

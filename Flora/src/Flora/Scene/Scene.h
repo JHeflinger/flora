@@ -38,7 +38,6 @@ namespace Flora {
 		void SetScenePaused(bool paused) { m_Paused = paused; }
 		std::string GetSceneFilepath() { return m_SceneFilepath; }
 		std::string GetSceneName() { return m_SceneName; }
-		AssetManager* GetAssetManager() { return m_AssetManager; }
 	public:
 		template<typename T, typename LoopFunction>
 		void ForAllComponents(LoopFunction loopFunction) {
@@ -84,7 +83,6 @@ namespace Flora {
 		float m_Gravity = 9.8f;
 		int32_t m_PhysicsVelocityIterations = 6;
 		int32_t m_PhysicsPositionIterations = 2;
-		AssetManager* m_AssetManager;
 		uint32_t m_StepFrames = 0;
 		friend class Entity;
 		friend class SceneHierarchyPanel;

@@ -494,14 +494,14 @@ namespace Flora {
 		s_Data.Stats.QuadCount++;
 	}
 
-	void Renderer2D::DrawSprite(const glm::mat4& transform, SpriteRendererComponent& src, AssetManager* am, int entityID) {
+	void Renderer2D::DrawSprite(const glm::mat4& transform, SpriteRendererComponent& src, int entityID) {
 		Ref<Texture2D> texture = nullptr;
 		if (src.Path != "NULL") {
 			if (!src.TextureInitialized) {
-				am->AddTexture(src.Path);
+				AssetManager::AddTexture(src.Path);
 				src.TextureInitialized = true;
 			}
-			texture = am->GetTexture(src.Path);
+			texture = AssetManager::GetTexture(src.Path);
 		}
 		if (src.Type == SpriteRendererComponent::SpriteType::SINGLE) {
 			if (texture)

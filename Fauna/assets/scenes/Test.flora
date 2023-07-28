@@ -160,6 +160,13 @@ Entities:
       Friction: 4.4000001
       Restitution: 0
       RestitutionThreshold: 0.5
+    AudioSourceComponent:
+      Scale: 2
+      AudioFile: ""
+      Loop: true
+      Pitch: 1.79999995
+      Gain: 1
+      Velocity: [0, 0, 0]
   - Entity: 15
     TagComponent:
       Tag: Camera

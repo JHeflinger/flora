@@ -2,47 +2,47 @@
 #include "Flora/Core/AssetManager.h"
 
 namespace Flora {
-	AssetManager::AssetManager() {
+	std::map<std::string, Ref<Texture2D>> s_TextureMap;
+	std::map<std::string, Ref<Audio>> s_AudioMap;
 
-	}
-
-	AssetManager::~AssetManager() {
-		// note: might be a minor memory leak here?
+	void AssetManager::Init() {
+		ClearAudios();
+		ClearTextures();
 	}
 
 	bool AssetManager::AddTexture(std::string texPath) {
-		if (m_TextureMap.find(texPath) != m_TextureMap.end()) return false;
-		m_TextureMap[texPath] = Texture2D::Create(texPath);
+		if (s_TextureMap.find(texPath) != s_TextureMap.end()) return false;
+		s_TextureMap[texPath] = Texture2D::Create(texPath);
 		return true;
 	}
 
 	void AssetManager::RemoveTexture(std::string texPath) {
-		m_TextureMap.erase(texPath);
+		s_TextureMap.erase(texPath);
 	}
 
 	void AssetManager::ClearTextures() {
-		m_TextureMap.clear();
+		s_TextureMap.clear();
 	}
 
 	Ref<Texture2D> AssetManager::GetTexture(std::string texPath) {
-		return m_TextureMap[texPath];
+		return s_TextureMap[texPath];
 	}
 
 	bool AssetManager::AddAudio(std::string audioPath) {
-		if (m_AudioMap.find(audioPath) != m_AudioMap.end()) return false;
-		m_AudioMap[audioPath] = CreateScope<Audio>(AudioCommand::LoadWAV(audioPath));
+		if (s_AudioMap.find(audioPath) != s_AudioMap.end()) return false;
+		s_AudioMap[audioPath] = CreateScope<Audio>(AudioCommand::LoadWAV(audioPath));
 		return true;
 	}
 
 	void AssetManager::RemoveAudio(std::string audioPath) {
-		m_AudioMap.erase(audioPath);
+		s_AudioMap.erase(audioPath);
 	}
 
 	void AssetManager::ClearAudios() {
-		m_AudioMap.clear();
+		s_AudioMap.clear();
 	}
 
 	Ref<Audio> AssetManager::GetAudio(std::string audioPath) {
-		return m_AudioMap[audioPath];
+		return s_AudioMap[audioPath];
 	}
 }

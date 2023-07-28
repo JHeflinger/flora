@@ -10,11 +10,15 @@ TODO:
 
 	- integrate SPIR-V shaders
 
+	- audioCommand should utilize AssetManager
+
 	- custom shaders, post processing, materials
 
 	- script choose popup reactor to include search, filter, namespace organization, etc
 
 	- purge native scripts
+	
+	- need to be able to stop audio lol
 
 	- audio on separate thread and better clean up after playing sounds
 

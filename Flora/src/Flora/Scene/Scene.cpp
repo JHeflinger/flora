@@ -12,7 +12,7 @@ namespace Flora {
 	void Scene::DrawEntitySprite(Entity& entity, bool useTransformRef, glm::mat4 refTransform) {
 		glm::mat4 transform = entity.GetComponent<TransformComponent>().GetTransform();
 		if (useTransformRef) transform = refTransform * transform;
-		Renderer2D::DrawSprite(transform, entity.GetComponent<SpriteRendererComponent>(), m_AssetManager, (int)(uint32_t)entity);
+		Renderer2D::DrawSprite(transform, entity.GetComponent<SpriteRendererComponent>(), (int)(uint32_t)entity);
 		if (entity.HasComponent<ChildComponent>()) {
 			std::vector<Entity> children = entity.GetComponent<ChildComponent>().Children;
 			for (int i = 0; i < children.size(); i++) {
@@ -78,7 +78,6 @@ namespace Flora {
 	}
 
 	Scene::Scene() {
-		m_AssetManager = new AssetManager();
 	}
 
 	Scene::~Scene() {
@@ -204,6 +203,7 @@ namespace Flora {
 		CopyComponent<RigidBody2DComponent>(entity, newEntity);
 		CopyComponent<BoxCollider2DComponent>(entity, newEntity);
 		CopyComponent<CircleCollider2DComponent>(entity, newEntity);
+		CopyComponent<AudioSourceComponent>(entity, newEntity);
 	}
 
 	Entity Scene::CopyEntity(Entity entity) {
@@ -360,4 +360,7 @@ namespace Flora {
 		if (m_ViewportWidth > 0 && m_ViewportHeight > 0)
 			component.Camera.SetViewportSize(m_ViewportWidth, m_ViewportHeight);
 	}
+
+	template<>
+	void Scene::OnComponentAdded<AudioSourceComponent>(Entity entity, AudioSourceComponent& component) {}
 }
