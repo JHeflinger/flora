@@ -126,12 +126,19 @@ Entities:
       Friction: 0.5
       Restitution: 0
       RestitutionThreshold: 0.5
+    AudioSourceComponent:
+      Scale: 1
+      AudioFile: D:\Dev\Flora\Fauna\Projects\Sandbox Studio\Assets\Audio\cringe.wav
+      Loop: false
+      Pitch: 1
+      Gain: 1
+      Velocity: [0, 0, 0]
   - Entity: 16
     TagComponent:
       Tag: ground
     TransformComponent:
       Translation: [38.4325333, -10.0283813, 8.48150635]
-      Rotation: [0.106140882, 0.0466156453, 0.247675568]
+      Rotation: [0.106140807, 0.0466156043, 0.247675568]
       Scale: [22.6991425, 1, 0.999999881]
     SpriteRendererComponent:
       Color: [0, 0.177606106, 1, 1]

@@ -299,7 +299,7 @@ namespace Flora {
 			ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
 			if (ImGui::BeginPopupModal("ERROR", NULL, ImGuiWindowFlags_AlwaysAutoResize)) {
 				ImGui::SetItemDefaultFocus();
-				std::string message = m_EditorParams->Error.substr(10) + "\n\n";
+				std::string message = m_EditorParams->Error.substr(2) + "\n\n";
 				ImGui::Text(message.c_str());
 				ImGui::Separator();
 				ImGui::Dummy({ 0, 3 });
@@ -942,7 +942,5 @@ namespace Flora {
 
 	void EditorLayer::DevEvent() {
 		FL_CORE_INFO("DEV EVENT FIRED");
-		ScriptEngine::ReloadAssembly();
-		AudioCommand::Test();
 	}
 }

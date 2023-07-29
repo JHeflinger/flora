@@ -304,6 +304,63 @@ namespace Flora {
 		ImGui::Text(component.Filename.c_str());
 	}
 
+	static void DrawAudioDropbox(const std::string& label, AudioSourceComponent& component, ImVec2 buttonSize) {
+		if (ImGui::Button(label.c_str(), buttonSize)) {
+			std::string filepath = FileDialogs::OpenFile("Audio Asset (*.wav)\0*.wav\0");
+			if (!filepath.empty()) {
+				std::filesystem::path texturePath = std::filesystem::path(filepath);
+				component.AudioFile = texturePath.string();
+			}
+		}
+		if (ImGui::BeginDragDropTarget()) {
+			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM")) {
+				const wchar_t* path = (const wchar_t*)payload->Data;
+				std::filesystem::path texturePath = Project::GetAssetDirectory() / path;
+				if (texturePath.extension().string() == ".wav") {
+					component.AudioFile = texturePath.string();
+				}
+				else {
+					FL_CORE_ERROR("Invalid audio type. Please use a .wav file");
+				}
+			}
+			ImGui::EndDragDropTarget();
+		}
+		ImGui::SameLine();
+		ImGui::Text(std::filesystem::path(component.AudioFile).filename().string().c_str());
+	}
+
+	static void PlayAudioFromEntity(Entity entity) {
+		AudioSourceComponent asc = entity.GetComponent<AudioSourceComponent>();
+		TransformComponent tfc = entity.GetComponent<TransformComponent>();
+		AssetManager::AddAudio(asc.AudioFile);
+		Ref<Audio> audio = AssetManager::GetAudio(asc.AudioFile);
+		AudioCommand::Play(
+			*audio,
+			asc.Scale,
+			asc.Pitch,
+			asc.Gain,
+			asc.Velocity,
+			asc.Loop,
+			tfc.Translation
+		);
+	}
+
+	static void UpdateAudioFromEntity(Entity entity) {
+		AudioSourceComponent asc = entity.GetComponent<AudioSourceComponent>();
+		TransformComponent tfc = entity.GetComponent<TransformComponent>();
+		AssetManager::AddAudio(asc.AudioFile);
+		Ref<Audio> audio = AssetManager::GetAudio(asc.AudioFile);
+		AudioCommand::Update(
+			*audio,
+			asc.Scale,
+			asc.Pitch,
+			asc.Gain,
+			asc.Velocity,
+			asc.Loop,
+			tfc.Translation
+		);
+	}
+
 	bool CanParseToUint32(const std::string& str) {
 		if (str.empty())
 			return false;
@@ -1200,12 +1257,31 @@ namespace Flora {
 			ImGui::NextColumn();
 			ImGuiStyle& style = ImGui::GetStyle();
 			style.FramePadding.x += 10.0f;
-			if (ImGui::Button("Play", {100.0f, 0.0f})) {
-				component.Play();
+			bool isValid = component.AudioFile != "";
+			std::string playBtnLabel = "Play";
+			bool isPlaying = false;
+			if (isValid) {
+				AssetManager::AddAudio(component.AudioFile);
+				Ref<Audio> audio = AssetManager::GetAudio(component.AudioFile);
+				if (AudioCommand::IsPlaying(*audio)) {
+					playBtnLabel = "Stop";
+					isPlaying = true;
+				}
 			}
-			if (ImGui::Button("Browse...", { 100.0f, 0.0f })) {
-
+			
+			if (ImGui::Button(playBtnLabel.c_str(), {100.0f, 0.0f})) {
+				if (isValid) {
+					if (!isPlaying) {
+						PlayAudioFromEntity(entity);
+					} else {
+						AssetManager::AddAudio(component.AudioFile);
+						Ref<Audio> audio = AssetManager::GetAudio(component.AudioFile);
+						AudioCommand::Stop(*audio);
+					}
+				}
 			}
+			float lineHeight = GImGui->Font->FontSize + GImGui->Style.FramePadding.y * 2.0f;
+			DrawAudioDropbox("Browse...", component, { 100, lineHeight });
 			style.FramePadding.x -= 10.0f;
 			ImGui::Columns(1);
 
@@ -1230,7 +1306,7 @@ namespace Flora {
 				ImGui::DragFloat("##scale", &component.Scale);
 				ImGui::Checkbox("##loop", &component.Loop);
 				ImGui::DragFloat("##pitch", &component.Pitch);
-				ImGui::DragFloat("##gain", &component.Gain);
+				ImGui::DragFloat("##gain", &component.Gain, 0.01f, 0.0f, 1.0f);
 				ImGui::Columns(1);
 				ImGui::Dummy({ 0, 2 });
 

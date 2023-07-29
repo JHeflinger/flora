@@ -41,9 +41,12 @@ namespace Flora {
 	public:
 		template<typename T, typename LoopFunction>
 		void ForAllComponents(LoopFunction loopFunction) {
-			m_Registry.view<T>().each([=](auto entity, auto& component) {
-				loopFunction(entity, component);
-			});
+			auto view = m_Registry.view<T>();
+			for (auto entity : view) {
+				auto component = view.get<T>(entity);
+				Entity realEntity = { entity, this };
+				loopFunction(realEntity, component);
+			}
 		}
 		template<typename... Components>
 		auto GetAllEntitiesWith() {
@@ -65,6 +68,7 @@ namespace Flora {
 		void StartPhysics();
 		void UpdateScripts(Timestep ts);
 		void UpdatePhysics(Timestep ts);
+		void UpdateAudio();
 		void RenderRuntime(glm::mat4 viewProjection);
 	private:
 		void DrawEntitySprite(Entity& entity, bool useTransformRef = false, glm::mat4 refTransform = glm::mat4(0.0f));

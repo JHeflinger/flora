@@ -197,13 +197,22 @@ namespace Flora {
         alSourceStop(audio.SourceID);
     }
 
+    void AudioCommand::Pause(Audio& audio) {
+        alSourcePause(audio.SourceID);
+    }
+
+    void AudioCommand::Rewind(Audio& audio) {
+        alSourceRewind(audio.SourceID);
+    }
+
     void AudioCommand::Delete(Audio& audio) {
         alDeleteSources(1, &audio.SourceID);
         alDeleteBuffers(1, &audio.BufferID);
     }
 
-    void AudioCommand::Test() {
-        Audio audio = LoadWAV(Project::GetAssetDirectory().string() + "/Audio/cringe.wav");
-        Play(audio);
+    bool AudioCommand::IsPlaying(Audio& audio) {
+        ALint state = AL_PLAYING;
+        alGetSourcei(audio.SourceID, AL_SOURCE_STATE, &state);
+        return state == AL_PLAYING;
     }
 }

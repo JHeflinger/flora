@@ -158,6 +158,16 @@ namespace Flora {
 		m_PhysicsWorld = nullptr;
 		ScriptEngine::OnRuntimeStop();
 		m_Paused = false;
+
+		//stop audio
+		auto view = m_Registry.view<AudioSourceComponent>();
+		for (auto e : view) {
+			Entity entity = { e, this };
+			AudioSourceComponent& asc = entity.GetComponent<AudioSourceComponent>();
+			AssetManager::AddAudio(asc.AudioFile);
+			Ref<Audio> audio = AssetManager::GetAudio(asc.AudioFile);
+			AudioCommand::Stop(*audio);
+		}
 	}
 
 	std::vector<Entity> Scene::GetEntitiesByTag(std::string tag) {
@@ -204,6 +214,52 @@ namespace Flora {
 		CopyComponent<BoxCollider2DComponent>(entity, newEntity);
 		CopyComponent<CircleCollider2DComponent>(entity, newEntity);
 		CopyComponent<AudioSourceComponent>(entity, newEntity);
+	}
+
+	static void UpdateAudioEntity(Entity entity) {
+		AudioSourceComponent& asc = entity.GetComponent<AudioSourceComponent>();
+		if (asc.AudioFile != "") {
+			AssetManager::AddAudio(asc.AudioFile);
+			Ref<Audio> audio = AssetManager::GetAudio(asc.AudioFile);
+			glm::vec3 translation = entity.GetComponent<TransformComponent>().Translation;
+			AudioCommand::Update(
+				*audio,
+				asc.Scale,
+				asc.Pitch,
+				asc.Gain,
+				asc.Velocity,
+				asc.Loop,
+				translation
+			);
+			if (asc.State != AudioState::NONE) {
+				switch (asc.State) {
+				case AudioState::PLAY:
+					AudioCommand::Play(
+						*audio,
+						asc.Scale,
+						asc.Pitch,
+						asc.Gain,
+						asc.Velocity,
+						asc.Loop,
+						translation
+					);
+					break;
+				case AudioState::STOP:
+					AudioCommand::Stop(*audio);
+					break;
+				case AudioState::PAUSE:
+					AudioCommand::Pause(*audio);
+					break;
+				case AudioState::REWIND:
+					AudioCommand::Rewind(*audio);
+					break;
+				default:
+					FL_CORE_ASSERT("UNKOWN AUDIO COMMAND TYPE");
+					break;
+				}
+				asc.State = AudioState::NONE;
+			}
+		} // else pause them TODO
 	}
 
 	Entity Scene::CopyEntity(Entity entity) {
@@ -299,8 +355,17 @@ namespace Flora {
 		}
 	}
 
+	void Scene::UpdateAudio() {
+		auto view = m_Registry.view<AudioSourceComponent>();
+		for (auto e : view) {
+			Entity entity = { e, this };
+			UpdateAudioEntity(entity);
+		}
+	}
+
 	void Scene::OnUpdateEditor(Timestep ts, glm::mat4 viewProjection) {
 		RenderRuntime(viewProjection);
+		UpdateAudio();
 	}
 
 	void Scene::OnUpdateRuntime(Timestep ts, glm::mat4 viewProjection) {
@@ -311,6 +376,9 @@ namespace Flora {
 			// Update Physics
 			UpdatePhysics(ts);
 		}
+
+		// Update Audio
+		UpdateAudio();
 
 		// Render 2D Sprites
 		RenderRuntime(viewProjection);

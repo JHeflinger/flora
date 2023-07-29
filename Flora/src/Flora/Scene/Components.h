@@ -8,6 +8,8 @@
 #include "Flora/Utils/PhysicsUtils.h"
 
 namespace Flora {
+	enum class AudioState { NONE, PLAY, STOP, PAUSE, REWIND };
+
 	struct TagComponent {
 		std::string Tag;
 		TagComponent() = default;
@@ -202,7 +204,8 @@ namespace Flora {
 		bool Loop = false;
 		float Pitch = 1.0f;
 		float Gain = 1.0f;
-		glm::vec3 Velocity = { 0.0f, 0.0f, 0.0f }; //make a button in editor to play test!
+		glm::vec3 Velocity = { 0.0f, 0.0f, 0.0f };
+		AudioState State = AudioState::NONE;
 		AudioSourceComponent() = default;
 		AudioSourceComponent(const AudioSourceComponent& other) {
 			Scale = other.Scale;
@@ -211,12 +214,8 @@ namespace Flora {
 			Pitch = other.Pitch;
 			Gain = other.Gain;
 			Velocity = other.Velocity;
+			State = other.State;
 		}
-		void Play() { StartAudio = true; StopAudio = false; }
-		void Stop() { StartAudio = false; StopAudio = true; }
-	private:
-		bool StartAudio = false;
-		bool StopAudio = false;
 	};
 
 	struct AudioListenerComponent {

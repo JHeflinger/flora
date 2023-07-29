@@ -1,17 +1,17 @@
 Project Filepath: D:\Dev\Flora\Fauna\Projects\Sandbox Studio\Sandbox Studio.flproj
 Scene Filepath: assets\scenes\Test.flora
-Selected Entity: 16
-Current Gizmo: 120
+Selected Entity: 17
+Current Gizmo: 7
 Editor Camera Type: Perspective
 Visible Physics Colliders: false
 General Camera Settings:
-  Position: [75.616806, -8.138587, 80.4058533]
+  Position: [87.083992, 30.0733738, 101.640442]
   Focal Point: [20.5180721, -10.5821209, -18.3755817]
   Camera Bound: true
 Perspective Camera Settings:
-  Distance: 113.135376
-  Pitch: 0.0216000006
-  Yaw: -0.50879997
+  Distance: 143.135376
+  Pitch: 0.288000077
+  Yaw: -0.506400049
 Orthographic Camera Settings:
   Size: 54.8417969
 Closed Panels:
