@@ -158,6 +158,8 @@ TODO:
 
 	- use std::filesystem::path when able
 
+	- get and set primary camera and listener entities in scripting engine neeeded or really all scene specfici functions
+
 
 IN PROGRESS:
 

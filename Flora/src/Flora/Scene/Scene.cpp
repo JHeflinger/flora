@@ -214,6 +214,7 @@ namespace Flora {
 		CopyComponent<BoxCollider2DComponent>(entity, newEntity);
 		CopyComponent<CircleCollider2DComponent>(entity, newEntity);
 		CopyComponent<AudioSourceComponent>(entity, newEntity);
+		CopyComponent<AudioListenerComponent>(entity, newEntity);
 	}
 
 	static void UpdateAudioEntity(Entity entity) {
@@ -361,6 +362,13 @@ namespace Flora {
 			Entity entity = { e, this };
 			UpdateAudioEntity(entity);
 		}
+
+		if (m_PrimaryAudioListenerHandle >= 0) {
+			Entity entity = { (entt::entity)((uint32_t)m_PrimaryAudioListenerHandle), this };
+			TransformComponent tfc = entity.GetComponent<TransformComponent>();
+			AudioListenerComponent alc = entity.GetComponent<AudioListenerComponent>();
+			AudioCommand::UpdateListener(tfc.Translation, tfc.Rotation, alc.Velocity, alc.Gain);
+		}
 	}
 
 	void Scene::OnUpdateEditor(Timestep ts, glm::mat4 viewProjection) {
@@ -431,4 +439,7 @@ namespace Flora {
 
 	template<>
 	void Scene::OnComponentAdded<AudioSourceComponent>(Entity entity, AudioSourceComponent& component) {}
+
+	template<>
+	void Scene::OnComponentAdded<AudioListenerComponent>(Entity entity, AudioListenerComponent& component) {}
 }

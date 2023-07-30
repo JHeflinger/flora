@@ -1,5 +1,6 @@
 Scene: Testing
 Primary Camera: 15
+Primary Audio Listener: 16
 Physics:
   Gravity: 34
   VelocityIterations: 6
@@ -167,6 +168,9 @@ Entities:
       Friction: 4.4000001
       Restitution: 0
       RestitutionThreshold: 0.5
+    AudioListenerComponent:
+      Gain: 0.720000029
+      Velocity: [0.899999976, 0.600000024, 0.600000024]
   - Entity: 15
     TagComponent:
       Tag: Camera

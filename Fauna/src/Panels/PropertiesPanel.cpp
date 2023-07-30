@@ -434,6 +434,7 @@ namespace Flora {
 			DrawAddComponentItem<BoxCollider2DComponent>("Box Collider 2D", m_EditorContext->SelectedEntity);
 			DrawAddComponentItem<CircleCollider2DComponent>("Circle Collider 2D", m_EditorContext->SelectedEntity);
 			DrawAddComponentItem<AudioSourceComponent>("Audio Source", m_EditorContext->SelectedEntity);
+			DrawAddComponentItem<AudioListenerComponent>("Audio Listener", m_EditorContext->SelectedEntity);
 			ImGui::EndPopup();
 		}
 		ImGui::PopItemWidth();
@@ -1306,6 +1307,43 @@ namespace Flora {
 				ImGui::DragFloat("##scale", &component.Scale);
 				ImGui::Checkbox("##loop", &component.Loop);
 				ImGui::DragFloat("##pitch", &component.Pitch);
+				ImGui::DragFloat("##gain", &component.Gain, 0.01f, 0.0f, 1.0f);
+				ImGui::Columns(1);
+				ImGui::Dummy({ 0, 2 });
+
+				DrawVec3Control("Velocity", component.Velocity);
+				ImGui::TreePop();
+			}
+		});
+	
+		DrawComponent<AudioListenerComponent>("Audio Listener", entity, [](auto& entity, auto& component) {
+			ImGui::Columns(2);
+			ImGui::SetColumnWidth(0, 150.0f);
+			ImGui::Text("Primary Listener");
+			ImGui::NextColumn();
+			int primaryAudioListener = entity.GetScene()->GetPrimaryAudioListener();
+			bool isPrimary = false;
+			if (primaryAudioListener >= 0)
+				isPrimary = (uint32_t)(primaryAudioListener) == (uint32_t)entity;
+			if (ImGui::Checkbox("##Primary", &isPrimary)) {
+				if (isPrimary) {
+					entity.GetScene()->SetPrimaryAudioListener((int)(uint32_t)entity);
+				} else {
+					entity.GetScene()->SetPrimaryAudioListener(-1);
+				}
+			}
+			ImGui::Columns(1);
+			ImGui::Dummy(ImVec2(0, 10.0f));
+			ImGui::Separator(); //===========================separator
+			ImGui::Dummy(ImVec2(0, 10.0f));
+
+			const ImGuiTreeNodeFlags treeNodeFlags = ImGuiTreeNodeFlags_SpanAvailWidth | ImGuiTreeNodeFlags_AllowItemOverlap | ImGuiTreeNodeFlags_FramePadding;
+			bool open = ImGui::TreeNodeEx((void*)typeid(ScriptComponent).hash_code(), treeNodeFlags, "Advanced Options");
+			if (open) {
+				ImGui::Columns(2);
+				ImGui::SetColumnWidth(0, 100.0f);
+				ImGui::Text("Gain");
+				ImGui::NextColumn();
 				ImGui::DragFloat("##gain", &component.Gain, 0.01f, 0.0f, 1.0f);
 				ImGui::Columns(1);
 				ImGui::Dummy({ 0, 2 });

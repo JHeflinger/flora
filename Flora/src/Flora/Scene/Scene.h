@@ -19,6 +19,7 @@ namespace Flora {
 		Entity CopyEntity(Entity entity);
 		Entity CopyEntity(Entity entity, Entity parent);
 		int GetPrimaryCamera() { return m_PrimaryCameraHandle; }
+		int GetPrimaryAudioListener() { return m_PrimaryAudioListenerHandle; }
 		std::vector<Entity> GetEntitiesByTag(std::string tag);
 		bool EntityExists(uint32_t entityID);
 		bool IsScenePaused() { return m_Paused; }
@@ -35,6 +36,7 @@ namespace Flora {
 		void SetViewportFocused(bool hovered) { m_ViewportFocused = hovered; }
 		void SetSceneName(std::string name) { m_SceneName = name; }
 		void SetPrimaryCamera(int camera) { m_PrimaryCameraHandle = camera; }
+		void SetPrimaryAudioListener(int listener) { m_PrimaryAudioListenerHandle = listener; }
 		void SetScenePaused(bool paused) { m_Paused = paused; }
 		std::string GetSceneFilepath() { return m_SceneFilepath; }
 		std::string GetSceneName() { return m_SceneName; }
@@ -82,7 +84,8 @@ namespace Flora {
 		bool m_Paused = false;
 		std::string m_SceneFilepath = "NULL";
 		std::string m_SceneName = "Untitled";
-		int m_PrimaryCameraHandle = -1;
+		int m_PrimaryCameraHandle = -1; //TODO: change to int64_t?
+		int m_PrimaryAudioListenerHandle = -1;
 		b2World* m_PhysicsWorld = nullptr;
 		float m_Gravity = 9.8f;
 		int32_t m_PhysicsVelocityIterations = 6;

@@ -274,6 +274,15 @@ namespace Flora {
 			out << YAML::EndMap;
 		}
 
+		if (entity.HasComponent<AudioListenerComponent>()) {
+			out << YAML::Key << "AudioListenerComponent";
+			auto& audioListenerComponent = entity.GetComponent<AudioListenerComponent>();
+			out << YAML::BeginMap;
+			out << YAML::Key << "Gain" << YAML::Value << audioListenerComponent.Gain;
+			out << YAML::Key << "Velocity" << YAML::Value << audioListenerComponent.Velocity;
+			out << YAML::EndMap;
+		}
+
 		out << YAML::EndMap;
 	}
 
@@ -287,6 +296,7 @@ namespace Flora {
 		out << YAML::BeginMap;
 		out << YAML::Key << "Scene" << YAML::Value << scene->GetSceneName();
 		out << YAML::Key << "Primary Camera" << YAML::Value << scene->GetPrimaryCamera();
+		out << YAML::Key << "Primary Audio Listener" << YAML::Value << scene->GetPrimaryAudioListener();
 		out << YAML::Key << "Physics";
 		out << YAML::BeginMap;
 		out << YAML::Key << "Gravity" << YAML::Value << scene->GetGravity();
@@ -325,6 +335,7 @@ namespace Flora {
 		FL_CORE_TRACE("Deserializing scene '{0}'", sceneName);
 
 		scene->SetPrimaryCamera(data["Primary Camera"].as<int>());
+		scene->SetPrimaryAudioListener(data["Primary Audio Listener"].as<int>());
 
 		scene->SetGravity(data["Physics"]["Gravity"].as<float>());
 		scene->SetVelocityIterations(data["Physics"]["VelocityIterations"].as<int32_t>());
@@ -498,6 +509,13 @@ namespace Flora {
 					asc.Pitch = audioSourceComponent["Pitch"].as<float>();
 					asc.Gain = audioSourceComponent["Gain"].as<float>();
 					asc.Velocity = audioSourceComponent["Velocity"].as<glm::vec3>();
+				}
+
+				auto audioListenerComponent = entity["AudioListenerComponent"];
+				if (audioListenerComponent) {
+					auto& alc = deserializedEntity.AddComponent<AudioListenerComponent>();
+					alc.Gain = audioListenerComponent["Gain"].as<float>();
+					alc.Velocity = audioListenerComponent["Velocity"].as<glm::vec3>();
 				}
 			}
 		}

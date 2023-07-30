@@ -193,6 +193,13 @@ namespace Flora {
         alSourcei(audio.SourceID, AL_BUFFER, audio.BufferID);
     }
 
+    void AudioCommand::UpdateListener(glm::vec3 location, glm::vec3 rotation, glm::vec3 velocity, float gain) {
+        alListenerf(AL_GAIN, gain);
+        alListener3f(AL_POSITION, location.x, location.y, location.z);
+        alListener3f(AL_VELOCITY, velocity.x, velocity.y, velocity.z);
+        alListener3f(AL_ORIENTATION, rotation.x, rotation.y, rotation.z);
+    }
+
     void AudioCommand::Stop(Audio& audio) {
         alSourceStop(audio.SourceID);
     }

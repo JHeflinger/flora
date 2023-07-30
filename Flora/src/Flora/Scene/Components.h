@@ -219,7 +219,13 @@ namespace Flora {
 	};
 
 	struct AudioListenerComponent {
-
+		glm::vec3 Velocity = { 0.0f, 0.0f, 0.0f };
+		float Gain = 1.0f;
+		AudioListenerComponent() = default;
+		AudioListenerComponent(const AudioListenerComponent& other) {
+			Velocity = other.Velocity;
+			Gain = other.Gain;
+		}
 	};
 
 	template<typename... Component>
@@ -229,5 +235,6 @@ namespace Flora {
 		ComponentGroup<TagComponent, TransformComponent, SpriteRendererComponent,
 		CircleRendererComponent, CameraComponent, ScriptComponent,
 		ScriptManagerComponent, ChildComponent, ParentComponent, RigidBody2DComponent, 
-		BoxCollider2DComponent, CircleCollider2DComponent, AudioSourceComponent>;
+		BoxCollider2DComponent, CircleCollider2DComponent, AudioSourceComponent,
+		AudioListenerComponent>;
 }

@@ -23,6 +23,7 @@ namespace Flora {
 		static void Shutdown();
         static void Play(Audio& audio, float scale = 1.0f, float pitch = 1.0f, float gain = 1.0f, glm::vec3 velocity = { 0.0f, 0.0f, 0.0f }, bool loop = false, glm::vec3 location = { 0.0f, 0.0f, 0.0f });
         static void Update(Audio& audio, float scale = 1.0f, float pitch = 1.0f, float gain = 1.0f, glm::vec3 velocity = { 0.0f, 0.0f, 0.0f }, bool loop = false, glm::vec3 location = { 0.0f, 0.0f, 0.0f });
+        static void UpdateListener(glm::vec3 location, glm::vec3 rotation, glm::vec3 velocity, float gain);
         static void Stop(Audio& audio);
         static void Pause(Audio& audio);
         static void Rewind(Audio& audio);
