@@ -1,11 +1,7 @@
 #pragma once
-#include "Flora/Core/Base.h"
-#include "Flora/Events/Event.h"
-#include "Flora/Events/ApplicationEvent.h"
 #include "Flora/Core/Window.h"
 #include "Flora/Core/LayerStack.h"
 #include "Flora/ImGui/ImGuiLayer.h"
-#include "Flora/Core/Timestep.h"
 
 namespace Flora {
 	struct ApplicationCommandLineArgs {
@@ -27,11 +23,11 @@ namespace Flora {
 		void PushLayer(Layer* layer);
 		void PushOverlay(Layer* layer);
 		void Close();
+		void SubmitToMainThread(const std::function<void()>& function);
 		ImGuiLayer* GetImGuiLayer() { return m_ImGuiLayer; }
 		inline static Application& Get() { return *s_Instance; }
 		ApplicationCommandLineArgs GetCommandLineArgs() const { return m_CommandLineArgs; }
 		inline Window& GetWindow() { return *m_Window; }
-		void SubmitToMainThread(const std::function<void()>& function);
 	private:
 		bool OnWindowClosed(WindowCloseEvent& e);
 		bool OnWindowResize(WindowResizeEvent& e);

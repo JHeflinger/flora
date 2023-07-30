@@ -1,6 +1,5 @@
 #pragma once
 #include "Flora/Renderer/Texture.h"
-#include <glm/glm.hpp>
 
 namespace Flora {
 	class SubTexture2D {

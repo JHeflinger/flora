@@ -1,9 +1,8 @@
 #pragma once
 #include "flpch.h"
-#include "Flora/Core/Base.h"
 
 namespace Flora {
-	//Events are currently blocking, meaning that when
+	// NOTE: Events are currently blocking, meaning that when
 	// an event occurs it gets dispatched and dealt with 
 	// right then and there. For the future, a better way
 	// would be to buffer events in an event bus and process

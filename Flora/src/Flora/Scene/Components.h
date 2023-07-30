@@ -1,10 +1,9 @@
 #pragma once
-#include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtx/quaternion.hpp>
 #include "Flora/Scene/SceneCamera.h"
 #include "Flora/Scene/ScriptableEntity.h"
 #include "Flora/Renderer/Texture.h"
-#include <glm/gtx/quaternion.hpp>
 #include "Flora/Utils/PhysicsUtils.h"
 
 namespace Flora {

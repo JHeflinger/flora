@@ -1,9 +1,6 @@
 #pragma once
-#include <stdint.h>
-#include <cstring>
 
 namespace Flora {
-
 	struct Buffer {
 		uint8_t* Data = nullptr;
 		uint64_t Size = 0;
@@ -70,6 +67,4 @@ namespace Flora {
 	private:
 		Buffer m_Buffer;
 	};
-
-
 }

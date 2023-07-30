@@ -1,6 +1,5 @@
 #pragma once
 #include <yaml-cpp/yaml.h>
-#include <glm/glm.hpp>
 
 namespace Flora {
 	static YAML::Emitter& operator<<(YAML::Emitter& out, const glm::vec2& v) {

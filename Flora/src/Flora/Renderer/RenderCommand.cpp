@@ -1,5 +1,5 @@
 #include "flpch.h"
-#include "Flora/Renderer/RenderCommand.h"
+#include "RenderCommand.h"
 #include "Platform/OpenGL/OpenGLRendererAPI.h"
 
 namespace Flora {

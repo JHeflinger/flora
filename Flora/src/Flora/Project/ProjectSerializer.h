@@ -1,10 +1,8 @@
 #pragma once
-#include "Project.h"
+#include "Flora/Project/Project.h"
 
 namespace Flora {
-
-	class ProjectSerializer
-	{
+	class ProjectSerializer {
 	public:
 		ProjectSerializer(Ref<Project> project);
 		bool Serialize(const std::filesystem::path& filepath);
@@ -12,5 +10,4 @@ namespace Flora {
 	private:
 		Ref<Project> m_Project;
 	};
-
 }

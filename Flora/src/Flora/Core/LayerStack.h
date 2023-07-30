@@ -1,7 +1,5 @@
 #pragma once
-#include "Flora/Core/Base.h"
 #include "Flora/Core/Layer.h"
-#include <vector>
 
 namespace Flora {
 	class FLORA_API LayerStack {

@@ -1,11 +1,9 @@
 #include "flpch.h"
-#include "Flora/Utils/Serializer.h"
+#include "Serializer.h"
 #include "Flora/Scene/Entity.h"
 #include "Flora/Scene/Components.h"
 #include "Flora/Scripting/ScriptEngine.h"
 #include "Flora/Project/Project.h"
-#include <fstream>
-#include <filesystem>
 
 namespace YAML {
 	template<>

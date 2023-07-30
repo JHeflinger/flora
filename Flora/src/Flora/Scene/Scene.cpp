@@ -1,12 +1,10 @@
 #include "flpch.h"
-#include "Flora/Scene/Scene.h"
+#include "Scene.h"
 #include "Flora/Renderer/Renderer2D.h"
 #include "Flora/Scene/Entity.h"
 #include "Flora/Scene/Components.h"
 #include "Flora/Math/Math.h"
 #include "Flora/Scripting/ScriptEngine.h"
-#include <glm/glm.hpp>
-#include <filesystem>
 
 namespace Flora {
 	void Scene::DrawEntitySprite(Entity& entity, bool useTransformRef, glm::mat4 refTransform) {

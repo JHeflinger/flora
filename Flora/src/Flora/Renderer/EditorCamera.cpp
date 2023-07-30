@@ -1,9 +1,6 @@
 #include "flpch.h"
-#include "Flora/Renderer/EditorCamera.h"
+#include "EditorCamera.h"
 #include "Flora/Core/Input.h"
-#include "Flora/Core/KeyCodes.h"
-#include "Flora/Core/MouseCodes.h"
-#include <glfw/glfw3.h>
 #include <glm/gtx/quaternion.hpp>
 
 namespace Flora {

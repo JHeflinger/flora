@@ -1,5 +1,5 @@
 #include "flpch.h"
-#include "Flora/Renderer/Shader.h"
+#include "Shader.h"
 #include "Flora/Renderer/Renderer.h"
 #include "Platform/OpenGL/OpenGLShader.h"
 

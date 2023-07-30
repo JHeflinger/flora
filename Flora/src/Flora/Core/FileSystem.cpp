@@ -2,7 +2,6 @@
 #include "FileSystem.h"
 
 namespace Flora {
-
 	Buffer FileSystem::ReadFileBinary(const std::filesystem::path& filepath) {
 		std::ifstream stream(filepath, std::ios::binary | std::ios::ate);
 
@@ -19,5 +18,4 @@ namespace Flora {
 		stream.close();
 		return buffer;
 	}
-
 }

@@ -1,6 +1,5 @@
 #pragma once
 #include "flpch.h"
-#include "Flora/Core/Base.h"
 #include "Flora/Events/Event.h"
 
 namespace Flora {
@@ -15,7 +14,6 @@ namespace Flora {
 		}
 	};
 
-	//Interface representing a desktop system based window
 	class FLORA_API Window {
 	public:
 		using EventCallbackFn = std::function<void(Event&)>;
@@ -23,7 +21,6 @@ namespace Flora {
 		virtual void OnUpdate() = 0;
 		virtual uint32_t GetWidth() const = 0;
 		virtual uint32_t GetHeight() const = 0;
-		//Window attributes
 		virtual void SetEventCallback(const EventCallbackFn& callback) = 0;
 		virtual void SetVSync(bool enabled) = 0;
 		virtual bool IsVSync() const = 0;

@@ -1,5 +1,5 @@
 #include "flpch.h"
-#include "Flora/Renderer/SubTexture2D.h"
+#include "SubTexture2D.h"
 
 namespace Flora {
 	SubTexture2D::SubTexture2D(const Ref<Texture2D>& texture, const glm::vec2& min, const glm::vec2& max)

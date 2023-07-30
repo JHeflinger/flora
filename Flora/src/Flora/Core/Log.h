@@ -1,5 +1,4 @@
 #pragma once
-#include "Flora/Core/Base.h"
 #include "spdlog/spdlog.h"
 #include "spdlog/sinks/stdout_color_sinks.h"
 #include "spdlog/sinks/ringbuffer_sink.h"

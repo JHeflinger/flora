@@ -1,8 +1,6 @@
 #pragma once
 #include "Flora/Scene/Scene.h"
 #include "Flora/Scene/Entity.h"
-#include <filesystem>
-#include <string>
 
 extern "C" {
 	typedef struct _MonoClass MonoClass;

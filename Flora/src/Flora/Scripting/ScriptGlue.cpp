@@ -2,14 +2,13 @@
 #include "ScriptGlue.h"
 #include "mono/metadata/object.h"
 #include "mono/metadata/reflection.h"
+#include "mono/jit/jit.h"
 #include "Flora/Scene/Scene.h"
 #include "Flora/Scene/Entity.h"
 #include "Flora/Scripting/ScriptEngine.h"
 #include "Flora/Core/Input.h"
 #include "Flora/Utils/PhysicsUtils.h"
-#include <glm/glm.hpp>
 #include "Flora/Utils/DeveloperUtils.h"
-#include "mono/jit/jit.h"
 
 namespace Flora {
 	

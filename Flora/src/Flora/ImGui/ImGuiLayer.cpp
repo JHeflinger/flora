@@ -1,15 +1,12 @@
 #include "flpch.h"
-#include "Flora/ImGui/ImGuiLayer.h"
+#include "ImGuiLayer.h"
 #include "imgui.h"
 #include "backends/imgui_impl_glfw.h"
 #include "backends/imgui_impl_opengl3.h"
-#include "Flora/Core/Application.h"
 #include "ImGuizmo.h"
 #include "implot.h"
-
-//TEMPORARY
 #include <GLFW/glfw3.h>
-#include <glad/glad.h>
+#include "Flora/Core/Application.h"
 
 namespace Flora {
 	ImGuiLayer::ImGuiLayer() : Layer("ImGuiLayer") {

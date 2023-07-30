@@ -1,10 +1,6 @@
 #pragma once
-#include <string>
-#include <filesystem>
-#include "Flora/Core/Base.h"
 
 namespace Flora {
-
 	struct ProjectConfig {
 		std::string Name = "Untitled";
 		std::filesystem::path StartScene;

@@ -128,11 +128,7 @@ TODO:
 
 	- refactor classes / reorder them to they're just neater and more readable
 
-	- try to use forward declarations in .h files if possible and iclude everyting in the cpp files instead
-
 	- documentation?
-
-	- script component in propertiespanel looks ugly, fix it
 
 	- should scripts be before or after physics calculations?
 
@@ -143,6 +139,8 @@ TODO:
 	- refine copy and paste
 
 	- organize premake
+
+	- update scripting engine with audio components
 
 	- modify project settings popup
 
@@ -162,11 +160,6 @@ TODO:
 
 
 IN PROGRESS:
-
-	- projects
-	
-	- c# scripting!
-		- doing all field types
 
 IMPLEMENTED TICKETS:
 

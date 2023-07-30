@@ -1,5 +1,4 @@
 #pragma once
-#include <glm/glm.hpp>
 #include "Flora/Renderer/VertexArray.h"
 
 namespace Flora {

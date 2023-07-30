@@ -1,11 +1,8 @@
 #include "flpch.h"
-#include "Flora/Core/Application.h"
-#include "Flora/Core/Log.h"
-#include "Flora/Core/Input.h"
+#include "Application.h"
+#include <glfw/glfw3.h>
 #include "Flora/Renderer/Renderer.h"
 #include "Flora/Scripting/ScriptEngine.h"
-
-#include <glfw/glfw3.h> //remove later
 
 namespace Flora {
 

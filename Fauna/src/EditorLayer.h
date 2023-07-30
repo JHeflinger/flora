@@ -9,6 +9,7 @@
 #include "Panels/PhysicsPanel.h"
 #include "Flora/Renderer/EditorCamera.h"
 #include "Utils/Structures.h"
+#include "Flora/Events/KeyEvent.h"
 #include <map>
 
 namespace Flora {

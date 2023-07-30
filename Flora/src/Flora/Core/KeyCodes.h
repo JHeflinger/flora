@@ -1,13 +1,10 @@
 #pragma once
 
-namespace Flora
-{
+namespace Flora {
 	using KeyCode = uint16_t;
 
-	namespace Key
-	{
-		enum : KeyCode
-		{
+	namespace Key {
+		enum : KeyCode {
 			// From glfw3.h
 			Space = 32,
 			Apostrophe = 39, /* ' */

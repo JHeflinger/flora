@@ -1,5 +1,5 @@
 #include "flpch.h"
-#include "Flora/Core/Window.h"
+#include "Window.h"
 
 #ifdef FL_PLATFORM_WINDOWS
 	#include "Platform/Windows/WindowsWindow.h"

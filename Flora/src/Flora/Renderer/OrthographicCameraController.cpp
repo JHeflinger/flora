@@ -1,5 +1,5 @@
 #include "flpch.h"
-#include "Flora/Renderer/OrthographicCameraController.h"
+#include "OrthographicCameraController.h"
 #include "Flora/Core/Input.h"
 #include "Flora/Core/KeyCodes.h"
 

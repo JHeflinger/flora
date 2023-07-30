@@ -1,5 +1,4 @@
 #pragma once
-
 #include "Flora/Renderer/Camera.h"
 
 namespace Flora {

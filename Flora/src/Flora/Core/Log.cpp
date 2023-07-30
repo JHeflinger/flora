@@ -1,5 +1,5 @@
 #include "flpch.h"
-#include "Flora/Core/Log.h"
+#include "Log.h"
 
 namespace Flora {
 	std::shared_ptr<spdlog::sinks::ringbuffer_sink_mt> Log::s_CoreRingbuffer;

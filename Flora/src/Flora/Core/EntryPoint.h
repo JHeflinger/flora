@@ -1,5 +1,4 @@
 #pragma once
-#include "Flora/Core/Base.h"
 #include "Flora/Core/Application.h"
 
 #ifdef FL_PLATFORM_WINDOWS

@@ -1,5 +1,5 @@
 #include "flpch.h"
-#include "Flora/Renderer/Texture.h"
+#include "Texture.h"
 #include "Flora/Renderer/Renderer.h"
 #include "Platform/OpenGL/OpenGLTexture.h"
 

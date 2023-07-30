@@ -1,9 +1,8 @@
 #pragma once
-#include "Camera.h"
+#include "Flora/Renderer/Camera.h"
 #include "Flora/Core/Timestep.h"
 #include "Flora/Events/Event.h"
 #include "Flora/Events/MouseEvent.h"
-#include <glm/glm.hpp>
 
 namespace Flora {
 	class EditorCamera : public Camera {

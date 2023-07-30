@@ -1,9 +1,8 @@
 #include "flpch.h"
 #include "Project.h"
-#include "ProjectSerializer.h"
+#include "Flora/Project/ProjectSerializer.h"
 
-namespace Flora {
-
+namespace Flora { 
 	Ref<Project> Project::New() {
 		s_ActiveProject = CreateRef<Project>();
 		return s_ActiveProject;
