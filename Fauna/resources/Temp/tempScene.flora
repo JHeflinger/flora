@@ -109,7 +109,7 @@ Entities:
     TagComponent:
       Tag: ball
     TransformComponent:
-      Translation: [35.2040634, -2.55051994, 9.87065697]
+      Translation: [35.1183701, -2.55042839, 9.91820335]
       Rotation: [0, 0, 0]
       Scale: [1, 1, 1]
     CircleRendererComponent:
@@ -129,7 +129,7 @@ Entities:
       RestitutionThreshold: 0.5
     AudioSourceComponent:
       Scale: 1
-      AudioFile: D:\Dev\Flora\Fauna\Projects\Sandbox Studio\Assets\Audio\cringe.wav
+      AudioFile: D:\Dev\Flora\Fauna\Projects\Sandbox Studio\Assets\Audio\phone_wav.wav
       Loop: false
       Pitch: 1
       Gain: 1

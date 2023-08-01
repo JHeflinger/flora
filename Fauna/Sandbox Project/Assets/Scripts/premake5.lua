@@ -1,9 +1,9 @@
 local FloraRootDir = '../../../..'
 include(FloraRootDir .. "/vendor/premake/premake_customization/solution_items.lua")
 
-workspace "Sandbox Studio"
+workspace "MS Paint Legends"
 architecture "x86_64"
-startproject "Sandbox Studio"
+startproject "MS Paint Legends"
 
 configurations
 {
@@ -19,17 +19,17 @@ flags
 
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
-project "Sandbox Studio"
+project "MS Paint Legends"
 kind "SharedLib"
 language "C#"
 dotnetframework "4.7.2"
 
 targetdir("Binaries")
-objdir("Project Intermediates/Sandbox Studio")
+objdir("Project Intermediates/MS Paint Legends")
 
 files
 {
-"D:/Dev/Flora/Fauna/Projects/Sandbox Studio/Assets/Scripts/**.cs", 
+"D:/Dev/MSPL/Assets/Scripts/**.cs", 
 }
 
 links

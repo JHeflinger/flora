@@ -115,11 +115,10 @@ namespace Flora {
 	};
 
 	struct ScriptManagerComponent {
-		//TODO
-		int TODO = 1;
+		std::vector<std::string> ClassNames;
 		ScriptManagerComponent() = default;
 		ScriptManagerComponent(const ScriptManagerComponent& other) {
-			TODO = 2;
+			ClassNames = other.ClassNames;
 		}
 	};
 

@@ -101,13 +101,16 @@ namespace Flora {
 		params->ProjectFilepath = projectFilepath;
 
 		// TODO: HORRIBLE SOLUTION RIGHT NOW... REFACTOR WHEN RESTRUCTURING SCENE SET UP SYSTEM LATER
-		if (!ScriptEngine::IsInitialized())
+		if (!ScriptEngine::IsInitialized() && params->ProjectFilepath != "")
 			ScriptEngine::Init();
 
-		// set up saved scene
-		std::string sceneFilepath = data["Scene Filepath"].as<std::string>();
-		params->ActiveScene->SetSceneFilepath(sceneFilepath);
-		bool success = Serializer::DeserializeScene(params->ActiveScene, sceneFilepath);
+		// set up saved scene if the project is valid
+		bool success = false;
+		if (params->ProjectFilepath != "") {
+			std::string sceneFilepath = data["Scene Filepath"].as<std::string>();
+			params->ActiveScene->SetSceneFilepath(sceneFilepath);
+			success = Serializer::DeserializeScene(params->ActiveScene, sceneFilepath);
+		}
 
 		// set closed panels
 		params->ClosedPanels = data["Closed Panels"].as<std::vector<std::string>>();

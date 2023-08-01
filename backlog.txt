@@ -86,8 +86,6 @@ TODO:
 
 	- open visual studio button
 
-	- audio
-
 	- content browser primary folders cannot be deleted
 
 	- refactor content browser panel popup
@@ -156,12 +154,18 @@ TODO:
 
 	- use std::filesystem::path when able
 
+	- scriptengine needs to reload and correct the assemblies whenever the project changes or even a new one is created
+
+	- scriptengine assembly needs to be created on load somehow
+
 	- get and set primary camera and listener entities in scripting engine neeeded or really all scene specfici functions
 
 
 IN PROGRESS:
 
 IMPLEMENTED TICKETS:
+
+	- audio
 
 	- fixed issue where stopping a simulated scene would unselect the selected entity
 

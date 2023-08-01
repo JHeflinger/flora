@@ -108,6 +108,19 @@ namespace Flora {
 		style.WindowMinSize.x = 32.0f;
 
 		if (ImGui::BeginMenuBar()) {
+			if (ImGui::BeginMenu("Project")) {
+				if (ImGui::MenuItem("New")) {
+					m_EditorParams->ProjectFilepath = "";
+				}
+				if (ImGui::MenuItem("Settings")) {
+
+				}
+				if (ImGui::MenuItem("Open")) {
+
+				}
+				ImGui::EndMenu();
+			}
+
 			if (ImGui::BeginMenu("Scene")) {
 				if (ImGui::MenuItem("New", "Ctrl+N")) {
 					PromptSave(SavePromptType::NEW);
@@ -455,10 +468,12 @@ namespace Flora {
 				}
 				if (ImGui::Button("OK", { 60, 25 })) {
 					Project::GenerateProjectDirectory(std::string(name_buffer), std::filesystem::path(filepath_buffer));
-					m_EditorParams->ProjectFilepath = std::string(filepath_buffer) + std::string(name_buffer) + ".flproj";
+					m_EditorParams->ProjectFilepath = std::string(filepath_buffer) + "/" + std::string(name_buffer) + ".flproj";
 					m_EditorParams->Project->GetConfig().AssetDirectory = std::filesystem::path(filepath_buffer) / "Assets";
 					m_EditorParams->Project->GetConfig().Name = std::string(name_buffer);
 					m_EditorParams->Project->SaveActive(std::filesystem::path(filepath_buffer) / (std::string(name_buffer) + ".flproj"));
+					GetSpecificPanel<ContentBrowserPanel>("Content Browser")->Initialize();
+					PromptSave(SavePromptType::NEW);
 					ImGui::CloseCurrentPopup();
 				}
 				if (!isvalid) {

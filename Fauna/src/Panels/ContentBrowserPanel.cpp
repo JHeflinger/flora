@@ -18,6 +18,7 @@ namespace Flora {
 
 	void ContentBrowserPanel::OnImGuiRender() {
 		ImGui::Begin("Content Browser", &m_Enabled);
+		if (m_EditorContext->ProjectFilepath == "") { ImGui::End(); return; }
 		if (ImGui::IsWindowHovered()) m_EditorContext->HoveredPanel = Panels::CONTENTBROWSER;
 		if (ImGui::IsWindowFocused()) m_EditorContext->FocusedPanel = Panels::CONTENTBROWSER;
 

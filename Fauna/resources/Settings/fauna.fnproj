@@ -1,21 +1,21 @@
-Project Filepath: D:\Dev\Flora\Fauna\Projects\Sandbox Studio\Sandbox Studio.flproj
-Scene Filepath: assets\scenes\Test.flora
-Selected Entity: 17
-Current Gizmo: 7
+Project Filepath: D:\Dev\MSPL\MS Paint Legends.flproj
+Scene Filepath: D:\Dev\MSPL\Assets\Scenes\Index.flora
+Selected Entity: -1
+Current Gizmo: 120
 Editor Camera Type: Perspective
 Visible Physics Colliders: false
 General Camera Settings:
-  Position: [68.4817581, 18.7119637, 68.1012802]
-  Focal Point: [20.5180721, -10.5821209, -18.3755817]
-  Camera Bound: true
+  Position: [55.3813782, 13.1407242, -80.5862808]
+  Focal Point: [29.6592941, -15.5847893, -6.93364573]
+  Camera Bound: false
 Perspective Camera Settings:
-  Distance: 103.135376
-  Pitch: 0.288000077
-  Yaw: -0.506400049
+  Distance: 83.135376
+  Pitch: 0.35280028
+  Yaw: -2.80559945
 Orthographic Camera Settings:
   Size: 54.8417969
 Closed Panels:
-  - Physics
+  []
 Stat Panel Settings:
   Timeframe: 4.19000006
   Show Key: true
