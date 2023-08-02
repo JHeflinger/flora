@@ -110,13 +110,13 @@ namespace Flora {
 		if (ImGui::BeginMenuBar()) {
 			if (ImGui::BeginMenu("Project")) {
 				if (ImGui::MenuItem("New")) {
-					m_EditorParams->ProjectFilepath = "";
+					m_ProjectPromptType = ProjectPromptType::NEW;
 				}
 				if (ImGui::MenuItem("Settings")) {
-
+					m_ProjectPromptType = ProjectPromptType::EDIT;
 				}
 				if (ImGui::MenuItem("Open")) {
-
+					m_ProjectPromptType = ProjectPromptType::OPEN;
 				}
 				ImGui::EndMenu();
 			}
@@ -434,7 +434,7 @@ namespace Flora {
 
 	void EditorLayer::RenderProjectPrompt() {
 		bool firstProject = m_EditorParams->ProjectFilepath == "";
-		if (firstProject) {
+		if (firstProject || m_ProjectPromptType == ProjectPromptType::NEW) {
 			ImGui::OpenPopup("New Fauna Project");
 			ImVec2 center = ImGui::GetMainViewport()->GetCenter();
 			ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
@@ -474,6 +474,7 @@ namespace Flora {
 					m_EditorParams->Project->SaveActive(std::filesystem::path(filepath_buffer) / (std::string(name_buffer) + ".flproj"));
 					GetSpecificPanel<ContentBrowserPanel>("Content Browser")->Initialize();
 					PromptSave(SavePromptType::NEW);
+					m_ProjectPromptType = ProjectPromptType::NONE;
 					ImGui::CloseCurrentPopup();
 				}
 				if (!isvalid) {
@@ -482,6 +483,60 @@ namespace Flora {
 				}
 				ImGui::EndPopup();
 			}
+		} else if (m_ProjectPromptType == ProjectPromptType::EDIT) {
+			ImGui::OpenPopup("Edit Project Settings");
+			ImVec2 center = ImGui::GetMainViewport()->GetCenter();
+			ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
+			if (ImGui::BeginPopupModal("Edit Project Settings", NULL, ImGuiWindowFlags_AlwaysAutoResize)) {
+				static char filepath_buffer[1024];
+				static char name_buffer[1024];
+				if (name_buffer[0] == '\0') strncpy(name_buffer, m_EditorParams->Project->GetConfig().Name.c_str(), sizeof(name_buffer));
+				if (filepath_buffer[0] == '\0') strncpy(filepath_buffer, m_EditorParams->Project->GetConfig().StartScene.string().c_str(), sizeof(filepath_buffer));
+				float text_input_width = 300.0f;
+				ImGui::SetItemDefaultFocus();
+				ImGui::Text("Project Name");
+				ImGui::Dummy({ 0, 2 });
+				ImGui::SetNextItemWidth(text_input_width);
+				ImGui::InputText("##ProjectName", name_buffer, sizeof(name_buffer));
+				ImGui::Dummy({ 0, 10 });
+				ImGui::Text("Starting Scene");
+				ImGui::Dummy({ 0, 2 });
+				if (ImGui::Button("Browse", { 60, 25 })) {
+					std::string filepath = FileDialogs::OpenFile("Flora Scene (*.flora)\0*.flora\0");
+					strcpy(filepath_buffer, filepath.c_str());
+				}
+				ImGui::SameLine();
+				ImGui::SetNextItemWidth(text_input_width - 67);
+				ImGui::InputText("##scenefile", filepath_buffer, sizeof(filepath_buffer));
+				ImGui::Dummy({ 0, 7 });
+				ImGui::SetCursorPosX(ImGui::GetContentRegionAvail().x - 53);
+				bool isvalid = std::strlen(name_buffer) != 0;
+				if (isvalid)
+					isvalid = std::filesystem::exists(filepath_buffer) && !std::filesystem::is_directory(filepath_buffer);
+				if (!isvalid) {
+					ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
+					ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
+				}
+				if (ImGui::Button("OK", { 60, 25 })) {
+					m_EditorParams->Project->GetConfig().Name = std::string(name_buffer);
+					m_EditorParams->Project->GetConfig().StartScene = std::string(filepath_buffer);
+					Project::SaveActive(m_EditorParams->ProjectFilepath);
+					m_ProjectPromptType = ProjectPromptType::NONE;
+					ImGui::CloseCurrentPopup();
+				}
+				if (!isvalid) {
+					ImGui::PopItemFlag();
+					ImGui::PopStyleVar();
+				}
+				ImGui::EndPopup();
+			}
+		} else if (m_ProjectPromptType == ProjectPromptType::OPEN) {
+			std::string filepath = FileDialogs::OpenFile("Flora Project (*.flproj)\0*.flproj\0");
+			if (!filepath.empty()) {
+				m_EditorParams->Project = Project::Load(filepath);
+				m_EditorParams->ProjectFilepath = filepath;
+			}
+			m_ProjectPromptType = ProjectPromptType::NONE;
 		}
 	}
 

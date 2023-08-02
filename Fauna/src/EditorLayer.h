@@ -14,6 +14,7 @@
 
 namespace Flora {
 	enum class SavePromptType { NONE = 0, NORM = 1, FINAL = 2, OPEN = 3, NEW = 4, OPENPATH = 5};
+	enum class ProjectPromptType { NONE = 0, NEW = 1, EDIT = 2, OPEN = 3};
 
 	class EditorLayer : public Layer {
 	public:
@@ -63,8 +64,9 @@ namespace Flora {
 		// OverrideEvent - temp solution
 		bool m_OverrideEventReady = true;
 
-		// save prompt vars
+		// prompt vars
 		SavePromptType m_SavePromptType = SavePromptType::NONE;
+		ProjectPromptType m_ProjectPromptType = ProjectPromptType::NONE;
 
 		// process before close var
 		bool m_ReadyToClose = false;
