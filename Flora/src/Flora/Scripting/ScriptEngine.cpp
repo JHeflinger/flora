@@ -121,7 +121,8 @@ namespace Flora {
 
 	void ScriptEngine::Init() {
 		s_Data = new ScriptEngineData();
-		InitMono();
+		if (!m_MonoInitialized)
+			InitMono();
 		ScriptGlue::RegisterFunctions();
 		bool status = LoadAssembly("Resources/Scripts/Flora-ScriptCore.dll");
 		if (!status) {
@@ -197,6 +198,7 @@ namespace Flora {
 		if (s_Data->EnableDebugging)
 			mono_debug_domain_create(s_Data->RootDomain);
 		mono_thread_set_main(mono_thread_current());
+		m_MonoInitialized = true;
 	}
 
 	void ScriptEngine::ShutdownMono() {
@@ -208,6 +210,7 @@ namespace Flora {
 			s_Data->RootDomain = nullptr;
 		}
 		m_Initialized = false;
+		m_MonoInitialized = false;
 	}
 
 	MonoObject* ScriptEngine::InstantiateClass(MonoClass* monoClass) {

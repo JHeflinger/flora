@@ -137,7 +137,7 @@ namespace Flora {
 		StartPhysics();
 
 		// Scripting
-		{
+		if (ScriptEngine::IsInitialized()) {
 			ScriptEngine::OnRuntimeStart(this);
 
 			auto view = m_Registry.view<ScriptComponent>();
@@ -154,7 +154,8 @@ namespace Flora {
 	void Scene::OnRuntimeStop() {
 		delete m_PhysicsWorld;
 		m_PhysicsWorld = nullptr;
-		ScriptEngine::OnRuntimeStop();
+		if (ScriptEngine::IsInitialized())
+			ScriptEngine::OnRuntimeStop();
 		m_Paused = false;
 
 		//stop audio
@@ -313,10 +314,12 @@ namespace Flora {
 		//TODO
 
 		// mono scripts
-		auto view = m_Registry.view<ScriptComponent>();
-		for (auto e : view) {
-			Entity entity = { e, this };
-			ScriptEngine::UpdateEntity(entity, ts);
+		if (ScriptEngine::IsInitialized()) {
+			auto view = m_Registry.view<ScriptComponent>();
+			for (auto e : view) {
+				Entity entity = { e, this };
+				ScriptEngine::UpdateEntity(entity, ts);
+			}
 		}
 	}
 

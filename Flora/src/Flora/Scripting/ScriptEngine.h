@@ -139,6 +139,7 @@ namespace Flora {
 		static MonoImage* GetCoreAssemblyImage();
 	private:
 		inline static bool m_Initialized = false;
+		inline static bool m_MonoInitialized = false;
 		friend class ScriptClass;
 		friend class ScriptGlue;
 	};

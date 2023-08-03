@@ -543,21 +543,23 @@ namespace Flora {
 	bool EditorLayer::OnKeyPressed(KeyPressedEvent& e) {
 		// some shortcuts moved to OnOverrideEvent
 		if (e.GetRepeatCount() > 0) return false;
-		switch (e.GetKeyCode()) {
-		case Key::Q:
-			m_EditorParams->GizmoType = -1;
-			break;
-		case Key::W:
-			m_EditorParams->GizmoType = ImGuizmo::OPERATION::TRANSLATE;
-			break;
-		case Key::E:
-			m_EditorParams->GizmoType = ImGuizmo::OPERATION::ROTATE;
-			break;
-		case Key::R:
-			m_EditorParams->GizmoType = ImGuizmo::OPERATION::SCALE;
-			break;
-		default:
-			break;
+		if (m_EditorParams->FocusedPanel == Panels::VIEWPORT) {
+			switch (e.GetKeyCode()) {
+			case Key::Q:
+				m_EditorParams->GizmoType = -1;
+				break;
+			case Key::W:
+				m_EditorParams->GizmoType = ImGuizmo::OPERATION::TRANSLATE;
+				break;
+			case Key::E:
+				m_EditorParams->GizmoType = ImGuizmo::OPERATION::ROTATE;
+				break;
+			case Key::R:
+				m_EditorParams->GizmoType = ImGuizmo::OPERATION::SCALE;
+				break;
+			default:
+				break;
+			}
 		}
 	}
 

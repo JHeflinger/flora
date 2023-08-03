@@ -102,30 +102,34 @@ namespace Flora {
 
 	void FileUtils::CreateScript(const std::filesystem::path& directory) { //currently not stable for typical users
 		std::string templateContent = 
-			"#pragma once\n"
-			"#include \"Flora/Scene/ScriptableEntity.h\"\n"
+			"using System;\n"
+			"using Flora;\n"
 			"\n"
-			"namespace Flora {\n"
-			"\tclass TEMPLATE : public ScriptableEntity {\n"
-			"\tpublic:\n"
-			"\t\tvoid OnCreate() {\n"
+			"namespace Game\n"
+			"{\n"
+			"\tpublic class NewScript : Entity\n"
+			"\t{\n"
+			"\t\tvoid OnCreate()\n"
+			"\t\t{\n"
 			"\t\t\n"
 			"\t\t}\n"
 			"\n"
-			"\t\tvoid OnDestroy() {\n"
+			"\t\tvoid OnDestroy()\n"
+			"\t\t{\n"
 			"\t\t\n"
 			"\t\t}\n"
 			"\n"
-			"\t\tvoid OnUpdate(Timestep ts) {\n"
+			"\t\tvoid OnUpdate(float ts)\n"
+			"\t\t{\n"
 			"\t\t\n"
 			"\t\t}\n"
-			"\t};\n"
+			"\t}\n"
 			"}";
-		std::string newfilename = "New Script.h";
+		std::string newfilename = "New Script.cs";
 		int i = 0; 
 		while (std::filesystem::exists(directory / newfilename)) {
 			i++;
-			newfilename = "New Script (" + std::to_string(i) + ").h";
+			newfilename = "New Script (" + std::to_string(i) + ").cs";
 		}
 		std::ofstream outfile(directory / newfilename);
 		if (outfile.is_open()) {
