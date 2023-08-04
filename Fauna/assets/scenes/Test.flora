@@ -69,6 +69,13 @@ Entities:
     ChildComponent:
       - 14
       - 13
+    AudioSourceComponent:
+      Scale: 1
+      AudioFile: D:\Dev\Flora\Fauna\Projects\Sandbox Studio\Assets\Audio\phone_wav.wav
+      Loop: true
+      Pitch: 1
+      Gain: 1
+      Velocity: [0, 0, 0]
   - Entity: 18
     TagComponent:
       Tag: ground
@@ -130,7 +137,7 @@ Entities:
     AudioSourceComponent:
       Scale: 1
       AudioFile: D:\Dev\Flora\Fauna\Projects\Sandbox Studio\Assets\Audio\cringe.wav
-      Loop: false
+      Loop: true
       Pitch: 1
       Gain: 1
       Velocity: [0, 0, 0]
@@ -169,7 +176,7 @@ Entities:
       Restitution: 0
       RestitutionThreshold: 0.5
     AudioListenerComponent:
-      Gain: 0.720000029
+      Gain: 1
       Velocity: [0.899999976, 0.600000024, 0.600000024]
   - Entity: 15
     TagComponent:

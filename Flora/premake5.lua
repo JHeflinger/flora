@@ -75,7 +75,8 @@ project "Flora"
 			"%{Library.WinVersion}",
 			"%{Library.WinBCrypt}",
 			"%{Library.openAL}",
-			"%{Library.efx}"
+			"%{Library.efx}",
+			"%{Library.Shell32}",
 		}
 
 	filter "configurations:Debug"

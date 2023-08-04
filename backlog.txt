@@ -158,6 +158,8 @@ TODO:
 
 	- scriptengine assembly needs to be created on load somehow
 
+	- renaming a project will cause opening the visual studio project to break since the visual studio project file needs to be renamed as well or rebuilt
+
 	- get and set primary camera and listener entities in scripting engine neeeded or really all scene specfici functions
 
 

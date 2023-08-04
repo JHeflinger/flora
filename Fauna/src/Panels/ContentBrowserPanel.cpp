@@ -2,9 +2,25 @@
 #include "ContentBrowserPanel.h"
 #include <imgui/imgui.h>
 #include <stdio.h>
+#include <windows.h>
+#include <shellapi.h>
+#include <locale>
+#include <codecvt>
 #include "../Utils/FileUtils.h"
 
 namespace Flora {
+	static std::string ConvertWCharToString(const wchar_t* wstr) {
+		int size = WideCharToMultiByte(CP_UTF8, 0, wstr, -1, nullptr, 0, nullptr, nullptr);
+		if (size == 0)
+			return "";
+
+		std::string utf8Str;
+		utf8Str.resize(size);
+		WideCharToMultiByte(CP_UTF8, 0, wstr, -1, &utf8Str[0], size, nullptr, nullptr);
+
+		return utf8Str;
+	}
+
 	ContentBrowserPanel::ContentBrowserPanel() {
 		m_DirectoryIcon = Texture2D::Create("Resources/Icons/ContentBrowser/DirectoryIcon.png");
 		m_FileIcon = Texture2D::Create("Resources/Icons/ContentBrowser/FileIcon.png");
@@ -98,6 +114,19 @@ namespace Flora {
 					m_CurrentDirectory /= path.filename();
 				else if (path.extension().string() == ".flora")
 					RequestOpenScene(path.string());
+				else if (path.extension().string() == ".cs") {
+					wchar_t winCurrDir[MAX_PATH];
+					GetCurrentDirectory(MAX_PATH, winCurrDir);
+					SetCurrentDirectory(winCurrDir);
+					std::string wcd = ConvertWCharToString(winCurrDir);
+					std::string project_path = "\\Sandbox Project\\Assets\\Scripts\\" + m_EditorContext->Project->GetConfig().Name + ".sln";
+					std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
+					std::wstring wideStr = converter.from_bytes(project_path);
+					wcscat(winCurrDir, wideStr.c_str());
+					HINSTANCE result = ShellExecute(nullptr, L"open", winCurrDir, nullptr, nullptr, SW_SHOWNORMAL);
+					if ((int)result <= 32)
+						FL_CORE_ERROR("Could not open associated visual studio project file \"" + project_path + "\"");
+				}
 			}
 
 			if (ImGui::BeginPopupContextItem()) {

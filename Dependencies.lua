@@ -24,6 +24,7 @@ Library["WinSock"] = "Ws2_32.lib"
 Library["Winmm"] = "Winmm.lib"
 Library["WinVersion"] = "Version.lib"
 Library["WinBCrypt"] = "Bcrypt.lib"
+Library["Shell32"] = "Shell32.lib"
 
 -- OpenAL: note that we're just gonna use the win32 build
 Library["openAL"] = "%{LibraryDir.openAL}/OpenAL32.lib"

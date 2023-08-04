@@ -35,6 +35,15 @@ project "Fauna"
 	filter "system:windows"
 		systemversion "latest"
 
+		defines
+		{
+		}
+
+		links
+		{
+			"%{Library.Shell32}",
+		}
+
 	filter "configurations:Debug"
 		defines "FL_DEBUG"
 		runtime "Debug"
