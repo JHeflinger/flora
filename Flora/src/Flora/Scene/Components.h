@@ -37,6 +37,7 @@ namespace Flora {
 
 	struct SpriteRendererComponent {
 		enum class SpriteType {SINGLE = 0, SUBTEXTURE = 1, ANIMATION = 2};
+		bool Visible = true;
 		glm::vec4 Color{1.0f, 1.0f, 1.0f, 1.0f};
 		SpriteType Type = SpriteType::SINGLE;
 		float TilingFactor = 1.0f;
@@ -57,6 +58,7 @@ namespace Flora {
 		bool TextureInitialized = false;
 		SpriteRendererComponent() = default;
 		SpriteRendererComponent(const SpriteRendererComponent& other) {
+			Visible = other.Visible;
 			Color = other.Color;
 			Type = other.Type;
 			TilingFactor = other.TilingFactor;

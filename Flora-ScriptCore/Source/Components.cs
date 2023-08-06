@@ -526,6 +526,18 @@ namespace Flora
 
     public class SpriteRendererComponent : Component
     {
+        public bool Visible
+        {
+            get
+            {
+                return InternalCalls.SpriteRendererComponent_GetVisible(Entity.ID);
+            }
+            set
+            {
+                InternalCalls.SpriteRendererComponent_SetVisible(Entity.ID, value);
+            }
+        }
+
         public SpriteType Type
         {
             get

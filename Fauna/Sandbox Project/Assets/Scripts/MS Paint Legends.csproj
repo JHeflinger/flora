@@ -20,7 +20,8 @@
     <OutputPath>Binaries\</OutputPath>
     <BaseIntermediateOutputPath>Project Intermediates\MS Paint Legends\Debug\</BaseIntermediateOutputPath>
     <IntermediateOutputPath>$(BaseIntermediateOutputPath)</IntermediateOutputPath>
-    <DefineConstants></DefineConstants>
+    <DefineConstants>
+    </DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -31,7 +32,8 @@
     <OutputPath>Binaries\</OutputPath>
     <BaseIntermediateOutputPath>Project Intermediates\MS Paint Legends\Release\</BaseIntermediateOutputPath>
     <IntermediateOutputPath>$(BaseIntermediateOutputPath)</IntermediateOutputPath>
-    <DefineConstants></DefineConstants>
+    <DefineConstants>
+    </DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -42,11 +44,14 @@
     <OutputPath>Binaries\</OutputPath>
     <BaseIntermediateOutputPath>Project Intermediates\MS Paint Legends\Dist\</BaseIntermediateOutputPath>
     <IntermediateOutputPath>$(BaseIntermediateOutputPath)</IntermediateOutputPath>
-    <DefineConstants></DefineConstants>
+    <DefineConstants>
+    </DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Background.cs" />
+    <Compile Include="PlayButton.cs" />
   </ItemGroup>
   <ItemGroup>
   </ItemGroup>

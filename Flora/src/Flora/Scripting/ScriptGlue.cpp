@@ -9,6 +9,7 @@
 #include "Flora/Core/Input.h"
 #include "Flora/Utils/PhysicsUtils.h"
 #include "Flora/Utils/DeveloperUtils.h"
+#include "Flora/Utils/VisualUtils.h"
 
 namespace Flora {
 	
@@ -276,6 +277,16 @@ namespace Flora {
 	static void SpriteRendererComponent_SetTextureInitialized(uint32_t eid, bool isInitialized) {
 		Entity entity = GetValidatedEntityFromID(eid);
 		entity.GetComponent<SpriteRendererComponent>().TextureInitialized = isInitialized;
+	}
+
+	static bool SpriteRendererComponent_GetVisible(uint32_t eid) {
+		Entity entity = GetValidatedEntityFromID(eid);
+		return entity.GetComponent<SpriteRendererComponent>().Visible;
+	}
+
+	static void SpriteRendererComponent_SetVisible(uint32_t eid, bool isVisible) {
+		Entity entity = GetValidatedEntityFromID(eid);
+		entity.GetComponent<SpriteRendererComponent>().Visible = isVisible;
 	}
 
 	static void CircleRendererComponent_GetColor(uint32_t eid, glm::vec4* outColor) {
@@ -705,6 +716,15 @@ namespace Flora {
 		return DeveloperUtils::CountQueuedCommands();
 	}
 
+	static uint32_t Scene_GetPrimaryCamera() {
+		Scene* scene = ScriptEngine::GetSceneContext();
+		return (uint32_t)(scene->GetPrimaryCamera());
+	}
+
+	static int64_t VisualUtils_GetHoveredEntity() {
+		return VisualUtils::GetHoveredEntity();
+	}
+
 	void ScriptGlue::RegisterFunctions() {
 		FL_ADD_INTERNAL_CALL(CoreTrace);
 		FL_ADD_INTERNAL_CALL(Input_IsKeyDown);
@@ -720,6 +740,8 @@ namespace Flora {
 		FL_ADD_INTERNAL_CALL(DevTools_HasQueuedCommand);
 		FL_ADD_INTERNAL_CALL(DevTools_ResolveCommand);
 		FL_ADD_INTERNAL_CALL(DevTools_CountQueuedCommands);
+		FL_ADD_INTERNAL_CALL(Scene_GetPrimaryCamera);
+		FL_ADD_INTERNAL_CALL(VisualUtils_GetHoveredEntity);
 
 		//Component functions
 		FL_ADD_INTERNAL_CALL(TagComponent_GetTag);
@@ -766,6 +788,8 @@ namespace Flora {
 		FL_ADD_INTERNAL_CALL(SpriteRendererComponent_SetFilename);
 		FL_ADD_INTERNAL_CALL(SpriteRendererComponent_GetTextureInitialized);
 		FL_ADD_INTERNAL_CALL(SpriteRendererComponent_SetTextureInitialized);
+		FL_ADD_INTERNAL_CALL(SpriteRendererComponent_GetVisible);
+		FL_ADD_INTERNAL_CALL(SpriteRendererComponent_SetVisible);
 		FL_ADD_INTERNAL_CALL(CircleRendererComponent_GetColor);
 		FL_ADD_INTERNAL_CALL(CircleRendererComponent_SetColor);
 		FL_ADD_INTERNAL_CALL(CircleRendererComponent_SetColor);

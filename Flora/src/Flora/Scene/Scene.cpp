@@ -10,7 +10,8 @@ namespace Flora {
 	void Scene::DrawEntitySprite(Entity& entity, bool useTransformRef, glm::mat4 refTransform) {
 		glm::mat4 transform = entity.GetComponent<TransformComponent>().GetTransform();
 		if (useTransformRef) transform = refTransform * transform;
-		Renderer2D::DrawSprite(transform, entity.GetComponent<SpriteRendererComponent>(), (int)(uint32_t)entity);
+		if (entity.GetComponent<SpriteRendererComponent>().Visible)
+			Renderer2D::DrawSprite(transform, entity.GetComponent<SpriteRendererComponent>(), (int)(uint32_t)entity);
 		if (entity.HasComponent<ChildComponent>()) {
 			std::vector<Entity> children = entity.GetComponent<ChildComponent>().Children;
 			for (int i = 0; i < children.size(); i++) {

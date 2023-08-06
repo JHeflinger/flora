@@ -5,6 +5,7 @@
 #include "Flora/Core/Application.h"
 #include "Flora/Core/Input.h"
 #include "Flora/Math/Math.h"
+#include "Flora/Utils/VisualUtils.h"
 #include "../Utils/FileUtils.h"
 #include "../Utils/ComponentUtils.h"
 #include <imgui/imgui.h>
@@ -57,6 +58,7 @@ namespace Flora {
 		if (mouseX >= 0 && mouseY >= 0 && mouseX < (int)viewportSize.x && mouseY < (int)viewportSize.y) {
 			int pixelData = m_Framebuffer->ReadPixel(1, mouseX, mouseY);
 			m_HoveredEntity = pixelData == -1 ? Entity() : Entity((entt::entity)pixelData, m_EditorContext->ActiveScene.get());
+			VisualUtils::SetHoveredEntity((int64_t)(uint32_t)m_HoveredEntity);
 		}
 
 		// renderer "unsetup", move later

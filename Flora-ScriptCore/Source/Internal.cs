@@ -10,6 +10,18 @@ namespace Flora
     public static class InternalCalls
     {
 		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static long VisualUtils_GetHoveredEntity();
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static bool SpriteRendererComponent_GetVisible(uint id);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static void SpriteRendererComponent_SetVisible(uint id, bool isVisible);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static uint Scene_GetPrimaryCamera();
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
 		internal extern static void DevTools_SendCommand(string command);
 
 		[MethodImplAttribute(MethodImplOptions.InternalCall)]

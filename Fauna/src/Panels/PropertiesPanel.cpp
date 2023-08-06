@@ -589,6 +589,8 @@ namespace Flora {
 			ImGui::Columns(2);
 			ImGui::SetColumnWidth(0, 100.0f);
 			ImGui::Text("Type");
+			ImGui::Dummy(ImVec2{ 0, 2 });
+			ImGui::Text("Visible");
 			ImGui::NextColumn();
 			if (ImGui::BeginCombo("##Type", currentSpriteTypeString)) {
 				for (int i = 0; i < 3; i++) {
@@ -602,6 +604,7 @@ namespace Flora {
 				}
 				ImGui::EndCombo();
 			}
+			ImGui::Checkbox("##visible", &component.Visible);
 			ImGui::Columns(1);
 
 			ImGui::Dummy(ImVec2(0, 10.0f));

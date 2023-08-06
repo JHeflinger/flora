@@ -154,6 +154,8 @@ TODO:
 
 	- use std::filesystem::path when able
 
+	- make a public static activescene 
+
 	- scriptengine needs to reload and correct the assemblies whenever the project changes or even a new one is created
 
 	- scriptengine assembly needs to be created on load somehow

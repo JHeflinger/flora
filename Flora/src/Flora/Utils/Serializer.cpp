@@ -114,6 +114,7 @@ namespace Flora {
 			out << YAML::Key << "SpriteRendererComponent";
 			out << YAML::BeginMap;
 			auto& spriteRendererComponent = entity.GetComponent<SpriteRendererComponent>();
+			out << YAML::Key << "Visible" << YAML::Value << spriteRendererComponent.Visible;
 			out << YAML::Key << "Color" << YAML::Value << spriteRendererComponent.Color;
 			out << YAML::Key << "Path" << YAML::Value << spriteRendererComponent.Path;
 			out << YAML::Key << "Filename" << YAML::Value << spriteRendererComponent.Filename;
@@ -382,6 +383,7 @@ namespace Flora {
 				if (spriteRendererComponent) {
 					auto& src = deserializedEntity.AddComponent<SpriteRendererComponent>();
 					src.Color = spriteRendererComponent["Color"].as<glm::vec4>();
+					src.Visible = spriteRendererComponent["Visible"].as<bool>();
 					std::string texturePath = spriteRendererComponent["Path"].as<std::string>();
 					src.Type = (SpriteRendererComponent::SpriteType)spriteRendererComponent["Type"].as<int>();
 					src.TilingFactor = spriteRendererComponent["TilingFactor"].as<float>();
