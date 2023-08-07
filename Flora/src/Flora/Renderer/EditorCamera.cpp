@@ -58,11 +58,11 @@ namespace Flora {
 	}
 
 	void EditorCamera::OnUpdate(Timestep ts, bool updateControl) {
-		if (Input::IsKeyPressed(Key::Space) && updateControl) {
-			const glm::vec2& mouse{ Input::GetMouseX(), Input::GetMouseY() };
-			glm::vec2 delta = (mouse - m_InitialMousePosition) * 0.003f;
-			m_InitialMousePosition = mouse;
+		const glm::vec2& mouse{ Input::GetMouseX(), Input::GetMouseY() };
+		glm::vec2 delta = (mouse - m_InitialMousePosition) * 0.003f;
+		m_InitialMousePosition = mouse;
 
+		if (Input::IsKeyPressed(Key::Space) && updateControl) {
 			if (Input::IsMouseButtonPressed(Mouse::ButtonLeft))
 				MousePan(delta);
 			else if (Input::IsMouseButtonPressed(Mouse::ButtonRight))

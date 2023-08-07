@@ -1,4 +1,4 @@
-Scene: Title Scene
+Scene: Battle
 Primary Camera: 1
 Primary Audio Listener: -1
 Physics:
@@ -6,22 +6,51 @@ Physics:
   VelocityIterations: 6
   PositionIterations: 2
 Entities:
-  - Entity: 4
+  - Entity: 8
     TagComponent:
-      Tag: Highlight
+      Tag: Graveyard
     TransformComponent:
-      Translation: [0, 0, 0]
+      Translation: [11.7278728, 1.15915036, 0]
       Rotation: [0, 0, 0]
       Scale: [1, 1, 1]
     SpriteRendererComponent:
       Visible: true
       Color: [1, 1, 1, 1]
-      Path: D:\Dev\MSPL\Assets\Textures\Preliminary\Index_Title_Highlight.png
-      Filename: Index_Title_Highlight.png
-      Type: 0
+      Path: D:\Dev\MSPL\Assets\Textures\Preliminary\Spritesheet_Decks.png
+      Filename: Spritesheet_Decks.png
+      Type: 1
       TilingFactor: 1
       Rows: 1
-      Columns: 1
+      Columns: 2
+      RowCoordinate: 1
+      ColumnCoordinate: 2
+      SubtextureWidth: 1
+      SubtextureHeight: 1
+      Frames: 1
+      StartFrame: 1
+      EndFrame: 1
+      CurrentFrame: 1
+      FPS: 1
+    ParentComponent:
+      Parent: 0
+      InheritAll: true
+      InheritTransform: true
+  - Entity: 7
+    TagComponent:
+      Tag: Deck
+    TransformComponent:
+      Translation: [-1.34097767, 0.931865692, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    SpriteRendererComponent:
+      Visible: true
+      Color: [1, 1, 1, 1]
+      Path: D:\Dev\MSPL\Assets\Textures\Preliminary\Spritesheet_Decks.png
+      Filename: Spritesheet_Decks.png
+      Type: 1
+      TilingFactor: 1
+      Rows: 1
+      Columns: 2
       RowCoordinate: 1
       ColumnCoordinate: 1
       SubtextureWidth: 1
@@ -32,82 +61,10 @@ Entities:
       CurrentFrame: 1
       FPS: 1
     ParentComponent:
-      Parent: 3
+      Parent: 0
       InheritAll: true
       InheritTransform: true
-  - Entity: 3
-    TagComponent:
-      Tag: Play Button
-    TransformComponent:
-      Translation: [0, -2.40941358, 0]
-      Rotation: [0, 0, 0]
-      Scale: [4, 1.5, 1]
-    SpriteRendererComponent:
-      Visible: true
-      Color: [1, 1, 1, 1]
-      Path: D:\Dev\MSPL\Assets\Textures\Preliminary\Index_PlayText.png
-      Filename: Index_PlayText.png
-      Type: 0
-      TilingFactor: 1
-      Rows: 1
-      Columns: 1
-      RowCoordinate: 1
-      ColumnCoordinate: 1
-      SubtextureWidth: 1
-      SubtextureHeight: 1
-      Frames: 1
-      StartFrame: 1
-      EndFrame: 1
-      CurrentFrame: 1
-      FPS: 1
-    ScriptComponent:
-      ClassName: Game.PlayButton
-    ChildComponent:
-      - 4
-  - Entity: 2
-    TagComponent:
-      Tag: Title Card
-    TransformComponent:
-      Translation: [0, 0, -0.899999976]
-      Rotation: [0, 0, 0]
-      Scale: [16, 9, 1]
-    SpriteRendererComponent:
-      Visible: true
-      Color: [1, 1, 1, 1]
-      Path: D:\Dev\MSPL\Assets\Textures\Preliminary\Index_Title.png
-      Filename: Index_Title.png
-      Type: 0
-      TilingFactor: 1
-      Rows: 1
-      Columns: 1
-      RowCoordinate: 1
-      ColumnCoordinate: 1
-      SubtextureWidth: 1
-      SubtextureHeight: 1
-      Frames: 1
-      StartFrame: 1
-      EndFrame: 1
-      CurrentFrame: 1
-      FPS: 1
-  - Entity: 1
-    TagComponent:
-      Tag: Camera
-    TransformComponent:
-      Translation: [0, 0, 0]
-      Rotation: [0, 0, 0]
-      Scale: [1, 1, 1]
-    CameraComponent:
-      Camera:
-        ProjectionType: 1
-        PerspectiveFOV: 0.785398185
-        PerspectiveNear: 0.00999999978
-        PerspectiveFar: 1000
-        OrthographicSize: 10
-        OrthographicNear: -1
-        OrthographicFar: 1
-      FixedAspectRatio: false
-      Visible Borders: true
-  - Entity: 0
+  - Entity: 6
     TagComponent:
       Tag: Background
     TransformComponent:
@@ -134,5 +91,183 @@ Entities:
       FPS: 1
     ScriptComponent:
       ClassName: Game.Background
+  - Entity: 5
+    TagComponent:
+      Tag: Stamina Value
+    TransformComponent:
+      Translation: [0, 0, 0.00999999978]
+      Rotation: [0, 0, 0]
+      Scale: [0.5, 0.5, 1]
+    SpriteRendererComponent:
+      Visible: true
+      Color: [1, 1, 1, 1]
+      Path: D:\Dev\MSPL\Assets\Textures\Preliminary\Spritesheet_Numbers.png
+      Filename: Spritesheet_Numbers.png
+      Type: 1
+      TilingFactor: 1
+      Rows: 1
+      Columns: 10
+      RowCoordinate: 2
+      ColumnCoordinate: 1
+      SubtextureWidth: 1
+      SubtextureHeight: 1
+      Frames: 1
+      StartFrame: 1
+      EndFrame: 1
+      CurrentFrame: 1
+      FPS: 1
+    ParentComponent:
+      Parent: 1048580
+      InheritAll: true
+      InheritTransform: true
+  - Entity: 1048580
+    TagComponent:
+      Tag: Stamina
+    TransformComponent:
+      Translation: [-1.12149811, 2.12115526, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    SpriteRendererComponent:
+      Visible: true
+      Color: [1, 1, 1, 1]
+      Path: D:\Dev\MSPL\Assets\Textures\Preliminary\Battle_Energies.png
+      Filename: Battle_Energies.png
+      Type: 1
+      TilingFactor: 1
+      Rows: 1
+      Columns: 2
+      RowCoordinate: 1
+      ColumnCoordinate: 1
+      SubtextureWidth: 1
+      SubtextureHeight: 1
+      Frames: 1
+      StartFrame: 1
+      EndFrame: 1
+      CurrentFrame: 1
+      FPS: 1
+    ScriptComponent:
+      ClassName: Game.Stamina
+      ScriptFields:
+        - Name: stamina
+          Type: Int
+          Data: 3
+    ParentComponent:
+      Parent: 0
+      InheritAll: true
+      InheritTransform: true
     ChildComponent:
-      []
+      - 5
+  - Entity: 3
+    TagComponent:
+      Tag: Mana
+    TransformComponent:
+      Translation: [-0.193657398, 1.45760393, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    SpriteRendererComponent:
+      Visible: true
+      Color: [1, 1, 1, 1]
+      Path: D:\Dev\MSPL\Assets\Textures\Preliminary\Battle_Energies.png
+      Filename: Battle_Energies.png
+      Type: 1
+      TilingFactor: 1
+      Rows: 1
+      Columns: 2
+      RowCoordinate: 1
+      ColumnCoordinate: 2
+      SubtextureWidth: 1
+      SubtextureHeight: 1
+      Frames: 1
+      StartFrame: 1
+      EndFrame: 1
+      CurrentFrame: 1
+      FPS: 1
+    ScriptComponent:
+      ClassName: Game.Mana
+      ScriptFields:
+        - Name: mana
+          Type: Int
+          Data: 7
+    ParentComponent:
+      Parent: 0
+      InheritAll: true
+      InheritTransform: true
+    ChildComponent:
+      - 2
+  - Entity: 2
+    TagComponent:
+      Tag: Mana Value
+    TransformComponent:
+      Translation: [0, 0, 0.00999999046]
+      Rotation: [0, 0, 0]
+      Scale: [0.5, 0.5, 1]
+    SpriteRendererComponent:
+      Visible: true
+      Color: [1, 1, 1, 1]
+      Path: D:\Dev\MSPL\Assets\Textures\Preliminary\Spritesheet_Numbers.png
+      Filename: Spritesheet_Numbers.png
+      Type: 1
+      TilingFactor: 1
+      Rows: 1
+      Columns: 10
+      RowCoordinate: 2
+      ColumnCoordinate: 1
+      SubtextureWidth: 1
+      SubtextureHeight: 1
+      Frames: 1
+      StartFrame: 1
+      EndFrame: 1
+      CurrentFrame: 1
+      FPS: 1
+    ParentComponent:
+      Parent: 3
+      InheritAll: true
+      InheritTransform: true
+  - Entity: 1
+    TagComponent:
+      Tag: Camera
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    CameraComponent:
+      Camera:
+        ProjectionType: 1
+        PerspectiveFOV: 0.785398185
+        PerspectiveNear: 0.00999999978
+        PerspectiveFar: 1000
+        OrthographicSize: 10
+        OrthographicNear: -1
+        OrthographicFar: 1
+      FixedAspectRatio: false
+      Visible Borders: true
+  - Entity: 0
+    TagComponent:
+      Tag: Hand UI
+    TransformComponent:
+      Translation: [-5.46775389, -4.9467907, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    SpriteRendererComponent:
+      Visible: true
+      Color: [1, 1, 1, 0]
+      Path: "NULL"
+      Filename: None Selected
+      Type: 0
+      TilingFactor: 1
+      Rows: 1
+      Columns: 1
+      RowCoordinate: 1
+      ColumnCoordinate: 1
+      SubtextureWidth: 1
+      SubtextureHeight: 1
+      Frames: 1
+      StartFrame: 1
+      EndFrame: 1
+      CurrentFrame: 1
+      FPS: 1
+    ChildComponent:
+      - 1048580
+      - 3
+      - 7
+      - 8

@@ -164,6 +164,12 @@ TODO:
 
 	- get and set primary camera and listener entities in scripting engine neeeded or really all scene specfici functions
 
+	- copy pasting entities with scripts breaks things
+
+	- highlight selected entity probably shouldnt be white
+
+	- highlight selected entity doesnt take in account sub entities
+
 
 IN PROGRESS:
 

@@ -51,7 +51,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Background.cs" />
+    <Compile Include="Mana.cs" />
     <Compile Include="PlayButton.cs" />
+    <Compile Include="Stamina.cs" />
   </ItemGroup>
   <ItemGroup>
   </ItemGroup>
