@@ -6,6 +6,154 @@ Physics:
   VelocityIterations: 6
   PositionIterations: 2
 Entities:
+  - Entity: 14
+    TagComponent:
+      Tag: Text
+    TransformComponent:
+      Translation: [0, 0, 0.819999993]
+      Rotation: [0, 0, 0]
+      Scale: [2.67000008, 4, 1]
+    SpriteRendererComponent:
+      Visible: true
+      Color: [1, 1, 1, 1]
+      Path: D:\Dev\MSPL\Assets\Textures\Preliminary\T_000_Fireball.png
+      Filename: T_000_Fireball.png
+      Type: 0
+      TilingFactor: 1
+      Rows: 1
+      Columns: 1
+      RowCoordinate: 1
+      ColumnCoordinate: 1
+      SubtextureWidth: 1
+      SubtextureHeight: 1
+      Frames: 1
+      StartFrame: 1
+      EndFrame: 1
+      CurrentFrame: 1
+      FPS: 1
+    ParentComponent:
+      Parent: 10
+      InheritAll: true
+      InheritTransform: true
+  - Entity: 13
+    TagComponent:
+      Tag: Graphic
+    TransformComponent:
+      Translation: [0, 0.832576454, 0.899999976]
+      Rotation: [0, 0, 0]
+      Scale: [2.67000008, 2, 1]
+    SpriteRendererComponent:
+      Visible: true
+      Color: [1, 1, 1, 1]
+      Path: D:\Dev\MSPL\Assets\Textures\Preliminary\G_000_Fireball.png
+      Filename: G_000_Fireball.png
+      Type: 0
+      TilingFactor: 1
+      Rows: 1
+      Columns: 1
+      RowCoordinate: 1
+      ColumnCoordinate: 1
+      SubtextureWidth: 1
+      SubtextureHeight: 1
+      Frames: 1
+      StartFrame: 1
+      EndFrame: 1
+      CurrentFrame: 1
+      FPS: 1
+    ParentComponent:
+      Parent: 10
+      InheritAll: true
+      InheritTransform: true
+  - Entity: 12
+    TagComponent:
+      Tag: Cost
+    TransformComponent:
+      Translation: [0.922080994, 1.52032471, 0.920000017]
+      Rotation: [0, 0, 0]
+      Scale: [0.5, 0.5, 1]
+    SpriteRendererComponent:
+      Visible: true
+      Color: [0, 0, 0, 1]
+      Path: D:\Dev\MSPL\Assets\Textures\Preliminary\Spritesheet_Numbers.png
+      Filename: Spritesheet_Numbers.png
+      Type: 1
+      TilingFactor: 1
+      Rows: 1
+      Columns: 10
+      RowCoordinate: 1
+      ColumnCoordinate: 1
+      SubtextureWidth: 1
+      SubtextureHeight: 1
+      Frames: 1
+      StartFrame: 1
+      EndFrame: 1
+      CurrentFrame: 1
+      FPS: 1
+    ParentComponent:
+      Parent: 10
+      InheritAll: true
+      InheritTransform: true
+  - Entity: 11
+    TagComponent:
+      Tag: Template
+    TransformComponent:
+      Translation: [0, 0, 0.80443728]
+      Rotation: [0, 0, 0]
+      Scale: [2.66666603, 4, 1]
+    SpriteRendererComponent:
+      Visible: true
+      Color: [0.842086256, 0.617760658, 1, 1]
+      Path: D:\Dev\MSPL\Assets\Textures\Preliminary\Card_Template.png
+      Filename: Card_Template.png
+      Type: 0
+      TilingFactor: 1
+      Rows: 1
+      Columns: 1
+      RowCoordinate: 1
+      ColumnCoordinate: 1
+      SubtextureWidth: 1
+      SubtextureHeight: 1
+      Frames: 1
+      StartFrame: 1
+      EndFrame: 1
+      CurrentFrame: 1
+      FPS: 1
+    ParentComponent:
+      Parent: 10
+      InheritAll: true
+      InheritTransform: true
+  - Entity: 10
+    TagComponent:
+      Tag: Card
+    TransformComponent:
+      Translation: [0, 0, 0.99000001]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    ScriptComponent:
+      ClassName: Game.Card
+      ScriptFields:
+        - Name: cost
+          Type: Int
+          Data: 3
+        - Name: isMagic
+          Type: Bool
+          Data: true
+    ChildComponent:
+      - 11
+      - 12
+      - 13
+      - 14
+  - Entity: 9
+    TagComponent:
+      Tag: Hand
+    TransformComponent:
+      Translation: [5.45482492, 1.70463324, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    ParentComponent:
+      Parent: 0
+      InheritAll: true
+      InheritTransform: true
   - Entity: 8
     TagComponent:
       Tag: Graveyard
@@ -72,7 +220,7 @@ Entities:
       Rotation: [0, 0, 0]
       Scale: [1, 1, 1]
     SpriteRendererComponent:
-      Visible: true
+      Visible: false
       Color: [1, 1, 1, 1]
       Path: "NULL"
       Filename: None Selected
@@ -100,7 +248,7 @@ Entities:
       Scale: [0.5, 0.5, 1]
     SpriteRendererComponent:
       Visible: true
-      Color: [1, 1, 1, 1]
+      Color: [0, 0, 0, 1]
       Path: D:\Dev\MSPL\Assets\Textures\Preliminary\Spritesheet_Numbers.png
       Filename: Spritesheet_Numbers.png
       Type: 1
@@ -203,7 +351,7 @@ Entities:
       Scale: [0.5, 0.5, 1]
     SpriteRendererComponent:
       Visible: true
-      Color: [1, 1, 1, 1]
+      Color: [0, 0, 0, 1]
       Path: D:\Dev\MSPL\Assets\Textures\Preliminary\Spritesheet_Numbers.png
       Filename: Spritesheet_Numbers.png
       Type: 1
@@ -271,3 +419,4 @@ Entities:
       - 3
       - 7
       - 8
+      - 9

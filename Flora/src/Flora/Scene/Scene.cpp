@@ -333,6 +333,8 @@ namespace Flora {
 				Entity drawEntity = Entity{ entity, this };
 				if (!drawEntity.HasComponent<ParentComponent>())
 					DrawEntitySprite(drawEntity);
+				else if (!drawEntity.GetComponent<ParentComponent>().Parent.HasComponent<SpriteRendererComponent>())
+					DrawEntitySprite(drawEntity);
 			}
 		}
 
