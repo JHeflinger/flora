@@ -149,6 +149,7 @@ namespace Flora {
 		}
 
 		m_Paused = false;
+		m_Running = true;
 		m_StepFrames = 0;
 	}
 
@@ -158,6 +159,7 @@ namespace Flora {
 		if (ScriptEngine::IsInitialized())
 			ScriptEngine::OnRuntimeStop();
 		m_Paused = false;
+		m_Running = false;
 
 		//stop audio
 		auto view = m_Registry.view<AudioSourceComponent>();
@@ -209,6 +211,7 @@ namespace Flora {
 		CopyComponent<SpriteRendererComponent>(entity, newEntity);
 		CopyComponent<CircleRendererComponent>(entity, newEntity);
 		CopyComponent<CameraComponent>(entity, newEntity);
+		CopyComponent<ScriptComponent>(entity, newEntity);
 		CopyComponent<ScriptManagerComponent>(entity, newEntity);
 		CopyComponent<RigidBody2DComponent>(entity, newEntity);
 		CopyComponent<BoxCollider2DComponent>(entity, newEntity);
@@ -276,6 +279,10 @@ namespace Flora {
 			}
 		}
 
+		// instantiate copied script if needed
+		if (m_Running && newEntity.HasComponent<ScriptComponent>())
+			ScriptEngine::CreateEntity(newEntity);
+
 		return newEntity;
 	}
 
@@ -333,8 +340,10 @@ namespace Flora {
 				Entity drawEntity = Entity{ entity, this };
 				if (!drawEntity.HasComponent<ParentComponent>())
 					DrawEntitySprite(drawEntity);
-				else if (!drawEntity.GetComponent<ParentComponent>().Parent.HasComponent<SpriteRendererComponent>())
-					DrawEntitySprite(drawEntity);
+				else if (!drawEntity.GetComponent<ParentComponent>().Parent.HasComponent<SpriteRendererComponent>()) {
+					bool useParentTransform = drawEntity.GetComponent<ParentComponent>().InheritAll || (!drawEntity.GetComponent<ParentComponent>().InheritAll && drawEntity.GetComponent<ParentComponent>().InheritTransform);
+					DrawEntitySprite(drawEntity, useParentTransform, GetWorldTransform(drawEntity.GetComponent<ParentComponent>().Parent));
+				}
 			}
 		}
 

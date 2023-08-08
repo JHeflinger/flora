@@ -82,6 +82,7 @@ namespace Flora {
 		bool m_ViewportHovered = false; // temporary solution
 		bool m_ViewportFocused = false;
 		bool m_Paused = false;
+		bool m_Running = false;
 		std::string m_SceneFilepath = "NULL";
 		std::string m_SceneName = "Untitled";
 		int m_PrimaryCameraHandle = -1; //TODO: change to int64_t?

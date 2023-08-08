@@ -285,6 +285,10 @@ namespace Flora {
 		m_EditorParams->ActiveScene->OnRuntimeStop();
 		FileUtils::OpenTempScene(m_EditorParams);
 		m_EditorParams->SceneState = SceneState::EDIT;
+
+		// make sure selected entity still exists
+		if (!m_EditorParams->ActiveScene->EntityExists(m_EditorParams->SelectedEntity))
+			m_EditorParams->SelectedEntity = {};
 	}
 
 	void EditorLayer::ProcessWindowClose() {

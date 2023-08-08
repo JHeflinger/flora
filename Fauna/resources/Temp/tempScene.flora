@@ -126,7 +126,7 @@ Entities:
     TagComponent:
       Tag: Card
     TransformComponent:
-      Translation: [0, 0, 0.99000001]
+      Translation: [0, 0, -0.871830583]
       Rotation: [0, 0, 0]
       Scale: [1, 1, 1]
     ScriptComponent:
