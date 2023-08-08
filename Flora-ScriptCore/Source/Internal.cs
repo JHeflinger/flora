@@ -8,7 +8,10 @@ using System.Runtime.CompilerServices;
 namespace Flora
 {
     public static class InternalCalls
-    {
+	{
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static uint Scene_CopyEntity(uint id);
+
 		[MethodImplAttribute(MethodImplOptions.InternalCall)]
 		internal extern static long VisualUtils_GetHoveredEntity();
 

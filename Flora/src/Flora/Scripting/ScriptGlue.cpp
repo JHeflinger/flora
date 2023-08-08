@@ -725,6 +725,11 @@ namespace Flora {
 		return VisualUtils::GetHoveredEntity();
 	}
 
+	static uint32_t Scene_CopyEntity(uint32_t eid) {
+		Scene* scene = ScriptEngine::GetSceneContext();
+		return (uint32_t)scene->CopyEntity(GetValidatedEntityFromID(eid));
+	}
+
 	void ScriptGlue::RegisterFunctions() {
 		FL_ADD_INTERNAL_CALL(CoreTrace);
 		FL_ADD_INTERNAL_CALL(Input_IsKeyDown);
@@ -741,6 +746,7 @@ namespace Flora {
 		FL_ADD_INTERNAL_CALL(DevTools_ResolveCommand);
 		FL_ADD_INTERNAL_CALL(DevTools_CountQueuedCommands);
 		FL_ADD_INTERNAL_CALL(Scene_GetPrimaryCamera);
+		FL_ADD_INTERNAL_CALL(Scene_CopyEntity);
 		FL_ADD_INTERNAL_CALL(VisualUtils_GetHoveredEntity);
 
 		//Component functions

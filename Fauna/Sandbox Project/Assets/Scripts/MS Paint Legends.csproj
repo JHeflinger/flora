@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="Background.cs" />
     <Compile Include="Card.cs" />
+    <Compile Include="Hand.cs" />
     <Compile Include="Mana.cs" />
     <Compile Include="PlayButton.cs" />
     <Compile Include="Stamina.cs" />

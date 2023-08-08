@@ -12,5 +12,10 @@ namespace Flora
         {
             return new Entity(InternalCalls.Scene_GetPrimaryCamera());
         }
+
+        public static Entity CopyEntity(Entity entity)
+        {
+            return new Entity(InternalCalls.Scene_CopyEntity(entity.ID));
+        }
     }
 }
