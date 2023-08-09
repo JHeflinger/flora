@@ -72,11 +72,11 @@ namespace Flora {
 		return s_HasComponentFunctions.at(monoComponentType)(entity);
 	}
 
-	static uint32_t Entity_FindEntityByName(MonoString* name) {
+	static int64_t Entity_FindEntityByName(MonoString* name) {
 		Scene* scene = ScriptEngine::GetSceneContext();
 		auto& entities = scene->GetEntitiesByTag(mono_string_to_utf8(name));
-		if (entities.size() == 0) return 0;
-		return entities[0];
+		if (entities.size() == 0) return -1;
+		return (int64_t)((uint32_t)entities[0]);
 	}
 
 	static MonoObject* Entity_GetScriptInstance(uint32_t id) {

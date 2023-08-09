@@ -1,19 +1,19 @@
 Project Filepath: D:\Dev\MSPL\MS Paint Legends.flproj
 Scene Filepath: D:\Dev\MSPL\Assets\Scenes\Battle.flora
-Selected Entity: -1
+Selected Entity: 0
 Current Gizmo: 7
 Editor Camera Type: Orthographic
 Visible Physics Colliders: false
 General Camera Settings:
-  Position: [3.07459354, 6.96570873, 7.70843601]
+  Position: [1.53048253, 4.80361795, 9.28312111]
   Focal Point: [-0.390000165, 1.61999953, 0]
-  Camera Bound: false
+  Camera Bound: true
 Perspective Camera Settings:
   Distance: 10
-  Pitch: 0.563999891
-  Yaw: -0.422400385
+  Pitch: 0.324000895
+  Yaw: -0.204001144
 Orthographic Camera Settings:
-  Size: 17.3417969
+  Size: 24.8417969
 Closed Panels:
   - Console
   - Physics

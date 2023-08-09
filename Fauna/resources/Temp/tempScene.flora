@@ -124,14 +124,17 @@ Entities:
       InheritTransform: true
   - Entity: 10
     TagComponent:
-      Tag: Card
+      Tag: Template Card
     TransformComponent:
-      Translation: [0, 0, -0.871830583]
+      Translation: [-12.1602478, 1.12280273, -7.43274355]
       Rotation: [0, 0, 0]
       Scale: [1, 1, 1]
     ScriptComponent:
       ClassName: Game.Card
       ScriptFields:
+        - Name: active
+          Type: Bool
+          Data: false
         - Name: cost
           Type: Int
           Data: 3
@@ -414,6 +417,10 @@ Entities:
       EndFrame: 1
       CurrentFrame: 1
       FPS: 1
+    ScriptComponent:
+      ClassName: Game.Hand
+      ScriptFields:
+        []
     ChildComponent:
       - 1048580
       - 3

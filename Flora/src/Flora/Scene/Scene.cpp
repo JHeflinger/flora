@@ -135,6 +135,7 @@ namespace Flora {
 	}
 
 	void Scene::OnRuntimeStart() {
+		m_Running = true;
 		StartPhysics();
 
 		// Scripting
@@ -149,7 +150,6 @@ namespace Flora {
 		}
 
 		m_Paused = false;
-		m_Running = true;
 		m_StepFrames = 0;
 	}
 
@@ -158,8 +158,6 @@ namespace Flora {
 		m_PhysicsWorld = nullptr;
 		if (ScriptEngine::IsInitialized())
 			ScriptEngine::OnRuntimeStop();
-		m_Paused = false;
-		m_Running = false;
 
 		//stop audio
 		auto view = m_Registry.view<AudioSourceComponent>();
@@ -170,6 +168,9 @@ namespace Flora {
 			Ref<Audio> audio = AssetManager::GetAudio(asc.AudioFile);
 			AudioCommand::Stop(*audio);
 		}
+
+		m_Paused = false;
+		m_Running = false;
 	}
 
 	std::vector<Entity> Scene::GetEntitiesByTag(std::string tag) {

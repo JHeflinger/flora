@@ -295,7 +295,7 @@ namespace Flora
         {
             get
             {
-                return Entity.GetEntityByID(InternalCalls.ParentComponent_GetParent(Entity.ID));
+                return Scene.GetEntityByID(InternalCalls.ParentComponent_GetParent(Entity.ID));
             }
             set
             {
@@ -353,7 +353,7 @@ namespace Flora
         public Entity GetChild(uint index)
         {
             uint entityID = InternalCalls.ChildComponent_GetChild(Entity.ID, index);
-            return Entity.GetEntityByID(entityID);
+            return Scene.GetEntityByID(entityID);
         }
     }
 

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace Flora
 {
@@ -15,6 +16,11 @@ namespace Flora
 
         public readonly uint ID;
 
+        void Bind()
+        {
+            Scene.BindEntity(this);
+        }
+
         public Vector3 Translation
         {
             get
@@ -27,11 +33,6 @@ namespace Flora
             {
                 InternalCalls.TransformComponent_SetTranslation(ID, ref value);
             }
-        }
-
-        public Entity GetEntityByID(uint eid)
-        {
-            return new Entity(eid);
         }
 
         public bool HasComponent<T>() where T : Component, new()
@@ -47,13 +48,6 @@ namespace Flora
 
             T component = new T() { Entity = this };
             return component;
-        }
-
-        public Entity FindEntityByName(string name)
-        {
-            uint eid = InternalCalls.Entity_FindEntityByName(name);
-            if (eid == 0) return null;
-            return new Entity(eid);
         }
 
         public T As<T>() where T : Entity, new()

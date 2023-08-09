@@ -12,7 +12,8 @@ namespace Flora
         {
             long entityHandle = InternalCalls.VisualUtils_GetHoveredEntity();
             if (entityHandle < 0) return null;
-            Entity newEntity = new Entity((uint)entityHandle);
+            Entity newEntity = Scene.GetEntityByID((uint)entityHandle);
+            if (newEntity == null) return null;
             if (newEntity.HasComponent<TransformComponent>()) return newEntity;
             return null;
         }

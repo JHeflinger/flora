@@ -391,7 +391,7 @@ namespace Flora
         internal extern static string TagComponent_GetTag(uint id);
 
         [MethodImplAttribute(MethodImplOptions.InternalCall)]
-        internal extern static uint Entity_FindEntityByName(string name);
+        internal extern static long Entity_FindEntityByName(string name);
 
         [MethodImplAttribute(MethodImplOptions.InternalCall)]
         internal extern static object Entity_GetScriptInstance(uint id);

@@ -7,6 +7,7 @@ namespace Game
 	{
 		public int cost;
 		public bool isMagic;
+		public bool active;
 		ChildComponent cc;
 
 		void OnCreate()
