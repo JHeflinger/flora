@@ -9,6 +9,7 @@ namespace Game
 		ArrayList hand;
 		Entity templateCard;
 		public bool copy;
+		uint cardCounter = 0;
 
 		void OnCreate()
 		{
@@ -22,15 +23,18 @@ namespace Game
 
 		void OnUpdate(float ts)
 		{
-			Entity templateCard = Scene.FindEntityByName("Template Card");
-			if (templateCard is Card card)
+			Entity templateCard = Scene.FindEntityByName("Stamina");
+			if (copy || cardCounter < 300)
 			{
-				if (copy)
+				if (templateCard == null)
                 {
-					Console.WriteLine("copied template");
-					Scene.CopyEntity(templateCard);
-					copy = false;
+					Console.WriteLine("its null...");
+					return;
                 }
+				Entity copyCardEntity = Scene.CopyEntity(templateCard);
+				cardCounter++;
+				copyCardEntity.GetComponent<TagComponent>().Tag = "Stamina (" + cardCounter.ToString() + ")";
+				copy = false;
 			}
 		}
 	}

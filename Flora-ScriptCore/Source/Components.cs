@@ -9,7 +9,7 @@ namespace Flora
 {
     public abstract class Component
     {
-        public Entity Entity { get; internal set; }
+        public Entity Entity { get; set; }
     }
 
     public enum SpriteType
@@ -352,8 +352,9 @@ namespace Flora
 
         public Entity GetChild(uint index)
         {
-            uint entityID = InternalCalls.ChildComponent_GetChild(Entity.ID, index);
-            return Scene.GetEntityByID(entityID);
+            long entityID = InternalCalls.ChildComponent_GetChild(Entity.ID, index);
+            if (entityID < 0) return null;
+            return Scene.GetEntityByID((uint)entityID);
         }
     }
 

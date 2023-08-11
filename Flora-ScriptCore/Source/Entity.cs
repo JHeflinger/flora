@@ -9,7 +9,7 @@ namespace Flora
 
         public float FloatVar { get; set; }
 
-        internal Entity(uint eid)
+        public Entity(uint eid)
         {
             ID = eid;
         }
@@ -46,7 +46,7 @@ namespace Flora
             if (!HasComponent<T>())
                 return null;
 
-            T component = new T() { Entity = this };
+            T component = new T() { Entity = new Entity(ID) };
             return component;
         }
 

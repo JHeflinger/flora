@@ -9,8 +9,8 @@ namespace Game
 
 		void OnCreate()
 		{
-			if (HasComponent<ChildComponent>())
-				cc = GetComponent<ChildComponent>();
+			/*if (HasComponent<ChildComponent>())
+				cc = GetComponent<ChildComponent>();*/
 		}
 
 		void OnDestroy()
@@ -20,7 +20,7 @@ namespace Game
 
 		void OnUpdate(float ts)
 		{
-			if (HasComponent<ChildComponent>())
+			/*if (HasComponent<ChildComponent>())
             {
 				Entity highlight = cc.GetChild(0);
 				if (highlight.HasComponent<SpriteRendererComponent>())
@@ -37,7 +37,7 @@ namespace Game
 						}
 					}
 				}
-            }
+            }*/
 		}
 	}
 }

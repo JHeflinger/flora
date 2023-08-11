@@ -196,7 +196,7 @@ namespace Flora
 		internal extern static uint ChildComponent_GetChildrenSize(uint id);
 
 		[MethodImplAttribute(MethodImplOptions.InternalCall)]
-		internal extern static uint ChildComponent_GetChild(uint id, uint index);
+		internal extern static long ChildComponent_GetChild(uint id, uint index);
 
 		[MethodImplAttribute(MethodImplOptions.InternalCall)]
 		internal extern static bool CameraComponent_GetFixedAspectRatio(uint id);

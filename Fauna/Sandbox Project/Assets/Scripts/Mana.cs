@@ -10,8 +10,8 @@ namespace Game
 
 		void OnCreate()
 		{
-			if (HasComponent<ChildComponent>())
-				cc = GetComponent<ChildComponent>();
+			/*if (HasComponent<ChildComponent>())
+				cc = GetComponent<ChildComponent>();*/
 		}
 
 		void OnDestroy()
@@ -21,9 +21,10 @@ namespace Game
 
 		void OnUpdate(float ts)
 		{
-			if (HasComponent<ChildComponent>())
+			/*if (HasComponent<ChildComponent>())
 			{
 				Entity counter = cc.GetChild(0);
+				counter.GetComponent<TagComponent>();
 				if (counter.HasComponent<SpriteRendererComponent>())
 				{
 					int newCoord = mana;
@@ -31,7 +32,7 @@ namespace Game
 					if (newCoord <= 0) newCoord = 10;
 					counter.GetComponent<SpriteRendererComponent>().ColumnCoordinate = newCoord;
 				}
-			}
+			}*/
 		}
 	}
 }

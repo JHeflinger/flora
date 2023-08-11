@@ -29,7 +29,10 @@ namespace Game
 					int newCoord = stamina;
 					if (newCoord > 9) newCoord = 9;
 					if (newCoord <= 0) newCoord = 10;
-					counter.GetComponent<SpriteRendererComponent>().ColumnCoordinate = newCoord;
+					//counter.GetComponent<SpriteRendererComponent>().ColumnCoordinate = newCoord;
+					Entity entity = new Entity(0);
+					SpriteRendererComponent src = new SpriteRendererComponent() { Entity = counter};
+					//src.ColumnCoordinate = newCoord;
                 }
             }
 		}

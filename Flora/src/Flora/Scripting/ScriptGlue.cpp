@@ -441,9 +441,10 @@ namespace Flora {
 		return entity.GetComponent<ChildComponent>().Children.size();
 	}
 
-	static uint32_t ChildComponent_GetChild(uint32_t eid, uint32_t index) {
+	static int64_t ChildComponent_GetChild(uint32_t eid, uint32_t index) {
 		Entity entity = GetValidatedEntityFromID(eid);
-		return (uint32_t)entity.GetComponent<ChildComponent>().Children[index];
+		if (entity.GetComponent<ChildComponent>().Children.size() <= index) return -1;
+		return (int64_t)(uint32_t)entity.GetComponent<ChildComponent>().Children[index];
 	}
 
 	static uint32_t ParentComponent_GetParent(uint32_t eid) {

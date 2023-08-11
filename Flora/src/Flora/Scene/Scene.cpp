@@ -300,6 +300,10 @@ namespace Flora {
 			}
 		}
 
+		// instantiate copied script if needed
+		if (m_Running && newEntity.HasComponent<ScriptComponent>())
+			ScriptEngine::CreateEntity(newEntity);
+
 		// modify parent based on parameter
 		if (!parent.HasComponent<ChildComponent>()) parent.AddComponent<ChildComponent>();
 		parent.GetComponent<ChildComponent>().AddChild(newEntity);

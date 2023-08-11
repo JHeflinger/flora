@@ -10,9 +10,9 @@ namespace Game
 
 		void OnCreate()
 		{
-			if (HasComponent<TransformComponent>())
+			/*if (HasComponent<TransformComponent>())
 				tc = GetComponent<TransformComponent>();
-			width = height = 2.0f * Scene.GetPrimaryCamera().GetComponent<CameraComponent>().OrthographicSize;
+			width = height = 2.0f * Scene.GetPrimaryCamera().GetComponent<CameraComponent>().OrthographicSize;*/
 		}
 
 		void OnDestroy()
@@ -22,10 +22,10 @@ namespace Game
 
 		void OnUpdate(float ts)
 		{
-			if (HasComponent<TransformComponent>())
+			/*if (HasComponent<TransformComponent>())
 			{
 				tc.Scale = new Vector3(width, height, 1.0f);
-			}
+			}*/
 		}
 	}
 }

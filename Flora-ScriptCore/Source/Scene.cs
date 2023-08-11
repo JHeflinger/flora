@@ -9,7 +9,7 @@ namespace Flora
     public class Scene
     {
         private static Dictionary<uint, Entity> EntityMap = new Dictionary<uint, Entity>();
-        
+
         public static void BindEntity(Entity entity)
         {
             if (EntityMap.ContainsKey(entity.ID))
@@ -34,7 +34,8 @@ namespace Flora
         {
             long eid = InternalCalls.Entity_FindEntityByName(name);
             if (eid < 0) return null;
-            if (!EntityMap.ContainsKey((uint)eid)) return null;
+            if (!EntityMap.ContainsKey((uint)eid))
+                EntityMap.Add((uint)eid, new Entity((uint)eid));
             return EntityMap[(uint)eid];
         }
 

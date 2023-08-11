@@ -12,8 +12,8 @@ namespace Game
 
 		void OnCreate()
 		{
-			if (HasComponent<ChildComponent>())
-				cc = GetComponent<ChildComponent>();
+			/*if (HasComponent<ChildComponent>())
+				cc = GetComponent<ChildComponent>();*/
 		}
 
 		void OnDestroy()
@@ -22,12 +22,19 @@ namespace Game
 		}
 
 		void OnUpdate(float ts)
-		{
+		{/*
 			if (HasComponent<ChildComponent>())
             {
 				for (uint i = 0; i < cc.GetChildrenSize(); i++)
                 {
-					Entity child = cc.GetChild(i);
+					Entity child = cc.GetChild(0);
+					//things it could be:
+					// (maybe) getcomponent in general???
+					// child component on the CURRENT entity?
+					//Console.WriteLine("brah");
+
+					//TagComponent str = child.GetComponent<TagComponent>();
+					
 					if (child.GetComponent<TagComponent>().Tag.Equals("Cost"))
 					{
 						if (child.HasComponent<SpriteRendererComponent>())
@@ -43,8 +50,8 @@ namespace Game
 							child.GetComponent<SpriteRendererComponent>().ColumnCoordinate = newCoord;
 						}
 					}
-                }
-            }
+				}
+            }*/
 		}
 	}
 }
