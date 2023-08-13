@@ -6,26 +6,6 @@ Physics:
   VelocityIterations: 6
   PositionIterations: 2
 Entities:
-  - Entity: 16
-    TagComponent:
-      Tag: Child
-    TransformComponent:
-      Translation: [0, 0, 0]
-      Rotation: [0, 0, 0]
-      Scale: [1, 1, 1]
-    ParentComponent:
-      Parent: 15
-      InheritAll: true
-      InheritTransform: true
-  - Entity: 15
-    TagComponent:
-      Tag: Test
-    TransformComponent:
-      Translation: [0, 0, 0]
-      Rotation: [0, 0, 0]
-      Scale: [1, 1, 1]
-    ChildComponent:
-      - 16
   - Entity: 14
     TagComponent:
       Tag: Text

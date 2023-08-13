@@ -50,14 +50,26 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Background.cs" />
-    <Compile Include="Card.cs" />
-    <Compile Include="Hand.cs" />
-    <Compile Include="Mana.cs" />
-    <Compile Include="PlayButton.cs" />
-    <Compile Include="Stamina.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\..\..\..\MSPL\Assets\Scripts\Background.cs">
+      <Link>MSPL\Assets\Scripts\Background.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\..\..\MSPL\Assets\Scripts\Card.cs">
+      <Link>MSPL\Assets\Scripts\Card.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\..\..\MSPL\Assets\Scripts\Hand.cs">
+      <Link>MSPL\Assets\Scripts\Hand.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\..\..\MSPL\Assets\Scripts\Mana.cs">
+      <Link>MSPL\Assets\Scripts\Mana.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\..\..\MSPL\Assets\Scripts\PlayButton.cs">
+      <Link>MSPL\Assets\Scripts\PlayButton.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\..\..\MSPL\Assets\Scripts\Stamina.cs">
+      <Link>MSPL\Assets\Scripts\Stamina.cs</Link>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\Flora-ScriptCore\Flora-ScriptCore.csproj">
