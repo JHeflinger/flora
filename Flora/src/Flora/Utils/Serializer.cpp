@@ -122,6 +122,7 @@ namespace Flora {
 			out << YAML::Key << "TilingFactor" << YAML::Value << spriteRendererComponent.TilingFactor;
 			out << YAML::Key << "Rows" << YAML::Value << spriteRendererComponent.Rows;
 			out << YAML::Key << "Columns" << YAML::Value << spriteRendererComponent.Columns;
+			out << YAML::Key << "Paused" << YAML::Value << spriteRendererComponent.Paused;
 
 			// accomodate for variances in sprite animation for comparisons
 			if (spriteRendererComponent.Type != SpriteRendererComponent::SpriteType::ANIMATION) {
@@ -400,6 +401,7 @@ namespace Flora {
 					src.FPS = spriteRendererComponent["FPS"].as<int>();
 					src.Path = spriteRendererComponent["Path"].as<std::string>();
 					src.Filename = spriteRendererComponent["Filename"].as<std::string>();
+					src.Paused = spriteRendererComponent["Paused"].as<bool>();
 				}
 
 				auto circleRendererComponent = entity["CircleRendererComponent"];

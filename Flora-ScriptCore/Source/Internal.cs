@@ -22,6 +22,12 @@ namespace Flora
 		internal extern static void SpriteRendererComponent_SetVisible(uint id, bool isVisible);
 
 		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static bool SpriteRendererComponent_GetPaused(uint id);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static void SpriteRendererComponent_SetPaused(uint id, bool isPaused);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
 		internal extern static uint Scene_GetPrimaryCamera();
 
 		[MethodImplAttribute(MethodImplOptions.InternalCall)]

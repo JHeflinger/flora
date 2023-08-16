@@ -289,6 +289,16 @@ namespace Flora {
 		entity.GetComponent<SpriteRendererComponent>().Visible = isVisible;
 	}
 
+	static bool SpriteRendererComponent_GetPaused(uint32_t eid) {
+		Entity entity = GetValidatedEntityFromID(eid);
+		return entity.GetComponent<SpriteRendererComponent>().Paused;
+	}
+
+	static void SpriteRendererComponent_SetPaused(uint32_t eid, bool isPaused) {
+		Entity entity = GetValidatedEntityFromID(eid);
+		entity.GetComponent<SpriteRendererComponent>().Paused = isPaused;
+	}
+
 	static void CircleRendererComponent_GetColor(uint32_t eid, glm::vec4* outColor) {
 		Entity entity = GetValidatedEntityFromID(eid);
 		*outColor = entity.GetComponent<CircleRendererComponent>().Color;
@@ -797,6 +807,8 @@ namespace Flora {
 		FL_ADD_INTERNAL_CALL(SpriteRendererComponent_SetTextureInitialized);
 		FL_ADD_INTERNAL_CALL(SpriteRendererComponent_GetVisible);
 		FL_ADD_INTERNAL_CALL(SpriteRendererComponent_SetVisible);
+		FL_ADD_INTERNAL_CALL(SpriteRendererComponent_GetPaused);
+		FL_ADD_INTERNAL_CALL(SpriteRendererComponent_SetPaused);
 		FL_ADD_INTERNAL_CALL(CircleRendererComponent_GetColor);
 		FL_ADD_INTERNAL_CALL(CircleRendererComponent_SetColor);
 		FL_ADD_INTERNAL_CALL(CircleRendererComponent_SetColor);

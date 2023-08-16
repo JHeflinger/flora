@@ -539,6 +539,18 @@ namespace Flora
             }
         }
 
+        public bool Paused
+        {
+            get
+            {
+                return InternalCalls.SpriteRendererComponent_GetPaused(Entity.ID);
+            }
+            set
+            {
+                InternalCalls.SpriteRendererComponent_SetPaused(Entity.ID, value);
+            }
+        }
+
         public SpriteType Type
         {
             get

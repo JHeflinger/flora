@@ -53,6 +53,7 @@ namespace Flora {
 		int CurrentFrame = 1;
 		int FPS = 1;
 		int FrameCounter = 0;
+		bool Paused = false;
 		std::string Path = "NULL";
 		std::string Filename = "None Selected";
 		bool TextureInitialized = false;

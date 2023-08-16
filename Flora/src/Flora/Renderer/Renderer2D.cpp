@@ -532,10 +532,12 @@ namespace Flora {
 
 				// this assumes running game at 60 fps
 				//TODO: use timestep in this 
-				src.FrameCounter++;
-				if (src.FrameCounter >= 60 / src.FPS) {
-					src.CurrentFrame++;
-					src.FrameCounter = 0;
+				if (!src.Paused) {
+					src.FrameCounter++;
+					if (src.FrameCounter >= 60 / src.FPS) {
+						src.CurrentFrame++;
+						src.FrameCounter = 0;
+					}
 				}
 			} else DrawQuad(transform, src.Color, entityID);
 		} else FL_CORE_ASSERT(false, "Sprite type not supported!");
