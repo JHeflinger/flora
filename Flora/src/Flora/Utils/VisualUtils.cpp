@@ -4,6 +4,7 @@
 
 namespace Flora {
 	static int64_t s_HoveredEntityHandle = -1;
+	static ViewportInfo s_ViewportInfo;
 
 #ifdef false
 	static bool s_Initialized = false;
@@ -35,5 +36,9 @@ namespace Flora {
 
 	void VisualUtils::SetHoveredEntity(int64_t entityHandle) {
 		s_HoveredEntityHandle = entityHandle;
+	}
+
+	ViewportInfo& VisualUtils::GetViewportInfo() {
+		return s_ViewportInfo;
 	}
 }

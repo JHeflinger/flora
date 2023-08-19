@@ -10,6 +10,9 @@ namespace Flora
     public static class InternalCalls
 	{
 		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static void Input_GetMousePositionFromCamera(uint eid, out Vector2 position);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
 		internal extern static uint Scene_CopyEntity(uint id);
 
 		[MethodImplAttribute(MethodImplOptions.InternalCall)]

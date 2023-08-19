@@ -741,6 +741,35 @@ namespace Flora {
 		return (uint32_t)scene->CopyEntity(GetValidatedEntityFromID(eid));
 	}
 
+	static void Input_GetMousePositionFromCamera(uint32_t eid, glm::vec2* outPosition) {
+		Entity camera = GetValidatedEntityFromID(eid);
+		TransformComponent tc = camera.GetComponent<TransformComponent>();
+		CameraComponent cc;
+
+		if (camera.HasComponent<CameraComponent>())
+			cc = camera.GetComponent<CameraComponent>();
+		else
+			return;
+
+		if (cc.Camera.GetProjectionType() != SceneCamera::ProjectionType::Orthographic)
+			return;
+
+		ViewportInfo vi = VisualUtils::GetViewportInfo();
+		
+		float norm_x = vi.mouseX - (vi.width / 2.0f);
+		float norm_y = vi.mouseY - (vi.height / 2.0f);
+
+		float cam_h = cc.Camera.GetOrthographicSize() / 2.0f;
+		float cam_w = (cam_h) * (vi.width / vi.height);
+
+		norm_x = (norm_x * 2.0f * cam_w) / vi.width;
+		norm_y = (norm_y * 2.0f * cam_h) / vi.height;
+
+		*outPosition = { tc.Translation.x + norm_x, tc.Translation.y + norm_y };
+
+		FL_CORE_INFO("{}, {}", norm_x, norm_y);
+	}
+
 	void ScriptGlue::RegisterFunctions() {
 		FL_ADD_INTERNAL_CALL(CoreTrace);
 		FL_ADD_INTERNAL_CALL(Input_IsKeyDown);
@@ -751,6 +780,7 @@ namespace Flora {
 		FL_ADD_INTERNAL_CALL(Input_GetMouseX);
 		FL_ADD_INTERNAL_CALL(Input_GetMouseY);
 		FL_ADD_INTERNAL_CALL(Input_GetMousePosition);
+		FL_ADD_INTERNAL_CALL(Input_GetMousePositionFromCamera);
 		FL_ADD_INTERNAL_CALL(DevTools_SendCommand);
 		FL_ADD_INTERNAL_CALL(DevTools_GetQueuedCommand);
 		FL_ADD_INTERNAL_CALL(DevTools_HasQueuedCommand);

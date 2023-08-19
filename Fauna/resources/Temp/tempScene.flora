@@ -10,18 +10,19 @@ Entities:
     TagComponent:
       Tag: Text
     TransformComponent:
-      Translation: [0, 0, 0.819999993]
+      Translation: [0, 0, 0.0199999996]
       Rotation: [0, 0, 0]
       Scale: [2.67000008, 4, 1]
     SpriteRendererComponent:
       Visible: true
       Color: [1, 1, 1, 1]
-      Path: D:\Dev\MSPL\Assets\Textures\Preliminary\T_000_Fireball.png
+      Path: E:\Dev\MSPL\Assets\Textures\Preliminary\T_000_Fireball.png
       Filename: T_000_Fireball.png
       Type: 0
       TilingFactor: 1
       Rows: 1
       Columns: 1
+      Paused: false
       RowCoordinate: 1
       ColumnCoordinate: 1
       SubtextureWidth: 1
@@ -39,18 +40,19 @@ Entities:
     TagComponent:
       Tag: Graphic
     TransformComponent:
-      Translation: [0, 0.832576454, 0.899999976]
+      Translation: [0, 0.832576454, 0.00999999978]
       Rotation: [0, 0, 0]
       Scale: [2.67000008, 2, 1]
     SpriteRendererComponent:
       Visible: true
       Color: [1, 1, 1, 1]
-      Path: D:\Dev\MSPL\Assets\Textures\Preliminary\G_000_Fireball.png
+      Path: E:\Dev\MSPL\Assets\Textures\Preliminary\G_000_Fireball.png
       Filename: G_000_Fireball.png
       Type: 0
       TilingFactor: 1
       Rows: 1
       Columns: 1
+      Paused: false
       RowCoordinate: 1
       ColumnCoordinate: 1
       SubtextureWidth: 1
@@ -68,18 +70,19 @@ Entities:
     TagComponent:
       Tag: Cost
     TransformComponent:
-      Translation: [0.922080994, 1.52032471, 0.920000017]
+      Translation: [0.922080994, 1.52032471, 0.0299999993]
       Rotation: [0, 0, 0]
       Scale: [0.5, 0.5, 1]
     SpriteRendererComponent:
       Visible: true
       Color: [0, 0, 0, 1]
-      Path: D:\Dev\MSPL\Assets\Textures\Preliminary\Spritesheet_Numbers.png
+      Path: E:\Dev\MSPL\Assets\Textures\Preliminary\Spritesheet_Numbers.png
       Filename: Spritesheet_Numbers.png
       Type: 1
       TilingFactor: 1
       Rows: 1
       Columns: 10
+      Paused: false
       RowCoordinate: 1
       ColumnCoordinate: 1
       SubtextureWidth: 1
@@ -97,18 +100,19 @@ Entities:
     TagComponent:
       Tag: Template
     TransformComponent:
-      Translation: [0, 0, 0.80443728]
+      Translation: [0, 0, 0]
       Rotation: [0, 0, 0]
       Scale: [2.66666603, 4, 1]
     SpriteRendererComponent:
       Visible: true
       Color: [0.842086256, 0.617760658, 1, 1]
-      Path: D:\Dev\MSPL\Assets\Textures\Preliminary\Card_Template.png
+      Path: E:\Dev\MSPL\Assets\Textures\Preliminary\Card_Template.png
       Filename: Card_Template.png
       Type: 0
       TilingFactor: 1
       Rows: 1
       Columns: 1
+      Paused: false
       RowCoordinate: 1
       ColumnCoordinate: 1
       SubtextureWidth: 1
@@ -146,17 +150,6 @@ Entities:
       - 12
       - 13
       - 14
-  - Entity: 9
-    TagComponent:
-      Tag: Hand
-    TransformComponent:
-      Translation: [5.45482492, 1.70463324, 0]
-      Rotation: [0, 0, 0]
-      Scale: [1, 1, 1]
-    ParentComponent:
-      Parent: 0
-      InheritAll: true
-      InheritTransform: true
   - Entity: 8
     TagComponent:
       Tag: Graveyard
@@ -167,12 +160,13 @@ Entities:
     SpriteRendererComponent:
       Visible: true
       Color: [1, 1, 1, 1]
-      Path: D:\Dev\MSPL\Assets\Textures\Preliminary\Spritesheet_Decks.png
+      Path: E:\Dev\MSPL\Assets\Textures\Preliminary\Spritesheet_Decks.png
       Filename: Spritesheet_Decks.png
       Type: 1
       TilingFactor: 1
       Rows: 1
       Columns: 2
+      Paused: false
       RowCoordinate: 1
       ColumnCoordinate: 2
       SubtextureWidth: 1
@@ -196,12 +190,13 @@ Entities:
     SpriteRendererComponent:
       Visible: true
       Color: [1, 1, 1, 1]
-      Path: D:\Dev\MSPL\Assets\Textures\Preliminary\Spritesheet_Decks.png
+      Path: E:\Dev\MSPL\Assets\Textures\Preliminary\Spritesheet_Decks.png
       Filename: Spritesheet_Decks.png
       Type: 1
       TilingFactor: 1
       Rows: 1
       Columns: 2
+      Paused: false
       RowCoordinate: 1
       ColumnCoordinate: 1
       SubtextureWidth: 1
@@ -231,6 +226,7 @@ Entities:
       TilingFactor: 1
       Rows: 1
       Columns: 1
+      Paused: false
       RowCoordinate: 1
       ColumnCoordinate: 1
       SubtextureWidth: 1
@@ -252,12 +248,13 @@ Entities:
     SpriteRendererComponent:
       Visible: true
       Color: [0, 0, 0, 1]
-      Path: D:\Dev\MSPL\Assets\Textures\Preliminary\Spritesheet_Numbers.png
+      Path: E:\Dev\MSPL\Assets\Textures\Preliminary\Spritesheet_Numbers.png
       Filename: Spritesheet_Numbers.png
       Type: 1
       TilingFactor: 1
       Rows: 1
       Columns: 10
+      Paused: false
       RowCoordinate: 2
       ColumnCoordinate: 1
       SubtextureWidth: 1
@@ -281,12 +278,13 @@ Entities:
     SpriteRendererComponent:
       Visible: true
       Color: [1, 1, 1, 1]
-      Path: D:\Dev\MSPL\Assets\Textures\Preliminary\Battle_Energies.png
+      Path: E:\Dev\MSPL\Assets\Textures\Preliminary\Battle_Energies.png
       Filename: Battle_Energies.png
       Type: 1
       TilingFactor: 1
       Rows: 1
       Columns: 2
+      Paused: false
       RowCoordinate: 1
       ColumnCoordinate: 1
       SubtextureWidth: 1
@@ -318,12 +316,13 @@ Entities:
     SpriteRendererComponent:
       Visible: true
       Color: [1, 1, 1, 1]
-      Path: D:\Dev\MSPL\Assets\Textures\Preliminary\Battle_Energies.png
+      Path: E:\Dev\MSPL\Assets\Textures\Preliminary\Battle_Energies.png
       Filename: Battle_Energies.png
       Type: 1
       TilingFactor: 1
       Rows: 1
       Columns: 2
+      Paused: false
       RowCoordinate: 1
       ColumnCoordinate: 2
       SubtextureWidth: 1
@@ -355,12 +354,13 @@ Entities:
     SpriteRendererComponent:
       Visible: true
       Color: [0, 0, 0, 1]
-      Path: D:\Dev\MSPL\Assets\Textures\Preliminary\Spritesheet_Numbers.png
+      Path: E:\Dev\MSPL\Assets\Textures\Preliminary\Spritesheet_Numbers.png
       Filename: Spritesheet_Numbers.png
       Type: 1
       TilingFactor: 1
       Rows: 1
       Columns: 10
+      Paused: false
       RowCoordinate: 2
       ColumnCoordinate: 1
       SubtextureWidth: 1
@@ -388,7 +388,7 @@ Entities:
         PerspectiveNear: 0.00999999978
         PerspectiveFar: 1000
         OrthographicSize: 10
-        OrthographicNear: -1
+        OrthographicNear: -9
         OrthographicFar: 1
       FixedAspectRatio: false
       Visible Borders: true
@@ -408,6 +408,7 @@ Entities:
       TilingFactor: 1
       Rows: 1
       Columns: 1
+      Paused: false
       RowCoordinate: 1
       ColumnCoordinate: 1
       SubtextureWidth: 1
@@ -420,10 +421,23 @@ Entities:
     ScriptComponent:
       ClassName: Game.Hand
       ScriptFields:
-        []
+        - Name: copy
+          Type: Bool
+          Data: false
+        - Name: maxWidth
+          Type: Float
+          Data: 7.5
+        - Name: origin
+          Type: Vector3
+          Data: [0.899999976, -4.5, 0]
+        - Name: rotation_range
+          Type: Float
+          Data: 30
+        - Name: step
+          Type: Float
+          Data: 1.5
     ChildComponent:
       - 1048580
       - 3
       - 7
       - 8
-      - 9

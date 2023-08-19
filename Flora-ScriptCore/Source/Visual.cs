@@ -17,5 +17,10 @@ namespace Flora
             if (newEntity.HasComponent<TransformComponent>()) return newEntity;
             return null;
         }
+
+        public static long GetHoveredEntityID()
+        {
+            return InternalCalls.VisualUtils_GetHoveredEntity();
+        }
     }
 }

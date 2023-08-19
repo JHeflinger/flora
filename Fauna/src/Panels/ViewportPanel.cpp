@@ -61,6 +61,12 @@ namespace Flora {
 			VisualUtils::SetHoveredEntity((int64_t)(uint32_t)m_HoveredEntity);
 		}
 
+		ViewportInfo& vi = VisualUtils::GetViewportInfo();
+		vi.width = m_ViewportSize.x;
+		vi.height = m_ViewportSize.y;
+		vi.mouseX = mx;
+		vi.mouseY = my;
+
 		// renderer "unsetup", move later
 		m_Framebuffer->Unbind();
 	}

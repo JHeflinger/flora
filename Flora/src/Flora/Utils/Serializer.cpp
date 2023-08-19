@@ -428,6 +428,7 @@ namespace Flora {
 							std::string name = scriptField["Name"].as<std::string>();
 							ScriptFieldType type = Utils::ScriptFieldTypeFromSting(scriptField["Type"].as<std::string>());
 							ScriptFieldInstance& fieldInstance = entityFields[name];
+							if (fields.find(name) == fields.end()) continue;
 							fieldInstance.Field = fields.at(name);
 
 							#define FIELD_DATA(FieldType, Type) case ScriptFieldType::FieldType:\

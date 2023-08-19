@@ -723,6 +723,8 @@ namespace Flora {
 				ImGui::SetColumnWidth(0, 100.0f);
 				ImGui::Text("Texture");
 				ImGui::Dummy(ImVec2(0, 15.0f));
+				ImGui::Text("Paused");
+				ImGui::Dummy(ImVec2(0, 15.0f));
 				ImGui::Text("Rows");
 				ImGui::Dummy(ImVec2(0, 2.0f));
 				ImGui::Text("Columns");
@@ -731,6 +733,7 @@ namespace Flora {
 				DrawTextureDropbox("Sprite Sheet", component, largeButtonSize);
 				ImGui::Dummy(ImVec2(0, 5.0f));
 				// rows, columns, subtexture row/col
+				ImGui::Checkbox("##Paused", &component.Paused);
 				ImGui::DragInt("##Rows", &component.Rows, 0.1, 1, 1000);
 				ImGui::DragInt("##Columns", &component.Columns, 0.1, 1, 1000);
 				ImGui::PopItemWidth();

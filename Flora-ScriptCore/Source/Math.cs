@@ -6,6 +6,19 @@ using System.Threading.Tasks;
 
 namespace Flora
 {
+    public class FMath
+    {
+        public static float Radians(float degrees)
+        {
+            return ((float)(Math.PI) / 180.0f) * degrees;
+        }
+
+        public static float Degrees(float radians)
+        {
+            return (180.0f * radians) / ((float)(Math.PI));
+        }
+    }
+
     public struct Vector4
     {
         public float X, Y, Z, W;

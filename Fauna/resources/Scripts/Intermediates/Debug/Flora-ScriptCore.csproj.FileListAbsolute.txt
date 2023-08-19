@@ -4,3 +4,9 @@ D:\Dev\Flora\Fauna\resources\Scripts\Intermediates\Debug\Flora-ScriptCore.dll
 D:\Dev\Flora\Fauna\resources\Scripts\Intermediates\Debug\Flora-ScriptCore.pdb
 D:\Dev\Flora\Fauna\resources\Scripts\Flora-ScriptCore.dll
 D:\Dev\Flora\Fauna\resources\Scripts\Flora-ScriptCore.pdb
+E:\Dev\Flora\Fauna\Resources\Scripts\Intermediates\Debug\Flora-ScriptCore.csproj.AssemblyReference.cache
+E:\Dev\Flora\Fauna\Resources\Scripts\Intermediates\Debug\Flora-ScriptCore.csproj.CoreCompileInputs.cache
+E:\Dev\Flora\Fauna\Resources\Scripts\Intermediates\Debug\Flora-ScriptCore.dll
+E:\Dev\Flora\Fauna\Resources\Scripts\Intermediates\Debug\Flora-ScriptCore.pdb
+E:\Dev\Flora\Fauna\Resources\Scripts\Flora-ScriptCore.dll
+E:\Dev\Flora\Fauna\Resources\Scripts\Flora-ScriptCore.pdb

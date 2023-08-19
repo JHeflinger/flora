@@ -33,5 +33,11 @@ namespace Flora
             InternalCalls.Input_GetMousePosition(out Vector2 position);
             return position;
         }
+
+        public static Vector2 GetMousePosition(Entity camera)
+        {
+            InternalCalls.Input_GetMousePositionFromCamera(camera.ID, out Vector2 position);
+            return position;
+        }
     }
 }
