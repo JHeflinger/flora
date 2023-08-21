@@ -16,7 +16,7 @@ Entities:
     SpriteRendererComponent:
       Visible: true
       Color: [1, 1, 1, 1]
-      Path: E:\Dev\MSPL\Assets\Textures\Preliminary\T_000_Fireball.png
+      Path: D:\Dev\MSPL\Assets\Textures\Preliminary\T_000_Fireball.png
       Filename: T_000_Fireball.png
       Type: 0
       TilingFactor: 1
@@ -46,7 +46,7 @@ Entities:
     SpriteRendererComponent:
       Visible: true
       Color: [1, 1, 1, 1]
-      Path: E:\Dev\MSPL\Assets\Textures\Preliminary\G_000_Fireball.png
+      Path: D:\Dev\MSPL\Assets\Textures\Preliminary\G_000_Fireball.png
       Filename: G_000_Fireball.png
       Type: 0
       TilingFactor: 1
@@ -76,7 +76,7 @@ Entities:
     SpriteRendererComponent:
       Visible: true
       Color: [0, 0, 0, 1]
-      Path: E:\Dev\MSPL\Assets\Textures\Preliminary\Spritesheet_Numbers.png
+      Path: D:\Dev\MSPL\Assets\Textures\Preliminary\Spritesheet_Numbers.png
       Filename: Spritesheet_Numbers.png
       Type: 1
       TilingFactor: 1
@@ -106,7 +106,7 @@ Entities:
     SpriteRendererComponent:
       Visible: true
       Color: [0.842086256, 0.617760658, 1, 1]
-      Path: E:\Dev\MSPL\Assets\Textures\Preliminary\Card_Template.png
+      Path: D:\Dev\MSPL\Assets\Textures\Preliminary\Card_Template.png
       Filename: Card_Template.png
       Type: 0
       TilingFactor: 1
@@ -160,7 +160,7 @@ Entities:
     SpriteRendererComponent:
       Visible: true
       Color: [1, 1, 1, 1]
-      Path: E:\Dev\MSPL\Assets\Textures\Preliminary\Spritesheet_Decks.png
+      Path: D:\Dev\MSPL\Assets\Textures\Preliminary\Spritesheet_Decks.png
       Filename: Spritesheet_Decks.png
       Type: 1
       TilingFactor: 1
@@ -190,7 +190,7 @@ Entities:
     SpriteRendererComponent:
       Visible: true
       Color: [1, 1, 1, 1]
-      Path: E:\Dev\MSPL\Assets\Textures\Preliminary\Spritesheet_Decks.png
+      Path: D:\Dev\MSPL\Assets\Textures\Preliminary\Spritesheet_Decks.png
       Filename: Spritesheet_Decks.png
       Type: 1
       TilingFactor: 1
@@ -248,7 +248,7 @@ Entities:
     SpriteRendererComponent:
       Visible: true
       Color: [0, 0, 0, 1]
-      Path: E:\Dev\MSPL\Assets\Textures\Preliminary\Spritesheet_Numbers.png
+      Path: D:\Dev\MSPL\Assets\Textures\Preliminary\Spritesheet_Numbers.png
       Filename: Spritesheet_Numbers.png
       Type: 1
       TilingFactor: 1
@@ -278,7 +278,7 @@ Entities:
     SpriteRendererComponent:
       Visible: true
       Color: [1, 1, 1, 1]
-      Path: E:\Dev\MSPL\Assets\Textures\Preliminary\Battle_Energies.png
+      Path: D:\Dev\MSPL\Assets\Textures\Preliminary\Battle_Energies.png
       Filename: Battle_Energies.png
       Type: 1
       TilingFactor: 1
@@ -316,7 +316,7 @@ Entities:
     SpriteRendererComponent:
       Visible: true
       Color: [1, 1, 1, 1]
-      Path: E:\Dev\MSPL\Assets\Textures\Preliminary\Battle_Energies.png
+      Path: D:\Dev\MSPL\Assets\Textures\Preliminary\Battle_Energies.png
       Filename: Battle_Energies.png
       Type: 1
       TilingFactor: 1
@@ -354,7 +354,7 @@ Entities:
     SpriteRendererComponent:
       Visible: true
       Color: [0, 0, 0, 1]
-      Path: E:\Dev\MSPL\Assets\Textures\Preliminary\Spritesheet_Numbers.png
+      Path: D:\Dev\MSPL\Assets\Textures\Preliminary\Spritesheet_Numbers.png
       Filename: Spritesheet_Numbers.png
       Type: 1
       TilingFactor: 1

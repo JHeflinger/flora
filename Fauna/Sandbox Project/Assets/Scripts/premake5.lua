@@ -29,7 +29,7 @@ objdir("Project Intermediates/MS Paint Legends")
 
 files
 {
-"E:/Dev/MSPL/Assets/Scripts/**.cs", 
+"D:/Dev/MSPL/Assets/Scripts/**.cs", 
 }
 
 links

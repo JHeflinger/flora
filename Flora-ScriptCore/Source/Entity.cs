@@ -16,11 +16,6 @@ namespace Flora
 
         public readonly uint ID;
 
-        void Bind()
-        {
-            Scene.BindEntity(this);
-        }
-
         public Vector3 Translation
         {
             get

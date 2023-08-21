@@ -364,18 +364,11 @@ namespace Flora {
 		m_OnCreateMethod = m_ScriptClass->GetMethod("OnCreate", 0);
 		m_OnDestroyMethod = m_ScriptClass->GetMethod("OnDestroy", 0);
 		m_OnUpdateMethod = m_ScriptClass->GetMethod("OnUpdate", 1);
-		m_BindMethod = s_Data->EntityClass.GetMethod("Bind", 0);
 
 		// Call entity constructor here
 		uint32_t eid = (uint32_t)entity;
 		void* param = &eid;
 		m_ScriptClass->InvokeMethod(m_Instance, m_Constructor, &param);
-
-		// Call bind method here
-		if (m_BindMethod)
-			m_ScriptClass->InvokeMethod(m_Instance, m_BindMethod);
-		else
-			FL_CORE_WARN("Bind method is missing");
 	}
 
 	void ScriptInstance::InvokeOnCreate() {
