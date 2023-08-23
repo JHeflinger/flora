@@ -143,4 +143,103 @@ namespace Flora {
 		return true;
 	}
 
+	bool Project::RegenerateScriptingProject() {
+		std::string name = s_ActiveProject->GetConfig().Name;
+		std::string scriptsPath = (s_ActiveProject->GetConfig().AssetDirectory / "Scripts").string();
+		size_t pos = 0;
+		while ((pos = scriptsPath.find("\\", pos)) != std::string::npos) {
+			scriptsPath.replace(pos, 1, "/");
+			pos += 1;
+		}
+
+		// create custom premake
+		std::ofstream premake("Sandbox Project/Assets/Scripts/premake5.lua");
+		if (premake.is_open()) {
+			std::string filecontent =
+				"local FloraRootDir = \'../../../..\'\n"
+				"include(FloraRootDir .. \"/vendor/premake/premake_customization/solution_items.lua\")\n"
+				"\n"
+				"workspace \"" + name + "\"\n"
+				"architecture \"x86_64\"\n"
+				"startproject \"" + name + "\"\n"
+				"\n"
+				"configurations\n"
+				"{\n"
+				"\"Debug\",\n"
+				"\"Release\",\n"
+				"\"Dist\"\n"
+				"}\n"
+				"\n"
+				"flags\n"
+				"{\n"
+				"\"MultiProcessorCompile\"\n"
+				"}\n"
+				"\n"
+				"outputdir = \"%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}\"\n"
+				"\n"
+				"project \"" + name + "\"\n"
+				"kind \"SharedLib\"\n"
+				"language \"C#\"\n"
+				"dotnetframework \"4.7.2\"\n"
+				"\n"
+				"targetdir(\"Binaries\")\n"
+				"objdir(\"Project Intermediates/" + name + "\")\n"
+				"\n"
+				"files\n"
+				"{\n"
+				"\"" + scriptsPath + "/**.cs\", \n"
+				"}\n"
+				"\n"
+				"links\n"
+				"{\n"
+				"\"Flora-ScriptCore\"\n"
+				"}\n"
+				"\n"
+				"filter \"configurations:Debug\"\n"
+				"optimize \"Off\"\n"
+				"symbols \"Default\"\n"
+				"\n"
+				"filter \"configurations:Release\"\n"
+				"optimize \"On\"\n"
+				"symbols \"Default\"\n"
+				"\n"
+				"filter \"configurations:Dist\"\n"
+				"optimize \"Full\"\n"
+				"symbols \"Off\"\n"
+				"\n"
+				"group \"Flora\"\n"
+				"include(FloraRootDir .. \"/Flora-ScriptCore\")\n"
+				"group \"\"\n";
+			premake << filecontent << std::endl;
+			premake.close();
+		}
+		else {
+			FL_CORE_ERROR("Failed to create premake file");
+			return false;
+		}
+
+		// generate VSproj
+		wchar_t originalDir[MAX_PATH];
+		GetCurrentDirectoryW(MAX_PATH, originalDir);
+		const wchar_t* bashdir = L"Sandbox Project\\Assets\\Scripts";
+		BOOL changeDirResult = SetCurrentDirectoryW(bashdir);
+		if (!changeDirResult) {
+			FL_CORE_ERROR("Failed to set up Visual Studio Project");
+			return false;
+		}
+		const char* command = "Setup.bat";
+		int result = std::system(command);
+		if (result != 0) {
+			FL_CORE_ERROR("Failed to set up Visual Studio Project");
+			return false;
+		}
+		changeDirResult = SetCurrentDirectoryW(originalDir);
+		if (!changeDirResult) {
+			FL_CORE_ERROR("Failed to revert to original working directory");
+			return false;
+		}
+
+		return true;
+	}
+
 }
