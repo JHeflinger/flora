@@ -163,6 +163,8 @@ namespace Flora {
 						m_FileToRename = "";
 						if (m_EditorContext->ActiveScene->GetSceneFilepath() == path.string().c_str())
 							m_EditorContext->ActiveScene->SetSceneFilepath(completeFilename);
+						if (!Project::RegenerateScriptingProject())
+							FL_CORE_ERROR("Unable to refresh script project");
 					} else FL_CORE_ERROR("Error renaming file");
 				}
 			} else {

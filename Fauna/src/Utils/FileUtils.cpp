@@ -3,6 +3,7 @@
 #include "Flora/Utils/PlatformUtils.h"
 #include "EditorSerializer.h"
 #include "Flora/Utils/Serializer.h"
+#include "Flora/Project/Project.h"
 
 namespace Flora {
 	void FileUtils::OpenScene(Ref<EditorParams> context){
@@ -137,6 +138,10 @@ namespace Flora {
 			outfile.close();
 		} else {
 			FL_CORE_ERROR("Unable to create file");
+		}
+
+		if (!Project::RegenerateScriptingProject()) {
+			FL_CORE_ERROR("Unable to reload script into project");
 		}
 	}
 	

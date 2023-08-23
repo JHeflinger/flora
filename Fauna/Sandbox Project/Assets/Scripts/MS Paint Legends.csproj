@@ -67,6 +67,9 @@
     <Compile Include="..\..\..\..\..\MSPL\Assets\Scripts\Stamina.cs">
       <Link>MSPL\Assets\Scripts\Stamina.cs</Link>
     </Compile>
+    <Compile Include="..\..\..\..\..\MSPL\Assets\Scripts\Test.cs">
+      <Link>MSPL\Assets\Scripts\Test.cs</Link>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\Flora-ScriptCore\Flora-ScriptCore.csproj">
