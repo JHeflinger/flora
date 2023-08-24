@@ -36,6 +36,12 @@ namespace Flora
             return InternalCalls.Entity_HasComponent(ID, componentType);
         }
 
+        public void AddComponent<T>() where T : Component, new()
+        {
+            Type componentType = typeof(T);
+            InternalCalls.Entity_AddComponent(ID, componentType);
+        }
+
         public T GetComponent<T>() where T : Component, new()
         {
             if (!HasComponent<T>())

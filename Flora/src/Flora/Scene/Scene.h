@@ -15,6 +15,7 @@ namespace Flora {
 		~Scene();
 		Entity CreateEntity(const std::string& name = std::string());
 		Entity CreateEntity(uint32_t id, const std::string& name = std::string());
+		Entity CreateScriptEntity(const std::string& scriptName, const std::string& name = std::string());
 		Entity GetEntityFromID(uint32_t id);
 		Entity CopyEntity(Entity entity);
 		Entity CopyEntity(Entity entity, Entity parent);

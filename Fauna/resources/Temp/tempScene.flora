@@ -150,6 +150,15 @@ Entities:
       - 12
       - 13
       - 14
+  - Entity: 9
+    TagComponent:
+      Tag: Testing 123
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    ScriptComponent:
+      ClassName: Game.Test
   - Entity: 8
     TagComponent:
       Tag: Graveyard

@@ -16,6 +16,7 @@ namespace Flora {
 	#define FL_ADD_INTERNAL_CALL(funcName) mono_add_internal_call("Flora.InternalCalls::" #funcName, funcName)
 
 	static std::unordered_map<MonoType*, std::function<bool(Entity)>> s_HasComponentFunctions;
+	static std::unordered_map<MonoType*, std::function<void(Entity)>> s_AddComponentFunctions;
 
 	static Entity GetValidatedEntityFromID(uint32_t eid) {
 		Scene* scene = ScriptEngine::GetSceneContext();
@@ -70,6 +71,13 @@ namespace Flora {
 		MonoType* monoComponentType = mono_reflection_type_get_type(componentType);
 		FL_CORE_ASSERT(s_HasComponentFunctions.find(monoComponentType) != s_HasComponentFunctions.end());
 		return s_HasComponentFunctions.at(monoComponentType)(entity);
+	}
+
+	static void Entity_AddComponent(uint32_t eid, MonoReflectionType* componentType) {
+		Entity entity = GetValidatedEntityFromID(eid);
+		MonoType* monoComponentType = mono_reflection_type_get_type(componentType);
+		FL_CORE_ASSERT(s_AddComponentFunctions.find(monoComponentType) != s_AddComponentFunctions.end());
+		s_AddComponentFunctions.at(monoComponentType)(entity);
 	}
 
 	static int64_t Entity_FindEntityByName(MonoString* name) {
@@ -741,6 +749,32 @@ namespace Flora {
 		return (uint32_t)scene->CopyEntity(GetValidatedEntityFromID(eid));
 	}
 
+	static uint32_t Scene_CreateEntity(MonoString* name) {
+		char* string = mono_string_to_utf8(name);
+		Scene* scene = ScriptEngine::GetSceneContext();
+		Entity entity;
+		if (std::strlen(string) != 0)
+			entity = scene->CreateEntity(std::string(string));
+		else
+			entity = scene->CreateEntity();
+		mono_free(string);
+		return (uint32_t)entity;
+	}
+
+	static uint32_t Scene_CreateSpriteEntity(MonoString* classname, MonoString* name) {
+		char* classstring = mono_string_to_utf8(classname);
+		char* string = mono_string_to_utf8(name);
+		Scene* scene = ScriptEngine::GetSceneContext();
+		Entity entity;
+		if (std::strlen(string) != 0)
+			entity = scene->CreateScriptEntity(std::string(classstring), std::string(string));
+		else
+			entity = scene->CreateScriptEntity(std::string(classstring));
+		mono_free(string);
+		mono_free(classstring);
+		return (uint32_t)entity;
+	}
+
 	static void Input_GetMousePositionFromCamera(uint32_t eid, glm::vec2* outPosition) {
 		Entity camera = GetValidatedEntityFromID(eid);
 		TransformComponent tc = camera.GetComponent<TransformComponent>();
@@ -774,6 +808,7 @@ namespace Flora {
 		FL_ADD_INTERNAL_CALL(CoreTrace);
 		FL_ADD_INTERNAL_CALL(Input_IsKeyDown);
 		FL_ADD_INTERNAL_CALL(Entity_HasComponent);
+		FL_ADD_INTERNAL_CALL(Entity_AddComponent);
 		FL_ADD_INTERNAL_CALL(Entity_FindEntityByName);
 		FL_ADD_INTERNAL_CALL(Entity_GetScriptInstance);
 		FL_ADD_INTERNAL_CALL(Input_IsMouseButtonPressed);
@@ -788,6 +823,8 @@ namespace Flora {
 		FL_ADD_INTERNAL_CALL(DevTools_CountQueuedCommands);
 		FL_ADD_INTERNAL_CALL(Scene_GetPrimaryCamera);
 		FL_ADD_INTERNAL_CALL(Scene_CopyEntity);
+		FL_ADD_INTERNAL_CALL(Scene_CreateEntity);
+		FL_ADD_INTERNAL_CALL(Scene_CreateSpriteEntity);
 		FL_ADD_INTERNAL_CALL(VisualUtils_GetHoveredEntity);
 
 		//Component functions
@@ -929,6 +966,7 @@ namespace Flora {
 				return;
 			}
 			s_HasComponentFunctions[managedType] = [](Entity entity) { return entity.HasComponent<Component>(); };
+			s_AddComponentFunctions[managedType] = [](Entity entity) { entity.AddComponent<Component>(); };
 		}(), ...);
 	}
 

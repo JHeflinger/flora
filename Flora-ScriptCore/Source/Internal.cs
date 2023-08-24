@@ -431,5 +431,14 @@ namespace Flora
 
         [MethodImplAttribute(MethodImplOptions.InternalCall)]
         internal extern static bool Entity_HasComponent(uint eid, Type componentType);
-    }
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static void Entity_AddComponent(uint eid, Type componentType);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static uint Scene_CreateEntity(string name);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static uint Scene_CreateSpriteEntity(string classname, string name);
+	}
 }

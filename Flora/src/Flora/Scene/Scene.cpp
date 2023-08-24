@@ -192,6 +192,18 @@ namespace Flora {
 		return entity;
 	}
 
+	Entity Scene::CreateScriptEntity(const std::string& scriptName, const std::string& name) {
+		Entity entity(m_Registry.create(), this);
+		entity.AddComponent<TransformComponent>();
+		auto& tag = entity.AddComponent<TagComponent>();
+		tag.Tag = name.empty() ? "Untitled Entity" : name;
+		entity.AddComponent<ScriptComponent>();
+		entity.GetComponent<ScriptComponent>().ClassName = scriptName;
+		if (m_Running)
+			ScriptEngine::CreateEntity(entity);
+		return entity;
+	}
+
 	Entity Scene::CreateEntity(uint32_t id, const std::string& name) {
 		Entity entity(m_Registry.create((entt::entity)id), this);
 		entity.AddComponent<TransformComponent>();
