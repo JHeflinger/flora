@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Flora
 {
-    class Developer
+    public class Developer
     {
         public static void SendCommand(string command)
         {

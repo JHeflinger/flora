@@ -20,7 +20,8 @@
     <OutputPath>..\Fauna\Resources\Scripts\</OutputPath>
     <BaseIntermediateOutputPath>..\Fauna\Resources\Scripts\Intermediates\Debug\</BaseIntermediateOutputPath>
     <IntermediateOutputPath>$(BaseIntermediateOutputPath)</IntermediateOutputPath>
-    <DefineConstants></DefineConstants>
+    <DefineConstants>
+    </DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -31,7 +32,8 @@
     <OutputPath>..\Fauna\Resources\Scripts\</OutputPath>
     <BaseIntermediateOutputPath>..\Fauna\Resources\Scripts\Intermediates\Release\</BaseIntermediateOutputPath>
     <IntermediateOutputPath>$(BaseIntermediateOutputPath)</IntermediateOutputPath>
-    <DefineConstants></DefineConstants>
+    <DefineConstants>
+    </DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -42,7 +44,8 @@
     <OutputPath>..\Fauna\Resources\Scripts\</OutputPath>
     <BaseIntermediateOutputPath>..\Fauna\Resources\Scripts\Intermediates\Dist\</BaseIntermediateOutputPath>
     <IntermediateOutputPath>$(BaseIntermediateOutputPath)</IntermediateOutputPath>
-    <DefineConstants></DefineConstants>
+    <DefineConstants>
+    </DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -57,6 +60,7 @@
     <Compile Include="Source\KeyCode.cs" />
     <Compile Include="Source\Math.cs" />
     <Compile Include="Source\MouseCode.cs" />
+    <Compile Include="Source\Project.cs" />
     <Compile Include="Source\Scene.cs" />
     <Compile Include="Source\Visual.cs" />
   </ItemGroup>

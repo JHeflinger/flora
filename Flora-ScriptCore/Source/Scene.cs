@@ -26,11 +26,11 @@ namespace Flora
             return GetEntityByID(eid);
         }
 
-        public static Entity CreateEntity<T>(string name = "") where T : Entity, new()
+        public static T CreateEntity<T>(string name = "") where T : Entity, new()
         {
             Type entityType = typeof(T);
-            uint eid = InternalCalls.Scene_CreateSpriteEntity(entityType.ToString(), name);
-            return GetEntityByID(eid);
+            uint eid = InternalCalls.Scene_CreateScriptEntity(entityType.ToString(), name);
+            return GetEntityByID(eid).As<T>();
         }
 
         public static Entity FindEntityByName(string name)

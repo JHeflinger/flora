@@ -10,6 +10,7 @@
 #include "Flora/Utils/PhysicsUtils.h"
 #include "Flora/Utils/DeveloperUtils.h"
 #include "Flora/Utils/VisualUtils.h"
+#include "Flora/Project/Project.h"
 
 namespace Flora {
 	
@@ -761,7 +762,7 @@ namespace Flora {
 		return (uint32_t)entity;
 	}
 
-	static uint32_t Scene_CreateSpriteEntity(MonoString* classname, MonoString* name) {
+	static uint32_t Scene_CreateScriptEntity(MonoString* classname, MonoString* name) {
 		char* classstring = mono_string_to_utf8(classname);
 		char* string = mono_string_to_utf8(name);
 		Scene* scene = ScriptEngine::GetSceneContext();
@@ -804,6 +805,10 @@ namespace Flora {
 		FL_CORE_INFO("{}, {}", norm_x, norm_y);
 	}
 
+	static MonoString* Project_GetAssetDirectory() {
+		return mono_string_new(mono_get_root_domain(), Project::GetAssetDirectory().string().c_str());
+	}
+
 	void ScriptGlue::RegisterFunctions() {
 		FL_ADD_INTERNAL_CALL(CoreTrace);
 		FL_ADD_INTERNAL_CALL(Input_IsKeyDown);
@@ -824,8 +829,9 @@ namespace Flora {
 		FL_ADD_INTERNAL_CALL(Scene_GetPrimaryCamera);
 		FL_ADD_INTERNAL_CALL(Scene_CopyEntity);
 		FL_ADD_INTERNAL_CALL(Scene_CreateEntity);
-		FL_ADD_INTERNAL_CALL(Scene_CreateSpriteEntity);
+		FL_ADD_INTERNAL_CALL(Scene_CreateScriptEntity);
 		FL_ADD_INTERNAL_CALL(VisualUtils_GetHoveredEntity);
+		FL_ADD_INTERNAL_CALL(Project_GetAssetDirectory);
 
 		//Component functions
 		FL_ADD_INTERNAL_CALL(TagComponent_GetTag);

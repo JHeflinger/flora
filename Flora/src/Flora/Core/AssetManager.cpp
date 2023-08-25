@@ -12,7 +12,11 @@ namespace Flora {
 
 	bool AssetManager::AddTexture(std::string texPath) {
 		if (s_TextureMap.find(texPath) != s_TextureMap.end()) return false;
-		s_TextureMap[texPath] = Texture2D::Create(texPath);
+		std::ifstream file(texPath);
+		if (!file)
+			s_TextureMap[texPath] = Texture2D::Create("resources/Defaults/invalid.png");
+		else
+			s_TextureMap[texPath] = Texture2D::Create(texPath);
 		return true;
 	}
 
