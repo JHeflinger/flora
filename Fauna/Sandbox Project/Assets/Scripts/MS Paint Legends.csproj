@@ -49,11 +49,20 @@
   <ItemGroup>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\..\..\..\MSPL\Assets\Scripts\ActionCard.cs">
+      <Link>MSPL\Assets\Scripts\ActionCard.cs</Link>
+    </Compile>
     <Compile Include="..\..\..\..\..\MSPL\Assets\Scripts\Background.cs">
       <Link>MSPL\Assets\Scripts\Background.cs</Link>
     </Compile>
     <Compile Include="..\..\..\..\..\MSPL\Assets\Scripts\Card.cs">
       <Link>MSPL\Assets\Scripts\Card.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\..\..\MSPL\Assets\Scripts\Enemy.cs">
+      <Link>MSPL\Assets\Scripts\Enemy.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\..\..\MSPL\Assets\Scripts\EnemyHandler.cs">
+      <Link>MSPL\Assets\Scripts\EnemyHandler.cs</Link>
     </Compile>
     <Compile Include="..\..\..\..\..\MSPL\Assets\Scripts\Fireball.cs">
       <Link>MSPL\Assets\Scripts\Fireball.cs</Link>
@@ -61,11 +70,17 @@
     <Compile Include="..\..\..\..\..\MSPL\Assets\Scripts\Hand.cs">
       <Link>MSPL\Assets\Scripts\Hand.cs</Link>
     </Compile>
+    <Compile Include="..\..\..\..\..\MSPL\Assets\Scripts\MagicCard.cs">
+      <Link>MSPL\Assets\Scripts\MagicCard.cs</Link>
+    </Compile>
     <Compile Include="..\..\..\..\..\MSPL\Assets\Scripts\Mana.cs">
       <Link>MSPL\Assets\Scripts\Mana.cs</Link>
     </Compile>
     <Compile Include="..\..\..\..\..\MSPL\Assets\Scripts\PlayButton.cs">
       <Link>MSPL\Assets\Scripts\PlayButton.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\..\..\MSPL\Assets\Scripts\Player.cs">
+      <Link>MSPL\Assets\Scripts\Player.cs</Link>
     </Compile>
     <Compile Include="..\..\..\..\..\MSPL\Assets\Scripts\Stamina.cs">
       <Link>MSPL\Assets\Scripts\Stamina.cs</Link>

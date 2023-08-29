@@ -724,7 +724,7 @@ namespace Flora {
 				ImGui::Text("Texture");
 				ImGui::Dummy(ImVec2(0, 15.0f));
 				ImGui::Text("Paused");
-				ImGui::Dummy(ImVec2(0, 15.0f));
+				ImGui::Dummy(ImVec2(0, 2.0f));
 				ImGui::Text("Rows");
 				ImGui::Dummy(ImVec2(0, 2.0f));
 				ImGui::Text("Columns");

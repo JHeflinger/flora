@@ -6,6 +6,144 @@ Physics:
   VelocityIterations: 6
   PositionIterations: 2
 Entities:
+  - Entity: 14
+    TagComponent:
+      Tag: Enemies
+    TransformComponent:
+      Translation: [4.30894852, 0.774062634, 0.100000001]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    ScriptComponent:
+      ClassName: Game.EnemyHandler
+      ScriptFields:
+        - Name: DEFAULT
+          Type: Bool
+          Data: true
+    ChildComponent:
+      []
+  - Entity: 13
+    TagComponent:
+      Tag: Avatar
+    TransformComponent:
+      Translation: [1.10000002, -1.10000002, 0.300000012]
+      Rotation: [0, 0, 0]
+      Scale: [4, 4, 1]
+    SpriteRendererComponent:
+      Visible: true
+      Color: [1, 1, 1, 1]
+      Path: D:\Dev\MSPL\Assets\Textures\Preliminary\ANIM_Player.png
+      Filename: ANIM_Player.png
+      Type: 2
+      TilingFactor: 1
+      Rows: 1
+      Columns: 4
+      Paused: false
+      RowCoordinate: 1
+      ColumnCoordinate: 1
+      SubtextureWidth: 1
+      SubtextureHeight: 1
+      Frames: 4
+      StartFrame: 1
+      EndFrame: 4
+      CurrentFrame: 1
+      FPS: 10
+    ParentComponent:
+      Parent: 9
+      InheritAll: true
+      InheritTransform: true
+  - Entity: 12
+    TagComponent:
+      Tag: Health
+    TransformComponent:
+      Translation: [0.937037945, 2, 0]
+      Rotation: [0, 0, 0]
+      Scale: [5.39059782, 0.5471946, 1]
+    SpriteRendererComponent:
+      Visible: true
+      Color: [1, 0, 0, 1]
+      Path: "NULL"
+      Filename: None Selected
+      Type: 0
+      TilingFactor: 1
+      Rows: 1
+      Columns: 1
+      Paused: false
+      RowCoordinate: 1
+      ColumnCoordinate: 1
+      SubtextureWidth: 1
+      SubtextureHeight: 1
+      Frames: 1
+      StartFrame: 1
+      EndFrame: 1
+      CurrentFrame: 1
+      FPS: 1
+    ParentComponent:
+      Parent: 10
+      InheritAll: true
+      InheritTransform: true
+  - Entity: 11
+    TagComponent:
+      Tag: Health Bar
+    TransformComponent:
+      Translation: [0.996490479, 2, 0.100000001]
+      Rotation: [0, 0, 0]
+      Scale: [6, 1, 1]
+    SpriteRendererComponent:
+      Visible: true
+      Color: [1, 1, 1, 1]
+      Path: D:\Dev\MSPL\Assets\Textures\Preliminary\Battle_StatBar.png
+      Filename: Battle_StatBar.png
+      Type: 0
+      TilingFactor: 1
+      Rows: 1
+      Columns: 1
+      Paused: false
+      RowCoordinate: 1
+      ColumnCoordinate: 1
+      SubtextureWidth: 1
+      SubtextureHeight: 1
+      Frames: 1
+      StartFrame: 1
+      EndFrame: 1
+      CurrentFrame: 1
+      FPS: 1
+    ParentComponent:
+      Parent: 10
+      InheritAll: true
+      InheritTransform: true
+  - Entity: 10
+    TagComponent:
+      Tag: Status UI
+    TransformComponent:
+      Translation: [0, 0, 0.100000001]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    ParentComponent:
+      Parent: 9
+      InheritAll: true
+      InheritTransform: true
+    ChildComponent:
+      - 11
+      - 12
+  - Entity: 9
+    TagComponent:
+      Tag: Player
+    TransformComponent:
+      Translation: [-5.15263414, 2.00634718, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    ScriptComponent:
+      ClassName: Game.Player
+      ScriptFields:
+        - Name: current_health
+          Type: Int
+          Data: 8
+        - Name: max_health
+          Type: Int
+          Data: 10
+    ChildComponent:
+      - 10
+      - 13
   - Entity: 8
     TagComponent:
       Tag: Graveyard
@@ -70,11 +208,11 @@ Entities:
     TagComponent:
       Tag: Background
     TransformComponent:
-      Translation: [0, 0, -0.99000001]
+      Translation: [-42.603363, 0, -0.99000001]
       Rotation: [0, 0, 0]
       Scale: [1, 1, 1]
     SpriteRendererComponent:
-      Visible: false
+      Visible: true
       Color: [1, 1, 1, 1]
       Path: "NULL"
       Filename: None Selected
@@ -247,7 +385,7 @@ Entities:
         OrthographicNear: -9
         OrthographicFar: 1
       FixedAspectRatio: false
-      Visible Borders: true
+      Visible Borders: false
   - Entity: 0
     TagComponent:
       Tag: Hand UI
