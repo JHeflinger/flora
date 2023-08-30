@@ -58,6 +58,9 @@
     <Compile Include="..\..\..\..\..\MSPL\Assets\Scripts\Card.cs">
       <Link>MSPL\Assets\Scripts\Card.cs</Link>
     </Compile>
+    <Compile Include="..\..\..\..\..\MSPL\Assets\Scripts\Development.cs">
+      <Link>MSPL\Assets\Scripts\Development.cs</Link>
+    </Compile>
     <Compile Include="..\..\..\..\..\MSPL\Assets\Scripts\Enemy.cs">
       <Link>MSPL\Assets\Scripts\Enemy.cs</Link>
     </Compile>

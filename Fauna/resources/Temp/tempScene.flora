@@ -6,19 +6,24 @@ Physics:
   VelocityIterations: 6
   PositionIterations: 2
 Entities:
+  - Entity: 15
+    TagComponent:
+      Tag: DEV OBJ
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    ScriptComponent:
+      ClassName: Game.Development
   - Entity: 14
     TagComponent:
-      Tag: Enemies
+      Tag: Enemy Handler
     TransformComponent:
       Translation: [4.30894852, 0.774062634, 0.100000001]
       Rotation: [0, 0, 0]
       Scale: [1, 1, 1]
     ScriptComponent:
       ClassName: Game.EnemyHandler
-      ScriptFields:
-        - Name: DEFAULT
-          Type: Bool
-          Data: true
     ChildComponent:
       []
   - Entity: 13
@@ -388,7 +393,7 @@ Entities:
       Visible Borders: false
   - Entity: 0
     TagComponent:
-      Tag: Hand UI
+      Tag: Hand Handler
     TransformComponent:
       Translation: [-5.46775389, -4.9467907, 0]
       Rotation: [0, 0, 0]

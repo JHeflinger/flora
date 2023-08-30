@@ -8,6 +8,11 @@ namespace Flora
 {
     public class Developer
     {
+        public static void Trace(string command)
+        {
+            InternalCalls.CoreTrace(command);
+        }
+
         public static void SendCommand(string command)
         {
             InternalCalls.DevTools_SendCommand(command);
