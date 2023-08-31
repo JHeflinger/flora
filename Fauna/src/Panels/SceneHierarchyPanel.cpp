@@ -28,7 +28,7 @@ namespace Flora {
 					if (m_EditorContext->SelectedEntity == m_EditorContext->Clipboard.Entity) {
 						m_EditorContext->SelectedEntity = {};
 					}
-					DeleteEntity(m_EditorContext->Clipboard.Entity);
+					m_EditorContext->ActiveScene->DestroyEntity(m_EditorContext->Clipboard.Entity);
 					m_EditorContext->Clipboard.Entity = {};
 					m_EditorContext->Clipboard.CutEntity = false;
 				}
@@ -109,7 +109,7 @@ namespace Flora {
 					if (m_EditorContext->SelectedEntity == m_EditorContext->Clipboard.Entity) {
 						m_EditorContext->SelectedEntity = {};
 					}
-					DeleteEntity(m_EditorContext->Clipboard.Entity);
+					m_EditorContext->ActiveScene->DestroyEntity(m_EditorContext->Clipboard.Entity);
 					m_EditorContext->Clipboard.Entity = {};
 					m_EditorContext->Clipboard.CutEntity = false;
 				}
@@ -127,22 +127,10 @@ namespace Flora {
 		}
 
 		if (entityDeleted) {
-			DeleteEntity(entity);
+			m_EditorContext->ActiveScene->DestroyEntity(entity);
 			if (m_EditorContext->SelectedEntity == entity) {
 				m_EditorContext->SelectedEntity = {};
 			}
 		}
-	}
-
-	void SceneHierarchyPanel::DeleteEntity(Entity entity) {
-		if (entity.HasComponent<ChildComponent>()) {
-			std::vector<Entity> children = entity.GetComponent<ChildComponent>().Children;
-			for (int i = 0; i < children.size(); i++) {
-				DeleteEntity(children[i]);
-			}
-		}
-		if (entity.HasComponent<ParentComponent>()) 
-			entity.GetComponent<ParentComponent>().Parent.GetComponent<ChildComponent>().RemoveChild(entity);
-		m_EditorContext->ActiveScene->DestroyEntity(entity);
 	}
 }

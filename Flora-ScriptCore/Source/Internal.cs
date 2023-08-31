@@ -439,6 +439,9 @@ namespace Flora
 		internal extern static uint Scene_CreateEntity(string name);
 
 		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static void Scene_DestroyEntity(uint eid);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
 		internal extern static uint Scene_CreateScriptEntity(string classname, string name);
 
 		[MethodImplAttribute(MethodImplOptions.InternalCall)]

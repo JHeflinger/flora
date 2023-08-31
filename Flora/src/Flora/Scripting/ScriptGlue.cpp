@@ -801,12 +801,16 @@ namespace Flora {
 		norm_y = (norm_y * 2.0f * cam_h) / vi.height;
 
 		*outPosition = { tc.Translation.x + norm_x, tc.Translation.y + norm_y };
-
-		FL_CORE_INFO("{}, {}", norm_x, norm_y);
 	}
 
 	static MonoString* Project_GetAssetDirectory() {
 		return mono_string_new(mono_get_root_domain(), Project::GetAssetDirectory().string().c_str());
+	}
+
+	static void Scene_DestroyEntity(uint32_t eid) {
+		Entity entity = GetValidatedEntityFromID(eid);
+		Scene* scene = ScriptEngine::GetSceneContext();
+		scene->DestroyEntity(entity);
 	}
 
 	void ScriptGlue::RegisterFunctions() {
@@ -829,6 +833,7 @@ namespace Flora {
 		FL_ADD_INTERNAL_CALL(Scene_GetPrimaryCamera);
 		FL_ADD_INTERNAL_CALL(Scene_CopyEntity);
 		FL_ADD_INTERNAL_CALL(Scene_CreateEntity);
+		FL_ADD_INTERNAL_CALL(Scene_DestroyEntity);
 		FL_ADD_INTERNAL_CALL(Scene_CreateScriptEntity);
 		FL_ADD_INTERNAL_CALL(VisualUtils_GetHoveredEntity);
 		FL_ADD_INTERNAL_CALL(Project_GetAssetDirectory);

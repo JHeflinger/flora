@@ -153,7 +153,7 @@ Entities:
     TagComponent:
       Tag: Graveyard
     TransformComponent:
-      Translation: [11.7278728, 1.15915036, 0]
+      Translation: [11.7278728, -2.33999991, 0]
       Rotation: [0, 0, 0]
       Scale: [1, 1, 1]
     SpriteRendererComponent:
@@ -183,7 +183,7 @@ Entities:
     TagComponent:
       Tag: Deck
     TransformComponent:
-      Translation: [-1.34097767, 0.931865692, 0]
+      Translation: [-1.34097767, -2.56203604, 0]
       Rotation: [0, 0, 0]
       Scale: [1, 1, 1]
     SpriteRendererComponent:
@@ -237,11 +237,13 @@ Entities:
       FPS: 1
     ScriptComponent:
       ClassName: Game.Background
+      ScriptFields:
+        []
   - Entity: 5
     TagComponent:
       Tag: Stamina Value
     TransformComponent:
-      Translation: [0, 0, 0.00999999978]
+      Translation: [0, -0.0255964398, 0.00999999978]
       Rotation: [0, 0, 0]
       Scale: [0.5, 0.5, 1]
     SpriteRendererComponent:
@@ -271,7 +273,7 @@ Entities:
     TagComponent:
       Tag: Stamina
     TransformComponent:
-      Translation: [-1.12149811, 2.12115526, 0]
+      Translation: [-1.12149811, -1.24476516, 0]
       Rotation: [0, 0, 0]
       Scale: [1, 1, 1]
     SpriteRendererComponent:
@@ -309,7 +311,7 @@ Entities:
     TagComponent:
       Tag: Mana
     TransformComponent:
-      Translation: [-0.193657398, 1.45760393, 0]
+      Translation: [-0.193657398, -2.04909611, 0]
       Rotation: [0, 0, 0]
       Scale: [1, 1, 1]
     SpriteRendererComponent:
@@ -387,15 +389,15 @@ Entities:
         PerspectiveNear: 0.00999999978
         PerspectiveFar: 1000
         OrthographicSize: 10
-        OrthographicNear: -9
-        OrthographicFar: 1
+        OrthographicNear: -100
+        OrthographicFar: 100
       FixedAspectRatio: false
       Visible Borders: false
   - Entity: 0
     TagComponent:
       Tag: Hand Handler
     TransformComponent:
-      Translation: [-5.46775389, -4.9467907, 0]
+      Translation: [-5.46775389, -1.69605434, 0]
       Rotation: [0, 0, 0]
       Scale: [1, 1, 1]
     SpriteRendererComponent:

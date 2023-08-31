@@ -5,8 +5,8 @@ Current Gizmo: 7
 Editor Camera Type: Orthographic
 Visible Physics Colliders: false
 General Camera Settings:
-  Position: [-0.24000001, -0.0300000608, 10]
-  Focal Point: [-0.24000001, -0.0300000608, 0]
+  Position: [0, 0, 10]
+  Focal Point: [0, 0, 0]
   Camera Bound: false
 Perspective Camera Settings:
   Distance: 10

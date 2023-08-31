@@ -33,6 +33,11 @@ namespace Flora
             return GetEntityByID(eid).As<T>();
         }
 
+        public static void DestroyEntity(Entity entity)
+        {
+            InternalCalls.Scene_DestroyEntity(entity.ID);
+        }
+
         public static Entity FindEntityByName(string name)
         {
             long eid = InternalCalls.Entity_FindEntityByName(name);

@@ -327,6 +327,14 @@ namespace Flora {
 	}
 
 	void Scene::DestroyEntity(Entity entity) {
+		if (entity.HasComponent<ChildComponent>()) {
+			std::vector<Entity> children = entity.GetComponent<ChildComponent>().Children;
+			for (int i = 0; i < children.size(); i++) {
+				DestroyEntity(children[i]);
+			}
+		}
+		if (entity.HasComponent<ParentComponent>())
+			entity.GetComponent<ParentComponent>().Parent.GetComponent<ChildComponent>().RemoveChild(entity);
 		m_Registry.destroy(entity);
 	}
 

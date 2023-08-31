@@ -915,7 +915,7 @@ namespace Flora {
 						if (m_EditorParams->SelectedEntity == m_EditorParams->Clipboard.Entity) {
 							m_EditorParams->SelectedEntity = {};
 						}
-						GetSpecificPanel<SceneHierarchyPanel>("Scene Hierarchy")->DeleteEntity(m_EditorParams->Clipboard.Entity);
+						m_EditorParams->ActiveScene->DestroyEntity(m_EditorParams->Clipboard.Entity);
 						m_EditorParams->Clipboard.Entity = {};
 						m_EditorParams->Clipboard.CutEntity = false;
 					}
@@ -929,7 +929,7 @@ namespace Flora {
 						if (m_EditorParams->SelectedEntity == m_EditorParams->Clipboard.Entity) {
 							m_EditorParams->SelectedEntity = {};
 						}
-						GetSpecificPanel<SceneHierarchyPanel>("Scene Hierarchy")->DeleteEntity(m_EditorParams->Clipboard.Entity);
+						m_EditorParams->ActiveScene->DestroyEntity(m_EditorParams->Clipboard.Entity);
 						m_EditorParams->Clipboard.Entity = {};
 						m_EditorParams->Clipboard.CutEntity = false;
 					}
@@ -952,11 +952,11 @@ namespace Flora {
 					GetSpecificPanel<ContentBrowserPanel>("Content Browser")->SetSelectedFile("");
 					break;
 				case Panels::VIEWPORT:
-					GetSpecificPanel<SceneHierarchyPanel>("Scene Hierarchy")->DeleteEntity(m_EditorParams->SelectedEntity);
+					m_EditorParams->ActiveScene->DestroyEntity(m_EditorParams->SelectedEntity);
 					m_EditorParams->SelectedEntity = {};
 					break;
 				case Panels::SCENEHIERARCHY:
-					GetSpecificPanel<SceneHierarchyPanel>("Scene Hierarchy")->DeleteEntity(m_EditorParams->SelectedEntity);
+					m_EditorParams->ActiveScene->DestroyEntity(m_EditorParams->SelectedEntity);
 					m_EditorParams->SelectedEntity = {};
 					break;
 				}

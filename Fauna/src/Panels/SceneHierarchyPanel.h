@@ -10,7 +10,6 @@ namespace Flora {
 		virtual void Initialize() override {};
 		virtual void OnUpdate() override {};
 		void OnImGuiRender() override;
-		void DeleteEntity(Entity entity);
 	private:
 		void DrawEntityNode(Entity entity);
 	};
