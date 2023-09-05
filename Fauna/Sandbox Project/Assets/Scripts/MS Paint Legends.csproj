@@ -91,6 +91,9 @@
     <Compile Include="..\..\..\..\..\MSPL\Assets\Scripts\Test.cs">
       <Link>MSPL\Assets\Scripts\Test.cs</Link>
     </Compile>
+    <Compile Include="..\..\..\..\..\MSPL\Assets\Scripts\VFX.cs">
+      <Link>MSPL\Assets\Scripts\VFX.cs</Link>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\Flora-ScriptCore\Flora-ScriptCore.csproj">

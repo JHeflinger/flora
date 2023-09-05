@@ -16,15 +16,9 @@ TODO:
 
 	- audio and texture dropboxes should always do relative, not absolute
 
-	- audioCommand should utilize AssetManager
-
 	- custom shaders, post processing, materials
 
 	- script choose popup reactor to include search, filter, namespace organization, etc
-
-	- purge native scripts
-	
-	- need to be able to stop audio lol
 
 	- audio on separate thread and better clean up after playing sounds
 
@@ -33,10 +27,6 @@ TODO:
 	- allow users to tweak the attenuation curve, etc (https://indiegamedev.net/2020/04/12/the-complete-guide-to-openal-with-c-part-3-positioning-sounds/)
 
 	- particle system
-
-	- bug: not all .wav files work in surround sound
-
-	- surround sound should work with scaleable units in the audio component
 
 	- audio hard disk streaming support
 
@@ -58,8 +48,6 @@ TODO:
 
 	- overhaul animations to include things like flags and extra functionality, or even calling functions on certain frames
 
-	- make native scripting more stable
-
 	- content browser select multiple
 
 	- startup splash screen oooooo
@@ -74,13 +62,7 @@ TODO:
 
 1.0 RELEASE:
 
-	- make it so the top bar dialogs (Scene, Application, Windows, etc) all get file dialog based on project
-
-	- implement projects
-
 	- audio properly pause during scene simulation pause
-
-	- double clicking scripts opens them up in visual studio
 
 	- no paths ANYWHERE in code should be plain text, should be all dynamic and in variables
 
@@ -118,12 +100,6 @@ TODO:
 
 	- get rid of all flora warnings
 
-	- since nativescripts are pre compiled, you should just be able to select from the available ones when adding them
-
-	- restructure how gizmo keys work, they shouldn't switch if you're typing in imgui
-
-	- refactor script manager to use scripts not just native scripts
-
 	- refactor classes / reorder them to they're just neater and more readable
 
 	- documentation?
@@ -136,8 +112,6 @@ TODO:
 
 	- refine copy and paste
 
-	- organize premake
-
 	- update scripting engine with audio components
 
 	- modify project settings popup
@@ -146,13 +120,9 @@ TODO:
 
 	- clean github
 
-	- make sure OnDestroy works <- gonna need a destroy entity function
-
 	- optimize type dependent script field functionality (use switch case stuff, make it just easier to add in new)
 
 	- stabalize entity id to use uint32_t always, and 0 is an invalid entity
-
-	- use std::filesystem::path when able
 
 	- make a public static activescene 
 
@@ -162,10 +132,6 @@ TODO:
 
 	- renaming a project will cause opening the visual studio project to break since the visual studio project file needs to be renamed as well or rebuilt
 
-	- get and set primary camera and listener entities in scripting engine neeeded or really all scene specfici functions
-
-	- copy pasting entities with scripts breaks things
-
 	- highlight selected entity probably shouldnt be white
 
 	- highlight selected entity doesnt take in account sub entities
@@ -174,6 +140,26 @@ TODO:
 IN PROGRESS:
 
 IMPLEMENTED TICKETS:
+
+	- implement projects
+
+	- make it so the top bar dialogs (Scene, Application, Windows, etc) all get file dialog based on project
+
+	- double clicking scripts opens them up in visual studio
+
+	- audioCommand should utilize AssetManager
+
+	- restructure how gizmo keys work, they shouldn't switch if you're typing in imgui
+
+	- refactor script manager to use scripts not just native scripts
+
+	- organize premake
+
+	- make sure OnDestroy works <- gonna need a destroy entity function
+
+	- use std::filesystem::path when able
+
+	- copy pasting entities with scripts breaks things
 
 	- audio
 
