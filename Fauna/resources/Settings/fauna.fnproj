@@ -1,5 +1,5 @@
-Project Filepath: D:\Dev\MSPL\MS Paint Legends.flproj
-Scene Filepath: D:\Dev\MSPL\Assets\Scenes\Battle.flora
+Project Filepath: D:\Dev\ToI/Towers of Icarus.flproj
+Scene Filepath: D:\Dev\ToI\Assets\Scenes\Index.flora
 Selected Entity: -1
 Current Gizmo: 7
 Editor Camera Type: Orthographic
@@ -13,15 +13,14 @@ Perspective Camera Settings:
   Pitch: 0
   Yaw: 0
 Orthographic Camera Settings:
-  Size: 9.84179688
+  Size: 12.3417969
 Closed Panels:
-  - Physics
-  - Stats
+  []
 Stat Panel Settings:
-  Timeframe: 4.19000006
+  Timeframe: 5.48000002
   Show Key: true
-  Axis Scalar: 1.41999996
-  Axis Minimum: 0
+  Axis Scalar: 1.02999997
+  Axis Minimum: 0.0500000007
   Open Graphs:
     DRAWCALLS: false
     QUADS: false
@@ -31,8 +30,8 @@ Stat Panel Settings:
     INDICES: false
     FRAMETIME: false
     FPS: true
-    LOWEST_FPS: false
-    HIGHEST_FPS: false
+    LOWEST_FPS: true
+    HIGHEST_FPS: true
     CPU_USAGE: true
     GPU_USAGE: false
     MEM_USAGE: false

@@ -1,9 +1,9 @@
 local FloraRootDir = '../../../..'
 include(FloraRootDir .. "/vendor/premake/premake_customization/solution_items.lua")
 
-workspace "MS Paint Legends"
+workspace "Towers of Icarus"
 architecture "x86_64"
-startproject "MS Paint Legends"
+startproject "Towers of Icarus"
 
 configurations
 {
@@ -19,17 +19,17 @@ flags
 
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
-project "MS Paint Legends"
+project "Towers of Icarus"
 kind "SharedLib"
 language "C#"
 dotnetframework "4.7.2"
 
 targetdir("Binaries")
-objdir("Project Intermediates/MS Paint Legends")
+objdir("Project Intermediates/Towers of Icarus")
 
 files
 {
-"D:/Dev/MSPL/Assets/Scripts/**.cs", 
+"D:/Dev/ToI/Assets/Scripts/**.cs", 
 }
 
 links

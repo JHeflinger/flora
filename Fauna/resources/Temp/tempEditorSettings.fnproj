@@ -15,13 +15,12 @@ Perspective Camera Settings:
 Orthographic Camera Settings:
   Size: 9.84179688
 Closed Panels:
-  - Physics
-  - Stats
+  []
 Stat Panel Settings:
-  Timeframe: 4.19000006
+  Timeframe: 5.48000002
   Show Key: true
-  Axis Scalar: 1.41999996
-  Axis Minimum: 0
+  Axis Scalar: 1.02999997
+  Axis Minimum: 0.0500000007
   Open Graphs:
     DRAWCALLS: false
     QUADS: false
@@ -31,8 +30,8 @@ Stat Panel Settings:
     INDICES: false
     FRAMETIME: false
     FPS: true
-    LOWEST_FPS: false
-    HIGHEST_FPS: false
+    LOWEST_FPS: true
+    HIGHEST_FPS: true
     CPU_USAGE: true
     GPU_USAGE: false
     MEM_USAGE: false
