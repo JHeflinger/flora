@@ -162,40 +162,43 @@ namespace Flora {
 			
 			// fields
 			Ref<ScriptClass> entityClass = ScriptEngine::GetEntityClass(scriptComponent.ClassName);
-			const auto& fields = entityClass->GetFields();
-			if (fields.size() > 0) {
-				out << YAML::Key << "ScriptFields" << YAML::Value;
-				auto& entityFields = ScriptEngine::GetScriptFieldMap(entity);
-				out << YAML::BeginSeq;
-				for (const auto& [name, field] : fields) {
-					if (entityFields.find(name) == entityFields.end())
-						continue;
+			if (entityClass) {
+				const auto& fields = entityClass->GetFields();
+				if (fields.size() > 0) {
+					out << YAML::Key << "ScriptFields" << YAML::Value;
+					auto& entityFields = ScriptEngine::GetScriptFieldMap(entity);
+					out << YAML::BeginSeq;
+					for (const auto& [name, field] : fields) {
+						if (entityFields.find(name) == entityFields.end())
+							continue;
 
-					out << YAML::BeginMap;
-					out << YAML::Key << "Name" << YAML::Value << name;
-					out << YAML::Key << "Type" << YAML::Value << Utils::ScriptFieldTypeToString(field.Type);
+						out << YAML::BeginMap;
+						out << YAML::Key << "Name" << YAML::Value << name;
+						out << YAML::Key << "Type" << YAML::Value << Utils::ScriptFieldTypeToString(field.Type);
 
-					ScriptFieldInstance& scriptField = entityFields.at(name);
-					#define FIELD_TYPE(FieldType, Type) case ScriptFieldType::FieldType:\
+						ScriptFieldInstance& scriptField = entityFields.at(name);
+						#define FIELD_TYPE(FieldType, Type) case ScriptFieldType::FieldType:\
 															out << YAML::Key << "Data" << YAML::Value << scriptField.GetValue<Type>();\
 															break;
-					switch (field.Type) {
-						FIELD_TYPE(Float, float);
-						FIELD_TYPE(Vector2, glm::vec2);
-						FIELD_TYPE(Vector3, glm::vec3);
-						FIELD_TYPE(Vector4, glm::vec4);
-						FIELD_TYPE(Int, int);
-						FIELD_TYPE(UInt, uint32_t);
-						FIELD_TYPE(Bool, bool);
-						FIELD_TYPE(Double, double);
-						FIELD_TYPE(Short, uint16_t);
-						FIELD_TYPE(Byte, uint16_t); //uint8_t makes it treated like a char for some reason, YAML lib bug maybe?
+						switch (field.Type) {
+							FIELD_TYPE(Float, float);
+							FIELD_TYPE(Vector2, glm::vec2);
+							FIELD_TYPE(Vector3, glm::vec3);
+							FIELD_TYPE(Vector4, glm::vec4);
+							FIELD_TYPE(Int, int);
+							FIELD_TYPE(UInt, uint32_t);
+							FIELD_TYPE(Bool, bool);
+							FIELD_TYPE(Double, double);
+							FIELD_TYPE(Short, uint16_t);
+							FIELD_TYPE(Byte, uint16_t); //uint8_t makes it treated like a char for some reason, YAML lib bug maybe?
+						}
+
+						#undef FIELD_TYPE
+
+						out << YAML::EndMap;
 					}
-					#undef FIELD_TYPE
-					
-					out << YAML::EndMap;
+					out << YAML::EndSeq;
 				}
-				out << YAML::EndSeq;
 			}
 			
 			out << YAML::EndMap;

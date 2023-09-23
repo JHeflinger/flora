@@ -289,7 +289,7 @@ namespace Flora {
 		if (ImGui::BeginDragDropTarget()) {
 			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM")) {
 				const wchar_t* path = (const wchar_t*)payload->Data;
-				std::filesystem::path texturePath = Project::GetAssetDirectory() / path;
+				std::filesystem::path texturePath = std::filesystem::path("$") / path;
 				if (texturePath.extension().string() == ".png") {
 					component.Filename = texturePath.filename().string();
 					component.Path = texturePath.string();
@@ -826,6 +826,8 @@ namespace Flora {
 							component.ClassName = entityClass.first;
 						}
 					}
+					if (ImGui::Button("Cancel", { 500, lineHeight }))
+						promptSelect = false;
 					ImGui::PopStyleColor(3);
 					ImGui::EndPopup();
 				}
@@ -843,6 +845,11 @@ namespace Flora {
 				Ref<ScriptClass> entityClass = ScriptEngine::GetEntityClass(component.ClassName);
 				const auto& fields = scriptInstance ? scriptInstance->GetScriptClass()->GetFields() : entityClass->GetFields();
 				auto& entityFields = ScriptEngine::GetScriptFieldMap(entity);
+
+				if (!scriptInstance && !entityClass) {
+					ImGui::TreePop();
+					return;
+				}
 
 				for (const auto& [name, field] : fields) {
 					bool scriptFieldExists = entityFields.find(name) != entityFields.end();

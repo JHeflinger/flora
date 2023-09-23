@@ -93,6 +93,7 @@ namespace Flora {
 
 			if (ImGui::BeginDragDropSource()) {
 				const wchar_t* itemPath = relativePath.c_str();
+				FL_CORE_INFO(relativePath.string());
 				ImGui::SetDragDropPayload("CONTENT_BROWSER_ITEM", itemPath, (wcslen(itemPath) + 1) * sizeof(wchar_t), ImGuiCond_Once);
 				ImGui::EndDragDropSource();
 			}

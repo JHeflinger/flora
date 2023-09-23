@@ -109,7 +109,7 @@ namespace Flora {
 	};
 
 	struct ScriptComponent {
-		std::string ClassName;
+		std::string ClassName = "";
 
 		ScriptComponent() = default;
 		ScriptComponent(const ScriptComponent& other) {
