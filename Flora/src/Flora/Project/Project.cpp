@@ -145,7 +145,8 @@ namespace Flora {
 
 	bool Project::RegenerateScriptingProject() {
 		std::string name = s_ActiveProject->GetConfig().Name;
-		std::string scriptsPath = (s_ActiveProject->GetConfig().AssetDirectory / "Scripts").string();
+		std::string scriptsPath = (Project::GetAssetDirectory() / "Scripts").string();
+		FL_CORE_INFO(scriptsPath);
 		size_t pos = 0;
 		while ((pos = scriptsPath.find("\\", pos)) != std::string::npos) {
 			scriptsPath.replace(pos, 1, "/");
