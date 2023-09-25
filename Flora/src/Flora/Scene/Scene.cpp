@@ -369,7 +369,7 @@ namespace Flora {
 			auto view = m_Registry.view<TransformComponent, CircleRendererComponent>();
 			for (auto entity : view) {
 				auto [transform, circle] = view.get<TransformComponent, CircleRendererComponent>(entity);
-				Renderer2D::DrawCircle(transform.GetTransform(), circle.Color, circle.Thickness, circle.Fade, (int)(uint32_t)entity);
+				Renderer2D::DrawCircle(ComponentUtils::GetWorldTransform(Entity{ entity, this }), circle.Color, circle.Thickness, circle.Fade, (int)(uint32_t)entity);
 			}
 		}
 
