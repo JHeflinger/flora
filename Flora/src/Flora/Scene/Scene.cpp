@@ -407,6 +407,10 @@ namespace Flora {
 	}
 
 	void Scene::OnUpdateRuntime(Timestep ts, glm::mat4 viewProjection) {
+
+		// Render 2D Sprites
+		RenderRuntime(viewProjection); // important: this needs to run first or else the camera lags behind a frame
+
 		if (!m_Paused || m_StepFrames > 0) {
 			// Update Scripts
 			UpdateScripts(ts);
@@ -417,9 +421,6 @@ namespace Flora {
 
 		// Update Audio
 		UpdateAudio();
-
-		// Render 2D Sprites
-		RenderRuntime(viewProjection);
 
 		if (m_StepFrames > 0) m_StepFrames--;
 	}
