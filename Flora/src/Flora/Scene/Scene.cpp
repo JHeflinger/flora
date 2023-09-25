@@ -5,6 +5,7 @@
 #include "Flora/Scene/Components.h"
 #include "Flora/Math/Math.h"
 #include "Flora/Scripting/ScriptEngine.h"
+#include "Flora/Utils/ComponentUtils.h"
 
 namespace Flora {
 	void Scene::DrawEntitySprite(Entity& entity, bool useTransformRef, glm::mat4 refTransform) {
@@ -67,15 +68,6 @@ namespace Flora {
 		}
 	}
 
-	glm::mat4 Scene::GetWorldTransform(Entity& entity) {
-		if (entity.HasComponent<ParentComponent>()) {
-			if (entity.GetComponent<ParentComponent>().InheritAll || entity.GetComponent<ParentComponent>().InheritTransform) {
-				return GetWorldTransform(entity.GetComponent<ParentComponent>().Parent) * entity.GetComponent<TransformComponent>().GetTransform();
-			}
-		}
-		return entity.GetComponent<TransformComponent>().GetTransform();
-	}
-
 	Scene::Scene() {
 	}
 
@@ -87,7 +79,7 @@ namespace Flora {
 		auto view = m_Registry.view<RigidBody2DComponent>();
 		for (auto e : view) {
 			Entity entity = { e, this };
-			glm::mat4 transform = GetWorldTransform(entity);
+			glm::mat4 transform = ComponentUtils::GetWorldTransform(entity);
 			glm::vec3 translation, rotation, scale;
 			Math::DecomposeTransform(transform, translation, rotation, scale);
 			auto& rb2d = entity.GetComponent<RigidBody2DComponent>();
@@ -367,7 +359,7 @@ namespace Flora {
 					DrawEntitySprite(drawEntity);
 				else if (!drawEntity.GetComponent<ParentComponent>().Parent.HasComponent<SpriteRendererComponent>()) {
 					bool useParentTransform = drawEntity.GetComponent<ParentComponent>().InheritAll || (!drawEntity.GetComponent<ParentComponent>().InheritAll && drawEntity.GetComponent<ParentComponent>().InheritTransform);
-					DrawEntitySprite(drawEntity, useParentTransform, GetWorldTransform(drawEntity.GetComponent<ParentComponent>().Parent));
+					DrawEntitySprite(drawEntity, useParentTransform, ComponentUtils::GetWorldTransform(drawEntity.GetComponent<ParentComponent>().Parent));
 				}
 			}
 		}
@@ -436,7 +428,7 @@ namespace Flora {
 		if (m_PrimaryCameraHandle >= 0) {
 			Entity cameraEntity = Entity{ (entt::entity)(uint32_t)m_PrimaryCameraHandle, this };
 			Camera* primaryCamera = &(cameraEntity.GetComponent<CameraComponent>().Camera);
-			glm::mat4 cameraTransform = cameraEntity.GetComponent<TransformComponent>().GetTransform();
+			glm::mat4 cameraTransform = ComponentUtils::GetWorldTransform(cameraEntity);
 			OnUpdateRuntime(ts, primaryCamera->GetProjection() * glm::inverse(cameraTransform));
 		}
 	}

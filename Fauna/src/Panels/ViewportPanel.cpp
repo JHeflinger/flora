@@ -7,7 +7,7 @@
 #include "Flora/Math/Math.h"
 #include "Flora/Utils/VisualUtils.h"
 #include "../Utils/FileUtils.h"
-#include "../Utils/ComponentUtils.h"
+#include "Flora/Utils/ComponentUtils.h"
 #include <imgui/imgui.h>
 #include <glm/gtc/type_ptr.hpp>
 #include "ImGuizmo.h"
@@ -119,9 +119,8 @@ namespace Flora {
 
 			// Entity transform
 			auto& tc = selectedEntity.GetComponent<TransformComponent>();
-			glm::mat4 transform = tc.GetTransform();
+			glm::mat4 transform = ComponentUtils::GetWorldTransform(selectedEntity);
 			glm::mat4 parentTransform = ComponentUtils::GetParentTransform(selectedEntity);
-			transform = parentTransform * transform;
 
 			// Snapping
 			bool snap = Input::IsKeyPressed(Key::LeftControl);

@@ -12,6 +12,7 @@
 #include "ImGuizmo.h"
 #include "Flora/Audio/AudioCommand.h"
 #include "Flora/Scripting/ScriptEngine.h"
+#include "Flora/Utils/ComponentUtils.h"
 
 namespace Flora {
 	EditorLayer::EditorLayer()
@@ -659,7 +660,7 @@ namespace Flora {
 				//highlight selected entity
 				if (m_EditorParams->SelectedEntity) {
 					glm::vec4 color = { 1.0f, 1.0f, 1.0f, 1.0f };
-					glm::mat4 transform = m_EditorParams->SelectedEntity.GetComponent<TransformComponent>().GetTransform();
+					glm::mat4 transform = ComponentUtils::GetWorldTransform(m_EditorParams->SelectedEntity);
 					if (m_EditorParams->SelectedEntity.HasComponent<SpriteRendererComponent>()) {
 						glm::mat4 p1_mat = glm::translate(transform, { 1,  1, 0 });
 						glm::mat4 p2_mat = glm::translate(transform, { 1, -1, 0 });
@@ -738,7 +739,7 @@ namespace Flora {
 					float size = cc.Camera.GetOrthographicSize();
 					float nearBorder = cc.Camera.GetOrthographicNearClip() * -1.0f;
 					float farBorder =  (-1.0f * cc.Camera.GetOrthographicFarClip()) - nearBorder;
-					glm::mat4 transform = tc.GetTransform();
+					glm::mat4 transform = ComponentUtils::GetWorldTransform(m_EditorParams->ActiveScene->GetEntityFromID((uint32_t)entity));
 					glm::mat4 p1_mat = glm::translate(transform, { size,  size, nearBorder });
 					glm::mat4 p2_mat = glm::translate(transform, { size, -size, nearBorder });
 					glm::mat4 p3_mat = glm::translate(transform, { -size,  size, nearBorder });
@@ -774,7 +775,7 @@ namespace Flora {
 					Renderer2D::DrawLine(p5_coord, p7_coord, color);
 				} else {
 					// -z direction
-					glm::mat4 transform = tc.GetTransform();
+					glm::mat4 transform = ComponentUtils::GetWorldTransform(m_EditorParams->ActiveScene->GetEntityFromID((uint32_t)entity));
 					glm::mat4 p1_mat = glm::translate(glm::rotate(transform, cc.Camera.GetPerspectiveVerticalFOV(), {1, 1, 0}), { 0, 0, -100 });
 					glm::mat4 p2_mat = glm::translate(glm::rotate(transform, cc.Camera.GetPerspectiveVerticalFOV(), { 1, -1, 0 }), { 0, 0, -100 });
 					glm::mat4 p3_mat = glm::translate(glm::rotate(transform, cc.Camera.GetPerspectiveVerticalFOV(), { -1, 1, 0 }), { 0, 0, -100 });
@@ -786,6 +787,8 @@ namespace Flora {
 					Math::DecomposeTransform(p3_mat, p3_coord, rotation, scale);
 					Math::DecomposeTransform(p4_mat, p4_coord, rotation, scale);
 
+					glm::vec3 translation, tmpr, tmps;
+					Math::DecomposeTransform(transform, translation, tmpr, tmps);
 					Renderer2D::DrawLine(p1_coord, tc.Translation, color);
 					Renderer2D::DrawLine(p2_coord, tc.Translation, color);
 					Renderer2D::DrawLine(p3_coord, tc.Translation, color);
