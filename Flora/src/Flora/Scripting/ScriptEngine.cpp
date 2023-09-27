@@ -109,13 +109,18 @@ namespace Flora {
 
 	static ScriptEngineData* s_Data = nullptr;
 
+	static bool s_ResetSceneAssemblyPending = false;
 	static void OnAppAssemblyFileSystemEvent(const std::string& path, const filewatch::Event change_type) {
 		if (!s_Data->AssemblyReloadPending && change_type == filewatch::Event::modified) {
-			s_Data->AssemblyReloadPending = true;
-			Application::Get().SubmitToMainThread([]() {
-				s_Data->AppAssemblyFileWatcher.reset();
-				ScriptEngine::ReloadAssembly();
-			});
+			if (!ScriptEngine::GetSceneContext()) {
+				s_ResetSceneAssemblyPending = false;
+				s_Data->AssemblyReloadPending = true;
+				Application::Get().SubmitToMainThread([]() {
+					s_Data->AppAssemblyFileWatcher.reset();
+					ScriptEngine::ReloadAssembly();
+				});
+			}
+			else s_ResetSceneAssemblyPending = true;
 		}
 	}
 
@@ -274,6 +279,9 @@ namespace Flora {
 	void ScriptEngine::OnRuntimeStop() {
 		s_Data->SceneContext = nullptr;
 		s_Data->EntityInstances.clear();
+
+		if (s_ResetSceneAssemblyPending)
+			ScriptEngine::ReloadAssembly();
 	}
 
 	void ScriptEngine::CreateEntity(Entity entity) {

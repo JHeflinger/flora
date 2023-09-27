@@ -24,6 +24,7 @@ namespace Flora {
 		std::vector<Entity> GetEntitiesByTag(std::string tag);
 		bool EntityExists(uint32_t entityID);
 		bool IsScenePaused() { return m_Paused; }
+		bool IsSceneRunning() { return m_Running; }
 		void DestroyEntity(Entity entity);
 		void OnRuntimeStart();
 		void OnRuntimeStop();
