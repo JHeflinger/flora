@@ -137,7 +137,11 @@ namespace Flora {
 			auto view = m_Registry.view<ScriptComponent>();
 			for (auto e : view) {
 				Entity entity = { e, this };
-				ScriptEngine::CreateEntity(entity);
+				try { //TODO: remove try catch for release builds
+					ScriptEngine::CreateEntity(entity);
+				} catch (...) {
+					FL_CORE_ERROR("Script execution attempt failed for entity \"{}\"", entity.GetComponent<TagComponent>().Tag);
+				}
 			}
 		}
 
@@ -191,8 +195,13 @@ namespace Flora {
 		tag.Tag = name.empty() ? "Untitled Entity" : name;
 		entity.AddComponent<ScriptComponent>();
 		entity.GetComponent<ScriptComponent>().ClassName = scriptName;
-		if (m_Running)
-			ScriptEngine::CreateEntity(entity);
+		if (m_Running) {
+			try { //TODO: remove try catch for release builds
+				ScriptEngine::CreateEntity(entity);
+			} catch (...) {
+				FL_CORE_ERROR("Script execution attempt failed for entity \"{}\"", entity.GetComponent<TagComponent>().Tag);
+			}
+		}
 		return entity;
 	}
 
@@ -285,8 +294,13 @@ namespace Flora {
 		}
 
 		// instantiate copied script if needed
-		if (m_Running && newEntity.HasComponent<ScriptComponent>())
-			ScriptEngine::CreateEntity(newEntity);
+		if (m_Running && newEntity.HasComponent<ScriptComponent>()) {
+			try { //TODO: remove try catch for release builds
+				ScriptEngine::CreateEntity(newEntity);
+			} catch (...) {
+				FL_CORE_ERROR("Script execution attempt failed for entity \"{}\"", newEntity.GetComponent<TagComponent>().Tag);
+			}
+		}
 
 		return newEntity;
 	}
@@ -305,8 +319,13 @@ namespace Flora {
 		}
 
 		// instantiate copied script if needed
-		if (m_Running && newEntity.HasComponent<ScriptComponent>())
-			ScriptEngine::CreateEntity(newEntity);
+		if (m_Running && newEntity.HasComponent<ScriptComponent>()) {
+			try { //TODO: remove try catch for release builds
+				ScriptEngine::CreateEntity(newEntity);
+			} catch (...) {
+				FL_CORE_ERROR("Script execution attempt failed for entity \"{}\"", newEntity.GetComponent<TagComponent>().Tag);
+			}
+		}
 
 		// modify parent based on parameter
 		if (!parent.HasComponent<ChildComponent>()) parent.AddComponent<ChildComponent>();
@@ -343,7 +362,11 @@ namespace Flora {
 			auto view = m_Registry.view<ScriptComponent>();
 			for (auto e : view) {
 				Entity entity = { e, this };
-				ScriptEngine::UpdateEntity(entity, ts);
+				try { //TODO: remove try catch for release builds
+					ScriptEngine::UpdateEntity(entity, ts);
+				} catch (...) {
+					FL_CORE_ERROR("Script execution attempt failed for entity \"{}\"", entity.GetComponent<TagComponent>().Tag);
+				}
 			}
 		}
 	}
