@@ -60,6 +60,8 @@ namespace Flora
 
         public void AddChild(Entity entity)
         {
+            if (!entity.HasComponent<ParentComponent>())
+                entity.AddComponent<ParentComponent>();
             entity.GetComponent<ParentComponent>().Parent = this;
             if (!HasComponent<ChildComponent>())
                 AddComponent<ChildComponent>();
