@@ -58,6 +58,14 @@ namespace Flora
             }
         }
 
+        public void AddChild(Entity entity)
+        {
+            entity.GetComponent<ParentComponent>().Parent = this;
+            if (!HasComponent<ChildComponent>())
+                AddComponent<ChildComponent>();
+            InternalCalls.ChildComponent_AddChild(ID, entity.ID);
+        }
+
         public bool HasComponent<T>() where T : Component, new()
         {
             Type componentType = typeof(T);
