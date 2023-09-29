@@ -145,6 +145,8 @@ namespace Flora {
 			}
 
 			if (ImGui::BeginMenu("Application")) {
+				if (ImGui::MenuItem("Documentation"))
+					FileUtils::ShellOpen("\\docs\\html\\index.html");
 				if (ImGui::MenuItem("Exit")) Application::Get().Close();
 				ImGui::EndMenu();
 			}

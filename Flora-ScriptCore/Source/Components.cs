@@ -370,7 +370,10 @@ namespace Flora
         }
 
         /// <summary>
-        /// Applies a force vector to the entity.
+        /// Applies a force vector to the entity.Note: the difference between
+        /// this and impulse is that this applies a FORCE vector, meaning that the velocity
+        /// will change via a creeping acceleration. Impulse is an IMPULSE vector meaning that
+        /// the velocity is immediately applied.
         /// </summary>
         /// <param name="vector">The force vector to be applied</param>
         /// <param name="offset">The offset from the origin of the entity to apply the force vector</param>
@@ -382,6 +385,14 @@ namespace Flora
             InternalCalls.RigidBody2DComponent_ApplyForce(Entity.ID, ref vector, ref offset);
         }
 
+        /// <summary>
+        /// Applies an impulse fector to the entity. Note: the difference between
+        /// this and force is that force applies a FORCE vector, meaning that the velocity
+        /// will change via a creeping acceleration. This is an IMPULSE vector meaning that
+        /// the velocity is immediately applied.
+        /// </summary>
+        /// <param name="vector">The impulse vector to be applied</param>
+        /// <param name="offset">The offset from the origin of the entity to apply the impulse vector</param>
         public void ApplyImpulse(Vector2 vector, Vector2 offset = default)
         {
             if (offset.Equals(default(Vector2)))
@@ -390,19 +401,37 @@ namespace Flora
             InternalCalls.RigidBody2DComponent_ApplyImpulse(Entity.ID, ref vector, ref offset);
         }
 
+        /// <summary>
+        /// Applies a torque value to the physics body. Similar to ApplyForce but for rotation.
+        /// </summary>
+        /// <param name="rotation">The rotation scalar of the torque</param>
         public void ApplyTorque(float rotation)
         {
             InternalCalls.RigidBody2DComponent_ApplyTorque(Entity.ID, rotation);
         }
 
+        /// <summary>
+        /// Applies an angular impulse to the physics body. Similar to ApplyImpulse but for rotation.
+        /// </summary>
+        /// <param name="rotation">The rotation scalar of the torque</param>
         public void ApplyAngularImpulse(float rotation)
         {
             InternalCalls.RigidBody2DComponent_ApplyAngularImpulse(Entity.ID, rotation);
         }
     }
 
+    /// <summary>
+    /// The parent component of an entity. Stores which entity is the parent of this entity.
+    /// Note: one can think of the subentity concept as a doubly linked n-ary tree. Each node can
+    /// have multiple sub-nodes, and all sub-nodes will point toward their parent node. It is recommended
+    /// to use functions such as Entity.AddChild(Entity child) to handle parent-child relationships, as
+    /// unexpected outcomes may occur with the misuse of Parent and Child components.
+    /// </summary>
     public class ParentComponent : Component
     {
+        /// <summary>
+        /// The parent entity of this component.
+        /// </summary>
         public Entity Parent
         {
             get
@@ -415,6 +444,9 @@ namespace Flora
             }
         }
 
+        /// <summary>
+        /// Determines whether this entity inherits all the inheritable properties of the parent entity.
+        /// </summary>
         public bool InheritAll
         {
             get
@@ -427,6 +459,9 @@ namespace Flora
             }
         }
 
+        /// <summary>
+        /// Determines whether this entity's transform is in reference to its parents transform or not.
+        /// </summary>
         public bool InheritTransform
         {
             get
@@ -440,23 +475,48 @@ namespace Flora
         }
     }
 
+    /// <summary>
+    /// The parent component of an entity. Stores what entities are this entity's children.
+    /// Note: one can think of the subentity concept as a doubly linked n-ary tree. Each node can
+    /// have multiple sub-nodes, and all sub-nodes will point toward their parent node. It is recommended
+    /// to use functions such as Entity.AddChild(Entity child) to handle parent-child relationships, as
+    /// unexpected outcomes may occur with the misuse of Parent and Child components.
+    /// </summary>
     public class ChildComponent : Component
     {
+        /// <summary>
+        /// Removes a given entity from being this entity's children. Note: this does not
+        /// remove this entity from the child's ParentComponent. Use with caution.
+        /// </summary>
+        /// <param name="entity">The child to remove</param>
         public void RemoveChild(Entity entity)
         {
             InternalCalls.ChildComponent_RemoveChild(Entity.ID, entity.ID);
         }
 
+        /// <summary>
+        /// Adds a given entity to this entity's children. Note: this does not
+        /// add this entity to the child's ParentComponent. Use with caution.
+        /// </summary>
+        /// <param name="entity">The child to add</param>
         public void AddChild(Entity entity)
         {
             InternalCalls.ChildComponent_AddChild(Entity.ID, entity.ID);
         }
 
+        /// <summary>
+        /// Determines whether this entity has children or not.
+        /// </summary>
+        /// <returns>true if this entity has children, false otherwise.</returns>
         public bool HasChildren()
         {
             return InternalCalls.ChildComponent_HasChildren(Entity.ID);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public uint GetChildrenSize()
         {
             return InternalCalls.ChildComponent_GetChildrenSize(Entity.ID);

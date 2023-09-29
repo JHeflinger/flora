@@ -4,8 +4,23 @@
 #include "EditorSerializer.h"
 #include "Flora/Utils/Serializer.h"
 #include "Flora/Project/Project.h"
+#include <shellapi.h>
+#include <locale>
+#include <codecvt>
 
 namespace Flora {
+	static std::string ConvertWCharToString(const wchar_t* wstr) {
+		int size = WideCharToMultiByte(CP_UTF8, 0, wstr, -1, nullptr, 0, nullptr, nullptr);
+		if (size == 0)
+			return "";
+
+		std::string utf8Str;
+		utf8Str.resize(size);
+		WideCharToMultiByte(CP_UTF8, 0, wstr, -1, &utf8Str[0], size, nullptr, nullptr);
+
+		return utf8Str;
+	}
+
 	void FileUtils::OpenScene(Ref<EditorParams> context){
 		std::string filepath = FileDialogs::OpenFile("Flora Scene (*.flora)\0*.flora\0");
 		if (!filepath.empty()) {
@@ -167,5 +182,18 @@ namespace Flora {
 
 	void FileUtils::LoadEditor(Ref<EditorParams> context) {
 		EditorSerializer::Deserialize(context); 
+	}
+
+	int FileUtils::ShellOpen(const std::filesystem::path path) {
+		wchar_t winCurrDir[MAX_PATH];
+		GetCurrentDirectory(MAX_PATH, winCurrDir);
+		SetCurrentDirectory(winCurrDir);
+		std::string wcd = ConvertWCharToString(winCurrDir);
+		std::string project_path = path.string();
+		std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
+		std::wstring wideStr = converter.from_bytes(project_path);
+		wcscat(winCurrDir, wideStr.c_str());
+		HINSTANCE result = ShellExecute(nullptr, L"open", winCurrDir, nullptr, nullptr, SW_SHOWNORMAL);
+		return (int)result;
 	}
 }

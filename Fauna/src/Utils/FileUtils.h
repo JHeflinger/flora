@@ -12,6 +12,7 @@ namespace Flora {
 		static void OpenTempScene(Ref<EditorParams> context);
 		static void OpenScene(Ref<EditorParams> context, const std::filesystem::path& path);
 		static void NewScene(Ref<EditorParams> context);
+		static int ShellOpen(const std::filesystem::path path);
 	public:
 		static void SaveEditor(Ref<EditorParams> context);
 		static void LoadEditor(Ref<EditorParams> context);
