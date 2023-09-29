@@ -1,6 +1,6 @@
 Project Filepath: D:\Dev\ToI/Tower of Icarus.flproj
 Scene Filepath: D:\Dev\ToI\Assets\Scenes\TestCore.flora
-Selected Entity: 3
+Selected Entity: 1
 Current Gizmo: -1
 Editor Camera Type: Orthographic
 Visible Physics Colliders: false
@@ -13,14 +13,14 @@ Perspective Camera Settings:
   Pitch: 0
   Yaw: 0
 Orthographic Camera Settings:
-  Size: 7.34179688
+  Size: 9.84179688
 Closed Panels:
   - Physics
 Stat Panel Settings:
   Timeframe: 2.95000005
   Show Key: true
-  Axis Scalar: 0.479999989
-  Axis Minimum: 51.1100006
+  Axis Scalar: 1
+  Axis Minimum: 0
   Open Graphs:
     DRAWCALLS: false
     QUADS: false

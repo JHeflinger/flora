@@ -49,6 +49,9 @@
   <ItemGroup>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\..\ToI\Assets\Scripts\Enemies\E000.cs">
+      <Link>ToI\Assets\Scripts\Enemies\E000.cs</Link>
+    </Compile>
     <Compile Include="..\..\..\ToI\Assets\Scripts\Global\Interactable.cs">
       <Link>ToI\Assets\Scripts\Global\Interactable.cs</Link>
     </Compile>
