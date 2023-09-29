@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['spritetype_0',['SpriteType',['../namespace_flora.html#a8130f958fa8e960f7b4de12a30702ea7',1,'Flora']]]
+  ['mousecode_0',['MouseCode',['../namespace_flora.html#aca0c7d718e9f6871b522fcedd6956ba7',1,'Flora']]]
 ];

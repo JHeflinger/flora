@@ -80,6 +80,9 @@ $(function() {
   <div class="headertitle"><div class="title">Flora.ChildComponent Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>The parent component of an entity. Stores what entities are this entity's children. Note: one can think of the subentity concept as a doubly linked n-ary tree. Each node can have multiple sub-nodes, and all sub-nodes will point toward their parent node. It is recommended to use functions such as Entity.AddChild(Entity child) to handle parent-child relationships, as unexpected outcomes may occur with the misuse of Parent and Child components.  
+ <a href="class_flora_1_1_child_component.html#details">More...</a></p>
 <div class="dynheader">
 Inheritance diagram for Flora.ChildComponent:</div>
 <div class="dyncontent">
@@ -92,20 +95,20 @@ Inheritance diagram for Flora.ChildComponent:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:acf71b045e2c97a37caa28e0f615adce2" id="r_acf71b045e2c97a37caa28e0f615adce2"><td class="memItemLeft" align="right" valign="top"><a id="acf71b045e2c97a37caa28e0f615adce2" name="acf71b045e2c97a37caa28e0f615adce2"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>RemoveChild</b> (<a class="el" href="class_flora_1_1_entity.html">Entity</a> entity)</td></tr>
+<tr class="memitem:acf71b045e2c97a37caa28e0f615adce2" id="r_acf71b045e2c97a37caa28e0f615adce2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_flora_1_1_child_component.html#acf71b045e2c97a37caa28e0f615adce2">RemoveChild</a> (<a class="el" href="class_flora_1_1_entity.html">Entity</a> entity)</td></tr>
+<tr class="memdesc:acf71b045e2c97a37caa28e0f615adce2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes a given entity from being this entity's children. Note: this does not remove this entity from the child's ParentComponent. Use with caution.  <br /></td></tr>
 <tr class="separator:acf71b045e2c97a37caa28e0f615adce2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae85e2c74a72bf704935129eda4cde425" id="r_ae85e2c74a72bf704935129eda4cde425"><td class="memItemLeft" align="right" valign="top"><a id="ae85e2c74a72bf704935129eda4cde425" name="ae85e2c74a72bf704935129eda4cde425"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>AddChild</b> (<a class="el" href="class_flora_1_1_entity.html">Entity</a> entity)</td></tr>
+<tr class="memitem:ae85e2c74a72bf704935129eda4cde425" id="r_ae85e2c74a72bf704935129eda4cde425"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_flora_1_1_child_component.html#ae85e2c74a72bf704935129eda4cde425">AddChild</a> (<a class="el" href="class_flora_1_1_entity.html">Entity</a> entity)</td></tr>
+<tr class="memdesc:ae85e2c74a72bf704935129eda4cde425"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a given entity to this entity's children. Note: this does not add this entity to the child's ParentComponent. Use with caution.  <br /></td></tr>
 <tr class="separator:ae85e2c74a72bf704935129eda4cde425"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab968c725361a92e72eec658f2631db9b" id="r_ab968c725361a92e72eec658f2631db9b"><td class="memItemLeft" align="right" valign="top"><a id="ab968c725361a92e72eec658f2631db9b" name="ab968c725361a92e72eec658f2631db9b"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>HasChildren</b> ()</td></tr>
+<tr class="memitem:ab968c725361a92e72eec658f2631db9b" id="r_ab968c725361a92e72eec658f2631db9b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_flora_1_1_child_component.html#ab968c725361a92e72eec658f2631db9b">HasChildren</a> ()</td></tr>
+<tr class="memdesc:ab968c725361a92e72eec658f2631db9b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines whether this entity has children or not.  <br /></td></tr>
 <tr class="separator:ab968c725361a92e72eec658f2631db9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a240e1f9c3d8a2ec9d65362e9308ed74b" id="r_a240e1f9c3d8a2ec9d65362e9308ed74b"><td class="memItemLeft" align="right" valign="top"><a id="a240e1f9c3d8a2ec9d65362e9308ed74b" name="a240e1f9c3d8a2ec9d65362e9308ed74b"></a>
-uint&#160;</td><td class="memItemRight" valign="bottom"><b>GetChildrenSize</b> ()</td></tr>
+<tr class="memitem:a240e1f9c3d8a2ec9d65362e9308ed74b" id="r_a240e1f9c3d8a2ec9d65362e9308ed74b"><td class="memItemLeft" align="right" valign="top">uint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_flora_1_1_child_component.html#a240e1f9c3d8a2ec9d65362e9308ed74b">GetChildrenSize</a> ()</td></tr>
+<tr class="memdesc:a240e1f9c3d8a2ec9d65362e9308ed74b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets how many children the entity has.  <br /></td></tr>
 <tr class="separator:a240e1f9c3d8a2ec9d65362e9308ed74b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a35ebb10523c4830a413c82a090243963" id="r_a35ebb10523c4830a413c82a090243963"><td class="memItemLeft" align="right" valign="top"><a id="a35ebb10523c4830a413c82a090243963" name="a35ebb10523c4830a413c82a090243963"></a>
-<a class="el" href="class_flora_1_1_entity.html">Entity</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetChild</b> (uint index)</td></tr>
+<tr class="memitem:a35ebb10523c4830a413c82a090243963" id="r_a35ebb10523c4830a413c82a090243963"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_flora_1_1_entity.html">Entity</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_flora_1_1_child_component.html#a35ebb10523c4830a413c82a090243963">GetChild</a> (uint index)</td></tr>
+<tr class="memdesc:a35ebb10523c4830a413c82a090243963"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the child given an index.  <br /></td></tr>
 <tr class="separator:a35ebb10523c4830a413c82a090243963"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
@@ -115,6 +118,128 @@ Additional Inherited Members</h2></td></tr>
 <a class="el" href="class_flora_1_1_entity.html">Entity</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Entity</b><code> [get, set]</code></td></tr>
 <tr class="separator:a3850e24fa2873f9edc62b1f678b10c50 inherit properties_class_flora_1_1_component"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>The parent component of an entity. Stores what entities are this entity's children. Note: one can think of the subentity concept as a doubly linked n-ary tree. Each node can have multiple sub-nodes, and all sub-nodes will point toward their parent node. It is recommended to use functions such as Entity.AddChild(Entity child) to handle parent-child relationships, as unexpected outcomes may occur with the misuse of Parent and Child components. </p>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="ae85e2c74a72bf704935129eda4cde425" name="ae85e2c74a72bf704935129eda4cde425"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae85e2c74a72bf704935129eda4cde425">&#9670;&#160;</a></span>AddChild()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Flora.ChildComponent.AddChild </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_flora_1_1_entity.html">Entity</a>&#160;</td>
+          <td class="paramname"><em>entity</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Adds a given entity to this entity's children. Note: this does not add this entity to the child's ParentComponent. Use with caution. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">entity</td><td>The child to add</td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a35ebb10523c4830a413c82a090243963" name="a35ebb10523c4830a413c82a090243963"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a35ebb10523c4830a413c82a090243963">&#9670;&#160;</a></span>GetChild()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_flora_1_1_entity.html">Entity</a> Flora.ChildComponent.GetChild </td>
+          <td>(</td>
+          <td class="paramtype">uint&#160;</td>
+          <td class="paramname"><em>index</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Gets the child given an index. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">index</td><td>The nth child of this entity</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The child requested or null if it was not found</dd></dl>
+
+</div>
+</div>
+<a id="a240e1f9c3d8a2ec9d65362e9308ed74b" name="a240e1f9c3d8a2ec9d65362e9308ed74b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a240e1f9c3d8a2ec9d65362e9308ed74b">&#9670;&#160;</a></span>GetChildrenSize()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint Flora.ChildComponent.GetChildrenSize </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Gets how many children the entity has. </p>
+<dl class="section return"><dt>Returns</dt><dd>The number of child entities</dd></dl>
+
+</div>
+</div>
+<a id="ab968c725361a92e72eec658f2631db9b" name="ab968c725361a92e72eec658f2631db9b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab968c725361a92e72eec658f2631db9b">&#9670;&#160;</a></span>HasChildren()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Flora.ChildComponent.HasChildren </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Determines whether this entity has children or not. </p>
+<dl class="section return"><dt>Returns</dt><dd>true if this entity has children, false otherwise.</dd></dl>
+
+</div>
+</div>
+<a id="acf71b045e2c97a37caa28e0f615adce2" name="acf71b045e2c97a37caa28e0f615adce2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acf71b045e2c97a37caa28e0f615adce2">&#9670;&#160;</a></span>RemoveChild()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Flora.ChildComponent.RemoveChild </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_flora_1_1_entity.html">Entity</a>&#160;</td>
+          <td class="paramname"><em>entity</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Removes a given entity from being this entity's children. Note: this does not remove this entity from the child's ParentComponent. Use with caution. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">entity</td><td>The child to remove</td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following file:<ul>
 <li>D:/Dev/flora/Flora-ScriptCore/Source/<b>Components.cs</b></li>
 </ul>

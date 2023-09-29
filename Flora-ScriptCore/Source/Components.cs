@@ -11,6 +11,9 @@ namespace Flora
     /// An abstract component class that can be attatched to entities.
     /// By packaging functionality into a component, entities can then 
     /// attach these components to dynamically create custom entities with ease.
+    /// Note: components exist in the flora backend beyond the script engine! Think
+    /// of a component as a "Door" to the flora backend component, not the actual component
+    /// itself. Treat this component more like a *reference* to the backend component.
     /// </summary>
     public abstract class Component
     {
@@ -32,6 +35,8 @@ namespace Flora
 
     /// <summary>
     /// Enumeration to indicate the projection type of the camera: Perspective or Orthographic.
+    /// Perspective cameras are similar to how we view the world in 3D space, with perspective.
+    /// Orthographic cameras capture 2D images with no sense of perspective.
     /// </summary>
     public enum ProjectionType
     {
@@ -514,14 +519,19 @@ namespace Flora
         }
 
         /// <summary>
-        /// 
+        /// Gets how many children the entity has.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>The number of child entities</returns>
         public uint GetChildrenSize()
         {
             return InternalCalls.ChildComponent_GetChildrenSize(Entity.ID);
         }
 
+        /// <summary>
+        /// Gets the child given an index.
+        /// </summary>
+        /// <param name="index">The nth child of this entity</param>
+        /// <returns>The child requested or null if it was not found</returns>
         public Entity GetChild(uint index)
         {
             long entityID = InternalCalls.ChildComponent_GetChild(Entity.ID, index);
@@ -530,12 +540,24 @@ namespace Flora
         }
     }
 
+    /// <summary>
+    /// Expirimental/Dangerous. DO NOT USE.
+    /// </summary>
     public class ScriptManagerComponent : Component { }
 
+    /// <summary>
+    /// Expirimental/Dangerous. DO NOT USE.
+    /// </summary>
     public class ScriptComponent : Component { }
 
+    /// <summary>
+    /// A camera that can be used to view the current scene
+    /// </summary>
     public class CameraComponent : Component
     {
+        /// <summary>
+        /// Determines if the camera uses a fixed aspect ratio. (can you stretch the viewport)
+        /// </summary>
         public bool FixedAspectRatio
         {
             get
@@ -548,6 +570,9 @@ namespace Flora
             }
         }
 
+        /// <summary>
+        /// Determines if the camera border is shown.
+        /// </summary>
         public bool ShowBorder
         {
             get
@@ -560,6 +585,9 @@ namespace Flora
             }
         }
 
+        /// <summary>
+        /// Determines the orthographic size of the camera. (horizontal size)
+        /// </summary>
         public float OrthographicSize
         {
             get
@@ -572,6 +600,10 @@ namespace Flora
             }
         }
 
+        /// <summary>
+        /// Determines the cutoffpoint in the -Z direction. Once an entity is behind
+        /// this boundary, the entity will no longer be able to be seen by the orthographic camera.
+        /// </summary>
         public float OrthographicNear
         {
             get
@@ -584,6 +616,10 @@ namespace Flora
             }
         }
 
+        /// <summary>
+        /// Determines the cutoffpoint in the Z direction. Once an entity is in front of
+        /// this boundary, the entity will no longer be able to be seen by the orthographic camera.
+        /// </summary>
         public float OrthographicFar
         {
             get
@@ -596,6 +632,9 @@ namespace Flora
             }
         }
 
+        /// <summary>
+        /// Determines the field of view for a perspective camera
+        /// </summary>
         public float PerspectiveFOV
         {
             get
@@ -608,6 +647,10 @@ namespace Flora
             }
         }
 
+        /// <summary>
+        /// Determines the cutoffpoint in the -Z direction. Once an entity is behind
+        /// this boundary, the entity will no longer be able to be seen by the perspective camera.
+        /// </summary>
         public float PerspectiveNear
         {
             get
@@ -620,6 +663,10 @@ namespace Flora
             }
         }
 
+        /// <summary>
+        /// Determines the cutoffpoint in the Z direction. Once an entity is in front of
+        /// this boundary, the entity will no longer be able to be seen by the perspective camera.
+        /// </summary>
         public float PerspectiveFar
         {
             get
@@ -632,6 +679,10 @@ namespace Flora
             }
         }
 
+        /// <summary>
+        /// Determines the type of camera this entity represents. For more information, check 
+        /// out ProjectionType.
+        /// </summary>
         public ProjectionType Type
         {
             get
@@ -645,8 +696,14 @@ namespace Flora
         }
     }
 
+    /// <summary>
+    /// Renders a circle with a flat circle shader.
+    /// </summary>
     public class CircleRendererComponent : Component
     {
+        /// <summary>
+        /// Determines the color of the circle sprite.
+        /// </summary>
         public Vector4 Color
         {
             get
@@ -660,6 +717,9 @@ namespace Flora
             }
         }
 
+        /// <summary>
+        /// Determines the radius of the circle sprite. Scales with the entity transform.
+        /// </summary>
         public float Radius
         {
             get
@@ -672,6 +732,9 @@ namespace Flora
             }
         }
 
+        /// <summary>
+        /// Determines the thickness of the circle sprite.
+        /// </summary>
         public float Thickness
         {
             get
@@ -684,6 +747,9 @@ namespace Flora
             }
         }
 
+        /// <summary>
+        /// Determines the fade factor of the circle sprite.
+        /// </summary>
         public float Fade
         {
             get
@@ -697,8 +763,16 @@ namespace Flora
         }
     }
 
+    /// <summary>
+    /// Attatches a customizeable texture to an entity. Defaults to a blank white texture
+    /// when no specified texture has been specified. If a texture has been specified yet
+    /// cannot be properly found, defaults to a bright purple texture.
+    /// </summary>
     public class SpriteRendererComponent : Component
     {
+        /// <summary>
+        /// Determines if the texture is visible or not.
+        /// </summary>
         public bool Visible
         {
             get
@@ -711,6 +785,9 @@ namespace Flora
             }
         }
 
+        /// <summary>
+        /// Determines if the texture is paused given that it is an animation.
+        /// </summary>
         public bool Paused
         {
             get
@@ -723,6 +800,10 @@ namespace Flora
             }
         }
 
+        /// <summary>
+        /// Determines the type of texture being represetned. For more information, check out
+        /// SpriteType.
+        /// </summary>
         public SpriteType Type
         {
             get
@@ -735,6 +816,9 @@ namespace Flora
             }
         }
 
+        /// <summary>
+        /// Determines the color of the texture. This color will be applied as a tint to the texture.
+        /// </summary>
         public Vector4 Color
         {
             get
@@ -748,6 +832,11 @@ namespace Flora
             }
         }
 
+        /// <summary>
+        /// Determines the tiling factor of the texture. In other words, this represents
+        /// how much the texutre is repeated to fill the transform. Increasing this beyond one will
+        /// cause the given texture to repeat itself.
+        /// </summary>
         public float TilingFactor
         {
             get
@@ -760,6 +849,10 @@ namespace Flora
             }
         }
 
+        /// <summary>
+        /// Determines how many rows are in the texture given that it is a spritesheet.
+        /// Note: indexing starts at 1.
+        /// </summary>
         public int Rows
         {
             get
@@ -772,6 +865,10 @@ namespace Flora
             }
         }
 
+        /// <summary>
+        /// Determines how many columns are in the texture given that it is a spritesheet.
+        /// Note: indexing starts at 1.
+        /// </summary>
         public int Columns
         {
             get
@@ -784,6 +881,10 @@ namespace Flora
             }
         }
 
+        /// <summary>
+        /// Determines the current row coordinate of the texture given that it is a spritesheet.
+        /// Note: indexing starts at 1.
+        /// </summary>
         public int RowCoordinate
         {
             get
@@ -796,6 +897,10 @@ namespace Flora
             }
         }
 
+        /// <summary>
+        /// Determines the current column coordinate of the texture given that it is a spritesheet.
+        /// Note: indexing starts at 1.
+        /// </summary>
         public int ColumnCoordinate
         {
             get
@@ -808,6 +913,9 @@ namespace Flora
             }
         }
 
+        /// <summary>
+        /// Determines the width of the rendered subtexture given that it is from a spritesheet.
+        /// </summary>
         public float SubtextureWidth
         {
             get
@@ -820,6 +928,9 @@ namespace Flora
             }
         }
 
+        /// <summary>
+        /// Determines the height of the rendered subtexture given that it is from a spritesheet.
+        /// </summary>
         public float SubtextureHeight
         {
             get
@@ -832,6 +943,9 @@ namespace Flora
             }
         }
 
+        /// <summary>
+        /// Determines how many frames are in the sprite given that it is an animation.
+        /// </summary>
         public int Frames
         {
             get
@@ -844,6 +958,9 @@ namespace Flora
             }
         }
 
+        /// <summary>
+        /// Determines the starting frame of the sprite given that it is an animation.
+        /// </summary>
         public int StartFrame
         {
             get
@@ -856,6 +973,9 @@ namespace Flora
             }
         }
 
+        /// <summary>
+        /// Determines the last frame of the sprite given that it is an animation.
+        /// </summary>
         public int EndFrame
         {
             get
@@ -868,6 +988,9 @@ namespace Flora
             }
         }
 
+        /// <summary>
+        /// Determines the current frame of the sprite given that it is an animation.
+        /// </summary>
         public int CurrentFrame
         {
             get
@@ -880,6 +1003,9 @@ namespace Flora
             }
         }
 
+        /// <summary>
+        /// Determines how many frames per second the sprite plays at given that it is an animation.
+        /// </summary>
         public int FPS
         {
             get
@@ -892,6 +1018,9 @@ namespace Flora
             }
         }
 
+        /// <summary>
+        /// Determines which frame the sprite is at in reference to the starting frame given that it is an animation.
+        /// </summary>
         public int FrameCounter
         {
             get
@@ -904,6 +1033,10 @@ namespace Flora
             }
         }
 
+        /// <summary>
+        /// Determines the path to the texture being rendered. Note: this is also used
+        /// as an ID during asset management due to the innate nature of filepaths being globally unique.
+        /// </summary>
         public string Path
         {
             get
@@ -916,6 +1049,9 @@ namespace Flora
             }
         }
 
+        /// <summary>
+        /// Determines the name of the file the texture is being rendered from.
+        /// </summary>
         public string Filename
         {
             get
@@ -928,6 +1064,11 @@ namespace Flora
             }
         }
 
+        /// <summary>
+        /// Determines if the texture has been initialized yet. WARNING: this is
+        /// internally used to manage textures. If you do not know what you are doing, it
+        /// is recommended you do not play with this.
+        /// </summary>
         public bool TextureInitialized
         {
             get
@@ -941,8 +1082,15 @@ namespace Flora
         }
     }
 
+    /// <summary>
+    /// A component that attatches a tag to a component. Note: tags are not globally
+    /// unique; flora does not enforce that each tag must be different.
+    /// </summary>
     public class TagComponent : Component
     {
+        /// <summary>
+        /// A string that contains the tag given to the entity.
+        /// </summary>
         public string Tag
         {
             get
@@ -956,8 +1104,14 @@ namespace Flora
         }
     }
 
+    /// <summary>
+    /// Contains the transform information of an entity in the scene coordinate plane.
+    /// </summary>
     public class TransformComponent : Component
     {
+        /// <summary>
+        /// The x, y, and z coordinates of the entity.
+        /// </summary>
         public Vector3 Translation
         {
             get
@@ -971,6 +1125,9 @@ namespace Flora
             }
         }
 
+        /// <summary>
+        /// The rotation of the entity in reference to the x, y, and z axis.
+        /// </summary>
         public Vector3 Rotation
         {
             get
@@ -984,6 +1141,9 @@ namespace Flora
             }
         }
 
+        /// <summary>
+        /// The scale of the entity in reference to the x, y, and z cartesian plane.
+        /// </summary>
         public Vector3 Scale
         {
             get

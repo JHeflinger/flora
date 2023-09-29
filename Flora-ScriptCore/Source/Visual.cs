@@ -6,8 +6,16 @@ using System.Threading.Tasks;
 
 namespace Flora
 {
+    /// <summary>
+    /// Singleton class that specifies in visual functionality.
+    /// </summary>
     public class Visual
     {
+        /// <summary>
+        /// Gets the Entity that the mouse is hovering over, or returns
+        /// null if the mouse is not hovering over an Entity.
+        /// </summary>
+        /// <returns>hovered Entity or -1</returns>
         public static Entity GetHoveredEntity()
         {
             long entityHandle = InternalCalls.VisualUtils_GetHoveredEntity();
@@ -18,6 +26,11 @@ namespace Flora
             return null;
         }
 
+        /// <summary>
+        /// Gets the hovered Entity's ID, or returns -1 if the mouse
+        /// is not hovering over an entity.
+        /// </summary>
+        /// <returns>hovered Entity ID or -1</returns>
         public static long GetHoveredEntityID()
         {
             return InternalCalls.VisualUtils_GetHoveredEntity();

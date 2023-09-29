@@ -83,53 +83,72 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A box shaped collision body component. When attached to an entity, the entity is now available to be collided with given a specific rectangular shape. Defaults to scaling with the entity transform.  <a href="class_flora_1_1_box_collider2_d_component.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_flora_1_1_camera_component.html">CameraComponent</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A camera that can be used to view the current scene.  <a href="class_flora_1_1_camera_component.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_flora_1_1_child_component.html">ChildComponent</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The parent component of an entity. Stores what entities are this entity's children. Note: one can think of the subentity concept as a doubly linked n-ary tree. Each node can have multiple sub-nodes, and all sub-nodes will point toward their parent node. It is recommended to use functions such as Entity.AddChild(Entity child) to handle parent-child relationships, as unexpected outcomes may occur with the misuse of Parent and Child components.  <a href="class_flora_1_1_child_component.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_flora_1_1_circle_collider2_d_component.html">CircleCollider2DComponent</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A circular shaped collision body component. When attached to an entity, the entity is now available to be collided with given a specific circular shape. Defaults to scaling with the entity transform.  <a href="class_flora_1_1_circle_collider2_d_component.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_flora_1_1_circle_renderer_component.html">CircleRendererComponent</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Renders a circle with a flat circle shader.  <a href="class_flora_1_1_circle_renderer_component.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_flora_1_1_component.html">Component</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">An abstract component class that can be attatched to entities. By packaging functionality into a component, entities can then attach these components to dynamically create custom entities with ease.  <a href="class_flora_1_1_component.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">An abstract component class that can be attatched to entities. By packaging functionality into a component, entities can then attach these components to dynamically create custom entities with ease. Note: components exist in the flora backend beyond the script engine! Think of a component as a "Door" to the flora backend component, not the actual component itself. Treat this component more like a <em>reference</em> to the backend component.  <a href="class_flora_1_1_component.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_flora_1_1_developer.html">Developer</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Class exclusive to creating and using <a class="el" href="namespace_flora.html">Flora</a> provided development tools. Note that although not recommended, this can be used in production, as it can only be accessed directly via the Fauna editor by default and will be locked to player interaction during a production build.  <a href="class_flora_1_1_developer.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_flora_1_1_entity.html">Entity</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A blank Entity object that is simulated in the scene. A Component can be attatched to an Entity to customize the functionality of an Entity dynamically, allowing complete custom and dynamic control to make game objects. Note that Entity objects exist in the <a class="el" href="namespace_flora.html">Flora</a> backend, and this class just references a "door" to access that already existing Entity in the backend. Creating an Entity object is more akin to opening a door to access the Entity, not creating the Entity itself. Treat this Entity more like a <em>reference</em> to the backend Entity.  <a href="class_flora_1_1_entity.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_flora_1_1_f_math.html">FMath</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Contains <a class="el" href="namespace_flora.html">Flora</a> specific math functions for ease of use.  <a href="class_flora_1_1_f_math.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_flora_1_1_input.html">Input</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">This class contains static functions to determine what user inputs are being used, such as the keyboard or mouse. Note that there is not controller support at the moment, but it is planned for future releases.  <a href="class_flora_1_1_input.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><b>InternalCalls</b></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_flora_1_1_parent_component.html">ParentComponent</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The parent component of an entity. Stores which entity is the parent of this entity. Note: one can think of the subentity concept as a doubly linked n-ary tree. Each node can have multiple sub-nodes, and all sub-nodes will point toward their parent node. It is recommended to use functions such as Entity.AddChild(Entity child) to handle parent-child relationships, as unexpected outcomes may occur with the misuse of Parent and Child components.  <a href="class_flora_1_1_parent_component.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_flora_1_1_project.html">Project</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Class to interact with the current video game project.  <a href="class_flora_1_1_project.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_flora_1_1_rigid_body2_d_component.html">RigidBody2DComponent</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The physics body of a given entity. Controls the position and forces enacting on the physical body of an entity, and simulates it using the <a class="el" href="namespace_flora.html">Flora</a> physics engine.  <a href="class_flora_1_1_rigid_body2_d_component.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_flora_1_1_scene.html">Scene</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Class to interact with the <a class="el" href="namespace_flora.html">Flora</a> backend scene context.  <a href="class_flora_1_1_scene.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_flora_1_1_script_component.html">ScriptComponent</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Expirimental/Dangerous. DO NOT USE.  <a href="class_flora_1_1_script_component.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_flora_1_1_script_manager_component.html">ScriptManagerComponent</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Expirimental/Dangerous. DO NOT USE.  <a href="class_flora_1_1_script_manager_component.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_flora_1_1_sprite_renderer_component.html">SpriteRendererComponent</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Attatches a customizeable texture to an entity. Defaults to a blank white texture when no specified texture has been specified. If a texture has been specified yet cannot be properly found, defaults to a bright purple texture.  <a href="class_flora_1_1_sprite_renderer_component.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_flora_1_1_tag_component.html">TagComponent</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A component that attatches a tag to a component. Note: tags are not globally unique; flora does not enforce that each tag must be different.  <a href="class_flora_1_1_tag_component.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_flora_1_1_transform_component.html">TransformComponent</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Contains the transform information of an entity in the scene coordinate plane.  <a href="class_flora_1_1_transform_component.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_flora_1_1_vector2.html">Vector2</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A 2 element vector to represent a series of 2 floating point values.  <a href="struct_flora_1_1_vector2.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_flora_1_1_vector3.html">Vector3</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A 3 element vector to represent a series of 3 floating point values.  <a href="struct_flora_1_1_vector3.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_flora_1_1_vector4.html">Vector4</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A 4 element vector to represent a series of 4 floating point values.  <a href="struct_flora_1_1_vector4.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_flora_1_1_visual.html">Visual</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Singleton class that specifies in visual functionality.  <a href="class_flora_1_1_visual.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
@@ -143,7 +162,7 @@ Enumerations</h2></td></tr>
 <tr class="memitem:aecb003d2daf21751952007cd1f94debf" id="r_aecb003d2daf21751952007cd1f94debf"><td class="memItemLeft" align="right" valign="top"><a id="aecb003d2daf21751952007cd1f94debf" name="aecb003d2daf21751952007cd1f94debf"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_flora.html#aecb003d2daf21751952007cd1f94debf">ProjectionType</a> { <b>Perspective</b> = 0
 , <b>Orthographic</b> = 1
  }</td></tr>
-<tr class="memdesc:aecb003d2daf21751952007cd1f94debf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enumeration to indicate the projection type of the camera: Perspective or Orthographic. <br /></td></tr>
+<tr class="memdesc:aecb003d2daf21751952007cd1f94debf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enumeration to indicate the projection type of the camera: Perspective or Orthographic. Perspective cameras are similar to how we view the world in 3D space, with perspective. Orthographic cameras capture 2D images with no sense of perspective. <br /></td></tr>
 <tr class="separator:aecb003d2daf21751952007cd1f94debf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae72682d8f3ae7e9c17c2852f3d6de091" id="r_ae72682d8f3ae7e9c17c2852f3d6de091"><td class="memItemLeft" align="right" valign="top"><a id="ae72682d8f3ae7e9c17c2852f3d6de091" name="ae72682d8f3ae7e9c17c2852f3d6de091"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_flora.html#ae72682d8f3ae7e9c17c2852f3d6de091">BodyType</a> { <b>STATIC</b> = 0
 , <b>KINEMATIC</b> = 1
@@ -151,7 +170,7 @@ Enumerations</h2></td></tr>
  }</td></tr>
 <tr class="memdesc:ae72682d8f3ae7e9c17c2852f3d6de091"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enumeration to indicate a type of physics body. STATIC refers to a non-moving physical entity that is not affected by outside forces. KINEMATIC refers to a phsyical entity that can move but is not affected by outside forces. DYNAMIC refers to a physical entity that can move and is affected by outside forces. <br /></td></tr>
 <tr class="separator:ae72682d8f3ae7e9c17c2852f3d6de091"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa0ba093ac30e2d4aa261c024de9c27fb" id="r_aa0ba093ac30e2d4aa261c024de9c27fb"><td class="memItemLeft" align="right" valign="top"><a id="aa0ba093ac30e2d4aa261c024de9c27fb" name="aa0ba093ac30e2d4aa261c024de9c27fb"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>KeyCode</b> { <br />
+<tr class="memitem:aa0ba093ac30e2d4aa261c024de9c27fb" id="r_aa0ba093ac30e2d4aa261c024de9c27fb"><td class="memItemLeft" align="right" valign="top"><a id="aa0ba093ac30e2d4aa261c024de9c27fb" name="aa0ba093ac30e2d4aa261c024de9c27fb"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_flora.html#aa0ba093ac30e2d4aa261c024de9c27fb">KeyCode</a> { <br />
 &#160;&#160;<b>Space</b> = 32
 , <b>Apostrophe</b> = 39
 , <b>Comma</b> = 44
@@ -303,8 +322,9 @@ Enumerations</h2></td></tr>
 , <b>Menu</b> = 348
 <br />
  }</td></tr>
+<tr class="memdesc:aa0ba093ac30e2d4aa261c024de9c27fb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enumeration containing the GLFW keycodes for the keyboard. <br /></td></tr>
 <tr class="separator:aa0ba093ac30e2d4aa261c024de9c27fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aca0c7d718e9f6871b522fcedd6956ba7" id="r_aca0c7d718e9f6871b522fcedd6956ba7"><td class="memItemLeft" align="right" valign="top"><a id="aca0c7d718e9f6871b522fcedd6956ba7" name="aca0c7d718e9f6871b522fcedd6956ba7"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>MouseCode</b> { <br />
+<tr class="memitem:aca0c7d718e9f6871b522fcedd6956ba7" id="r_aca0c7d718e9f6871b522fcedd6956ba7"><td class="memItemLeft" align="right" valign="top"><a id="aca0c7d718e9f6871b522fcedd6956ba7" name="aca0c7d718e9f6871b522fcedd6956ba7"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_flora.html#aca0c7d718e9f6871b522fcedd6956ba7">MouseCode</a> { <br />
 &#160;&#160;<b>Button0</b> = 0
 , <b>Button1</b> = 1
 , <b>Button2</b> = 2
@@ -321,6 +341,7 @@ Enumerations</h2></td></tr>
 , <b>ButtonMiddle</b> = Button2
 <br />
  }</td></tr>
+<tr class="memdesc:aca0c7d718e9f6871b522fcedd6956ba7"><td class="mdescLeft">&#160;</td><td class="mdescRight">The GLFW mouse codes for corresponding mouse buttons. <br /></td></tr>
 <tr class="separator:aca0c7d718e9f6871b522fcedd6956ba7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->

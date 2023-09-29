@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Flora
 {
+	/// <summary>
+	/// Enumeration containing the GLFW keycodes for the keyboard.
+	/// </summary>
     public enum KeyCode
     {
 		// From glfw3.h

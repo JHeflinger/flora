@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Flora
 {
+	/// <summary>
+	/// The GLFW mouse codes for corresponding mouse buttons
+	/// </summary>
 	public enum MouseCode
 	{
 		Button0 = 0,

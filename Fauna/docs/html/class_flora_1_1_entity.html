@@ -77,51 +77,122 @@ $(function() {
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
+<a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="#properties">Properties</a> &#124;
 <a href="class_flora_1_1_entity-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">Flora.Entity Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>A blank Entity object that is simulated in the scene. A Component can be attatched to an Entity to customize the functionality of an Entity dynamically, allowing complete custom and dynamic control to make game objects. Note that Entity objects exist in the <a class="el" href="namespace_flora.html">Flora</a> backend, and this class just references a "door" to access that already existing Entity in the backend. Creating an Entity object is more akin to opening a door to access the Entity, not creating the Entity itself. Treat this Entity more like a <em>reference</em> to the backend Entity.  
+ <a href="class_flora_1_1_entity.html#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:aaad27f88feaa79ce6091369003375b12" id="r_aaad27f88feaa79ce6091369003375b12"><td class="memItemLeft" align="right" valign="top"><a id="aaad27f88feaa79ce6091369003375b12" name="aaad27f88feaa79ce6091369003375b12"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>Entity</b> (uint eid)</td></tr>
+<tr class="memitem:aaad27f88feaa79ce6091369003375b12" id="r_aaad27f88feaa79ce6091369003375b12"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_flora_1_1_entity.html#aaad27f88feaa79ce6091369003375b12">Entity</a> (uint eid)</td></tr>
+<tr class="memdesc:aaad27f88feaa79ce6091369003375b12"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates an Entity given it's specified ID. WARNING: that this is indented to be used to get a corresponding existing Entity with an ID. However, do not use this to create new entities as it does not create them in the context of the scene.  <br /></td></tr>
 <tr class="separator:aaad27f88feaa79ce6091369003375b12"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae6cc69f0402293231aad3ae77086154f" id="r_ae6cc69f0402293231aad3ae77086154f"><td class="memItemLeft" align="right" valign="top"><a id="ae6cc69f0402293231aad3ae77086154f" name="ae6cc69f0402293231aad3ae77086154f"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>AddChild</b> (<a class="el" href="class_flora_1_1_entity.html">Entity</a> entity)</td></tr>
+<tr class="memitem:ae6cc69f0402293231aad3ae77086154f" id="r_ae6cc69f0402293231aad3ae77086154f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_flora_1_1_entity.html#ae6cc69f0402293231aad3ae77086154f">AddChild</a> (<a class="el" href="class_flora_1_1_entity.html">Entity</a> entity)</td></tr>
+<tr class="memdesc:ae6cc69f0402293231aad3ae77086154f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a child to the Entity as a subentity. Note: this is the recommended way to create subentities as it ensures the ParentComponent and ChildComponents are safely handled and linked.  <br /></td></tr>
 <tr class="separator:ae6cc69f0402293231aad3ae77086154f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab52c11404e5cc454db597bbe38f69538" id="r_ab52c11404e5cc454db597bbe38f69538"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_flora_1_1_entity.html#ab52c11404e5cc454db597bbe38f69538">HasComponent&lt; T &gt;</a> ()</td></tr>
+<tr class="memdesc:ab52c11404e5cc454db597bbe38f69538"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines if the Entity has a given component. Note: remember that entities exist in the backend beyond the script engine! If you "create" a new Entity that has an existing ID, it is still referencing an existing backend Entity and therefore it may have existing components.  <br /></td></tr>
 <tr class="separator:ab52c11404e5cc454db597bbe38f69538"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9b4920f9ffe434e51bbeffa70d779048" id="r_a9b4920f9ffe434e51bbeffa70d779048"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_flora_1_1_entity.html#a9b4920f9ffe434e51bbeffa70d779048">AddComponent&lt; T &gt;</a> ()</td></tr>
+<tr class="memdesc:a9b4920f9ffe434e51bbeffa70d779048"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a new given component given the component type. Note: remember that entities exist in the backend beyond the script engine! This function will directly access the Entity in the backend, assigning it a new component.  <br /></td></tr>
 <tr class="separator:a9b4920f9ffe434e51bbeffa70d779048"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6a5e60beba466c4662b618738215c8c0" id="r_a6a5e60beba466c4662b618738215c8c0"><td class="memItemLeft" align="right" valign="top">T&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_flora_1_1_entity.html#a6a5e60beba466c4662b618738215c8c0">GetComponent&lt; T &gt;</a> ()</td></tr>
+<tr class="memdesc:a6a5e60beba466c4662b618738215c8c0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets a component from the Entity given its type. If it does not have that component, return null. Note: components are also in the flora backend, existing beyond the script engine! Treat this component as you would a reference to the backend component.  <br /></td></tr>
 <tr class="separator:a6a5e60beba466c4662b618738215c8c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3e93806b67209ee140d118c884c3888b" id="r_a3e93806b67209ee140d118c884c3888b"><td class="memItemLeft" align="right" valign="top">T&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_flora_1_1_entity.html#a3e93806b67209ee140d118c884c3888b">As&lt; T &gt;</a> ()</td></tr>
+<tr class="memdesc:a3e93806b67209ee140d118c884c3888b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets an Entity as a specified type. This function is to be used to get the corresponding script engine instance of the Entity as a custom type. For example, if an Entity has a Script Component "Game.Player", you can get the Entity script instance as the Player type via Entity.As&lt;Player&gt;().  <br /></td></tr>
 <tr class="separator:a3e93806b67209ee140d118c884c3888b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:a9ae2f531697f4ad55e1f84e0b4edf244" id="r_a9ae2f531697f4ad55e1f84e0b4edf244"><td class="memItemLeft" align="right" valign="top"><a id="a9ae2f531697f4ad55e1f84e0b4edf244" name="a9ae2f531697f4ad55e1f84e0b4edf244"></a>
 readonly uint&#160;</td><td class="memItemRight" valign="bottom"><b>ID</b></td></tr>
+<tr class="memdesc:a9ae2f531697f4ad55e1f84e0b4edf244"><td class="mdescLeft">&#160;</td><td class="mdescRight">The ID of the Entity. <br /></td></tr>
 <tr class="separator:a9ae2f531697f4ad55e1f84e0b4edf244"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
+Protected Member Functions</h2></td></tr>
+<tr class="memitem:a392d17c471cca780f5a7bcff52db0da0" id="r_a392d17c471cca780f5a7bcff52db0da0"><td class="memItemLeft" align="right" valign="top"><a id="a392d17c471cca780f5a7bcff52db0da0" name="a392d17c471cca780f5a7bcff52db0da0"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>Entity</b> ()</td></tr>
+<tr class="memdesc:a392d17c471cca780f5a7bcff52db0da0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a blank uninitialized Entity. WARNING: it is not recommended that blank entities are created this way, as it does not create it in the context of the scene. Please use the CreateEntity function from the Scene class instead. <br /></td></tr>
+<tr class="separator:a392d17c471cca780f5a7bcff52db0da0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
 Properties</h2></td></tr>
-<tr class="memitem:a890cd577312eb1d78e0f6228f0123a13" id="r_a890cd577312eb1d78e0f6228f0123a13"><td class="memItemLeft" align="right" valign="top"><a id="a890cd577312eb1d78e0f6228f0123a13" name="a890cd577312eb1d78e0f6228f0123a13"></a>
-float&#160;</td><td class="memItemRight" valign="bottom"><b>FloatVar</b><code> [get, set]</code></td></tr>
-<tr class="separator:a890cd577312eb1d78e0f6228f0123a13"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acd0f149650dd70efc3edc902906685cc" id="r_acd0f149650dd70efc3edc902906685cc"><td class="memItemLeft" align="right" valign="top"><a id="acd0f149650dd70efc3edc902906685cc" name="acd0f149650dd70efc3edc902906685cc"></a>
 <a class="el" href="struct_flora_1_1_vector3.html">Vector3</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Translation</b><code> [get, set]</code></td></tr>
+<tr class="memdesc:acd0f149650dd70efc3edc902906685cc"><td class="mdescLeft">&#160;</td><td class="mdescRight">The x, y, and z translation of the Entity in the Scene's cartesian plane. <br /></td></tr>
 <tr class="separator:acd0f149650dd70efc3edc902906685cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3d26b24819fbda8f7c3567a94a2710e2" id="r_a3d26b24819fbda8f7c3567a94a2710e2"><td class="memItemLeft" align="right" valign="top"><a id="a3d26b24819fbda8f7c3567a94a2710e2" name="a3d26b24819fbda8f7c3567a94a2710e2"></a>
 <a class="el" href="struct_flora_1_1_vector3.html">Vector3</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Rotation</b><code> [get, set]</code></td></tr>
+<tr class="memdesc:a3d26b24819fbda8f7c3567a94a2710e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">The rotation of the Entity in reference to the x, y, and z axis. <br /></td></tr>
 <tr class="separator:a3d26b24819fbda8f7c3567a94a2710e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8307f2b1aab4024f3d6c1df3e274b747" id="r_a8307f2b1aab4024f3d6c1df3e274b747"><td class="memItemLeft" align="right" valign="top"><a id="a8307f2b1aab4024f3d6c1df3e274b747" name="a8307f2b1aab4024f3d6c1df3e274b747"></a>
 <a class="el" href="struct_flora_1_1_vector3.html">Vector3</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Scale</b><code> [get, set]</code></td></tr>
+<tr class="memdesc:a8307f2b1aab4024f3d6c1df3e274b747"><td class="mdescLeft">&#160;</td><td class="mdescRight">The scale of the Entity in reference to the x, y, and z cartesian planes. <br /></td></tr>
 <tr class="separator:a8307f2b1aab4024f3d6c1df3e274b747"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>A blank Entity object that is simulated in the scene. A Component can be attatched to an Entity to customize the functionality of an Entity dynamically, allowing complete custom and dynamic control to make game objects. Note that Entity objects exist in the <a class="el" href="namespace_flora.html">Flora</a> backend, and this class just references a "door" to access that already existing Entity in the backend. Creating an Entity object is more akin to opening a door to access the Entity, not creating the Entity itself. Treat this Entity more like a <em>reference</em> to the backend Entity. </p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="aaad27f88feaa79ce6091369003375b12" name="aaad27f88feaa79ce6091369003375b12"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaad27f88feaa79ce6091369003375b12">&#9670;&#160;</a></span>Entity()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Flora.Entity.Entity </td>
+          <td>(</td>
+          <td class="paramtype">uint&#160;</td>
+          <td class="paramname"><em>eid</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Creates an Entity given it's specified ID. WARNING: that this is indented to be used to get a corresponding existing Entity with an ID. However, do not use this to create new entities as it does not create them in the context of the scene. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">eid</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="ae6cc69f0402293231aad3ae77086154f" name="ae6cc69f0402293231aad3ae77086154f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae6cc69f0402293231aad3ae77086154f">&#9670;&#160;</a></span>AddChild()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Flora.Entity.AddChild </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_flora_1_1_entity.html">Entity</a>&#160;</td>
+          <td class="paramname"><em>entity</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Adds a child to the Entity as a subentity. Note: this is the recommended way to create subentities as it ensures the ParentComponent and ChildComponents are safely handled and linked. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">entity</td><td>The child Entity</td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a9b4920f9ffe434e51bbeffa70d779048" name="a9b4920f9ffe434e51bbeffa70d779048"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9b4920f9ffe434e51bbeffa70d779048">&#9670;&#160;</a></span>AddComponent&lt; T &gt;()</h2>
 
@@ -136,6 +207,14 @@ float&#160;</td><td class="memItemRight" valign="bottom"><b>FloatVar</b><code> [
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Adds a new given component given the component type. Note: remember that entities exist in the backend beyond the script engine! This function will directly access the Entity in the backend, assigning it a new component. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td>The type of the component</td></tr>
+  </table>
+  </dd>
+</dl>
 <div class="typeconstraint">
 <dl><dt><b>Type Constraints</b></dt><dd>
 <table border="0" cellspacing="2" cellpadding="0">
@@ -162,6 +241,15 @@ float&#160;</td><td class="memItemRight" valign="bottom"><b>FloatVar</b><code> [
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Gets an Entity as a specified type. This function is to be used to get the corresponding script engine instance of the Entity as a custom type. For example, if an Entity has a Script Component "Game.Player", you can get the Entity script instance as the Player type via Entity.As&lt;Player&gt;(). </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td>The type of the Entity instance</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The Entity instance</dd></dl>
 <div class="typeconstraint">
 <dl><dt><b>Type Constraints</b></dt><dd>
 <table border="0" cellspacing="2" cellpadding="0">
@@ -188,6 +276,15 @@ float&#160;</td><td class="memItemRight" valign="bottom"><b>FloatVar</b><code> [
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Gets a component from the Entity given its type. If it does not have that component, return null. Note: components are also in the flora backend, existing beyond the script engine! Treat this component as you would a reference to the backend component. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td>The type of the component</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The component object</dd></dl>
 <div class="typeconstraint">
 <dl><dt><b>Type Constraints</b></dt><dd>
 <table border="0" cellspacing="2" cellpadding="0">
@@ -214,6 +311,15 @@ float&#160;</td><td class="memItemRight" valign="bottom"><b>FloatVar</b><code> [
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Determines if the Entity has a given component. Note: remember that entities exist in the backend beyond the script engine! If you "create" a new Entity that has an existing ID, it is still referencing an existing backend Entity and therefore it may have existing components. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td>The type of the component</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true of the Entity has the component, false otherwise</dd></dl>
 <div class="typeconstraint">
 <dl><dt><b>Type Constraints</b></dt><dd>
 <table border="0" cellspacing="2" cellpadding="0">

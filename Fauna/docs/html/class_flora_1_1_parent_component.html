@@ -80,6 +80,9 @@ $(function() {
   <div class="headertitle"><div class="title">Flora.ParentComponent Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>The parent component of an entity. Stores which entity is the parent of this entity. Note: one can think of the subentity concept as a doubly linked n-ary tree. Each node can have multiple sub-nodes, and all sub-nodes will point toward their parent node. It is recommended to use functions such as Entity.AddChild(Entity child) to handle parent-child relationships, as unexpected outcomes may occur with the misuse of Parent and Child components.  
+ <a href="class_flora_1_1_parent_component.html#details">More...</a></p>
 <div class="dynheader">
 Inheritance diagram for Flora.ParentComponent:</div>
 <div class="dyncontent">
@@ -94,19 +97,24 @@ Inheritance diagram for Flora.ParentComponent:</div>
 Properties</h2></td></tr>
 <tr class="memitem:a4f0b58addd0fe5f89b5c042510a5d81f" id="r_a4f0b58addd0fe5f89b5c042510a5d81f"><td class="memItemLeft" align="right" valign="top"><a id="a4f0b58addd0fe5f89b5c042510a5d81f" name="a4f0b58addd0fe5f89b5c042510a5d81f"></a>
 <a class="el" href="class_flora_1_1_entity.html">Entity</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Parent</b><code> [get, set]</code></td></tr>
+<tr class="memdesc:a4f0b58addd0fe5f89b5c042510a5d81f"><td class="mdescLeft">&#160;</td><td class="mdescRight">The parent entity of this component. <br /></td></tr>
 <tr class="separator:a4f0b58addd0fe5f89b5c042510a5d81f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9d480c74e7035deb2cd4ee8a1a0698a1" id="r_a9d480c74e7035deb2cd4ee8a1a0698a1"><td class="memItemLeft" align="right" valign="top"><a id="a9d480c74e7035deb2cd4ee8a1a0698a1" name="a9d480c74e7035deb2cd4ee8a1a0698a1"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>InheritAll</b><code> [get, set]</code></td></tr>
+<tr class="memdesc:a9d480c74e7035deb2cd4ee8a1a0698a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines whether this entity inherits all the inheritable properties of the parent entity. <br /></td></tr>
 <tr class="separator:a9d480c74e7035deb2cd4ee8a1a0698a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0caebb253ad4789f6189d511aad60312" id="r_a0caebb253ad4789f6189d511aad60312"><td class="memItemLeft" align="right" valign="top"><a id="a0caebb253ad4789f6189d511aad60312" name="a0caebb253ad4789f6189d511aad60312"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>InheritTransform</b><code> [get, set]</code></td></tr>
+<tr class="memdesc:a0caebb253ad4789f6189d511aad60312"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines whether this entity's transform is in reference to its parents transform or not. <br /></td></tr>
 <tr class="separator:a0caebb253ad4789f6189d511aad60312"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header properties_class_flora_1_1_component"><td colspan="2" onclick="javascript:toggleInherit('properties_class_flora_1_1_component')"><img src="closed.png" alt="-"/>&#160;Properties inherited from <a class="el" href="class_flora_1_1_component.html">Flora.Component</a></td></tr>
 <tr class="memitem:a3850e24fa2873f9edc62b1f678b10c50 inherit properties_class_flora_1_1_component" id="r_a3850e24fa2873f9edc62b1f678b10c50"><td class="memItemLeft" align="right" valign="top">
 <a class="el" href="class_flora_1_1_entity.html">Entity</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Entity</b><code> [get, set]</code></td></tr>
 <tr class="separator:a3850e24fa2873f9edc62b1f678b10c50 inherit properties_class_flora_1_1_component"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<hr/>The documentation for this class was generated from the following file:<ul>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>The parent component of an entity. Stores which entity is the parent of this entity. Note: one can think of the subentity concept as a doubly linked n-ary tree. Each node can have multiple sub-nodes, and all sub-nodes will point toward their parent node. It is recommended to use functions such as Entity.AddChild(Entity child) to handle parent-child relationships, as unexpected outcomes may occur with the misuse of Parent and Child components. </p>
+</div><hr/>The documentation for this class was generated from the following file:<ul>
 <li>D:/Dev/flora/Flora-ScriptCore/Source/<b>Components.cs</b></li>
 </ul>
 </div><!-- contents -->

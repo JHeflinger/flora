@@ -80,28 +80,217 @@ $(function() {
   <div class="headertitle"><div class="title">Flora.Input Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>This class contains static functions to determine what user inputs are being used, such as the keyboard or mouse. Note that there is not controller support at the moment, but it is planned for future releases.  
+ <a href="class_flora_1_1_input.html#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:aa5902dfe12cd950a6ebac8a9475143bf" id="r_aa5902dfe12cd950a6ebac8a9475143bf"><td class="memItemLeft" align="right" valign="top"><a id="aa5902dfe12cd950a6ebac8a9475143bf" name="aa5902dfe12cd950a6ebac8a9475143bf"></a>
-static bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsKeyDown</b> (KeyCode keycode)</td></tr>
+<tr class="memitem:aa5902dfe12cd950a6ebac8a9475143bf" id="r_aa5902dfe12cd950a6ebac8a9475143bf"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_flora_1_1_input.html#aa5902dfe12cd950a6ebac8a9475143bf">IsKeyDown</a> (<a class="el" href="namespace_flora.html#aa0ba093ac30e2d4aa261c024de9c27fb">KeyCode</a> keycode)</td></tr>
+<tr class="memdesc:aa5902dfe12cd950a6ebac8a9475143bf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines if a specified key is being pressed.  <br /></td></tr>
 <tr class="separator:aa5902dfe12cd950a6ebac8a9475143bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad744a2ca79d19203bc213d75a77c5259" id="r_ad744a2ca79d19203bc213d75a77c5259"><td class="memItemLeft" align="right" valign="top"><a id="ad744a2ca79d19203bc213d75a77c5259" name="ad744a2ca79d19203bc213d75a77c5259"></a>
-static bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsMouseButtonPressed</b> (MouseCode button)</td></tr>
+<tr class="memitem:ad744a2ca79d19203bc213d75a77c5259" id="r_ad744a2ca79d19203bc213d75a77c5259"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_flora_1_1_input.html#ad744a2ca79d19203bc213d75a77c5259">IsMouseButtonPressed</a> (<a class="el" href="namespace_flora.html#aca0c7d718e9f6871b522fcedd6956ba7">MouseCode</a> button)</td></tr>
+<tr class="memdesc:ad744a2ca79d19203bc213d75a77c5259"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines if a specific mouse button is being pressed.  <br /></td></tr>
 <tr class="separator:ad744a2ca79d19203bc213d75a77c5259"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2318a705431868c158563248fe8fa49e" id="r_a2318a705431868c158563248fe8fa49e"><td class="memItemLeft" align="right" valign="top"><a id="a2318a705431868c158563248fe8fa49e" name="a2318a705431868c158563248fe8fa49e"></a>
-static float&#160;</td><td class="memItemRight" valign="bottom"><b>GetMouseX</b> ()</td></tr>
+<tr class="memitem:a2318a705431868c158563248fe8fa49e" id="r_a2318a705431868c158563248fe8fa49e"><td class="memItemLeft" align="right" valign="top">static float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_flora_1_1_input.html#a2318a705431868c158563248fe8fa49e">GetMouseX</a> ()</td></tr>
+<tr class="memdesc:a2318a705431868c158563248fe8fa49e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines the mouse x position.  <br /></td></tr>
 <tr class="separator:a2318a705431868c158563248fe8fa49e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4de2781652fb6854e82e611c07932558" id="r_a4de2781652fb6854e82e611c07932558"><td class="memItemLeft" align="right" valign="top"><a id="a4de2781652fb6854e82e611c07932558" name="a4de2781652fb6854e82e611c07932558"></a>
-static float&#160;</td><td class="memItemRight" valign="bottom"><b>GetMouseY</b> ()</td></tr>
+<tr class="memitem:a4de2781652fb6854e82e611c07932558" id="r_a4de2781652fb6854e82e611c07932558"><td class="memItemLeft" align="right" valign="top">static float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_flora_1_1_input.html#a4de2781652fb6854e82e611c07932558">GetMouseY</a> ()</td></tr>
+<tr class="memdesc:a4de2781652fb6854e82e611c07932558"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines the mouse y position.  <br /></td></tr>
 <tr class="separator:a4de2781652fb6854e82e611c07932558"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac6a1fabe8213ceff5784292f45fddeb6" id="r_ac6a1fabe8213ceff5784292f45fddeb6"><td class="memItemLeft" align="right" valign="top"><a id="ac6a1fabe8213ceff5784292f45fddeb6" name="ac6a1fabe8213ceff5784292f45fddeb6"></a>
-static <a class="el" href="struct_flora_1_1_vector2.html">Vector2</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetMousePosition</b> ()</td></tr>
+<tr class="memitem:ac6a1fabe8213ceff5784292f45fddeb6" id="r_ac6a1fabe8213ceff5784292f45fddeb6"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="struct_flora_1_1_vector2.html">Vector2</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_flora_1_1_input.html#ac6a1fabe8213ceff5784292f45fddeb6">GetMousePosition</a> ()</td></tr>
+<tr class="memdesc:ac6a1fabe8213ceff5784292f45fddeb6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines the mouse x and y position.  <br /></td></tr>
 <tr class="separator:ac6a1fabe8213ceff5784292f45fddeb6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a57d4b7c744ad2a42bd0bb9e0912724e8" id="r_a57d4b7c744ad2a42bd0bb9e0912724e8"><td class="memItemLeft" align="right" valign="top"><a id="a57d4b7c744ad2a42bd0bb9e0912724e8" name="a57d4b7c744ad2a42bd0bb9e0912724e8"></a>
-static <a class="el" href="struct_flora_1_1_vector2.html">Vector2</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetMousePosition</b> (<a class="el" href="class_flora_1_1_entity.html">Entity</a> camera)</td></tr>
+<tr class="memitem:a57d4b7c744ad2a42bd0bb9e0912724e8" id="r_a57d4b7c744ad2a42bd0bb9e0912724e8"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="struct_flora_1_1_vector2.html">Vector2</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_flora_1_1_input.html#a57d4b7c744ad2a42bd0bb9e0912724e8">GetMousePosition</a> (<a class="el" href="class_flora_1_1_entity.html">Entity</a> camera)</td></tr>
+<tr class="memdesc:a57d4b7c744ad2a42bd0bb9e0912724e8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines the mouse x and y position in reference to the given camera plane.  <br /></td></tr>
 <tr class="separator:a57d4b7c744ad2a42bd0bb9e0912724e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>This class contains static functions to determine what user inputs are being used, such as the keyboard or mouse. Note that there is not controller support at the moment, but it is planned for future releases. </p>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="ac6a1fabe8213ceff5784292f45fddeb6" name="ac6a1fabe8213ceff5784292f45fddeb6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac6a1fabe8213ceff5784292f45fddeb6">&#9670;&#160;</a></span>GetMousePosition() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="struct_flora_1_1_vector2.html">Vector2</a> Flora.Input.GetMousePosition </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Determines the mouse x and y position. </p>
+<dl class="section return"><dt>Returns</dt><dd>A 2 element vector containing the x and y position</dd></dl>
+
+</div>
+</div>
+<a id="a57d4b7c744ad2a42bd0bb9e0912724e8" name="a57d4b7c744ad2a42bd0bb9e0912724e8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a57d4b7c744ad2a42bd0bb9e0912724e8">&#9670;&#160;</a></span>GetMousePosition() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="struct_flora_1_1_vector2.html">Vector2</a> Flora.Input.GetMousePosition </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_flora_1_1_entity.html">Entity</a>&#160;</td>
+          <td class="paramname"><em>camera</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Determines the mouse x and y position in reference to the given camera plane. </p>
+<dl class="section return"><dt>Returns</dt><dd>A 2 element vector containing the mouse x and y position in reference to the given camera plane.</dd></dl>
+
+</div>
+</div>
+<a id="a2318a705431868c158563248fe8fa49e" name="a2318a705431868c158563248fe8fa49e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2318a705431868c158563248fe8fa49e">&#9670;&#160;</a></span>GetMouseX()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static float Flora.Input.GetMouseX </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Determines the mouse x position. </p>
+<dl class="section return"><dt>Returns</dt><dd>The mouse x position</dd></dl>
+
+</div>
+</div>
+<a id="a4de2781652fb6854e82e611c07932558" name="a4de2781652fb6854e82e611c07932558"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4de2781652fb6854e82e611c07932558">&#9670;&#160;</a></span>GetMouseY()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static float Flora.Input.GetMouseY </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Determines the mouse y position. </p>
+<dl class="section return"><dt>Returns</dt><dd>The mouse y position</dd></dl>
+
+</div>
+</div>
+<a id="aa5902dfe12cd950a6ebac8a9475143bf" name="aa5902dfe12cd950a6ebac8a9475143bf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa5902dfe12cd950a6ebac8a9475143bf">&#9670;&#160;</a></span>IsKeyDown()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static bool Flora.Input.IsKeyDown </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespace_flora.html#aa0ba093ac30e2d4aa261c024de9c27fb">KeyCode</a>&#160;</td>
+          <td class="paramname"><em>keycode</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Determines if a specified key is being pressed. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">keycode</td><td>The keycode that corresponds to the desired keyboard key</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if the key is being pressed, false otherwise.</dd></dl>
+
+</div>
+</div>
+<a id="ad744a2ca79d19203bc213d75a77c5259" name="ad744a2ca79d19203bc213d75a77c5259"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad744a2ca79d19203bc213d75a77c5259">&#9670;&#160;</a></span>IsMouseButtonPressed()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static bool Flora.Input.IsMouseButtonPressed </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespace_flora.html#aca0c7d718e9f6871b522fcedd6956ba7">MouseCode</a>&#160;</td>
+          <td class="paramname"><em>button</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Determines if a specific mouse button is being pressed. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">button</td><td>The mousecode that corresponds to the desired mouse button</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true of the mouse button is being pressed, false otherwise.</dd></dl>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following file:<ul>
 <li>D:/Dev/flora/Flora-ScriptCore/Source/<b>Input.cs</b></li>
 </ul>
