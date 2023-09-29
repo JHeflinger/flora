@@ -494,7 +494,7 @@ namespace Flora {
 		s_Data.Stats.QuadCount++;
 	}
 
-	void Renderer2D::DrawSprite(const glm::mat4& transform, SpriteRendererComponent& src, int entityID) {
+	void Renderer2D::DrawSprite(Timestep ts, const glm::mat4& transform, SpriteRendererComponent& src, int entityID) {
 		Ref<Texture2D> texture = nullptr;
 		if (src.Path != "NULL") {
 			if (!src.TextureInitialized) {
@@ -530,14 +530,14 @@ namespace Flora {
 				Ref<SubTexture2D> subtexture = SubTexture2D::CreateFromCoords(texture, coords, cellSize);
 				DrawQuad(transform, subtexture, src.Color, src.TilingFactor, entityID);
 
-				// this assumes running game at 60 fps
-				//TODO: use timestep in this 
 				if (!src.Paused) {
-					src.FrameCounter++;
-					if (src.FrameCounter >= 60 / src.FPS) {
-						src.CurrentFrame++;
-						src.FrameCounter = 0;
-					}
+					src.Time += ts;
+					int numFrames = src.EndFrame - src.StartFrame + 1;
+					float frametime = 1.0f / ((float)src.FPS);
+					float maxtime = frametime * numFrames;
+					if (src.Time >= maxtime) src.Time = 0.0f;
+					src.CurrentFrame = 1 + (int)(src.Time / frametime);
+					src.FrameCounter = src.CurrentFrame - src.StartFrame;
 				}
 			} else DrawQuad(transform, src.Color, entityID);
 		} else FL_CORE_ASSERT(false, "Sprite type not supported!");

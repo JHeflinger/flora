@@ -73,9 +73,9 @@ namespace Flora {
 		void UpdateScripts(Timestep ts);
 		void UpdatePhysics(Timestep ts);
 		void UpdateAudio();
-		void RenderRuntime(glm::mat4 viewProjection);
+		void RenderRuntime(Timestep ts, glm::mat4 viewProjection);
 	private:
-		void DrawEntitySprite(Entity& entity, bool useTransformRef = false, glm::mat4 refTransform = glm::mat4(0.0f));
+		void DrawEntitySprite(Timestep ts, Entity& entity, bool useTransformRef = false, glm::mat4 refTransform = glm::mat4(0.0f));
 		void SimulateEntityPhysics(Entity& entity, bool useTransformRef = false, glm::mat4 refTransform = glm::mat4(0.0f));
 	private:
 		entt::registry m_Registry;

@@ -8,17 +8,17 @@
 #include "Flora/Utils/ComponentUtils.h"
 
 namespace Flora {
-	void Scene::DrawEntitySprite(Entity& entity, bool useTransformRef, glm::mat4 refTransform) {
+	void Scene::DrawEntitySprite(Timestep ts, Entity& entity, bool useTransformRef, glm::mat4 refTransform) {
 		glm::mat4 transform = entity.GetComponent<TransformComponent>().GetTransform();
 		if (useTransformRef) transform = refTransform * transform;
 		if (entity.GetComponent<SpriteRendererComponent>().Visible)
-			Renderer2D::DrawSprite(transform, entity.GetComponent<SpriteRendererComponent>(), (int)(uint32_t)entity);
+			Renderer2D::DrawSprite(ts, transform, entity.GetComponent<SpriteRendererComponent>(), (int)(uint32_t)entity);
 		if (entity.HasComponent<ChildComponent>()) {
 			std::vector<Entity> children = entity.GetComponent<ChildComponent>().Children;
 			for (int i = 0; i < children.size(); i++) {
 				if (children[i].HasComponent<SpriteRendererComponent>()) {
 					bool useParentTransform = children[i].GetComponent<ParentComponent>().InheritAll || (!children[i].GetComponent<ParentComponent>().InheritAll && children[i].GetComponent<ParentComponent>().InheritTransform);
-					DrawEntitySprite(children[i], useParentTransform, transform);
+					DrawEntitySprite(ts, children[i], useParentTransform, transform);
 				}
 			}
 		}
@@ -371,7 +371,7 @@ namespace Flora {
 		}
 	}
 
-	void Scene::RenderRuntime(glm::mat4 viewProjection) {
+	void Scene::RenderRuntime(Timestep ts, glm::mat4 viewProjection) {
 		Renderer2D::BeginScene(viewProjection);
 		//quads
 		{
@@ -379,10 +379,10 @@ namespace Flora {
 			for (auto entity : group) {
 				Entity drawEntity = Entity{ entity, this };
 				if (!drawEntity.HasComponent<ParentComponent>())
-					DrawEntitySprite(drawEntity);
+					DrawEntitySprite(ts, drawEntity);
 				else if (!drawEntity.GetComponent<ParentComponent>().Parent.HasComponent<SpriteRendererComponent>()) {
 					bool useParentTransform = drawEntity.GetComponent<ParentComponent>().InheritAll || (!drawEntity.GetComponent<ParentComponent>().InheritAll && drawEntity.GetComponent<ParentComponent>().InheritTransform);
-					DrawEntitySprite(drawEntity, useParentTransform, ComponentUtils::GetWorldTransform(drawEntity.GetComponent<ParentComponent>().Parent));
+					DrawEntitySprite(ts, drawEntity, useParentTransform, ComponentUtils::GetWorldTransform(drawEntity.GetComponent<ParentComponent>().Parent));
 				}
 			}
 		}
@@ -425,14 +425,14 @@ namespace Flora {
 	}
 
 	void Scene::OnUpdateEditor(Timestep ts, glm::mat4 viewProjection) {
-		RenderRuntime(viewProjection);
+		RenderRuntime(ts, viewProjection);
 		UpdateAudio();
 	}
 
 	void Scene::OnUpdateRuntime(Timestep ts, glm::mat4 viewProjection) {
 
 		// Render 2D Sprites
-		RenderRuntime(viewProjection); // important: this needs to run first or else the camera lags behind a frame
+		RenderRuntime(ts, viewProjection); // important: this needs to run first or else the camera lags behind a frame
 
 		if (!m_Paused || m_StepFrames > 0) {
 			// Update Scripts

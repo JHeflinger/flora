@@ -53,6 +53,7 @@ namespace Flora {
 		int CurrentFrame = 1;
 		int FPS = 1;
 		int FrameCounter = 0;
+		float Time = 0.0f;
 		bool Paused = false;
 		std::string Path = "NULL";
 		std::string Filename = "None Selected";
