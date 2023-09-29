@@ -49,33 +49,33 @@
   <ItemGroup>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\..\..\..\ToI\Assets\Scripts\Global\Interactable.cs">
+    <Compile Include="..\..\..\ToI\Assets\Scripts\Global\Interactable.cs">
       <Link>ToI\Assets\Scripts\Global\Interactable.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\..\..\ToI\Assets\Scripts\Global\Inventory.cs">
+    <Compile Include="..\..\..\ToI\Assets\Scripts\Global\Inventory.cs">
       <Link>ToI\Assets\Scripts\Global\Inventory.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\..\..\ToI\Assets\Scripts\Global\Item.cs">
+    <Compile Include="..\..\..\ToI\Assets\Scripts\Global\Item.cs">
       <Link>ToI\Assets\Scripts\Global\Item.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\..\..\ToI\Assets\Scripts\Global\Player.cs">
+    <Compile Include="..\..\..\ToI\Assets\Scripts\Global\Player.cs">
       <Link>ToI\Assets\Scripts\Global\Player.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\..\..\ToI\Assets\Scripts\Items\Cores\C000.cs">
+    <Compile Include="..\..\..\ToI\Assets\Scripts\Items\Cores\C000.cs">
       <Link>ToI\Assets\Scripts\Items\Cores\C000.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\..\..\ToI\Assets\Scripts\Items\Ingredients\I000.cs">
+    <Compile Include="..\..\..\ToI\Assets\Scripts\Items\Ingredients\I000.cs">
       <Link>ToI\Assets\Scripts\Items\Ingredients\I000.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\..\..\ToI\Assets\Scripts\Items\Ingredients\I001.cs">
+    <Compile Include="..\..\..\ToI\Assets\Scripts\Items\Ingredients\I001.cs">
       <Link>ToI\Assets\Scripts\Items\Ingredients\I001.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\..\..\ToI\Assets\Scripts\Tools\DevTool.cs">
+    <Compile Include="..\..\..\ToI\Assets\Scripts\Tools\DevTool.cs">
       <Link>ToI\Assets\Scripts\Tools\DevTool.cs</Link>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\Flora-ScriptCore\Flora-ScriptCore.csproj">
+    <ProjectReference Include="..\..\Flora-ScriptCore\Flora-ScriptCore.csproj">
       <Project>{649C3F2E-5095-5E80-79C7-4305651F3E8C}</Project>
       <Name>Flora-ScriptCore</Name>
     </ProjectReference>
