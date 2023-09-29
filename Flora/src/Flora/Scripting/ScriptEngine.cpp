@@ -135,7 +135,7 @@ namespace Flora {
 			return;
 		}
 		
-		status = LoadAppAssembly("Sandbox Project/Assets/Scripts/Binaries/" + Project::GetActive()->GetConfig().Name + ".dll");
+		status = LoadAppAssembly("scripting/Binaries/" + Project::GetActive()->GetConfig().Name + ".dll");
 		if (!status) {
 			FL_CORE_ERROR("[ScriptEngine] Could not load app assembly.");
 			return;

@@ -1,9 +1,0 @@
-D:\Dev\Flora\Fauna\Sandbox Project\Assets\Scripts\Binaries\Sandbox.dll
-D:\Dev\Flora\Fauna\Sandbox Project\Assets\Scripts\Binaries\Sandbox.pdb
-D:\Dev\Flora\Fauna\Sandbox Project\Assets\Scripts\Binaries\Flora-ScriptCore.dll
-D:\Dev\Flora\Fauna\Sandbox Project\Assets\Scripts\Binaries\Flora-ScriptCore.pdb
-D:\Dev\Flora\Fauna\Sandbox Project\Assets\Scripts\Intermediates\Debug\Sandbox.csproj.AssemblyReference.cache
-D:\Dev\Flora\Fauna\Sandbox Project\Assets\Scripts\Intermediates\Debug\Sandbox.csproj.CoreCompileInputs.cache
-D:\Dev\Flora\Fauna\Sandbox Project\Assets\Scripts\Intermediates\Debug\Sandbox.csproj.CopyComplete
-D:\Dev\Flora\Fauna\Sandbox Project\Assets\Scripts\Intermediates\Debug\Sandbox.dll
-D:\Dev\Flora\Fauna\Sandbox Project\Assets\Scripts\Intermediates\Debug\Sandbox.pdb

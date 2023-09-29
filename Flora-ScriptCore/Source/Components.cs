@@ -7,11 +7,22 @@ using System.Collections;
 
 namespace Flora
 {
+    /// <summary>
+    /// An abstract component class that can be attatched to entities.
+    /// By packaging functionality into a component, entities can then 
+    /// attach these components to dynamically create custom entities with ease.
+    /// </summary>
     public abstract class Component
     {
         public Entity Entity { get; set; }
     }
 
+    /// <summary>
+    /// Enumeration to indicate what type the sprite is.
+    /// SINGLE is a static single sprite that uses the entire given texture.
+    /// SUBTEXTURE is a subsection cut from the given texture.
+    /// ANIMATION is an animated sprite given a spritesheet texture.
+    /// </summary>
     public enum SpriteType
     {
         SINGLE = 0,
@@ -19,12 +30,21 @@ namespace Flora
         ANIMATION = 2
     }
 
+    /// <summary>
+    /// Enumeration to indicate the projection type of the camera: Perspective or Orthographic.
+    /// </summary>
     public enum ProjectionType
     {
         Perspective = 0,
         Orthographic = 1
     }
 
+    /// <summary>
+    /// Enumeration to indicate a type of physics body. 
+    /// STATIC refers to a non-moving physical entity that is not affected by outside forces.
+    /// KINEMATIC refers to a phsyical entity that can move but is not affected by outside forces.
+    /// DYNAMIC refers to a physical entity that can move and is affected by outside forces.
+    /// </summary>
     public enum BodyType
     {
         STATIC = 0,
@@ -32,8 +52,16 @@ namespace Flora
         DYNAMIC = 2
     }
 
+    /// <summary>
+    /// A circular shaped collision body component. When attached to an entity, the entity
+    /// is now available to be collided with given a specific circular shape. Defaults to scaling
+    /// with the entity transform.
+    /// </summary>
     public class CircleCollider2DComponent : Component
     {
+        /// <summary>
+        /// The offset of the origin of the collision body from the origin of the entity.
+        /// </summary>
         public Vector2 Offset
         {
             get
@@ -47,6 +75,9 @@ namespace Flora
             }
         }
 
+        /// <summary>
+        /// The radius of the collision body's size.
+        /// </summary>
         public float Radius
         {
             get
@@ -59,6 +90,10 @@ namespace Flora
             }
         }
 
+        /// <summary>
+        /// The density of the collision body. Can affect the weight and force it may
+        /// have when colliding with other physics bodies.
+        /// </summary>
         public float Density
         {
             get
@@ -71,6 +106,10 @@ namespace Flora
             }
         }
 
+        /// <summary>
+        /// The friction applied to the collision body. Can affect the drag and force
+        /// that may be applied when colliding with other phsyics bodies.
+        /// </summary>
         public float Friction
         {
             get
@@ -83,6 +122,11 @@ namespace Flora
             }
         }
 
+        /// <summary>
+        /// The "bounciness" of a physics body. In other words, the amount of energy retained
+        /// after a collision. (Example: a tennis ball with 0.5 restitution would bounce halfway
+        /// back up from the ground when dropped.)
+        /// </summary>
         public float Restitution
         {
             get
@@ -95,6 +139,10 @@ namespace Flora
             }
         }
 
+        /// <summary>
+        /// The threshold of when to apply restitution. When the collision force of the body drops
+        /// below this threshold, restitution will no longer be applied.
+        /// </summary>
         public float RestitutionThreshold
         {
             get
@@ -108,8 +156,16 @@ namespace Flora
         }
     }
 
+    /// <summary>
+    /// A box shaped collision body component. When attached to an entity, the entity
+    /// is now available to be collided with given a specific rectangular shape. Defaults to scaling
+    /// with the entity transform.
+    /// </summary>
     public class BoxCollider2DComponent : Component
     {
+        /// <summary>
+        /// The offset of the origin of the collision body from the origin of the entity.
+        /// </summary>
         public Vector2 Offset
         {
             get
@@ -123,6 +179,10 @@ namespace Flora
             }
         }
 
+        /// <summary>
+        /// The size of the collision body. Scales in refereince to
+        /// the original transform of the entity.
+        /// </summary>
         public Vector2 Size
         {
             get
@@ -136,6 +196,10 @@ namespace Flora
             }
         }
 
+        /// <summary>
+        /// The density of the collision body. Can affect the weight and force it may
+        /// have when colliding with other physics bodies.
+        /// </summary>
         public float Density
         {
             get
@@ -148,6 +212,10 @@ namespace Flora
             }
         }
 
+        /// <summary>
+        /// The friction applied to the collision body. Can affect the drag and force
+        /// that may be applied when colliding with other phsyics bodies.
+        /// </summary>
         public float Friction
         {
             get
@@ -160,6 +228,11 @@ namespace Flora
             }
         }
 
+        /// <summary>
+        /// The "bounciness" of a physics body. In other words, the amount of energy retained
+        /// after a collision. (Example: a tennis ball with 0.5 restitution would bounce halfway
+        /// back up from the ground when dropped.)
+        /// </summary>
         public float Restitution
         {
             get
@@ -172,6 +245,10 @@ namespace Flora
             }
         }
 
+        /// <summary>
+        /// The threshold of when to apply restitution. When the collision force of the body drops
+        /// below this threshold, restitution will no longer be applied.
+        /// </summary>
         public float RestitutionThreshold
         {
             get
@@ -185,8 +262,18 @@ namespace Flora
         }
     }
 
+    /// <summary>
+    /// The physics body of a given entity. Controls the position and forces enacting
+    /// on the physical body of an entity, and simulates it using the Flora physics engine.
+    /// </summary>
     public class RigidBody2DComponent : Component
     {
+        /// <summary>
+        /// The translation of the physical body of the entity. This syncs up with
+        /// the entity's transform. The physics body translation takes priority over
+        /// the entity's transform, so when applying a new translation via this property
+        /// it will override the entity transform.
+        /// </summary>
         public Vector2 Translation
         {
             get
@@ -200,6 +287,12 @@ namespace Flora
             }
         }
 
+        /// <summary>
+        /// The rotation of the physical body of the entity. This syncs up with
+        /// the entity's transform. The physics body translation takes priority over
+        /// the entity's transform, so when applying a new rotation via this property
+        /// it will override the entity transform.
+        /// </summary>
         public float Rotation
         {
             get
@@ -213,6 +306,11 @@ namespace Flora
             }
         }
 
+        /// <summary>
+        /// The type of of the rigid body; controls whether the body can be moved and
+        /// if it can be affected by outside forces. For more info, see the documentation
+        /// on BodyType.
+        /// </summary>
         public BodyType Type
         {
             get
@@ -225,6 +323,9 @@ namespace Flora
             }
         }
 
+        /// <summary>
+        /// Dictates if the rotation of an entity can be affected by the physics engine.
+        /// </summary>
         public bool FixedRotation
         {
             get
@@ -237,6 +338,9 @@ namespace Flora
             }
         }
 
+        /// <summary>
+        /// The angular velocity of the entity.
+        /// </summary>
         public float AngularVelocity
         {
             get
@@ -249,6 +353,9 @@ namespace Flora
             }
         }
 
+        /// <summary>
+        /// The linear velocity of the entity.
+        /// </summary>
         public Vector2 LinearVelocity
         {
             get
@@ -262,6 +369,11 @@ namespace Flora
             }
         }
 
+        /// <summary>
+        /// Applies a force vector to the entity.
+        /// </summary>
+        /// <param name="vector">The force vector to be applied</param>
+        /// <param name="offset">The offset from the origin of the entity to apply the force vector</param>
         public void ApplyForce(Vector2 vector, Vector2 offset = default)
         {
             if (offset.Equals(default(Vector2)))

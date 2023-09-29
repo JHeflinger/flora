@@ -43,7 +43,7 @@ namespace Flora {
 		std::filesystem::create_directory(audioFolder);
 
 		// create intermediates dir
-		std::filesystem::path intermediate_path = std::filesystem::path("Sandbox Project/Assets/Scripts/Project Intermediates") / name;
+		std::filesystem::path intermediate_path = std::filesystem::path("scripting/Project Intermediates") / name;
 		std::filesystem::create_directory(intermediate_path);
 
 		// create script folder path
@@ -55,7 +55,7 @@ namespace Flora {
 		}
 
 		// create custom premake
-		std::ofstream premake("Sandbox Project/Assets/Scripts/premake5.lua");
+		std::ofstream premake("scripting/premake5.lua");
 		if (premake.is_open()) {
 			std::string filecontent =
 				"local FloraRootDir = \'../../../..\'\n"
@@ -122,7 +122,7 @@ namespace Flora {
 		// generate VSproj
 		wchar_t originalDir[MAX_PATH];
 		GetCurrentDirectoryW(MAX_PATH, originalDir);
-		const wchar_t* bashdir = L"Sandbox Project\\Assets\\Scripts";
+		const wchar_t* bashdir = L"scripting";
 		BOOL changeDirResult = SetCurrentDirectoryW(bashdir);
 		if (!changeDirResult) {
 			FL_CORE_ERROR("Failed to set up Visual Studio Project");
@@ -154,7 +154,7 @@ namespace Flora {
 		}
 
 		// create custom premake
-		std::ofstream premake("Sandbox Project/Assets/Scripts/premake5.lua");
+		std::ofstream premake("scripting/premake5.lua");
 		if (premake.is_open()) {
 			std::string filecontent =
 				"local FloraRootDir = \'../../../..\'\n"
@@ -222,7 +222,7 @@ namespace Flora {
 		// generate VSproj
 		wchar_t originalDir[MAX_PATH];
 		GetCurrentDirectoryW(MAX_PATH, originalDir);
-		const wchar_t* bashdir = L"Sandbox Project\\Assets\\Scripts";
+		const wchar_t* bashdir = L"scripting";
 		BOOL changeDirResult = SetCurrentDirectoryW(bashdir);
 		if (!changeDirResult) {
 			FL_CORE_ERROR("Failed to set up Visual Studio Project");

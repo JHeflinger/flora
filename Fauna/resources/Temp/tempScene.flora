@@ -1,68 +1,246 @@
-Scene: Battle
-Primary Camera: 1
+Scene: TestCore
+Primary Camera: 3
 Primary Audio Listener: -1
 Physics:
   Gravity: 9.80000019
   VelocityIterations: 6
   PositionIterations: 2
 Entities:
-  - Entity: 15
+  - Entity: 12
     TagComponent:
-      Tag: DEV OBJ
+      Tag: Dev Controller
     TransformComponent:
       Translation: [0, 0, 0]
       Rotation: [0, 0, 0]
       Scale: [1, 1, 1]
     ScriptComponent:
-      ClassName: Game.Development
-  - Entity: 14
+      ClassName: Game.DevTool
+  - Entity: 11
     TagComponent:
-      Tag: Enemy Handler
+      Tag: Ritual Table
     TransformComponent:
-      Translation: [4.30894852, 0.774062634, 0.100000001]
+      Translation: [0, 0.505057156, 0]
       Rotation: [0, 0, 0]
-      Scale: [1, 1, 1]
-    ScriptComponent:
-      ClassName: Game.EnemyHandler
-    ChildComponent:
-      []
-  - Entity: 13
-    TagComponent:
-      Tag: Avatar
-    TransformComponent:
-      Translation: [1.10000002, -1.10000002, 0.300000012]
-      Rotation: [0, 0, 0]
-      Scale: [4, 4, 1]
+      Scale: [2, 2, 1]
     SpriteRendererComponent:
       Visible: true
       Color: [1, 1, 1, 1]
-      Path: D:\Dev\MSPL\Assets\Textures\Preliminary\ANIM_Player.png
-      Filename: ANIM_Player.png
+      Path: $\Textures\Objects\Scrap\ritualtable.png
+      Filename: ritualtable.png
       Type: 2
       TilingFactor: 1
       Rows: 1
-      Columns: 4
+      Columns: 24
       Paused: false
       RowCoordinate: 1
       ColumnCoordinate: 1
       SubtextureWidth: 1
       SubtextureHeight: 1
-      Frames: 4
+      Frames: 24
       StartFrame: 1
-      EndFrame: 4
+      EndFrame: 24
+      CurrentFrame: 1
+      FPS: 10
+    ScriptComponent:
+      ClassName: Game.Interactable
+      ScriptFields:
+        - Name: p_Offset
+          Type: Vector3
+          Data: [0, 0.300000012, 0]
+        - Name: p_Radius
+          Type: Float
+          Data: 1
+  - Entity: 10
+    TagComponent:
+      Tag: Interact VFX
+    TransformComponent:
+      Translation: [0, 0.400000006, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    SpriteRendererComponent:
+      Visible: true
+      Color: [1, 1, 1, 1]
+      Path: $\Textures\VFX\Scrap\e_btn_animation.png
+      Filename: e_btn_animation.png
+      Type: 2
+      TilingFactor: 1
+      Rows: 1
+      Columns: 12
+      Paused: false
+      RowCoordinate: 1
+      ColumnCoordinate: 1
+      SubtextureWidth: 1
+      SubtextureHeight: 1
+      Frames: 12
+      StartFrame: 1
+      EndFrame: 12
       CurrentFrame: 1
       FPS: 10
     ParentComponent:
-      Parent: 9
+      Parent: 0
       InheritAll: true
       InheritTransform: true
-  - Entity: 12
+  - Entity: 9
+    TagComponent:
+      Tag: Sprite
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    SpriteRendererComponent:
+      Visible: true
+      Color: [1, 1, 1, 1]
+      Path: $\Textures\Enemies\Scrap\SS_E_Noble_Undead.png
+      Filename: SS_E_Noble_Undead.png
+      Type: 2
+      TilingFactor: 1
+      Rows: 1
+      Columns: 12
+      Paused: false
+      RowCoordinate: 1
+      ColumnCoordinate: 1
+      SubtextureWidth: 1
+      SubtextureHeight: 1
+      Frames: 12
+      StartFrame: 1
+      EndFrame: 12
+      CurrentFrame: 1
+      FPS: 10
+    ParentComponent:
+      Parent: 0
+      InheritAll: true
+      InheritTransform: true
+  - Entity: 8
+    TagComponent:
+      Tag: VFX Background
+    TransformComponent:
+      Translation: [0, 0, -0.100000001]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    SpriteRendererComponent:
+      Visible: true
+      Color: [1, 1, 1, 1]
+      Path: $\Textures\VFX\Scrap\ether_charge_background.png
+      Filename: ether_charge_background.png
+      Type: 0
+      TilingFactor: 1
+      Rows: 1
+      Columns: 1
+      Paused: false
+      RowCoordinate: 1
+      ColumnCoordinate: 1
+      SubtextureWidth: 1
+      SubtextureHeight: 1
+      Frames: 1
+      StartFrame: 1
+      EndFrame: 1
+      CurrentFrame: 1
+      FPS: 1
+    ParentComponent:
+      Parent: 0
+      InheritAll: true
+      InheritTransform: true
+  - Entity: 7
+    TagComponent:
+      Tag: VFX Foreground
+    TransformComponent:
+      Translation: [0, 0, 0.100000001]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    SpriteRendererComponent:
+      Visible: true
+      Color: [1, 1, 1, 1]
+      Path: $\Textures\VFX\Scrap\ether_charge_foreground.png
+      Filename: ether_charge_foreground.png
+      Type: 0
+      TilingFactor: 1
+      Rows: 1
+      Columns: 1
+      Paused: false
+      RowCoordinate: 1
+      ColumnCoordinate: 1
+      SubtextureWidth: 1
+      SubtextureHeight: 1
+      Frames: 1
+      StartFrame: 1
+      EndFrame: 1
+      CurrentFrame: 1
+      FPS: 1
+    ParentComponent:
+      Parent: 0
+      InheritAll: true
+      InheritTransform: true
+  - Entity: 6
+    TagComponent:
+      Tag: Ether_backdrop
+    TransformComponent:
+      Translation: [-4.19999981, 3.9000001, 0]
+      Rotation: [0, 0, 0]
+      Scale: [6, 0.300000012, 1]
+    SpriteRendererComponent:
+      Visible: true
+      Color: [0, 0, 0, 1]
+      Path: "NULL"
+      Filename: None Selected
+      Type: 0
+      TilingFactor: 1
+      Rows: 1
+      Columns: 1
+      Paused: false
+      RowCoordinate: 1
+      ColumnCoordinate: 1
+      SubtextureWidth: 1
+      SubtextureHeight: 1
+      Frames: 1
+      StartFrame: 1
+      EndFrame: 1
+      CurrentFrame: 1
+      FPS: 1
+    ParentComponent:
+      Parent: 0
+      InheritAll: true
+      InheritTransform: true
+    ChildComponent:
+      []
+  - Entity: 5
+    TagComponent:
+      Tag: Ether
+    TransformComponent:
+      Translation: [-4.19999981, 3.9000001, 0.100000001]
+      Rotation: [0, 0, 0]
+      Scale: [6, 0.300000012, 1]
+    SpriteRendererComponent:
+      Visible: true
+      Color: [0, 0.03861022, 1, 1]
+      Path: "NULL"
+      Filename: None Selected
+      Type: 0
+      TilingFactor: 1
+      Rows: 1
+      Columns: 1
+      Paused: false
+      RowCoordinate: 1
+      ColumnCoordinate: 1
+      SubtextureWidth: 1
+      SubtextureHeight: 1
+      Frames: 1
+      StartFrame: 1
+      EndFrame: 1
+      CurrentFrame: 1
+      FPS: 1
+    ParentComponent:
+      Parent: 0
+      InheritAll: true
+      InheritTransform: true
+    ChildComponent:
+      []
+  - Entity: 4
     TagComponent:
       Tag: Health
     TransformComponent:
-      Translation: [0.937037945, 2, 0]
+      Translation: [-4.19999981, 4.5, 0.100000001]
       Rotation: [0, 0, 0]
-      Scale: [5.39059782, 0.5471946, 1]
+      Scale: [6, 0.300000012, 1]
     SpriteRendererComponent:
       Visible: true
       Color: [1, 0, 0, 1]
@@ -83,299 +261,12 @@ Entities:
       CurrentFrame: 1
       FPS: 1
     ParentComponent:
-      Parent: 10
-      InheritAll: true
-      InheritTransform: true
-  - Entity: 11
-    TagComponent:
-      Tag: Health Bar
-    TransformComponent:
-      Translation: [0.996490479, 2, 0.100000001]
-      Rotation: [0, 0, 0]
-      Scale: [6, 1, 1]
-    SpriteRendererComponent:
-      Visible: true
-      Color: [1, 1, 1, 1]
-      Path: D:\Dev\MSPL\Assets\Textures\Preliminary\Battle_StatBar.png
-      Filename: Battle_StatBar.png
-      Type: 0
-      TilingFactor: 1
-      Rows: 1
-      Columns: 1
-      Paused: false
-      RowCoordinate: 1
-      ColumnCoordinate: 1
-      SubtextureWidth: 1
-      SubtextureHeight: 1
-      Frames: 1
-      StartFrame: 1
-      EndFrame: 1
-      CurrentFrame: 1
-      FPS: 1
-    ParentComponent:
-      Parent: 10
-      InheritAll: true
-      InheritTransform: true
-  - Entity: 10
-    TagComponent:
-      Tag: Status UI
-    TransformComponent:
-      Translation: [0, 0, 0.100000001]
-      Rotation: [0, 0, 0]
-      Scale: [1, 1, 1]
-    ParentComponent:
-      Parent: 9
-      InheritAll: true
-      InheritTransform: true
-    ChildComponent:
-      - 11
-      - 12
-  - Entity: 9
-    TagComponent:
-      Tag: Player
-    TransformComponent:
-      Translation: [-5.15263414, 2.00634718, 0]
-      Rotation: [0, 0, 0]
-      Scale: [1, 1, 1]
-    ScriptComponent:
-      ClassName: Game.Player
-      ScriptFields:
-        - Name: current_health
-          Type: Int
-          Data: 8
-        - Name: max_health
-          Type: Int
-          Data: 10
-    ChildComponent:
-      - 10
-      - 13
-  - Entity: 8
-    TagComponent:
-      Tag: Graveyard
-    TransformComponent:
-      Translation: [11.7278728, -2.33999991, 0]
-      Rotation: [0, 0, 0]
-      Scale: [1, 1, 1]
-    SpriteRendererComponent:
-      Visible: true
-      Color: [1, 1, 1, 1]
-      Path: D:\Dev\MSPL\Assets\Textures\Preliminary\Spritesheet_Decks.png
-      Filename: Spritesheet_Decks.png
-      Type: 1
-      TilingFactor: 1
-      Rows: 1
-      Columns: 2
-      Paused: false
-      RowCoordinate: 1
-      ColumnCoordinate: 2
-      SubtextureWidth: 1
-      SubtextureHeight: 1
-      Frames: 1
-      StartFrame: 1
-      EndFrame: 1
-      CurrentFrame: 1
-      FPS: 1
-    ParentComponent:
-      Parent: 0
-      InheritAll: true
-      InheritTransform: true
-  - Entity: 7
-    TagComponent:
-      Tag: Deck
-    TransformComponent:
-      Translation: [-1.34097767, -2.56203604, 0]
-      Rotation: [0, 0, 0]
-      Scale: [1, 1, 1]
-    SpriteRendererComponent:
-      Visible: true
-      Color: [1, 1, 1, 1]
-      Path: D:\Dev\MSPL\Assets\Textures\Preliminary\Spritesheet_Decks.png
-      Filename: Spritesheet_Decks.png
-      Type: 1
-      TilingFactor: 1
-      Rows: 1
-      Columns: 2
-      Paused: false
-      RowCoordinate: 1
-      ColumnCoordinate: 1
-      SubtextureWidth: 1
-      SubtextureHeight: 1
-      Frames: 1
-      StartFrame: 1
-      EndFrame: 1
-      CurrentFrame: 1
-      FPS: 1
-    ParentComponent:
-      Parent: 0
-      InheritAll: true
-      InheritTransform: true
-  - Entity: 6
-    TagComponent:
-      Tag: Background
-    TransformComponent:
-      Translation: [-42.603363, 0, -0.99000001]
-      Rotation: [0, 0, 0]
-      Scale: [1, 1, 1]
-    SpriteRendererComponent:
-      Visible: true
-      Color: [1, 1, 1, 1]
-      Path: "NULL"
-      Filename: None Selected
-      Type: 0
-      TilingFactor: 1
-      Rows: 1
-      Columns: 1
-      Paused: false
-      RowCoordinate: 1
-      ColumnCoordinate: 1
-      SubtextureWidth: 1
-      SubtextureHeight: 1
-      Frames: 1
-      StartFrame: 1
-      EndFrame: 1
-      CurrentFrame: 1
-      FPS: 1
-    ScriptComponent:
-      ClassName: Game.Background
-      ScriptFields:
-        []
-  - Entity: 5
-    TagComponent:
-      Tag: Stamina Value
-    TransformComponent:
-      Translation: [0, -0.0255964398, 0.00999999978]
-      Rotation: [0, 0, 0]
-      Scale: [0.5, 0.5, 1]
-    SpriteRendererComponent:
-      Visible: true
-      Color: [0, 0, 0, 1]
-      Path: D:\Dev\MSPL\Assets\Textures\Preliminary\Spritesheet_Numbers.png
-      Filename: Spritesheet_Numbers.png
-      Type: 1
-      TilingFactor: 1
-      Rows: 1
-      Columns: 10
-      Paused: false
-      RowCoordinate: 2
-      ColumnCoordinate: 1
-      SubtextureWidth: 1
-      SubtextureHeight: 1
-      Frames: 1
-      StartFrame: 1
-      EndFrame: 1
-      CurrentFrame: 1
-      FPS: 1
-    ParentComponent:
-      Parent: 1048580
-      InheritAll: true
-      InheritTransform: true
-  - Entity: 1048580
-    TagComponent:
-      Tag: Stamina
-    TransformComponent:
-      Translation: [-1.12149811, -1.24476516, 0]
-      Rotation: [0, 0, 0]
-      Scale: [1, 1, 1]
-    SpriteRendererComponent:
-      Visible: true
-      Color: [1, 1, 1, 1]
-      Path: D:\Dev\MSPL\Assets\Textures\Preliminary\Battle_Energies.png
-      Filename: Battle_Energies.png
-      Type: 1
-      TilingFactor: 1
-      Rows: 1
-      Columns: 2
-      Paused: false
-      RowCoordinate: 1
-      ColumnCoordinate: 1
-      SubtextureWidth: 1
-      SubtextureHeight: 1
-      Frames: 1
-      StartFrame: 1
-      EndFrame: 1
-      CurrentFrame: 1
-      FPS: 1
-    ScriptComponent:
-      ClassName: Game.Stamina
-      ScriptFields:
-        - Name: stamina
-          Type: Int
-          Data: 3
-    ParentComponent:
       Parent: 0
       InheritAll: true
       InheritTransform: true
     ChildComponent:
-      - 5
+      []
   - Entity: 3
-    TagComponent:
-      Tag: Mana
-    TransformComponent:
-      Translation: [-0.193657398, -2.04909611, 0]
-      Rotation: [0, 0, 0]
-      Scale: [1, 1, 1]
-    SpriteRendererComponent:
-      Visible: true
-      Color: [1, 1, 1, 1]
-      Path: D:\Dev\MSPL\Assets\Textures\Preliminary\Battle_Energies.png
-      Filename: Battle_Energies.png
-      Type: 1
-      TilingFactor: 1
-      Rows: 1
-      Columns: 2
-      Paused: false
-      RowCoordinate: 1
-      ColumnCoordinate: 2
-      SubtextureWidth: 1
-      SubtextureHeight: 1
-      Frames: 1
-      StartFrame: 1
-      EndFrame: 1
-      CurrentFrame: 1
-      FPS: 1
-    ScriptComponent:
-      ClassName: Game.Mana
-      ScriptFields:
-        - Name: mana
-          Type: Int
-          Data: 7
-    ParentComponent:
-      Parent: 0
-      InheritAll: true
-      InheritTransform: true
-    ChildComponent:
-      - 2
-  - Entity: 2
-    TagComponent:
-      Tag: Mana Value
-    TransformComponent:
-      Translation: [0, 0, 0.00999999046]
-      Rotation: [0, 0, 0]
-      Scale: [0.5, 0.5, 1]
-    SpriteRendererComponent:
-      Visible: true
-      Color: [0, 0, 0, 1]
-      Path: D:\Dev\MSPL\Assets\Textures\Preliminary\Spritesheet_Numbers.png
-      Filename: Spritesheet_Numbers.png
-      Type: 1
-      TilingFactor: 1
-      Rows: 1
-      Columns: 10
-      Paused: false
-      RowCoordinate: 2
-      ColumnCoordinate: 1
-      SubtextureWidth: 1
-      SubtextureHeight: 1
-      Frames: 1
-      StartFrame: 1
-      EndFrame: 1
-      CurrentFrame: 1
-      FPS: 1
-    ParentComponent:
-      Parent: 3
-      InheritAll: true
-      InheritTransform: true
-  - Entity: 1
     TagComponent:
       Tag: Camera
     TransformComponent:
@@ -389,20 +280,24 @@ Entities:
         PerspectiveNear: 0.00999999978
         PerspectiveFar: 1000
         OrthographicSize: 10
-        OrthographicNear: -100
-        OrthographicFar: 100
+        OrthographicNear: -1
+        OrthographicFar: 1
       FixedAspectRatio: false
       Visible Borders: false
-  - Entity: 0
+    ParentComponent:
+      Parent: 0
+      InheritAll: true
+      InheritTransform: true
+  - Entity: 2097154
     TagComponent:
-      Tag: Hand Handler
+      Tag: Health_backdrop
     TransformComponent:
-      Translation: [-5.46775389, -1.69605434, 0]
+      Translation: [-4.19999981, 4.5, 0]
       Rotation: [0, 0, 0]
-      Scale: [1, 1, 1]
+      Scale: [6, 0.300000012, 1]
     SpriteRendererComponent:
       Visible: true
-      Color: [1, 1, 1, 0]
+      Color: [0, 0, 0, 1]
       Path: "NULL"
       Filename: None Selected
       Type: 0
@@ -419,23 +314,73 @@ Entities:
       EndFrame: 1
       CurrentFrame: 1
       FPS: 1
-    ScriptComponent:
-      ClassName: Game.Hand
-      ScriptFields:
-        - Name: maxWidth
-          Type: Float
-          Data: 9
-        - Name: origin
-          Type: Vector3
-          Data: [1.39999998, -4.5, 0]
-        - Name: rotation_range
-          Type: Float
-          Data: 30
-        - Name: step
-          Type: Float
-          Data: 1.5
+    ParentComponent:
+      Parent: 0
+      InheritAll: true
+      InheritTransform: true
     ChildComponent:
-      - 1048580
+      []
+  - Entity: 1
+    TagComponent:
+      Tag: Background
+    TransformComponent:
+      Translation: [0, 0, -0.300000012]
+      Rotation: [0, 0, 0]
+      Scale: [100, 100, 1]
+    SpriteRendererComponent:
+      Visible: true
+      Color: [1, 1, 1, 1]
+      Path: $\Textures\Objects\Scrap\dungeonfloor.png
+      Filename: dungeonfloor.png
+      Type: 0
+      TilingFactor: 10
+      Rows: 1
+      Columns: 1
+      Paused: false
+      RowCoordinate: 1
+      ColumnCoordinate: 1
+      SubtextureWidth: 1
+      SubtextureHeight: 1
+      Frames: 1
+      StartFrame: 1
+      EndFrame: 1
+      CurrentFrame: 1
+      FPS: 1
+  - Entity: 0
+    TagComponent:
+      Tag: Player
+    TransformComponent:
+      Translation: [0, 0, 0.100000001]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    ScriptComponent:
+      ClassName: Game.Player
+      ScriptFields:
+        - Name: p_Ether
+          Type: Float
+          Data: 20
+        - Name: p_EtherRegneration
+          Type: Float
+          Data: 15
+        - Name: p_Health
+          Type: Float
+          Data: 80
+        - Name: p_MaxEther
+          Type: Int
+          Data: 100
+        - Name: p_MaxHealth
+          Type: Int
+          Data: 100
+        - Name: p_Speed
+          Type: Float
+          Data: 3
+    ChildComponent:
       - 3
+      - 4
+      - 2097154
+      - 5
+      - 6
       - 7
       - 8
+      - 9
+      - 10

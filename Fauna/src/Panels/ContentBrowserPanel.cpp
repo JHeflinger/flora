@@ -120,7 +120,7 @@ namespace Flora {
 					GetCurrentDirectory(MAX_PATH, winCurrDir);
 					SetCurrentDirectory(winCurrDir);
 					std::string wcd = ConvertWCharToString(winCurrDir);
-					std::string project_path = "\\Sandbox Project\\Assets\\Scripts\\" + m_EditorContext->Project->GetConfig().Name + ".sln";
+					std::string project_path = "\\scripting\\" + m_EditorContext->Project->GetConfig().Name + ".sln";
 					std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
 					std::wstring wideStr = converter.from_bytes(project_path);
 					wcscat(winCurrDir, wideStr.c_str());
