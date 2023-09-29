@@ -58,7 +58,7 @@ namespace Flora {
 		std::ofstream premake("scripting/premake5.lua");
 		if (premake.is_open()) {
 			std::string filecontent =
-				"local FloraRootDir = \'../../../..\'\n"
+				"local FloraRootDir = \'../../\'\n"
 				"include(FloraRootDir .. \"/vendor/premake/premake_customization/solution_items.lua\")\n"
 				"\n"
 				"workspace \"" + name + "\"\n"

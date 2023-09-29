@@ -1,4 +1,4 @@
-local FloraRootDir = '../../../..'
+local FloraRootDir = '../../'
 include(FloraRootDir .. "/vendor/premake/premake_customization/solution_items.lua")
 
 workspace "Tower of Icarus"
