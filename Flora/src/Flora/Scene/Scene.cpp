@@ -453,9 +453,13 @@ namespace Flora {
 	void Scene::OnUpdateRuntime(Timestep ts) {
 		if (m_PrimaryCameraHandle >= 0) {
 			Entity cameraEntity = Entity{ (entt::entity)(uint32_t)m_PrimaryCameraHandle, this };
-			Camera* primaryCamera = &(cameraEntity.GetComponent<CameraComponent>().Camera);
-			glm::mat4 cameraTransform = ComponentUtils::GetWorldTransform(cameraEntity);
-			OnUpdateRuntime(ts, primaryCamera->GetProjection() * glm::inverse(cameraTransform));
+			if (EntityExists(cameraEntity)) {
+				Camera* primaryCamera = &(cameraEntity.GetComponent<CameraComponent>().Camera);
+				glm::mat4 cameraTransform = ComponentUtils::GetWorldTransform(cameraEntity);
+				OnUpdateRuntime(ts, primaryCamera->GetProjection() * glm::inverse(cameraTransform));
+			} else {
+				m_PrimaryCameraHandle = -1;
+			}
 		}
 	}
 
