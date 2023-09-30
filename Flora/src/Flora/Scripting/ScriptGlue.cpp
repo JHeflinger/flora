@@ -776,6 +776,11 @@ namespace Flora {
 		return (uint32_t)entity;
 	}
 
+	static bool Scene_EntityExists(uint32_t eid) {
+		Scene* scene = ScriptEngine::GetSceneContext();
+		return scene->EntityExists(eid);
+	}
+
 	static void Input_GetMousePositionFromCamera(uint32_t eid, glm::vec2* outPosition) {
 		Entity camera = GetValidatedEntityFromID(eid);
 		TransformComponent tc = camera.GetComponent<TransformComponent>();
@@ -835,6 +840,7 @@ namespace Flora {
 		FL_ADD_INTERNAL_CALL(Scene_CreateEntity);
 		FL_ADD_INTERNAL_CALL(Scene_DestroyEntity);
 		FL_ADD_INTERNAL_CALL(Scene_CreateScriptEntity);
+		FL_ADD_INTERNAL_CALL(Scene_EntityExists);
 		FL_ADD_INTERNAL_CALL(VisualUtils_GetHoveredEntity);
 		FL_ADD_INTERNAL_CALL(Project_GetAssetDirectory);
 

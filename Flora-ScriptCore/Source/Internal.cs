@@ -16,6 +16,9 @@ namespace Flora
 		internal extern static uint Scene_CopyEntity(uint id);
 
 		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static bool Scene_EntityExists(uint eid);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
 		internal extern static long VisualUtils_GetHoveredEntity();
 
 		[MethodImplAttribute(MethodImplOptions.InternalCall)]

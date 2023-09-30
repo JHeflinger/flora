@@ -1046,6 +1046,7 @@ namespace Flora
             set
             {
                 InternalCalls.SpriteRendererComponent_SetPath(Entity.ID, value);
+                TextureInitialized = false;
             }
         }
 

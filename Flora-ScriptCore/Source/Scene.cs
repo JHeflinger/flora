@@ -94,5 +94,22 @@ namespace Flora
         {
             return new Entity((uint)eid);
         }
+
+        /// <summary>
+        /// Determines whether an entity exists in the scene context. This can
+        /// be useful as a security measure to ensure an entity you are working with
+        /// is valid. For example, if an entity gets destroyed from the scene backend
+        /// via Scene.DestroyEntity(Entity entity), any current script engine instance of
+        /// that entity will technically still "exist", but it may error out if you try and use
+        /// it since the entity reference no longer points to a valid flora backend entity. Using
+        /// this function can ensure that you only handle entities when they exist.
+        /// </summary>
+        /// <param name="entity">Entity to check if it exists</param>
+        /// <returns>true if the entity exists, false otherwise.</returns>
+        public static bool EntityExists(Entity entity)
+        {
+            if (entity == null) return false;
+            return InternalCalls.Scene_EntityExists(entity.ID);
+        }
     }
 }

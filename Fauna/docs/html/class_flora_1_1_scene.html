@@ -107,6 +107,9 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a12fea214f7831843c008779beb3ac83b" id="r_a12fea214f7831843c008779beb3ac83b"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="class_flora_1_1_entity.html">Entity</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_flora_1_1_scene.html#a12fea214f7831843c008779beb3ac83b">GetEntityByID</a> (uint eid)</td></tr>
 <tr class="memdesc:a12fea214f7831843c008779beb3ac83b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets an entity given an ID.  <br /></td></tr>
 <tr class="separator:a12fea214f7831843c008779beb3ac83b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a72a6fc437982b1774db283ceb92453e6" id="r_a72a6fc437982b1774db283ceb92453e6"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_flora_1_1_scene.html#a72a6fc437982b1774db283ceb92453e6">EntityExists</a> (<a class="el" href="class_flora_1_1_entity.html">Entity</a> entity)</td></tr>
+<tr class="memdesc:a72a6fc437982b1774db283ceb92453e6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines whether an entity exists in the scene context. This can be useful as a security measure to ensure an entity you are working with is valid. For example, if an entity gets destroyed from the scene backend via Scene.DestroyEntity(Entity entity), any current script engine instance of that entity will technically still "exist", but it may error out if you try and use it since the entity reference no longer points to a valid flora backend entity. Using this function can ensure that you only handle entities when they exist.  <br /></td></tr>
+<tr class="separator:a72a6fc437982b1774db283ceb92453e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Class to interact with the <a class="el" href="namespace_flora.html">Flora</a> backend scene context. </p>
@@ -262,6 +265,41 @@ Static Public Member Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="a72a6fc437982b1774db283ceb92453e6" name="a72a6fc437982b1774db283ceb92453e6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a72a6fc437982b1774db283ceb92453e6">&#9670;&#160;</a></span>EntityExists()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static bool Flora.Scene.EntityExists </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_flora_1_1_entity.html">Entity</a>&#160;</td>
+          <td class="paramname"><em>entity</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Determines whether an entity exists in the scene context. This can be useful as a security measure to ensure an entity you are working with is valid. For example, if an entity gets destroyed from the scene backend via Scene.DestroyEntity(Entity entity), any current script engine instance of that entity will technically still "exist", but it may error out if you try and use it since the entity reference no longer points to a valid flora backend entity. Using this function can ensure that you only handle entities when they exist. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">entity</td><td>Entity to check if it exists</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if the entity exists, false otherwise.</dd></dl>
 
 </div>
 </div>
