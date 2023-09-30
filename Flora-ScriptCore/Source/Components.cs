@@ -478,6 +478,21 @@ namespace Flora
                 InternalCalls.ParentComponent_SetInheritTransform(Entity.ID, value);
             }
         }
+
+        /// <summary>
+        /// Determines whether this entity's visibility is inherited from the parent's sprite component
+        /// </summary>
+        public bool InheritSpriteProperties
+        {
+            get
+            {
+                return InternalCalls.ParentComponent_GetInheritSpriteProperties(Entity.ID);
+            }
+            set
+            {
+                InternalCalls.ParentComponent_SetInheritSpriteProperties(Entity.ID, value);
+            }
+        }
     }
 
     /// <summary>

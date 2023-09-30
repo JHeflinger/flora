@@ -196,6 +196,12 @@ namespace Flora
 		internal extern static void ParentComponent_SetInheritTransform(uint id, bool inheritTransform);
 
 		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static bool ParentComponent_GetInheritSpriteProperties(uint id);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static void ParentComponent_SetInheritSpriteProperties(uint id, bool inheritSpriteProperties);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
 		internal extern static void ChildComponent_RemoveChild(uint id, uint childid);
 
 		[MethodImplAttribute(MethodImplOptions.InternalCall)]

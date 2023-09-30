@@ -497,6 +497,16 @@ namespace Flora {
 		entity.GetComponent<ParentComponent>().InheritTransform = inheritTransform;
 	}
 
+	static bool ParentComponent_GetInheritSpriteProperties(uint32_t eid) {
+		Entity entity = GetValidatedEntityFromID(eid);
+		return entity.GetComponent<ParentComponent>().InheritSpriteProperties;
+	}
+
+	static void ParentComponent_SetInheritSpriteProperties(uint32_t eid, bool inheritSpriteProperties) {
+		Entity entity = GetValidatedEntityFromID(eid);
+		entity.GetComponent<ParentComponent>().InheritSpriteProperties = inheritSpriteProperties;
+	}
+
 	static void RigidBody2DComponent_SetTranslation(uint32_t eid, glm::vec2* translation) {
 		Entity entity = GetValidatedEntityFromID(eid);
 		auto& rb2d = entity.GetComponent<RigidBody2DComponent>();
@@ -931,6 +941,8 @@ namespace Flora {
 		FL_ADD_INTERNAL_CALL(ParentComponent_SetInheritAll);
 		FL_ADD_INTERNAL_CALL(ParentComponent_GetInheritTransform);
 		FL_ADD_INTERNAL_CALL(ParentComponent_SetInheritTransform);
+		FL_ADD_INTERNAL_CALL(ParentComponent_GetInheritSpriteProperties);
+		FL_ADD_INTERNAL_CALL(ParentComponent_SetInheritSpriteProperties);
 		FL_ADD_INTERNAL_CALL(RigidBody2DComponent_SetTranslation);
 		FL_ADD_INTERNAL_CALL(RigidBody2DComponent_SetRotation);
 		FL_ADD_INTERNAL_CALL(RigidBody2DComponent_GetType);

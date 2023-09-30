@@ -142,11 +142,13 @@ namespace Flora {
 		Entity Parent;
 		bool InheritAll = true;
 		bool InheritTransform = true;
+		bool InheritSpriteProperties = true;
 		ParentComponent() = default;
 		ParentComponent(const ParentComponent& other) {
 			Parent = other.Parent;
 			InheritAll = other.InheritAll;
 			InheritTransform = other.InheritTransform;
+			InheritSpriteProperties = other.InheritSpriteProperties;
 		}
 	};
 

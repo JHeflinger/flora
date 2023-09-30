@@ -8,17 +8,19 @@
 #include "Flora/Utils/ComponentUtils.h"
 
 namespace Flora {
-	void Scene::DrawEntitySprite(Timestep ts, Entity& entity, bool useTransformRef, glm::mat4 refTransform) {
+	void Scene::DrawEntitySprite(Timestep ts, Entity& entity, bool useTransformRef, glm::mat4 refTransform, bool useParentVis, bool parentVis) {
 		glm::mat4 transform = entity.GetComponent<TransformComponent>().GetTransform();
+		bool isvisible = useParentVis ? parentVis : entity.GetComponent<SpriteRendererComponent>().Visible;
 		if (useTransformRef) transform = refTransform * transform;
-		if (entity.GetComponent<SpriteRendererComponent>().Visible)
+		if (isvisible)
 			Renderer2D::DrawSprite(ts, transform, entity.GetComponent<SpriteRendererComponent>(), (int)(uint32_t)entity);
 		if (entity.HasComponent<ChildComponent>()) {
 			std::vector<Entity> children = entity.GetComponent<ChildComponent>().Children;
 			for (int i = 0; i < children.size(); i++) {
 				if (children[i].HasComponent<SpriteRendererComponent>()) {
 					bool useParentTransform = children[i].GetComponent<ParentComponent>().InheritAll || (!children[i].GetComponent<ParentComponent>().InheritAll && children[i].GetComponent<ParentComponent>().InheritTransform);
-					DrawEntitySprite(ts, children[i], useParentTransform, transform);
+					bool useParentVis = children[i].GetComponent<ParentComponent>().InheritAll || children[i].GetComponent<ParentComponent>().InheritSpriteProperties;
+					DrawEntitySprite(ts, children[i], useParentTransform, transform, useParentVis, isvisible);
 				}
 			}
 		}
