@@ -110,13 +110,22 @@ namespace Flora
         /// child that has the given name.
         /// </summary>
         /// <param name="name">The name of the child to find</param>
+        /// <param name="recursive">if true, searches recursively into the children's children</param>
         /// <returns>The found child, or null if not found</returns>
-        public Entity FindChild(string name)
+        public Entity FindChild(string name, bool recursive = false)
         {
             if (!HasComponent<ChildComponent>()) return null;
             for (uint i = 0; i < GetComponent<ChildComponent>().GetChildrenSize(); i++)
-                if (GetComponent<ChildComponent>().GetChild(i).GetComponent<TagComponent>().Tag == name)
-                    return GetComponent<ChildComponent>().GetChild(i);
+            {
+                Entity child = GetComponent<ChildComponent>().GetChild(i);
+                if (child.GetComponent<TagComponent>().Tag == name)
+                    return child;
+                if (recursive && child.HasComponent<ChildComponent>())
+                {
+                    Entity subchild = child.FindChild(name, recursive);
+                    if (subchild != null) return subchild;
+                }
+            }
             return null;
         }
 
@@ -124,13 +133,22 @@ namespace Flora
         /// Finds a child of this Entity given an Entity ID.
         /// </summary>
         /// <param name="eid">The ID of the child to find</param>
+        /// <param name="recursive">if true, searches recursively into the children's children</param>
         /// <returns>The found child, or null if not found</returns>
-        public Entity FindChild(uint eid)
+        public Entity FindChild(uint eid, bool recursive = false)
         {
             if (!HasComponent<ChildComponent>()) return null;
             for (uint i = 0; i < GetComponent<ChildComponent>().GetChildrenSize(); i++)
-                if (GetComponent<ChildComponent>().GetChild(i).ID == eid)
-                    return GetComponent<ChildComponent>().GetChild(i);
+            {
+                Entity child = GetComponent<ChildComponent>().GetChild(i);
+                if (child.ID == eid)
+                    return child;
+                if (recursive && child.HasComponent<ChildComponent>())
+                {
+                    Entity subchild = child.FindChild(eid, recursive);
+                    if (subchild != null) return subchild;
+                }
+            }
             return null;
         }
 
