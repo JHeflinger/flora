@@ -825,12 +825,43 @@ namespace Flora {
 					ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.0f, 0.0f, 0.0f, 0.0f });
 					ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 1.0f, 1.0f, 1.0f, 0.15f });
 					ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 1.0f, 1.0f, 1.0f, 0.05f });
+					ImGui::BeginChild("ScrollableSection", {500, 400}, false);
+					std::map<std::string, std::set<std::pair<std::string, std::string>>> scripthierarchy; // maps namespace -> set of (<full class name, immediate class name>)
+					const ImGuiTreeNodeFlags popupTreeNodeFlags = ImGuiTreeNodeFlags_Framed | ImGuiTreeNodeFlags_SpanAvailWidth | ImGuiTreeNodeFlags_AllowItemOverlap | ImGuiTreeNodeFlags_FramePadding;
 					for (auto& entityClass : classMap) {
-						if (ImGui::Button(entityClass.first.c_str(), { 500, lineHeight })) {
-							promptSelect = false;
-							component.ClassName = entityClass.first;
+						std::string fullname = entityClass.first;
+						std::string script_namespace = "";
+						std::string script_immname = "";
+
+						size_t lastDot = fullname.find_last_of('.');
+						if (lastDot != std::string::npos) {
+							script_namespace = fullname.substr(0, lastDot);
+							script_immname = fullname.substr(lastDot + 1);
+						} else script_immname = fullname;
+
+						scripthierarchy[script_namespace].insert({fullname, script_immname});
+					}
+
+					for (const auto& pair : scripthierarchy) {
+						std::string namespace_name = "";
+						if (pair.first == namespace_name)
+							namespace_name = "Global";
+						else
+							namespace_name = pair.first;
+						if (ImGui::TreeNodeEx(namespace_name.c_str(), popupTreeNodeFlags, namespace_name.c_str())) {
+							for (const auto& name_tuple : pair.second) {
+								ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, { 0.0f, 0.0f });
+								if (ImGui::Button(name_tuple.second.c_str(), { 500, lineHeight })) {
+									promptSelect = false;
+									component.ClassName = name_tuple.first;
+								}
+								ImGui::PopStyleVar();
+							}
+							ImGui::TreePop();
 						}
 					}
+
+					ImGui::EndChild();
 					if (ImGui::Button("Cancel", { 500, lineHeight }))
 						promptSelect = false;
 					ImGui::PopStyleColor(3);
