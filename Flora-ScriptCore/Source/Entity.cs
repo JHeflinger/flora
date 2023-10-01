@@ -105,6 +105,36 @@ namespace Flora
         }
 
         /// <summary>
+        /// Finds a child of this Entity given the name of the Entity (Tag from the TagComponent).
+        /// Note: children tags are not enforced to be unique. This will only return the first found
+        /// child that has the given name.
+        /// </summary>
+        /// <param name="name">The name of the child to find</param>
+        /// <returns>The found child, or null if not found</returns>
+        public Entity FindChild(string name)
+        {
+            if (!HasComponent<ChildComponent>()) return null;
+            for (uint i = 0; i < GetComponent<ChildComponent>().GetChildrenSize(); i++)
+                if (GetComponent<ChildComponent>().GetChild(i).GetComponent<TagComponent>().Tag == name)
+                    return GetComponent<ChildComponent>().GetChild(i);
+            return null;
+        }
+
+        /// <summary>
+        /// Finds a child of this Entity given an Entity ID.
+        /// </summary>
+        /// <param name="eid">The ID of the child to find</param>
+        /// <returns>The found child, or null if not found</returns>
+        public Entity FindChild(uint eid)
+        {
+            if (!HasComponent<ChildComponent>()) return null;
+            for (uint i = 0; i < GetComponent<ChildComponent>().GetChildrenSize(); i++)
+                if (GetComponent<ChildComponent>().GetChild(i).ID == eid)
+                    return GetComponent<ChildComponent>().GetChild(i);
+            return null;
+        }
+
+        /// <summary>
         /// Determines if the Entity has a given component. Note: remember that entities exist in 
         /// the backend beyond the script engine! If you "create" a new Entity that has an existing ID,
         /// it is still referencing an existing backend Entity and therefore it may have existing components.
