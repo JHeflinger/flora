@@ -383,33 +383,35 @@ namespace Flora {
 			auto scriptFields = scriptComponent["ScriptFields"];
 			if (scriptFields) {
 				Ref<ScriptClass> entityClass = ScriptEngine::GetEntityClass(sc.ClassName);
-				const auto& fields = entityClass->GetFields();
-				auto& entityFields = ScriptEngine::GetScriptFieldMap(deserializedEntity);
-				for (auto scriptField : scriptFields) {
-					std::string name = scriptField["Name"].as<std::string>();
-					ScriptFieldType type = Utils::ScriptFieldTypeFromSting(scriptField["Type"].as<std::string>());
-					ScriptFieldInstance& fieldInstance = entityFields[name];
-					if (fields.find(name) == fields.end()) continue;
-					fieldInstance.Field = fields.at(name);
+				if (entityClass) {
+					const auto& fields = entityClass->GetFields();
+					auto& entityFields = ScriptEngine::GetScriptFieldMap(deserializedEntity);
+					for (auto scriptField : scriptFields) {
+						std::string name = scriptField["Name"].as<std::string>();
+						ScriptFieldType type = Utils::ScriptFieldTypeFromSting(scriptField["Type"].as<std::string>());
+						ScriptFieldInstance& fieldInstance = entityFields[name];
+						if (fields.find(name) == fields.end()) continue;
+						fieldInstance.Field = fields.at(name);
 
-					#define FIELD_DATA(FieldType, Type) case ScriptFieldType::FieldType:\
+						#define FIELD_DATA(FieldType, Type) case ScriptFieldType::FieldType:\
 															{Type data = scriptField["Data"].as<Type>();\
 															fieldInstance.SetValue<Type>(data);\
 															break;}
-					switch (type) {
-						FIELD_DATA(Float, float);
-						FIELD_DATA(Vector2, glm::vec2);
-						FIELD_DATA(Vector3, glm::vec3);
-						FIELD_DATA(Vector4, glm::vec4);
-						FIELD_DATA(Int, int);
-						FIELD_DATA(UInt, uint32_t);
-						FIELD_DATA(Bool, bool);
-						FIELD_DATA(Double, double);
-						FIELD_DATA(Short, uint16_t);
-						FIELD_DATA(Byte, uint8_t);
-					}
+						switch (type) {
+							FIELD_DATA(Float, float);
+							FIELD_DATA(Vector2, glm::vec2);
+							FIELD_DATA(Vector3, glm::vec3);
+							FIELD_DATA(Vector4, glm::vec4);
+							FIELD_DATA(Int, int);
+							FIELD_DATA(UInt, uint32_t);
+							FIELD_DATA(Bool, bool);
+							FIELD_DATA(Double, double);
+							FIELD_DATA(Short, uint16_t);
+							FIELD_DATA(Byte, uint8_t);
+						}
 
-					#undef FIELD_DATA
+						#undef FIELD_DATA
+					}
 				}
 			}
 		}
