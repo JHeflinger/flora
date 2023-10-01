@@ -110,9 +110,23 @@ namespace Flora
         /// child that has the given name.
         /// </summary>
         /// <param name="name">The name of the child to find</param>
+        /// <returns>The found child, or null if not found</returns>
+        public Entity FindChild(string name) { return FindChild(name, false); }
+
+        /// <summary>
+        /// Finds a child of this Entity given an Entity ID.
+        /// </summary>
+        /// <param name="eid">The ID of the child to find</param>
+        /// <returns>The found child, or null if not found</returns>
+        public Entity FindChild(uint eid) { return FindChild(eid, false); }
+
+        /// <summary>
+        /// Finds a child of this Entity given an Entity ID recursively.
+        /// </summary>
+        /// <param name="name">The name of the child to find</param>
         /// <param name="recursive">if true, searches recursively into the children's children</param>
         /// <returns>The found child, or null if not found</returns>
-        public Entity FindChild(string name, bool recursive = false)
+        public Entity FindChild(string name, bool recursive)
         {
             if (!HasComponent<ChildComponent>()) return null;
             for (uint i = 0; i < GetComponent<ChildComponent>().GetChildrenSize(); i++)
@@ -130,12 +144,12 @@ namespace Flora
         }
 
         /// <summary>
-        /// Finds a child of this Entity given an Entity ID.
+        /// Finds a child of this Entity given an Entity ID recursively.
         /// </summary>
         /// <param name="eid">The ID of the child to find</param>
         /// <param name="recursive">if true, searches recursively into the children's children</param>
         /// <returns>The found child, or null if not found</returns>
-        public Entity FindChild(uint eid, bool recursive = false)
+        public Entity FindChild(uint eid, bool recursive) //TODO: reduce overhead on this by using maps on childcomponents with tags as their key
         {
             if (!HasComponent<ChildComponent>()) return null;
             for (uint i = 0; i < GetComponent<ChildComponent>().GetChildrenSize(); i++)
