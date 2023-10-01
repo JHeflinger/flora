@@ -1,5 +1,6 @@
 #include "SceneHierarchyPanel.h"
 #include "Flora/Scene/Components.h"
+#include "../Utils/FileUtils.h"
 #include <imgui/imgui.h>
 
 namespace Flora {
@@ -32,6 +33,9 @@ namespace Flora {
 					m_EditorContext->Clipboard.Entity = {};
 					m_EditorContext->Clipboard.CutEntity = false;
 				}
+			}
+			if (ImGui::MenuItem("Import Entity")) {
+				FileUtils::ImportEntity(m_EditorContext);
 			}
 			ImGui::EndPopup();
 		}
@@ -112,6 +116,16 @@ namespace Flora {
 					m_EditorContext->ActiveScene->DestroyEntity(m_EditorContext->Clipboard.Entity);
 					m_EditorContext->Clipboard.Entity = {};
 					m_EditorContext->Clipboard.CutEntity = false;
+				}
+			}
+			if (ImGui::MenuItem("Import Entity")) {
+				Entity importedEntity = m_EditorContext->ActiveScene->GetEntityFromID((uint32_t)(*(FileUtils::ImportEntity(m_EditorContext))));
+				if (importedEntity) {
+					if (!m_EditorContext->SelectedEntity.HasComponent<ChildComponent>())
+						m_EditorContext->SelectedEntity.AddComponent<ChildComponent>();
+					m_EditorContext->SelectedEntity.GetComponent<ChildComponent>().AddChild(importedEntity);
+					importedEntity.AddComponent<ParentComponent>();
+					importedEntity.GetComponent<ParentComponent>().Parent = m_EditorContext->SelectedEntity;
 				}
 			}
 			ImGui::EndPopup();

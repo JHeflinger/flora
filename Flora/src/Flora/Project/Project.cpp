@@ -36,11 +36,13 @@ namespace Flora {
 		std::filesystem::path scriptFolder = assetFolder / "Scripts";
 		std::filesystem::path sceneFolder = assetFolder / "Scenes";
 		std::filesystem::path audioFolder = assetFolder / "Audio";
+		std::filesystem::path entityFolder = assetFolder / "Entities";
 		std::filesystem::create_directory(assetFolder);
 		std::filesystem::create_directory(textureFolder);
 		std::filesystem::create_directory(scriptFolder);
 		std::filesystem::create_directory(sceneFolder);
 		std::filesystem::create_directory(audioFolder);
+		std::filesystem::create_directory(entityFolder);
 
 		// create intermediates dir
 		std::filesystem::path intermediate_path = std::filesystem::path("scripting/Project Intermediates") / name;

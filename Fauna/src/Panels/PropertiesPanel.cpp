@@ -2,6 +2,7 @@
 #include "PropertiesPanel.h"
 #include "Flora/Utils/PlatformUtils.h"
 #include "Flora/Scripting/ScriptEngine.h"
+#include "../Utils/FileUtils.h"
 #include <imgui/imgui_internal.h>
 #include <filesystem>
 #include <glm/gtc/type_ptr.hpp>
@@ -1369,5 +1370,11 @@ namespace Flora {
 				ImGui::TreePop();
 			}
 		});
+	
+		ImGui::Dummy({ 0, 10 });
+		float lineHeight = GImGui->Font->FontSize + GImGui->Style.FramePadding.y * 2.0f;
+		if (ImGui::Button("Export Entity", { -1, lineHeight })) {
+			FileUtils::ExportEntity(entity);
+		}
 	}
 }

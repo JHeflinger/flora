@@ -28,6 +28,14 @@ namespace Flora {
 		}
 	}
 
+	Entity* FileUtils::ImportEntity(Ref<EditorParams> context) {
+		std::string filepath = FileDialogs::OpenFile("Flora Entity (*.flent)\0*.flent\0");
+		if (!filepath.empty()) {
+			return ImportEntity(context, filepath);
+		}
+		return nullptr;
+	}
+
 	void FileUtils::SaveSceneAs(Ref<EditorParams> context){
 		std::string filepath = FileDialogs::SaveFile("Flora Scene (*.flora)\0*.flora\0");
 		if (!filepath.empty()) {
@@ -35,6 +43,15 @@ namespace Flora {
 			std::string sceneContent = Serializer::SerializeScene(context->ActiveScene);
 			Serializer::SerializeFile(sceneContent, filepath);
 			context->ActiveScene->SetSceneFilepath(filepath);
+		}
+	}
+
+	void FileUtils::ExportEntity(Entity entity) {
+		std::string filepath = FileDialogs::SaveFile("Flora Entity (*.flent)\0*.flent\0");
+		if (!filepath.empty()) {
+			if (std::filesystem::path(filepath).stem().extension().string() != ".flent") filepath = filepath + ".flent";
+			std::string entityContent = Serializer::SerializeEntity(entity);
+			Serializer::SerializeFile(entityContent, filepath);
 		}
 	}
 
@@ -77,6 +94,10 @@ namespace Flora {
 		Serializer::DeserializeScene(context->ActiveScene, path.string());
 		std::string editorContent = EditorSerializer::Serialize(context);
 		Serializer::SerializeFile(editorContent, "Resources/Settings/fauna.fnproj");
+	}
+
+	Entity* FileUtils::ImportEntity(Ref<EditorParams> context, const std::filesystem::path& path) {
+		return Serializer::DeserializeEntity(context->ActiveScene, path.string());
 	}
 
 	void FileUtils::NewScene(Ref<EditorParams> context){
