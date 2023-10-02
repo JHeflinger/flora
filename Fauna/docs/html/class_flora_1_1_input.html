@@ -95,6 +95,9 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:ad744a2ca79d19203bc213d75a77c5259" id="r_ad744a2ca79d19203bc213d75a77c5259"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_flora_1_1_input.html#ad744a2ca79d19203bc213d75a77c5259">IsMouseButtonPressed</a> (<a class="el" href="namespace_flora.html#aca0c7d718e9f6871b522fcedd6956ba7">MouseCode</a> button)</td></tr>
 <tr class="memdesc:ad744a2ca79d19203bc213d75a77c5259"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines if a specific mouse button is being pressed.  <br /></td></tr>
 <tr class="separator:ad744a2ca79d19203bc213d75a77c5259"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5683bbff0d32b70d5f7b3905ebbf615b" id="r_a5683bbff0d32b70d5f7b3905ebbf615b"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_flora_1_1_input.html#a5683bbff0d32b70d5f7b3905ebbf615b">IsMouseButtonReleased</a> (<a class="el" href="namespace_flora.html#aca0c7d718e9f6871b522fcedd6956ba7">MouseCode</a> button)</td></tr>
+<tr class="memdesc:a5683bbff0d32b70d5f7b3905ebbf615b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines if a specified mouse button was just released. Note that the intention of this function is to be called every frame, as it needs to track which mouse buttons are being pressed to know when they are being released.  <br /></td></tr>
+<tr class="separator:a5683bbff0d32b70d5f7b3905ebbf615b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2318a705431868c158563248fe8fa49e" id="r_a2318a705431868c158563248fe8fa49e"><td class="memItemLeft" align="right" valign="top">static float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_flora_1_1_input.html#a2318a705431868c158563248fe8fa49e">GetMouseX</a> ()</td></tr>
 <tr class="memdesc:a2318a705431868c158563248fe8fa49e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines the mouse x position.  <br /></td></tr>
 <tr class="separator:a2318a705431868c158563248fe8fa49e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -326,6 +329,41 @@ Static Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true of the mouse button is being pressed, false otherwise.</dd></dl>
+
+</div>
+</div>
+<a id="a5683bbff0d32b70d5f7b3905ebbf615b" name="a5683bbff0d32b70d5f7b3905ebbf615b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5683bbff0d32b70d5f7b3905ebbf615b">&#9670;&#160;</a></span>IsMouseButtonReleased()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static bool Flora.Input.IsMouseButtonReleased </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespace_flora.html#aca0c7d718e9f6871b522fcedd6956ba7">MouseCode</a>&#160;</td>
+          <td class="paramname"><em>button</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Determines if a specified mouse button was just released. Note that the intention of this function is to be called every frame, as it needs to track which mouse buttons are being pressed to know when they are being released. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">button</td><td>The mousecode that corresponds to the desired mouse button</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true of the button was released, false otherwise</dd></dl>
 
 </div>
 </div>

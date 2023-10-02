@@ -14,6 +14,7 @@ namespace Flora
     public class Input
     {
         private static Dictionary<KeyCode, bool> m_KeyPressMap = new Dictionary<KeyCode, bool>();
+        private static Dictionary<MouseCode, bool> m_MousePressMap = new Dictionary<MouseCode, bool>();
 
         /// <summary>
         /// Determines if a specified key is being pressed
@@ -61,6 +62,36 @@ namespace Flora
         public static bool IsMouseButtonPressed(MouseCode button)
         {
             return InternalCalls.Input_IsMouseButtonPressed((int)button);
+        }
+
+        /// <summary>
+        /// Determines if a specified mouse button was just released. Note that the intention
+        /// of this function is to be called every frame, as it needs to track which
+        /// mouse buttons are being pressed to know when they are being released.
+        /// </summary>
+        /// <param name="button">The mousecode that corresponds to the desired mouse button</param>
+        /// <returns>true of the button was released, false otherwise</returns>
+        public static bool IsMouseButtonReleased(MouseCode button)
+        {
+            bool outval;
+            if (m_MousePressMap.TryGetValue(button, out outval))
+            {
+                if (IsMouseButtonPressed(button))
+                {
+                    m_MousePressMap[button] = true;
+                    return false;
+                }
+                else
+                {
+                    if (outval)
+                    {
+                        m_MousePressMap[button] = false;
+                        return true;
+                    }
+                }
+            }
+            else m_MousePressMap[button] = false;
+            return false;
         }
 
         /// <summary>

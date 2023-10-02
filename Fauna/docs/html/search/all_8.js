@@ -7,5 +7,6 @@ var searchData=
   ['input_4',['Input',['../class_flora_1_1_input.html',1,'Flora']]],
   ['iskeydown_5',['IsKeyDown',['../class_flora_1_1_input.html#aa5902dfe12cd950a6ebac8a9475143bf',1,'Flora::Input']]],
   ['iskeyreleased_6',['IsKeyReleased',['../class_flora_1_1_input.html#a0a77b6db6d2f0ee9630d5fc31d407ad8',1,'Flora::Input']]],
-  ['ismousebuttonpressed_7',['IsMouseButtonPressed',['../class_flora_1_1_input.html#ad744a2ca79d19203bc213d75a77c5259',1,'Flora::Input']]]
+  ['ismousebuttonpressed_7',['IsMouseButtonPressed',['../class_flora_1_1_input.html#ad744a2ca79d19203bc213d75a77c5259',1,'Flora::Input']]],
+  ['ismousebuttonreleased_8',['IsMouseButtonReleased',['../class_flora_1_1_input.html#a5683bbff0d32b70d5f7b3905ebbf615b',1,'Flora::Input']]]
 ];
