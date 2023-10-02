@@ -6,5 +6,6 @@ var searchData=
   ['inherittransform_3',['InheritTransform',['../class_flora_1_1_parent_component.html#a0caebb253ad4789f6189d511aad60312',1,'Flora::ParentComponent']]],
   ['input_4',['Input',['../class_flora_1_1_input.html',1,'Flora']]],
   ['iskeydown_5',['IsKeyDown',['../class_flora_1_1_input.html#aa5902dfe12cd950a6ebac8a9475143bf',1,'Flora::Input']]],
-  ['ismousebuttonpressed_6',['IsMouseButtonPressed',['../class_flora_1_1_input.html#ad744a2ca79d19203bc213d75a77c5259',1,'Flora::Input']]]
+  ['iskeyreleased_6',['IsKeyReleased',['../class_flora_1_1_input.html#a0a77b6db6d2f0ee9630d5fc31d407ad8',1,'Flora::Input']]],
+  ['ismousebuttonpressed_7',['IsMouseButtonPressed',['../class_flora_1_1_input.html#ad744a2ca79d19203bc213d75a77c5259',1,'Flora::Input']]]
 ];

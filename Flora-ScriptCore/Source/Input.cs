@@ -13,6 +13,8 @@ namespace Flora
     /// </summary>
     public class Input
     {
+        private static Dictionary<KeyCode, bool> m_KeyPressMap = new Dictionary<KeyCode, bool>();
+
         /// <summary>
         /// Determines if a specified key is being pressed
         /// </summary>
@@ -21,6 +23,34 @@ namespace Flora
         public static bool IsKeyDown(KeyCode keycode)
         {
             return InternalCalls.Input_IsKeyDown(keycode);
+        }
+
+        /// <summary>
+        /// Determines if a specified key was just released. Note that the intention
+        /// of this function is to be called every frame, as it needs to track which
+        /// keys are being pressed to know when they are being released.
+        /// </summary>
+        /// <param name="keycode">The keycode that corresponds to the desired keyboard key</param>
+        /// <returns>true of the key was released, false otherwise</returns>
+        public static bool IsKeyReleased(KeyCode keycode)
+        {
+            bool outval;
+            if (m_KeyPressMap.TryGetValue(keycode, out outval))
+            {
+                if (IsKeyDown(keycode))
+                {
+                    m_KeyPressMap[keycode] = true;
+                    return false;
+                } else
+                {
+                    if (outval)
+                    {
+                        m_KeyPressMap[keycode] = false;
+                        return true;
+                    }
+                }
+            } else m_KeyPressMap[keycode] = false;
+            return false;
         }
 
         /// <summary>
