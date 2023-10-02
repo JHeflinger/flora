@@ -128,6 +128,9 @@ namespace Flora {
 					importedEntity.GetComponent<ParentComponent>().Parent = m_EditorContext->SelectedEntity;
 				}
 			}
+			if (ImGui::MenuItem("Export Entity")) {
+				FileUtils::ExportEntity(m_EditorContext->SelectedEntity);
+			}
 			ImGui::EndPopup();
 		}
 

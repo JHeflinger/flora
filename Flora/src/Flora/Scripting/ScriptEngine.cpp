@@ -337,7 +337,7 @@ namespace Flora {
 	}
 
 	MonoObject* ScriptEngine::GetManagedInstance(uint32_t eid) {
-		FL_CORE_ASSERT(s_Data->EntityInstances.find(entity) != s_Data->EntityInstances.end());
+		if (s_Data->EntityInstances.find(eid) == s_Data->EntityInstances.end()) return nullptr;
 		return s_Data->EntityInstances.at(eid)->GetManagedObject();
 	}
 

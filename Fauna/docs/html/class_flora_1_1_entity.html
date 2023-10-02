@@ -76,6 +76,7 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="#properties">Properties</a> &#124;
@@ -119,6 +120,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a3e93806b67209ee140d118c884c3888b" id="r_a3e93806b67209ee140d118c884c3888b"><td class="memItemLeft" align="right" valign="top">T&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_flora_1_1_entity.html#a3e93806b67209ee140d118c884c3888b">As&lt; T &gt;</a> ()</td></tr>
 <tr class="memdesc:a3e93806b67209ee140d118c884c3888b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets an Entity as a specified type. This function is to be used to get the corresponding script engine instance of the Entity as a custom type. For example, if an Entity has a Script Component "Game.Player", you can get the Entity script instance as the Player type via Entity.As&lt;Player&gt;().  <br /></td></tr>
 <tr class="separator:a3e93806b67209ee140d118c884c3888b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a8734e00b0066cc549913b681cfa4118e" id="r_a8734e00b0066cc549913b681cfa4118e"><td class="memItemLeft" align="right" valign="top">static T&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_flora_1_1_entity.html#a8734e00b0066cc549913b681cfa4118e">GetAs&lt; T &gt;</a> (<a class="el" href="class_flora_1_1_entity.html">Entity</a> entity)</td></tr>
+<tr class="memdesc:a8734e00b0066cc549913b681cfa4118e"><td class="mdescLeft">&#160;</td><td class="mdescRight">"Safer" version of As&lt;T&gt;(). Using this function will allow the developer to account for the entity being possibly null, reducing a vulnerability.  <br /></td></tr>
+<tr class="separator:a8734e00b0066cc549913b681cfa4118e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -401,6 +408,56 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The found child, or null if not found</dd></dl>
+
+</div>
+</div>
+<a id="a8734e00b0066cc549913b681cfa4118e" name="a8734e00b0066cc549913b681cfa4118e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8734e00b0066cc549913b681cfa4118e">&#9670;&#160;</a></span>GetAs&lt; T &gt;()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static T Flora.Entity.GetAs&lt; T &gt; </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_flora_1_1_entity.html">Entity</a>&#160;</td>
+          <td class="paramname"><em>entity</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>"Safer" version of As&lt;T&gt;(). Using this function will allow the developer to account for the entity being possibly null, reducing a vulnerability. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td>The type of the Entity instance</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">entity</td><td>The Entity instance</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+<div class="typeconstraint">
+<dl><dt><b>Type Constraints</b></dt><dd>
+<table border="0" cellspacing="2" cellpadding="0">
+<tr><td valign="top"><em>T</em></td><td>&#160;:</td><td valign="top"><em>Entity</em></td><td>&#160;</td></tr>
+<tr><td valign="top"><em>T</em></td><td>&#160;:</td><td valign="top"><em>new()</em></td><td>&#160;</td></tr>
+</table>
+</dd>
+</dl>
+</div>
 
 </div>
 </div>

@@ -142,7 +142,7 @@ namespace Flora {
 				try { //TODO: remove try catch for release builds
 					ScriptEngine::CreateEntity(entity);
 				} catch (...) {
-					FL_CORE_ERROR("Script execution attempt failed for entity \"{}\"", entity.GetComponent<TagComponent>().Tag);
+					FL_CORE_ERROR("Script creation execution attempt failed for entity \"{}\"", entity.GetComponent<TagComponent>().Tag);
 				}
 			}
 		}
@@ -201,7 +201,7 @@ namespace Flora {
 			try { //TODO: remove try catch for release builds
 				ScriptEngine::CreateEntity(entity);
 			} catch (...) {
-				FL_CORE_ERROR("Script execution attempt failed for entity \"{}\"", entity.GetComponent<TagComponent>().Tag);
+				FL_CORE_ERROR("Script creation execution attempt failed for entity \"{}\"", entity.GetComponent<TagComponent>().Tag);
 			}
 		}
 		return entity;
@@ -300,7 +300,7 @@ namespace Flora {
 			try { //TODO: remove try catch for release builds
 				ScriptEngine::CreateEntity(newEntity);
 			} catch (...) {
-				FL_CORE_ERROR("Script execution attempt failed for entity \"{}\"", newEntity.GetComponent<TagComponent>().Tag);
+				FL_CORE_ERROR("Script creation execution attempt failed for entity \"{}\"", newEntity.GetComponent<TagComponent>().Tag);
 			}
 		}
 
@@ -325,7 +325,7 @@ namespace Flora {
 			try { //TODO: remove try catch for release builds
 				ScriptEngine::CreateEntity(newEntity);
 			} catch (...) {
-				FL_CORE_ERROR("Script execution attempt failed for entity \"{}\"", newEntity.GetComponent<TagComponent>().Tag);
+				FL_CORE_ERROR("Script creation execution attempt failed for entity \"{}\"", newEntity.GetComponent<TagComponent>().Tag);
 			}
 		}
 
@@ -367,7 +367,7 @@ namespace Flora {
 				try { //TODO: remove try catch for release builds
 					ScriptEngine::UpdateEntity(entity, ts);
 				} catch (...) {
-					FL_CORE_ERROR("Script execution attempt failed for entity \"{}\"", entity.GetComponent<TagComponent>().Tag);
+					FL_CORE_ERROR("Script update execution attempt failed for entity \"{}\"", entity.GetComponent<TagComponent>().Tag);
 				}
 			}
 		}

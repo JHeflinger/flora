@@ -219,5 +219,20 @@ namespace Flora
             object instance = InternalCalls.Entity_GetScriptInstance(ID);
             return instance as T;
         }
+
+        /// <summary>
+        /// "Safer" version of As<T>(). Using this function will allow the developer to account for the entity
+        /// being possibly null, reducing a vulnerability.
+        /// </summary>
+        /// <typeparam name="T">The type of the Entity instance</typeparam>
+        /// <param name="entity">The Entity instance</param>
+        /// <returns></returns>
+        public static T GetAs<T>(Entity entity) where T : Entity, new()
+        {
+            if (entity == null) return null;
+            object instance = InternalCalls.Entity_GetScriptInstance(entity.ID);
+            if (instance == null) return null;
+            return instance as T;
+        }
     }
 }

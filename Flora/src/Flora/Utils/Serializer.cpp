@@ -413,6 +413,7 @@ namespace Flora {
 						#undef FIELD_DATA
 					}
 				}
+				else FL_CORE_ERROR("Unable to find the class {} in the script binary", sc.ClassName);
 			}
 		}
 
