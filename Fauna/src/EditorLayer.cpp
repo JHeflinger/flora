@@ -549,23 +549,25 @@ namespace Flora {
 
 	bool EditorLayer::OnKeyPressed(KeyPressedEvent& e) {
 		// some shortcuts moved to OnOverrideEvent
-		if (e.GetRepeatCount() > 0) return false;
-		if (m_EditorParams->FocusedPanel == Panels::VIEWPORT) {
-			switch (e.GetKeyCode()) {
-			case Key::Q:
-				m_EditorParams->GizmoType = -1;
-				break;
-			case Key::W:
-				m_EditorParams->GizmoType = ImGuizmo::OPERATION::TRANSLATE;
-				break;
-			case Key::E:
-				m_EditorParams->GizmoType = ImGuizmo::OPERATION::ROTATE;
-				break;
-			case Key::R:
-				m_EditorParams->GizmoType = ImGuizmo::OPERATION::SCALE;
-				break;
-			default:
-				break;
+		if (m_EditorParams->SceneState == SceneState::EDIT) {
+			if (e.GetRepeatCount() > 0) return false;
+			if (m_EditorParams->FocusedPanel == Panels::VIEWPORT) {
+				switch (e.GetKeyCode()) {
+				case Key::Q:
+					m_EditorParams->GizmoType = -1;
+					break;
+				case Key::W:
+					m_EditorParams->GizmoType = ImGuizmo::OPERATION::TRANSLATE;
+					break;
+				case Key::E:
+					m_EditorParams->GizmoType = ImGuizmo::OPERATION::ROTATE;
+					break;
+				case Key::R:
+					m_EditorParams->GizmoType = ImGuizmo::OPERATION::SCALE;
+					break;
+				default:
+					break;
+				}
 			}
 		}
 	}
@@ -1000,27 +1002,35 @@ namespace Flora {
 
 	void EditorLayer::OnOverrideEvent() {
 		// Shortcuts
-		if (m_OverrideEventReady) {
-			m_OverrideEventReady = false;
-			bool control = Input::IsKeyPressed(Key::LeftControl) || Input::IsKeyPressed(Key::RightControl);
-			bool shift = Input::IsKeyPressed(Key::LeftShift) || Input::IsKeyPressed(Key::RightShift);
-			if (control && shift && Input::IsKeyPressed(Key::S)) {
-				FileUtils::SaveSceneAs(m_EditorParams);
-				m_EditorParams->Time = 0;
-			} else if (control && Input::IsKeyPressed(Key::S)) {
-				FileUtils::SaveScene(m_EditorParams);
-				m_EditorParams->Time = 0;
-			} else if (control && Input::IsKeyPressed(Key::N)) {
-				PromptSave(SavePromptType::NEW);
-			} else if (control && Input::IsKeyPressed(Key::O)) {
-				PromptSave(SavePromptType::OPEN);
-			} else if (Input::IsKeyPressed(Key::Backslash)) {
-				DevEvent();
-			} else {
+		if (m_EditorParams->SceneState == SceneState::EDIT) {
+			if (m_OverrideEventReady) {
+				m_OverrideEventReady = false;
+				bool control = Input::IsKeyPressed(Key::LeftControl) || Input::IsKeyPressed(Key::RightControl);
+				bool shift = Input::IsKeyPressed(Key::LeftShift) || Input::IsKeyPressed(Key::RightShift);
+				if (control && shift && Input::IsKeyPressed(Key::S)) {
+					FileUtils::SaveSceneAs(m_EditorParams);
+					m_EditorParams->Time = 0;
+				}
+				else if (control && Input::IsKeyPressed(Key::S)) {
+					FileUtils::SaveScene(m_EditorParams);
+					m_EditorParams->Time = 0;
+				}
+				else if (control && Input::IsKeyPressed(Key::N)) {
+					PromptSave(SavePromptType::NEW);
+				}
+				else if (control && Input::IsKeyPressed(Key::O)) {
+					PromptSave(SavePromptType::OPEN);
+				}
+				else if (Input::IsKeyPressed(Key::Backslash)) {
+					DevEvent();
+				}
+				else {
+					m_OverrideEventReady = true;
+				}
+			}
+			else {
 				m_OverrideEventReady = true;
 			}
-		} else {
-			m_OverrideEventReady = true;
 		}
 	}
 
