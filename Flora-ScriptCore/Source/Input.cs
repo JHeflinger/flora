@@ -27,34 +27,6 @@ namespace Flora
         }
 
         /// <summary>
-        /// Determines if a specified key was just released. Note that the intention
-        /// of this function is to be called every frame, as it needs to track which
-        /// keys are being pressed to know when they are being released.
-        /// </summary>
-        /// <param name="keycode">The keycode that corresponds to the desired keyboard key</param>
-        /// <returns>true of the key was released, false otherwise</returns>
-        public static bool IsKeyReleased(KeyCode keycode)
-        {
-            bool outval;
-            if (m_KeyPressMap.TryGetValue(keycode, out outval))
-            {
-                if (IsKeyDown(keycode))
-                {
-                    m_KeyPressMap[keycode] = true;
-                    return false;
-                } else
-                {
-                    if (outval)
-                    {
-                        m_KeyPressMap[keycode] = false;
-                        return true;
-                    }
-                }
-            } else m_KeyPressMap[keycode] = false;
-            return false;
-        }
-
-        /// <summary>
         /// Determines if a specific mouse button is being pressed
         /// </summary>
         /// <param name="button">The mousecode that corresponds to the desired mouse button</param>
@@ -62,36 +34,6 @@ namespace Flora
         public static bool IsMouseButtonPressed(MouseCode button)
         {
             return InternalCalls.Input_IsMouseButtonPressed((int)button);
-        }
-
-        /// <summary>
-        /// Determines if a specified mouse button was just released. Note that the intention
-        /// of this function is to be called every frame, as it needs to track which
-        /// mouse buttons are being pressed to know when they are being released.
-        /// </summary>
-        /// <param name="button">The mousecode that corresponds to the desired mouse button</param>
-        /// <returns>true of the button was released, false otherwise</returns>
-        public static bool IsMouseButtonReleased(MouseCode button)
-        {
-            bool outval;
-            if (m_MousePressMap.TryGetValue(button, out outval))
-            {
-                if (IsMouseButtonPressed(button))
-                {
-                    m_MousePressMap[button] = true;
-                    return false;
-                }
-                else
-                {
-                    if (outval)
-                    {
-                        m_MousePressMap[button] = false;
-                        return true;
-                    }
-                }
-            }
-            else m_MousePressMap[button] = false;
-            return false;
         }
 
         /// <summary>
@@ -130,6 +72,85 @@ namespace Flora
         {
             InternalCalls.Input_GetMousePositionFromCamera(camera.ID, out Vector2 position);
             return position;
+        }
+    }
+
+    /// <summary>
+    /// This class is a local definition of the Input class. This class is specifically
+    /// geared for Key and Mouse release. This is because the engine stores key and mouse
+    /// activity on a frame-by-frame basis, so attempting to read when an input is released
+    /// can cause inaccurate outputs. To fix this, use this local class for each time you wish
+    /// to check for key and mouse releases.
+    /// </summary>
+    public class LocalInput
+    {
+        private Dictionary<KeyCode, bool> m_KeyPressMap;
+        private Dictionary<MouseCode, bool> m_MousePressMap;
+
+        public LocalInput()
+        {
+            m_KeyPressMap = new Dictionary<KeyCode, bool>();
+            m_MousePressMap = new Dictionary<MouseCode, bool>();
+        }
+
+        /// <summary>
+        /// Determines if a specified key was just released. Note that the intention
+        /// of this function is to be called every frame, as it needs to track which
+        /// keys are being pressed to know when they are being released.
+        /// </summary>
+        /// <param name="keycode">The keycode that corresponds to the desired keyboard key</param>
+        /// <returns>true of the key was released, false otherwise</returns>
+        public bool IsKeyReleased(KeyCode keycode)
+        {
+            bool outval;
+            if (m_KeyPressMap.TryGetValue(keycode, out outval))
+            {
+                if (Input.IsKeyDown(keycode))
+                {
+                    m_KeyPressMap[keycode] = true;
+                    return false;
+                }
+                else
+                {
+                    if (outval)
+                    {
+                        m_KeyPressMap[keycode] = false;
+                        return true;
+                    }
+                }
+            }
+            else m_KeyPressMap[keycode] = false;
+            return false;
+        }
+
+        /// <summary>
+        /// Determines if a specified mouse button was just released. Note that the intention
+        /// of this function is to be called every frame, as it needs to track which
+        /// mouse buttons are being pressed to know when they are being released.
+        /// </summary>
+        /// <param name="button">The mousecode that corresponds to the desired mouse button</param>
+        /// <returns>true of the button was released, false otherwise</returns>
+        public bool IsMouseButtonReleased(MouseCode button)
+        {
+            bool outval;
+            if (m_MousePressMap.TryGetValue(button, out outval))
+            {
+                if (Input.IsMouseButtonPressed(button))
+                {
+                    m_MousePressMap[button] = true;
+                    return false;
+                }
+                else
+                {
+                    if (outval)
+                    {
+                        m_MousePressMap[button] = false;
+                        return true;
+                    }
+                }
+            }
+            else m_MousePressMap[button] = false;
+            return false;
         }
     }
 }
