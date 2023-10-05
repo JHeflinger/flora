@@ -536,7 +536,7 @@ namespace Flora {
 					float frametime = 1.0f / ((float)src.FPS);
 					float maxtime = frametime * numFrames;
 					if (src.Time >= maxtime) src.Time = 0.0f;
-					src.CurrentFrame = 1 + (int)(src.Time / frametime);
+					src.CurrentFrame = src.StartFrame + (int)(src.Time / frametime);
 					src.FrameCounter = src.CurrentFrame - src.StartFrame;
 				}
 			} else DrawQuad(transform, src.Color, entityID);
