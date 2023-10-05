@@ -100,6 +100,7 @@ namespace Flora {
 		bool GetFieldValueInternal(const std::string& name, void* buffer);
 		bool SetFieldValueInternal(const std::string& name, const void* value);
 	private:
+		uint32_t m_Handle;
 		Ref<ScriptClass> m_ScriptClass;
 		MonoObject* m_Instance = nullptr;
 		MonoMethod* m_Constructor = nullptr;

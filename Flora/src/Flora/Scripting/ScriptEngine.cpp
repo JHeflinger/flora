@@ -302,11 +302,11 @@ namespace Flora {
 	}
 
 	void ScriptEngine::UpdateEntity(Entity entity, float ts) {
-		if (s_Data->EntityInstances.find((uint32_t)entity) != s_Data->EntityInstances.end()) {
-			Ref<ScriptInstance> instance = s_Data->EntityInstances[(uint32_t)entity];
-			instance->InvokeOnUpdate((float)ts);
-		} else {
-			FL_CORE_ERROR("Could not find ScriptInstance for entity {}", (uint32_t)entity);
+		if (GetSceneContext()->EntityExists(entity)) {
+			if (s_Data->EntityInstances.find((uint32_t)entity) != s_Data->EntityInstances.end()) {
+				Ref<ScriptInstance> instance = s_Data->EntityInstances[(uint32_t)entity];
+				instance->InvokeOnUpdate((float)ts);
+			} else FL_CORE_ERROR("Could not find ScriptInstance for entity {}", (uint32_t)entity);
 		}
 	}
 
@@ -356,7 +356,10 @@ namespace Flora {
 
 	MonoObject* ScriptClass::InvokeMethod(MonoObject* instance, MonoMethod* method, void** params) {
 		MonoObject* exception = nullptr;
-		return mono_runtime_invoke(method, instance, params, &exception);
+		MonoObject* obj =  mono_runtime_invoke(method, instance, params, &exception);
+		if (exception)
+			mono_print_unhandled_exception(exception);
+		return obj;
 	}
 
 	ScriptFieldMap& ScriptEngine::GetScriptFieldMap(Entity entity) {
@@ -377,20 +380,24 @@ namespace Flora {
 		uint32_t eid = (uint32_t)entity;
 		void* param = &eid;
 		m_ScriptClass->InvokeMethod(m_Instance, m_Constructor, &param);
+
+		// add handle to not remove
+		m_Handle = mono_gchandle_new(m_Instance, TRUE);
 	}
 
 	void ScriptInstance::InvokeOnCreate() {
 		if (m_OnCreateMethod)
 			m_ScriptClass->InvokeMethod(m_Instance, m_OnCreateMethod);
 		else
-			FL_CORE_WARN("Create method is missing");
+			FL_CORE_ERROR("Create method is missing");
 	}
 
 	void ScriptInstance::InvokeOnDestroy() {
-		if (m_OnCreateMethod)
+		if (m_OnCreateMethod) {
 			m_ScriptClass->InvokeMethod(m_Instance, m_OnDestroyMethod);
-		else
-			FL_CORE_WARN("Destroy method is missing");
+			mono_gchandle_free(m_Handle);
+		} else
+			FL_CORE_ERROR("Destroy method is missing");
 	}
 
 	void ScriptInstance::InvokeOnUpdate(float ts) {
@@ -398,7 +405,7 @@ namespace Flora {
 			void* param = &ts;
 			m_ScriptClass->InvokeMethod(m_Instance, m_OnUpdateMethod, &param);
 		} else
-			FL_CORE_WARN("Update method is missing");
+			FL_CORE_ERROR("Update method is missing");
 	}
 
 	bool ScriptInstance::GetFieldValueInternal(const std::string& name, void* buffer) {
