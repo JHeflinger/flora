@@ -348,7 +348,7 @@ namespace Flora {
 		}
 		if (entity.HasComponent<ParentComponent>())
 			entity.GetComponent<ParentComponent>().Parent.GetComponent<ChildComponent>().RemoveChild(entity);
-		if (entity.HasComponent<ScriptComponent>())
+		if (entity.HasComponent<ScriptComponent>() && m_Running)
 			ScriptEngine::DestroyEntity(entity);
 		m_Registry.destroy(entity);
 	}
