@@ -96,6 +96,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ae6cc69f0402293231aad3ae77086154f" id="r_ae6cc69f0402293231aad3ae77086154f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_flora_1_1_entity.html#ae6cc69f0402293231aad3ae77086154f">AddChild</a> (<a class="el" href="class_flora_1_1_entity.html">Entity</a> entity)</td></tr>
 <tr class="memdesc:ae6cc69f0402293231aad3ae77086154f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a child to the Entity as a subentity. Note: this is the recommended way to create subentities as it ensures the ParentComponent and ChildComponents are safely handled and linked.  <br /></td></tr>
 <tr class="separator:ae6cc69f0402293231aad3ae77086154f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6fec12f4ca4b6141e1fb097902361ded" id="r_a6fec12f4ca4b6141e1fb097902361ded"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_flora_1_1_entity.html#a6fec12f4ca4b6141e1fb097902361ded">RemoveChild</a> (<a class="el" href="class_flora_1_1_entity.html">Entity</a> entity)</td></tr>
+<tr class="memdesc:a6fec12f4ca4b6141e1fb097902361ded"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes a child of this entity given the entity instance. Note that this functions off of the entity ID, so the entity only needs to have the correct ID of the intended child to remove in order for this to function properly.  <br /></td></tr>
+<tr class="separator:a6fec12f4ca4b6141e1fb097902361ded"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac7f4e0ceab5b06e2cb16aaca11d7cb77" id="r_ac7f4e0ceab5b06e2cb16aaca11d7cb77"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_flora_1_1_entity.html">Entity</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_flora_1_1_entity.html#ac7f4e0ceab5b06e2cb16aaca11d7cb77">FindChild</a> (string name)</td></tr>
 <tr class="memdesc:ac7f4e0ceab5b06e2cb16aaca11d7cb77"><td class="mdescLeft">&#160;</td><td class="mdescRight">Finds a child of this Entity given the name of the Entity (Tag from the TagComponent). Note: children tags are not enforced to be unique. This will only return the first found child that has the given name.  <br /></td></tr>
 <tr class="separator:ac7f4e0ceab5b06e2cb16aaca11d7cb77"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -114,6 +117,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a9b4920f9ffe434e51bbeffa70d779048" id="r_a9b4920f9ffe434e51bbeffa70d779048"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_flora_1_1_entity.html#a9b4920f9ffe434e51bbeffa70d779048">AddComponent&lt; T &gt;</a> ()</td></tr>
 <tr class="memdesc:a9b4920f9ffe434e51bbeffa70d779048"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a new given component given the component type. Note: remember that entities exist in the backend beyond the script engine! This function will directly access the Entity in the backend, assigning it a new component.  <br /></td></tr>
 <tr class="separator:a9b4920f9ffe434e51bbeffa70d779048"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7343095ee06d418018b8da18b6e9af46" id="r_a7343095ee06d418018b8da18b6e9af46"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_flora_1_1_entity.html#a7343095ee06d418018b8da18b6e9af46">RemoveComponent&lt; T &gt;</a> ()</td></tr>
+<tr class="memdesc:a7343095ee06d418018b8da18b6e9af46"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes a given component from the entity.  <br /></td></tr>
+<tr class="separator:a7343095ee06d418018b8da18b6e9af46"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6a5e60beba466c4662b618738215c8c0" id="r_a6a5e60beba466c4662b618738215c8c0"><td class="memItemLeft" align="right" valign="top">T&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_flora_1_1_entity.html#a6a5e60beba466c4662b618738215c8c0">GetComponent&lt; T &gt;</a> ()</td></tr>
 <tr class="memdesc:a6a5e60beba466c4662b618738215c8c0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets a component from the Entity given its type. If it does not have that component, return null. Note: components are also in the flora backend, existing beyond the script engine! Treat this component as you would a reference to the backend component.  <br /></td></tr>
 <tr class="separator:a6a5e60beba466c4662b618738215c8c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -519,6 +525,67 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true of the Entity has the component, false otherwise</dd></dl>
+<div class="typeconstraint">
+<dl><dt><b>Type Constraints</b></dt><dd>
+<table border="0" cellspacing="2" cellpadding="0">
+<tr><td valign="top"><em>T</em></td><td>&#160;:</td><td valign="top"><em>Component</em></td><td>&#160;</td></tr>
+<tr><td valign="top"><em>T</em></td><td>&#160;:</td><td valign="top"><em>new()</em></td><td>&#160;</td></tr>
+</table>
+</dd>
+</dl>
+</div>
+
+</div>
+</div>
+<a id="a6fec12f4ca4b6141e1fb097902361ded" name="a6fec12f4ca4b6141e1fb097902361ded"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6fec12f4ca4b6141e1fb097902361ded">&#9670;&#160;</a></span>RemoveChild()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Flora.Entity.RemoveChild </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_flora_1_1_entity.html">Entity</a>&#160;</td>
+          <td class="paramname"><em>entity</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Removes a child of this entity given the entity instance. Note that this functions off of the entity ID, so the entity only needs to have the correct ID of the intended child to remove in order for this to function properly. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">entity</td><td>The entity to remove</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if successfully removed, false otherwise</dd></dl>
+
+</div>
+</div>
+<a id="a7343095ee06d418018b8da18b6e9af46" name="a7343095ee06d418018b8da18b6e9af46"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7343095ee06d418018b8da18b6e9af46">&#9670;&#160;</a></span>RemoveComponent&lt; T &gt;()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Flora.Entity.RemoveComponent&lt; T &gt; </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Removes a given component from the entity. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td>the type of the component</td></tr>
+  </table>
+  </dd>
+</dl>
 <div class="typeconstraint">
 <dl><dt><b>Type Constraints</b></dt><dd>
 <table border="0" cellspacing="2" cellpadding="0">

@@ -105,6 +105,27 @@ namespace Flora
         }
 
         /// <summary>
+        /// Removes a child of this entity given the entity instance. Note
+        /// that this functions off of the entity ID, so the entity only needs to 
+        /// have the correct ID of the intended child to remove in order for this 
+        /// to function properly.
+        /// </summary>
+        /// <param name="entity">The entity to remove</param>
+        /// <returns>true if successfully removed, false otherwise</returns>
+        public bool RemoveChild(Entity entity)
+        {
+            if (HasComponent<ChildComponent>())
+                if (entity.HasComponent<ParentComponent>())
+                    if (entity.GetComponent<ParentComponent>().Parent.ID == this.ID)
+                    {
+                        GetComponent<ChildComponent>().RemoveChild(entity);
+                        entity.RemoveComponent<ParentComponent>();
+                        return true;
+                    }
+            return false;
+        }
+
+        /// <summary>
         /// Finds a child of this Entity given the name of the Entity (Tag from the TagComponent).
         /// Note: children tags are not enforced to be unique. This will only return the first found
         /// child that has the given name.
@@ -189,6 +210,19 @@ namespace Flora
         {
             Type componentType = typeof(T);
             InternalCalls.Entity_AddComponent(ID, componentType);
+        }
+
+        /// <summary>
+        /// Removes a given component from the entity.
+        /// </summary>
+        /// <typeparam name="T">the type of the component</typeparam>
+        public void RemoveComponent<T>() where T : Component, new()
+        {
+            if (HasComponent<T>())
+            {
+                Type componentType = typeof(T);
+                InternalCalls.Entity_RemoveComponent(ID, componentType);
+            }
         }
 
         /// <summary>

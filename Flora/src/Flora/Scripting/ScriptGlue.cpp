@@ -18,6 +18,7 @@ namespace Flora {
 
 	static std::unordered_map<MonoType*, std::function<bool(Entity)>> s_HasComponentFunctions;
 	static std::unordered_map<MonoType*, std::function<void(Entity)>> s_AddComponentFunctions;
+	static std::unordered_map<MonoType*, std::function<void(Entity)>> s_RemoveComponentFunctions;
 
 	static Entity GetValidatedEntityFromID(uint32_t eid) {
 		Scene* scene = ScriptEngine::GetSceneContext();
@@ -79,6 +80,13 @@ namespace Flora {
 		MonoType* monoComponentType = mono_reflection_type_get_type(componentType);
 		FL_CORE_ASSERT(s_AddComponentFunctions.find(monoComponentType) != s_AddComponentFunctions.end());
 		s_AddComponentFunctions.at(monoComponentType)(entity);
+	}
+
+	static void Entity_RemoveComponent(uint32_t eid, MonoReflectionType* componentType) {
+		Entity entity = GetValidatedEntityFromID(eid);
+		MonoType* monoComponentType = mono_reflection_type_get_type(componentType);
+		FL_CORE_ASSERT(s_RemoveComponentFunctions.find(monoComponentType) != s_RemoveComponentFunctions.end());
+		s_RemoveComponentFunctions.at(monoComponentType)(entity);
 	}
 
 	static int64_t Entity_FindEntityByName(MonoString* name) {
@@ -833,6 +841,7 @@ namespace Flora {
 		FL_ADD_INTERNAL_CALL(Input_IsKeyDown);
 		FL_ADD_INTERNAL_CALL(Entity_HasComponent);
 		FL_ADD_INTERNAL_CALL(Entity_AddComponent);
+		FL_ADD_INTERNAL_CALL(Entity_RemoveComponent);
 		FL_ADD_INTERNAL_CALL(Entity_FindEntityByName);
 		FL_ADD_INTERNAL_CALL(Entity_GetScriptInstance);
 		FL_ADD_INTERNAL_CALL(Input_IsMouseButtonPressed);
@@ -996,6 +1005,7 @@ namespace Flora {
 			}
 			s_HasComponentFunctions[managedType] = [](Entity entity) { return entity.HasComponent<Component>(); };
 			s_AddComponentFunctions[managedType] = [](Entity entity) { entity.AddComponent<Component>(); };
+			s_RemoveComponentFunctions[managedType] = [](Entity entity) { entity.RemoveComponent<Component>(); };
 		}(), ...);
 	}
 
