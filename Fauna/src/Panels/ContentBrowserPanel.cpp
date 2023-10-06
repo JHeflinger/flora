@@ -100,6 +100,7 @@ namespace Flora {
 				else if (path.extension().string() == ".flora")
 					RequestOpenScene(path.string());
 				else if (path.extension().string() == ".cs") {
+					m_EditorContext->Project->RegenerateScriptingProject();
 					std::string project_path = "\\scripting\\" + m_EditorContext->Project->GetConfig().Name + ".sln";
 					if (FileUtils::ShellOpen(project_path) <= 32)
 						FL_CORE_ERROR("Could not open associated visual studio project file \"" + project_path + "\"");
