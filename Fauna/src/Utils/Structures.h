@@ -65,5 +65,8 @@ namespace Flora {
 		float AxisMinimum = 0.0f;
 		bool ShowGraphKey = true;
 		std::map<Stats, bool> ShowStatMap;
+
+		// crash detection
+		bool Crashed = false;
 	};
 }

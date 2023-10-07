@@ -5,13 +5,14 @@
 #include "Flora/Scripting/ScriptEngine.h"
 
 namespace Flora {
-	std::string EditorSerializer::Serialize(Ref<EditorParams> params) {
+	std::string EditorSerializer::Serialize(Ref<EditorParams> params, bool safeclose) {
 		int selectedEntity = -1;
 		if (params->SelectedEntity)
 			selectedEntity = (int)(uint32_t)params->SelectedEntity;
 
 		YAML::Emitter out;
 		out << YAML::BeginMap;
+		out << YAML::Key << "Crashed" << YAML::Value << !safeclose;
 		out << YAML::Key << "Project Filepath" << YAML::Value << params->ProjectFilepath;
 		out << YAML::Key << "Scene Filepath" << YAML::Value << params->ActiveScene->GetSceneFilepath();
 		out << YAML::Key << "Selected Entity" << YAML::Value << selectedEntity;
@@ -91,6 +92,9 @@ namespace Flora {
 			!data["Closed Panels"] ||
 			!data["Stat Panel Settings"])
 			return false;
+
+		if (data["Crashed"])
+			params->Crashed = data["Crashed"].as<bool>();
 
 		// set up project
 		std::string projectFilepath = data["Project Filepath"].as<std::string>();

@@ -228,6 +228,9 @@ namespace Flora {
 		// Prompt Errors
 		RenderErrorPrompt();
 
+		// Render system prompt
+		RenderSystemPrompt();
+
 		ImGui::End();
 	}
 
@@ -296,7 +299,7 @@ namespace Flora {
 
 	void EditorLayer::ProcessWindowClose() {
 		// Save editor settings
-		FileUtils::SaveEditor(m_EditorParams);
+		FileUtils::SaveEditor(m_EditorParams, true);
 		FL_CORE_INFO("Saved editor settings");
 
 		// Prompt save
@@ -436,6 +439,32 @@ namespace Flora {
 				break;
 			}
 			m_SavePromptType = SavePromptType::NONE;
+		}
+	}
+
+	void EditorLayer::RenderSystemPrompt() {
+		if (m_SystemPromptType == SystemPromptType::CRASH) {
+			ImGui::OpenPopup("CRASH GUARD");
+			ImVec2 center = ImGui::GetMainViewport()->GetCenter();
+			ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
+			if (ImGui::BeginPopupModal("CRASH GUARD", NULL, ImGuiWindowFlags_AlwaysAutoResize)) {
+				ImGui::SetItemDefaultFocus();
+				ImGui::Text("Detected that previous session crashed during simulation.");
+				ImGui::Text("Would you like to restore the previously cached scene state?\n\n");
+				ImGui::Separator();
+				ImGui::Dummy({ 0, 3 });
+				if (ImGui::Button("YES", { 60, 25 })) {
+					FileUtils::OpenTempScene(m_EditorParams);
+					ImGui::CloseCurrentPopup();
+					m_SystemPromptType = SystemPromptType::NONE;
+				}
+				ImGui::SameLine();
+				if (ImGui::Button("NO", { 60, 25 })) {
+					ImGui::CloseCurrentPopup();
+					m_SystemPromptType = SystemPromptType::NONE;
+				}
+				ImGui::EndPopup();
+			}
 		}
 	}
 
@@ -596,7 +625,11 @@ namespace Flora {
 			auto sceneFilePath = commandLineArgs[1];
 			Serializer::DeserializeScene(m_EditorParams->ActiveScene, sceneFilePath);
 		}
-		else FileUtils::LoadEditor(m_EditorParams);
+		else {
+			FileUtils::LoadEditor(m_EditorParams);
+			if (m_EditorParams->Crashed) m_SystemPromptType = SystemPromptType::CRASH;
+			FileUtils::SaveEditor(m_EditorParams); //note that we save editor here to default it to expecting a crash
+		}
 
 		// Close panels
 		for (int i = 0; i < m_EditorParams->ClosedPanels.size(); i++)

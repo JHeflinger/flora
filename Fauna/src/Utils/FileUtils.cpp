@@ -69,14 +69,14 @@ namespace Flora {
 	void FileUtils::SaveTempScene(Ref<EditorParams> context) {
 		std::string sceneContent = Serializer::SerializeScene(context->ActiveScene);
 		Serializer::SerializeFile(sceneContent, "Resources/Temp/tempScene.flora");
-		std::string editorContent = EditorSerializer::Serialize(context);
+		std::string editorContent = EditorSerializer::Serialize(context, false);
 		Serializer::SerializeFile(editorContent, "Resources/Temp/tempEditorSettings.fnproj");
 	}
 
 	void FileUtils::OpenTempScene(Ref<EditorParams> context) {
 		bool entitySelected = context->SelectedEntity;
 		uint32_t selectedEntityID = context->SelectedEntity;
-		EditorSerializer::Deserialize(context, "Resources/Temp/tempEditorSettings.fnproj");
+		EditorSerializer::Deserialize(context, "Resources/Temp/tempEditorSettings.fnproj"); //TODO: should probably do a check to see if this exists just in case?
 		std::string sceneFilepath = context->ActiveScene->GetSceneFilepath();
 		NewScene(context);
 		context->ActiveScene->SetSceneFilepath(sceneFilepath);
@@ -92,7 +92,7 @@ namespace Flora {
 		context->ActiveScene->SetSceneFilepath(path.string());
 		context->SelectedEntity = {};
 		Serializer::DeserializeScene(context->ActiveScene, path.string());
-		std::string editorContent = EditorSerializer::Serialize(context);
+		std::string editorContent = EditorSerializer::Serialize(context, false);
 		Serializer::SerializeFile(editorContent, "Resources/Settings/fauna.fnproj");
 	}
 
@@ -197,8 +197,8 @@ namespace Flora {
 		}
 	}
 
-	void FileUtils::SaveEditor(Ref<EditorParams> context) {
-		Serializer::SerializeFile(EditorSerializer::Serialize(context), "Resources/Settings/fauna.fnproj"); 
+	void FileUtils::SaveEditor(Ref<EditorParams> context, bool safeclose) {
+		Serializer::SerializeFile(EditorSerializer::Serialize(context, safeclose), "Resources/Settings/fauna.fnproj"); 
 	}
 
 	void FileUtils::LoadEditor(Ref<EditorParams> context) {

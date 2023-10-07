@@ -58,6 +58,8 @@ TODO:
 
 	- label component
 
+	- multi-threaded auto saving
+
 	- circle physics collider visual consistent line width
 
 1.0 RELEASE:
@@ -135,6 +137,8 @@ TODO:
 	- highlight selected entity probably shouldnt be white
 
 	- highlight selected entity doesnt take in account sub entities
+
+	- clicking on entity before pressing enter on a field can effect that entity despite it being supposed to be assigned to the entity prior to clicking on a new one
 
 
 IN PROGRESS:
