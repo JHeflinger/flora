@@ -12,6 +12,18 @@ namespace Flora
     public class FMath
     {
         /// <summary>
+        /// Normalizes a Vector2 so its magnitude has a value of 1.
+        /// </summary>
+        /// <param name="vector">the vector to normalize</param>
+        /// <returns>the normalized vector</returns>
+        public static Vector2 Normalize(Vector2 vector)
+        {
+            double magnitude = Math.Sqrt(vector.X * vector.X + vector.Y * vector.Y);
+            if (magnitude == 0) return new Vector2(0.0f);
+            return vector * (1.0f / (float)magnitude);
+        }
+
+        /// <summary>
         /// Returns a radian value given a degree value
         /// </summary>
         /// <param name="degrees">given degrees</param>
