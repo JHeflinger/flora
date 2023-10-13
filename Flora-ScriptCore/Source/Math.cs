@@ -12,13 +12,23 @@ namespace Flora
     public class FMath
     {
         /// <summary>
+        /// Calculates the magnitude of a vector2
+        /// </summary>
+        /// <param name="vector">the vector2 to calculate</param>
+        /// <returns>the magnitude</returns>
+        public static float Magnitude(Vector2 vector)
+        {
+            return (float)Math.Sqrt(vector.X * vector.X + vector.Y * vector.Y);
+        }
+
+        /// <summary>
         /// Normalizes a Vector2 so its magnitude has a value of 1.
         /// </summary>
         /// <param name="vector">the vector to normalize</param>
         /// <returns>the normalized vector</returns>
         public static Vector2 Normalize(Vector2 vector)
         {
-            double magnitude = Math.Sqrt(vector.X * vector.X + vector.Y * vector.Y);
+            double magnitude = Magnitude(vector);
             if (magnitude == 0) return new Vector2(0.0f);
             return vector * (1.0f / (float)magnitude);
         }
