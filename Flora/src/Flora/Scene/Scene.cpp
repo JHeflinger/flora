@@ -41,7 +41,7 @@ namespace Flora {
 		glm::vec3 translation, rotation, scale;
 		Math::DecomposeTransform(transform, translation, rotation, scale);
 		b2Body* body = entity.GetComponent<RigidBody2DComponent>().RuntimeBody;
-		const auto& position = body->GetPosition();
+		auto& position = body->GetPosition();
 		translation.x = position.x;
 		translation.y = position.y;
 		rotation.z = body->GetAngle();

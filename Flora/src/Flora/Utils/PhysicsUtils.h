@@ -9,7 +9,8 @@
 namespace Flora {
 	class PhysicsUtils {
 	public:
-		static void WarpBody(b2Body* body, glm::vec2 vector, float rotation = 0);
+		static void WarpBody(b2Body* body, glm::vec2 vector);
+		static void WarpBody(b2Body* body, glm::vec2 vector, float rotation);
 		static void ApplyForce(b2Body* body, glm::vec2 vector, glm::vec2 offset = { 0, 0 });
 		static void ApplyImpulse(b2Body* body, glm::vec2 vector, glm::vec2 offset = { 0, 0 });
 		static void ApplyTorque(b2Body* body, float rotation);
