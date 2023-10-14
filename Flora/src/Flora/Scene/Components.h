@@ -157,6 +157,7 @@ namespace Flora {
 		BodyType Type = BodyType::STATIC;
 		bool FixedRotation = false;
 		b2Body* RuntimeBody = nullptr;
+		int64_t Collision = -1;
 		RigidBody2DComponent() = default;
 		RigidBody2DComponent(const RigidBody2DComponent& other) {
 			Type = other.Type;

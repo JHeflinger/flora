@@ -32,6 +32,11 @@ namespace Flora {
 		glm::mat4 transform = tc.GetTransform();
 		if (useTransformRef) transform = refTransform * transform;
 
+		//initialize anything if needed
+		InitializeRigidBody(entity);
+		InitializeBoxCollider(entity);
+		InitializeCircleCollider(entity);
+
 		//calculate new transform and set it based on physics
 		glm::vec3 translation, rotation, scale;
 		Math::DecomposeTransform(transform, translation, rotation, scale);
@@ -48,16 +53,6 @@ namespace Flora {
 		tc.Rotation.z = rotation.z;
 		//tc.Scale = scale;
 
-		//for debugging, but could be extended to view hitboxes
-		if (false) {
-			Entity cameraEntity = Entity{ (entt::entity)(uint32_t)m_PrimaryCameraHandle, this };
-			Camera* primaryCamera = &(cameraEntity.GetComponent<CameraComponent>().Camera);
-			glm::mat4 cameraTransform = cameraEntity.GetComponent<TransformComponent>().GetTransform();
-			Renderer2D::BeginScene(primaryCamera->GetProjection(), cameraTransform);
-			Renderer2D::DrawQuad(newTransform, { 1, 1, 1, 1 }, (int)(uint32_t)entity);
-			Renderer2D::EndScene();
-		}
-
 		//simulate children entities
 		if (entity.HasComponent<ChildComponent>()) {
 			std::vector<Entity> children = entity.GetComponent<ChildComponent>().Children;
@@ -66,6 +61,71 @@ namespace Flora {
 					bool useParentTransform = children[i].GetComponent<ParentComponent>().InheritAll || (!children[i].GetComponent<ParentComponent>().InheritAll && children[i].GetComponent<ParentComponent>().InheritTransform);
 					SimulateEntityPhysics(children[i], useParentTransform, transform);
 				}
+			}
+		}
+	}
+
+	void Scene::InitializeRigidBody(Entity& entity) {
+		if (entity.HasComponent<RigidBody2DComponent>()) {
+			if (entity.GetComponent<RigidBody2DComponent>().RuntimeBody == nullptr) {
+				glm::mat4 transform = ComponentUtils::GetWorldTransform(entity);
+				glm::vec3 translation, rotation, scale;
+				Math::DecomposeTransform(transform, translation, rotation, scale);
+				auto& rb2d = entity.GetComponent<RigidBody2DComponent>();
+				b2BodyDef bodyDef;
+				bodyDef.type = (b2BodyType)rb2d.Type;
+				bodyDef.position.Set(translation.x, translation.y);
+				bodyDef.angle = rotation.z;
+				b2Body* body = m_PhysicsWorld->CreateBody(&bodyDef);
+				body->SetFixedRotation(rb2d.FixedRotation);
+				rb2d.RuntimeBody = body;
+			}
+		}
+	}
+
+	void Scene::InitializeBoxCollider(Entity& entity) {
+		if (entity.HasComponent<BoxCollider2DComponent>()) {
+			if (entity.GetComponent<BoxCollider2DComponent>().RuntimeFixture == nullptr) {
+				glm::mat4 transform = ComponentUtils::GetWorldTransform(entity);
+				glm::vec3 translation, rotation, scale;
+				Math::DecomposeTransform(transform, translation, rotation, scale);
+				auto& bc2d = entity.GetComponent<BoxCollider2DComponent>();
+				b2PolygonShape polygonShape;
+				polygonShape.SetAsBox(scale.x * bc2d.Size.x, scale.y * bc2d.Size.y);
+				b2FixtureDef fixtureDef;
+				fixtureDef.shape = &polygonShape;
+				fixtureDef.density = bc2d.Density;
+				fixtureDef.friction = bc2d.Friction;
+				fixtureDef.restitution = bc2d.Restitution;
+				fixtureDef.restitutionThreshold = bc2d.RestitutionThreshold;
+				b2Body* body = entity.GetComponent<RigidBody2DComponent>().RuntimeBody;
+				b2Fixture* fixture = body->CreateFixture(&fixtureDef);
+				bc2d.RuntimeFixture = fixture;
+				m_Fixturemap[fixture] = entity;
+			}
+		}
+	}
+
+	void Scene::InitializeCircleCollider(Entity& entity) {
+		if (entity.HasComponent<CircleCollider2DComponent>()) {
+			if (entity.GetComponent<CircleCollider2DComponent>().RuntimeFixture == nullptr) {
+				glm::mat4 transform = ComponentUtils::GetWorldTransform(entity);
+				glm::vec3 translation, rotation, scale;
+				Math::DecomposeTransform(transform, translation, rotation, scale);
+				auto& cc2d = entity.GetComponent<CircleCollider2DComponent>();
+				b2CircleShape circleShape;
+				circleShape.m_p.Set(cc2d.Offset.x, cc2d.Offset.y);
+				circleShape.m_radius = scale.x * cc2d.Radius;
+				b2FixtureDef fixtureDef;
+				fixtureDef.shape = &circleShape;
+				fixtureDef.density = cc2d.Density;
+				fixtureDef.friction = cc2d.Friction;
+				fixtureDef.restitution = cc2d.Restitution;
+				fixtureDef.restitutionThreshold = cc2d.RestitutionThreshold;
+				b2Body* body = entity.GetComponent<RigidBody2DComponent>().RuntimeBody;
+				b2Fixture* fixture = body->CreateFixture(&fixtureDef);
+				cc2d.RuntimeFixture = fixture;
+				m_Fixturemap[fixture] = entity;
 			}
 		}
 	}
@@ -81,46 +141,9 @@ namespace Flora {
 		auto view = m_Registry.view<RigidBody2DComponent>();
 		for (auto e : view) {
 			Entity entity = { e, this };
-			glm::mat4 transform = ComponentUtils::GetWorldTransform(entity);
-			glm::vec3 translation, rotation, scale;
-			Math::DecomposeTransform(transform, translation, rotation, scale);
-			auto& rb2d = entity.GetComponent<RigidBody2DComponent>();
-			b2BodyDef bodyDef;
-			bodyDef.type = (b2BodyType)rb2d.Type;
-			bodyDef.position.Set(translation.x, translation.y);
-			bodyDef.angle = rotation.z;
-			b2Body* body = m_PhysicsWorld->CreateBody(&bodyDef);
-			body->SetFixedRotation(rb2d.FixedRotation);
-			rb2d.RuntimeBody = body;
-
-			if (entity.HasComponent<BoxCollider2DComponent>()) {
-				auto& bc2d = entity.GetComponent<BoxCollider2DComponent>();
-				b2PolygonShape polygonShape;
-				polygonShape.SetAsBox(scale.x * bc2d.Size.x, scale.y * bc2d.Size.y);
-				b2FixtureDef fixtureDef;
-				fixtureDef.shape = &polygonShape;
-				fixtureDef.density = bc2d.Density;
-				fixtureDef.friction = bc2d.Friction;
-				fixtureDef.restitution = bc2d.Restitution;
-				fixtureDef.restitutionThreshold = bc2d.RestitutionThreshold;
-				b2Fixture* fixture = body->CreateFixture(&fixtureDef);
-				bc2d.RuntimeFixture = fixture;
-			}
-
-			if (entity.HasComponent<CircleCollider2DComponent>()) {
-				auto& cc2d = entity.GetComponent<CircleCollider2DComponent>();
-				b2CircleShape circleShape;
-				circleShape.m_p.Set(cc2d.Offset.x, cc2d.Offset.y);
-				circleShape.m_radius = scale.x * cc2d.Radius;
-				b2FixtureDef fixtureDef;
-				fixtureDef.shape = &circleShape;
-				fixtureDef.density = cc2d.Density;
-				fixtureDef.friction = cc2d.Friction;
-				fixtureDef.restitution = cc2d.Restitution;
-				fixtureDef.restitutionThreshold = cc2d.RestitutionThreshold;
-				b2Fixture* fixture = body->CreateFixture(&fixtureDef);
-				cc2d.RuntimeFixture = fixture;
-			}
+			InitializeRigidBody(entity);
+			InitializeBoxCollider(entity);
+			InitializeCircleCollider(entity);
 		}
 	}
 
@@ -346,6 +369,8 @@ namespace Flora {
 				DestroyEntity(children[i]);
 			}
 		}
+		if (entity.HasComponent<BoxCollider2DComponent>()) m_Fixturemap.erase((b2Fixture*)entity.GetComponent<BoxCollider2DComponent>().RuntimeFixture);
+		if (entity.HasComponent<CircleCollider2DComponent>()) m_Fixturemap.erase((b2Fixture*)entity.GetComponent<CircleCollider2DComponent>().RuntimeFixture);
 		if (entity.HasComponent<ParentComponent>())
 			entity.GetComponent<ParentComponent>().Parent.GetComponent<ChildComponent>().RemoveChild(entity);
 		if (entity.HasComponent<ScriptComponent>() && m_Running)
@@ -408,8 +433,21 @@ namespace Flora {
 		auto view = m_Registry.view<RigidBody2DComponent>();
 		for (auto e : view) {
 			Entity physEntity = Entity{ e, this };
+			physEntity.GetComponent<RigidBody2DComponent>().Collision = -1;
 			if (!physEntity.HasComponent<ParentComponent>())
 				SimulateEntityPhysics(physEntity);
+		}
+
+		// Iterate through all the contacts 
+		b2Contact* contact = m_PhysicsWorld->GetContactList();
+		while (contact) {
+			Entity e1 = m_Fixturemap[contact->GetFixtureA()];
+			Entity e2 = m_Fixturemap[contact->GetFixtureB()];
+			if (EntityExists(e1) && EntityExists(e2)) {
+				e1.GetComponent<RigidBody2DComponent>().Collision = (int64_t)((uint32_t)(e2));
+				e2.GetComponent<RigidBody2DComponent>().Collision = (int64_t)((uint32_t)(e1));
+			}
+			contact = contact->GetNext();
 		}
 	}
 

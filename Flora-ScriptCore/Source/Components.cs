@@ -312,6 +312,21 @@ namespace Flora
         }
 
         /// <summary>
+        /// The entity that this rigid body is colliding with. If there is no collision,
+        /// this will be null. Note that this is a readonly value, as the developer cannot
+        /// enforce a collision by setting this.
+        /// </summary>
+        public Entity Collision
+        {
+            get
+            {
+                long interim = InternalCalls.RigidBody2DComponent_GetCollision(Entity.ID);
+                if (interim < 0) return null;
+                return new Entity((uint)interim);
+            }
+        }
+
+        /// <summary>
         /// The type of of the rigid body; controls whether the body can be moved and
         /// if it can be affected by outside forces. For more info, see the documentation
         /// on BodyType.

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['trace_0',['Trace',['../class_flora_1_1_developer.html#ab7d8e3a42752015c6c79808b611686aa',1,'Flora::Developer']]]
+  ['sendcommand_0',['SendCommand',['../class_flora_1_1_developer.html#a75494a9ebec2c6dd3b91c4f54fae1b07',1,'Flora::Developer']]]
 ];

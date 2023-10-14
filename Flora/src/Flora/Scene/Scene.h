@@ -3,6 +3,7 @@
 #include "Flora/Core/Timestep.h"
 #include "Flora/Renderer/EditorCamera.h"
 #include "Flora/Core/AssetManager.h"
+#include "Flora/Utils/PhysicsUtils.h"
 
 class b2World;
 
@@ -77,6 +78,9 @@ namespace Flora {
 	private:
 		void DrawEntitySprite(Timestep ts, Entity& entity, bool useTransformRef = false, glm::mat4 refTransform = glm::mat4(0.0f), bool useParentVis = false, bool parentVis = true);
 		void SimulateEntityPhysics(Entity& entity, bool useTransformRef = false, glm::mat4 refTransform = glm::mat4(0.0f));
+		void InitializeRigidBody(Entity& entity);
+		void InitializeBoxCollider(Entity& entity);
+		void InitializeCircleCollider(Entity& entity);
 	private:
 		entt::registry m_Registry;
 		uint32_t m_ViewportWidth, m_ViewportHeight = 0;
@@ -93,6 +97,7 @@ namespace Flora {
 		int32_t m_PhysicsVelocityIterations = 6;
 		int32_t m_PhysicsPositionIterations = 2;
 		uint32_t m_StepFrames = 0;
+		std::unordered_map<b2Fixture*, Entity> m_Fixturemap;
 		friend class Entity;
 		friend class SceneHierarchyPanel;
 		friend class Serializer;

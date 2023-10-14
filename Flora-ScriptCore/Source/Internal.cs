@@ -136,6 +136,9 @@ namespace Flora
 		internal extern static void BoxCollider2DComponent_SetRestitutionThreshold(uint eid, float threshold);
 
 		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static long RigidBody2DComponent_GetCollision(uint eid);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
 		internal extern static void RigidBody2DComponent_SetTranslation(uint eid, ref Vector2 translation);
 
 		[MethodImplAttribute(MethodImplOptions.InternalCall)]
