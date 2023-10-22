@@ -3,6 +3,8 @@
 bin-int/
 **/Intermediates/
 **/Debug/
+**.dll
+**.pdb
 
 # VS files and folders
 .vs/
