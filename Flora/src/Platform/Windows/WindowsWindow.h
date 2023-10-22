@@ -16,6 +16,7 @@ namespace Flora {
 		void SetVSync(bool enabled) override;
 		bool IsVSync() const override;
 		inline virtual void* GetNativeWindow() const { return m_Window; }
+		void SetWindowIcon(const char* filepath) override;
 	private:
 		virtual void Init(const WindowProps& props);
 		virtual void Shutdown();
