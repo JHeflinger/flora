@@ -49,32 +49,104 @@
   <ItemGroup>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\..\ToI\Assets\Scripts\Enemies\E000.cs">
-      <Link>ToI\Assets\Scripts\Enemies\E000.cs</Link>
+    <Compile Include="..\..\..\ToI\Assets\Scripts\Behaviors\Enemy Behavior\BE000.cs">
+      <Link>ToI\Assets\Scripts\Behaviors\Enemy Behavior\BE000.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\ToI\Assets\Scripts\Behaviors\Spell Behavior\BS000.cs">
+      <Link>ToI\Assets\Scripts\Behaviors\Spell Behavior\BS000.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\ToI\Assets\Scripts\Enemies\Grunts\EG000.cs">
+      <Link>ToI\Assets\Scripts\Enemies\Grunts\EG000.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\ToI\Assets\Scripts\Enemies\Grunts\EG001.cs">
+      <Link>ToI\Assets\Scripts\Enemies\Grunts\EG001.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\ToI\Assets\Scripts\Enemies\Grunts\EG002.cs">
+      <Link>ToI\Assets\Scripts\Enemies\Grunts\EG002.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\ToI\Assets\Scripts\Enemies\Grunts\EG003.cs">
+      <Link>ToI\Assets\Scripts\Enemies\Grunts\EG003.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\ToI\Assets\Scripts\Enemies\Grunts\EG004.cs">
+      <Link>ToI\Assets\Scripts\Enemies\Grunts\EG004.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\ToI\Assets\Scripts\Enemies\Grunts\EG005.cs">
+      <Link>ToI\Assets\Scripts\Enemies\Grunts\EG005.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\ToI\Assets\Scripts\Global\Behavior.cs">
+      <Link>ToI\Assets\Scripts\Global\Behavior.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\ToI\Assets\Scripts\Global\Catalyst.cs">
+      <Link>ToI\Assets\Scripts\Global\Catalyst.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\ToI\Assets\Scripts\Global\Core.cs">
+      <Link>ToI\Assets\Scripts\Global\Core.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\ToI\Assets\Scripts\Global\Enemy.cs">
+      <Link>ToI\Assets\Scripts\Global\Enemy.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\ToI\Assets\Scripts\Global\Fragment.cs">
+      <Link>ToI\Assets\Scripts\Global\Fragment.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\ToI\Assets\Scripts\Global\InputController.cs">
+      <Link>ToI\Assets\Scripts\Global\InputController.cs</Link>
     </Compile>
     <Compile Include="..\..\..\ToI\Assets\Scripts\Global\Interactable.cs">
       <Link>ToI\Assets\Scripts\Global\Interactable.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\ToI\Assets\Scripts\Global\Inventory.cs">
-      <Link>ToI\Assets\Scripts\Global\Inventory.cs</Link>
-    </Compile>
     <Compile Include="..\..\..\ToI\Assets\Scripts\Global\Item.cs">
       <Link>ToI\Assets\Scripts\Global\Item.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\ToI\Assets\Scripts\Global\Nature.cs">
+      <Link>ToI\Assets\Scripts\Global\Nature.cs</Link>
     </Compile>
     <Compile Include="..\..\..\ToI\Assets\Scripts\Global\Player.cs">
       <Link>ToI\Assets\Scripts\Global\Player.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\ToI\Assets\Scripts\Items\Cores\C000.cs">
-      <Link>ToI\Assets\Scripts\Items\Cores\C000.cs</Link>
+    <Compile Include="..\..\..\ToI\Assets\Scripts\Global\Projectile.cs">
+      <Link>ToI\Assets\Scripts\Global\Projectile.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\ToI\Assets\Scripts\Items\Ingredients\I000.cs">
-      <Link>ToI\Assets\Scripts\Items\Ingredients\I000.cs</Link>
+    <Compile Include="..\..\..\ToI\Assets\Scripts\Global\Structures.cs">
+      <Link>ToI\Assets\Scripts\Global\Structures.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\ToI\Assets\Scripts\Items\Ingredients\I001.cs">
-      <Link>ToI\Assets\Scripts\Items\Ingredients\I001.cs</Link>
+    <Compile Include="..\..\..\ToI\Assets\Scripts\Global\UserInterface.cs">
+      <Link>ToI\Assets\Scripts\Global\UserInterface.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\ToI\Assets\Scripts\Items\Cores\IC000.cs">
+      <Link>ToI\Assets\Scripts\Items\Cores\IC000.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\ToI\Assets\Scripts\Items\Fragments\IF000.cs">
+      <Link>ToI\Assets\Scripts\Items\Fragments\IF000.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\ToI\Assets\Scripts\Items\Fragments\IF001.cs">
+      <Link>ToI\Assets\Scripts\Items\Fragments\IF001.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\ToI\Assets\Scripts\Natures\N000.cs">
+      <Link>ToI\Assets\Scripts\Natures\N000.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\ToI\Assets\Scripts\Objects\OI000.cs">
+      <Link>ToI\Assets\Scripts\Objects\OI000.cs</Link>
     </Compile>
     <Compile Include="..\..\..\ToI\Assets\Scripts\Tools\DevTool.cs">
       <Link>ToI\Assets\Scripts\Tools\DevTool.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\ToI\Assets\Scripts\Tools\Utils.cs">
+      <Link>ToI\Assets\Scripts\Tools\Utils.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\ToI\Assets\Scripts\UI\HUD.cs">
+      <Link>ToI\Assets\Scripts\UI\HUD.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\ToI\Assets\Scripts\UI\Inventory.cs">
+      <Link>ToI\Assets\Scripts\UI\Inventory.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\ToI\Assets\Scripts\UI\Ritual.cs">
+      <Link>ToI\Assets\Scripts\UI\Ritual.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\ToI\Assets\Scripts\UI\StatusBar.cs">
+      <Link>ToI\Assets\Scripts\UI\StatusBar.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\ToI\Assets\Scripts\UI\VFX.cs">
+      <Link>ToI\Assets\Scripts\UI\VFX.cs</Link>
     </Compile>
   </ItemGroup>
   <ItemGroup>
