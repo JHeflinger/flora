@@ -1,4 +1,5 @@
 #pragma once
+#include "Flora/Project/Label.h"
 
 namespace Flora {
 	struct ProjectConfig {
@@ -25,6 +26,9 @@ namespace Flora {
 		}
 	public:
 		ProjectConfig& GetConfig() { return m_Config; }
+		bool AddLabel(std::string label);
+		bool RemoveLabel(std::string label);
+		std::unordered_map<std::string, Label*> GetLabels() { return m_Labels; }
 		static Ref<Project> GetActive() { return s_ActiveProject; }
 		static Ref<Project> New();
 		static Ref<Project> Load(const std::filesystem::path& path);
@@ -35,6 +39,7 @@ namespace Flora {
 		ProjectConfig m_Config;
 		std::filesystem::path m_ProjectDirectory;
 		inline static Ref<Project> s_ActiveProject;
+		std::unordered_map<std::string, Label*> m_Labels;
 	};
 
 }

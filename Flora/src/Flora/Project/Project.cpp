@@ -245,4 +245,19 @@ namespace Flora {
 		return true;
 	}
 
+	bool Project::AddLabel(std::string label) {
+		if (m_Labels.find(label) == m_Labels.end()) {
+			m_Labels[label] = new Label(label);
+			return true;
+		}
+		return false;
+	}
+
+	bool Project::RemoveLabel(std::string label) {
+		if (m_Labels.find(label) != m_Labels.end()) {
+			m_Labels.erase(label);
+			return true;
+		}
+		return false;
+	}
 }
