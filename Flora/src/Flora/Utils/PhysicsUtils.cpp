@@ -2,6 +2,10 @@
 #include "PhysicsUtils.h"
 
 namespace Flora {
+	void PhysicsUtils::WarpBody(b2Body* body, glm::vec2 vector) {
+		body->SetTransform(b2Vec2(vector.x, vector.y), body->GetAngle());
+	}
+
 	void PhysicsUtils::WarpBody(b2Body* body, glm::vec2 vector, float rotation) {
 		body->SetTransform(b2Vec2(vector.x, vector.y), rotation);
 	}

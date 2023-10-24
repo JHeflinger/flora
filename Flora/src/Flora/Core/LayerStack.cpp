@@ -1,9 +1,8 @@
 #include "flpch.h"
-#include "Flora/Core/LayerStack.h"
+#include "LayerStack.h"
 
 namespace Flora {
-	LayerStack::LayerStack() {
-	}
+	LayerStack::LayerStack() { }
 
 	LayerStack::~LayerStack() {
 		for (Layer* layer : m_Layers) {

@@ -1,5 +1,5 @@
 #include "flpch.h"
-#include "Platform/OpenGL/OpenGLRendererAPI.h"
+#include "OpenGLRendererAPI.h"
 #include <glad/glad.h>
 
 namespace Flora {

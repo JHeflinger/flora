@@ -1,0 +1,386 @@
+Scene: TestCore
+Primary Camera: 3
+Primary Audio Listener: -1
+Physics:
+  Gravity: 9.80000019
+  VelocityIterations: 6
+  PositionIterations: 2
+Entities:
+  - Entity: 12
+    TagComponent:
+      Tag: Dev Controller
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    ScriptComponent:
+      ClassName: Game.DevTool
+  - Entity: 11
+    TagComponent:
+      Tag: Ritual Table
+    TransformComponent:
+      Translation: [0, 0.505057156, 0]
+      Rotation: [0, 0, 0]
+      Scale: [2, 2, 1]
+    SpriteRendererComponent:
+      Visible: true
+      Color: [1, 1, 1, 1]
+      Path: $\Textures\Objects\Scrap\ritualtable.png
+      Filename: ritualtable.png
+      Type: 2
+      TilingFactor: 1
+      Rows: 1
+      Columns: 24
+      Paused: false
+      RowCoordinate: 1
+      ColumnCoordinate: 1
+      SubtextureWidth: 1
+      SubtextureHeight: 1
+      Frames: 24
+      StartFrame: 1
+      EndFrame: 24
+      CurrentFrame: 1
+      FPS: 10
+    ScriptComponent:
+      ClassName: Game.Interactable
+      ScriptFields:
+        - Name: p_Offset
+          Type: Vector3
+          Data: [0, 0.300000012, 0]
+        - Name: p_Radius
+          Type: Float
+          Data: 1
+  - Entity: 10
+    TagComponent:
+      Tag: Interact VFX
+    TransformComponent:
+      Translation: [0, 0.400000006, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    SpriteRendererComponent:
+      Visible: true
+      Color: [1, 1, 1, 1]
+      Path: $\Textures\VFX\Scrap\e_btn_animation.png
+      Filename: e_btn_animation.png
+      Type: 2
+      TilingFactor: 1
+      Rows: 1
+      Columns: 12
+      Paused: false
+      RowCoordinate: 1
+      ColumnCoordinate: 1
+      SubtextureWidth: 1
+      SubtextureHeight: 1
+      Frames: 12
+      StartFrame: 1
+      EndFrame: 12
+      CurrentFrame: 1
+      FPS: 10
+    ParentComponent:
+      Parent: 0
+      InheritAll: true
+      InheritTransform: true
+  - Entity: 9
+    TagComponent:
+      Tag: Sprite
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    SpriteRendererComponent:
+      Visible: true
+      Color: [1, 1, 1, 1]
+      Path: $\Textures\Enemies\Scrap\SS_E_Noble_Undead.png
+      Filename: SS_E_Noble_Undead.png
+      Type: 2
+      TilingFactor: 1
+      Rows: 1
+      Columns: 12
+      Paused: false
+      RowCoordinate: 1
+      ColumnCoordinate: 1
+      SubtextureWidth: 1
+      SubtextureHeight: 1
+      Frames: 12
+      StartFrame: 1
+      EndFrame: 12
+      CurrentFrame: 1
+      FPS: 10
+    ParentComponent:
+      Parent: 0
+      InheritAll: true
+      InheritTransform: true
+  - Entity: 8
+    TagComponent:
+      Tag: VFX Background
+    TransformComponent:
+      Translation: [0, 0, -0.100000001]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    SpriteRendererComponent:
+      Visible: true
+      Color: [1, 1, 1, 1]
+      Path: $\Textures\VFX\Scrap\ether_charge_background.png
+      Filename: ether_charge_background.png
+      Type: 0
+      TilingFactor: 1
+      Rows: 1
+      Columns: 1
+      Paused: false
+      RowCoordinate: 1
+      ColumnCoordinate: 1
+      SubtextureWidth: 1
+      SubtextureHeight: 1
+      Frames: 1
+      StartFrame: 1
+      EndFrame: 1
+      CurrentFrame: 1
+      FPS: 1
+    ParentComponent:
+      Parent: 0
+      InheritAll: true
+      InheritTransform: true
+  - Entity: 7
+    TagComponent:
+      Tag: VFX Foreground
+    TransformComponent:
+      Translation: [0, 0, 0.100000001]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    SpriteRendererComponent:
+      Visible: true
+      Color: [1, 1, 1, 1]
+      Path: $\Textures\VFX\Scrap\ether_charge_foreground.png
+      Filename: ether_charge_foreground.png
+      Type: 0
+      TilingFactor: 1
+      Rows: 1
+      Columns: 1
+      Paused: false
+      RowCoordinate: 1
+      ColumnCoordinate: 1
+      SubtextureWidth: 1
+      SubtextureHeight: 1
+      Frames: 1
+      StartFrame: 1
+      EndFrame: 1
+      CurrentFrame: 1
+      FPS: 1
+    ParentComponent:
+      Parent: 0
+      InheritAll: true
+      InheritTransform: true
+  - Entity: 6
+    TagComponent:
+      Tag: Ether_backdrop
+    TransformComponent:
+      Translation: [-4.19999981, 3.9000001, 0]
+      Rotation: [0, 0, 0]
+      Scale: [6, 0.300000012, 1]
+    SpriteRendererComponent:
+      Visible: true
+      Color: [0, 0, 0, 1]
+      Path: "NULL"
+      Filename: None Selected
+      Type: 0
+      TilingFactor: 1
+      Rows: 1
+      Columns: 1
+      Paused: false
+      RowCoordinate: 1
+      ColumnCoordinate: 1
+      SubtextureWidth: 1
+      SubtextureHeight: 1
+      Frames: 1
+      StartFrame: 1
+      EndFrame: 1
+      CurrentFrame: 1
+      FPS: 1
+    ParentComponent:
+      Parent: 0
+      InheritAll: true
+      InheritTransform: true
+    ChildComponent:
+      []
+  - Entity: 5
+    TagComponent:
+      Tag: Ether
+    TransformComponent:
+      Translation: [-4.19999981, 3.9000001, 0.100000001]
+      Rotation: [0, 0, 0]
+      Scale: [6, 0.300000012, 1]
+    SpriteRendererComponent:
+      Visible: true
+      Color: [0, 0.03861022, 1, 1]
+      Path: "NULL"
+      Filename: None Selected
+      Type: 0
+      TilingFactor: 1
+      Rows: 1
+      Columns: 1
+      Paused: false
+      RowCoordinate: 1
+      ColumnCoordinate: 1
+      SubtextureWidth: 1
+      SubtextureHeight: 1
+      Frames: 1
+      StartFrame: 1
+      EndFrame: 1
+      CurrentFrame: 1
+      FPS: 1
+    ParentComponent:
+      Parent: 0
+      InheritAll: true
+      InheritTransform: true
+    ChildComponent:
+      []
+  - Entity: 4
+    TagComponent:
+      Tag: Health
+    TransformComponent:
+      Translation: [-4.19999981, 4.5, 0.100000001]
+      Rotation: [0, 0, 0]
+      Scale: [6, 0.300000012, 1]
+    SpriteRendererComponent:
+      Visible: true
+      Color: [1, 0, 0, 1]
+      Path: "NULL"
+      Filename: None Selected
+      Type: 0
+      TilingFactor: 1
+      Rows: 1
+      Columns: 1
+      Paused: false
+      RowCoordinate: 1
+      ColumnCoordinate: 1
+      SubtextureWidth: 1
+      SubtextureHeight: 1
+      Frames: 1
+      StartFrame: 1
+      EndFrame: 1
+      CurrentFrame: 1
+      FPS: 1
+    ParentComponent:
+      Parent: 0
+      InheritAll: true
+      InheritTransform: true
+    ChildComponent:
+      []
+  - Entity: 3
+    TagComponent:
+      Tag: Camera
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    CameraComponent:
+      Camera:
+        ProjectionType: 1
+        PerspectiveFOV: 0.785398185
+        PerspectiveNear: 0.00999999978
+        PerspectiveFar: 1000
+        OrthographicSize: 10
+        OrthographicNear: -1
+        OrthographicFar: 1
+      FixedAspectRatio: false
+      Visible Borders: false
+    ParentComponent:
+      Parent: 0
+      InheritAll: true
+      InheritTransform: true
+  - Entity: 2097154
+    TagComponent:
+      Tag: Health_backdrop
+    TransformComponent:
+      Translation: [-4.19999981, 4.5, 0]
+      Rotation: [0, 0, 0]
+      Scale: [6, 0.300000012, 1]
+    SpriteRendererComponent:
+      Visible: true
+      Color: [0, 0, 0, 1]
+      Path: "NULL"
+      Filename: None Selected
+      Type: 0
+      TilingFactor: 1
+      Rows: 1
+      Columns: 1
+      Paused: false
+      RowCoordinate: 1
+      ColumnCoordinate: 1
+      SubtextureWidth: 1
+      SubtextureHeight: 1
+      Frames: 1
+      StartFrame: 1
+      EndFrame: 1
+      CurrentFrame: 1
+      FPS: 1
+    ParentComponent:
+      Parent: 0
+      InheritAll: true
+      InheritTransform: true
+    ChildComponent:
+      []
+  - Entity: 1
+    TagComponent:
+      Tag: Background
+    TransformComponent:
+      Translation: [0, 0, -0.300000012]
+      Rotation: [0, 0, 0]
+      Scale: [100, 100, 1]
+    SpriteRendererComponent:
+      Visible: true
+      Color: [1, 1, 1, 1]
+      Path: $\Textures\Objects\Scrap\dungeonfloor.png
+      Filename: dungeonfloor.png
+      Type: 0
+      TilingFactor: 10
+      Rows: 1
+      Columns: 1
+      Paused: false
+      RowCoordinate: 1
+      ColumnCoordinate: 1
+      SubtextureWidth: 1
+      SubtextureHeight: 1
+      Frames: 1
+      StartFrame: 1
+      EndFrame: 1
+      CurrentFrame: 1
+      FPS: 1
+  - Entity: 0
+    TagComponent:
+      Tag: Player
+    TransformComponent:
+      Translation: [0, 0, 0.100000001]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    ScriptComponent:
+      ClassName: Game.Player
+      ScriptFields:
+        - Name: p_Ether
+          Type: Float
+          Data: 20
+        - Name: p_EtherRegneration
+          Type: Float
+          Data: 15
+        - Name: p_Health
+          Type: Float
+          Data: 80
+        - Name: p_MaxEther
+          Type: Int
+          Data: 100
+        - Name: p_MaxHealth
+          Type: Int
+          Data: 100
+        - Name: p_Speed
+          Type: Float
+          Data: 3
+    ChildComponent:
+      - 3
+      - 4
+      - 2097154
+      - 5
+      - 6
+      - 7
+      - 8
+      - 9
+      - 10

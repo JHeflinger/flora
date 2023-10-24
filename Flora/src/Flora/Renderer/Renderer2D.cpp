@@ -1,5 +1,5 @@
 #include "flpch.h"
-#include "Flora/Renderer/Renderer2D.h"
+#include "Renderer2D.h"
 #include "Flora/Renderer/VertexArray.h"
 #include "Flora/Renderer/Shader.h"
 #include "Flora/Renderer/RenderCommand.h"
@@ -122,9 +122,9 @@ namespace Flora {
 			samplers[i] = i;
 		}
 
-		s_Data.TextureShader = Shader::Create("assets/shaders/Texture.glsl");
-		s_Data.CircleShader = Shader::Create("assets/shaders/Circle.glsl");
-		s_Data.LineShader = Shader::Create("assets/shaders/Line.glsl");
+		s_Data.TextureShader = Shader::Create("Resources/Shaders/Texture.glsl");
+		s_Data.CircleShader = Shader::Create("Resources/Shaders/Circle.glsl");
+		s_Data.LineShader = Shader::Create("Resources/Shaders/Line.glsl");
 		s_Data.TextureShader->Bind();
 		s_Data.TextureShader->SetIntArray("u_Textures", samplers, s_Data.MaxTextureSlots);
 
@@ -168,48 +168,24 @@ namespace Flora {
 		delete[] s_Data.QuadVertexBufferBase;
 	}
 
-	void Renderer2D::BeginScene(const OrthographicCamera& camera) {
+	void Renderer2D::BeginScene(const glm::mat4 viewProjection) {
 		FL_PROFILE_FUNCTION();
 		s_Data.TextureShader->Bind();
-		s_Data.TextureShader->SetMat4("u_ViewProjection", camera.GetViewProjectionMatrix());
+		s_Data.TextureShader->SetMat4("u_ViewProjection", viewProjection);
 
 		s_Data.CircleShader->Bind();
-		s_Data.CircleShader->SetMat4("u_ViewProjection", camera.GetViewProjectionMatrix());
+		s_Data.CircleShader->SetMat4("u_ViewProjection", viewProjection);
 
 		s_Data.LineShader->Bind();
-		s_Data.LineShader->SetMat4("u_ViewProjection", camera.GetViewProjectionMatrix());
-
-		StartBatch();
-	}
-
-	void Renderer2D::BeginScene(const EditorCamera& camera) {
-		FL_PROFILE_FUNCTION();
-		s_Data.TextureShader->Bind();
-		s_Data.TextureShader->SetMat4("u_ViewProjection", camera.GetViewProjection());
-
-		s_Data.CircleShader->Bind();
-		s_Data.CircleShader->SetMat4("u_ViewProjection", camera.GetViewProjection());
-
-		s_Data.LineShader->Bind();
-		s_Data.LineShader->SetMat4("u_ViewProjection", camera.GetViewProjection());
+		s_Data.LineShader->SetMat4("u_ViewProjection", viewProjection);
 
 		StartBatch();
 	}
 
 	void Renderer2D::BeginScene(const Camera& camera, const glm::mat4& transform) {
 		FL_PROFILE_FUNCTION();
-
 		glm::mat4 viewProj = camera.GetProjection() * glm::inverse(transform);
-		s_Data.TextureShader->Bind();
-		s_Data.TextureShader->SetMat4("u_ViewProjection", viewProj);
-
-		s_Data.CircleShader->Bind();
-		s_Data.CircleShader->SetMat4("u_ViewProjection", viewProj);
-
-		s_Data.LineShader->Bind();
-		s_Data.LineShader->SetMat4("u_ViewProjection", viewProj);
-
-		StartBatch();
+		BeginScene(viewProj);
 	}
 
 	void Renderer2D::EndScene() {
@@ -518,14 +494,14 @@ namespace Flora {
 		s_Data.Stats.QuadCount++;
 	}
 
-	void Renderer2D::DrawSprite(const glm::mat4& transform, SpriteRendererComponent& src, AssetManager* am, int entityID) {
+	void Renderer2D::DrawSprite(Timestep ts, const glm::mat4& transform, SpriteRendererComponent& src, int entityID) {
 		Ref<Texture2D> texture = nullptr;
 		if (src.Path != "NULL") {
 			if (!src.TextureInitialized) {
-				am->AddTexture(src.Path);
+				AssetManager::AddTexture(src.Path);
 				src.TextureInitialized = true;
 			}
-			texture = am->GetTexture(src.Path);
+			texture = AssetManager::GetTexture(src.Path);
 		}
 		if (src.Type == SpriteRendererComponent::SpriteType::SINGLE) {
 			if (texture)
@@ -554,11 +530,14 @@ namespace Flora {
 				Ref<SubTexture2D> subtexture = SubTexture2D::CreateFromCoords(texture, coords, cellSize);
 				DrawQuad(transform, subtexture, src.Color, src.TilingFactor, entityID);
 
-				// this assumes running game at 60 fps
-				src.FrameCounter++;
-				if (src.FrameCounter >= 60 / src.FPS) {
-					src.CurrentFrame++;
-					src.FrameCounter = 0;
+				if (!src.Paused) {
+					src.Time += ts;
+					int numFrames = src.EndFrame - src.StartFrame + 1;
+					float frametime = 1.0f / ((float)src.FPS);
+					float maxtime = frametime * numFrames;
+					if (src.Time >= maxtime) src.Time = 0.0f;
+					src.CurrentFrame = src.StartFrame + (int)(src.Time / frametime);
+					src.FrameCounter = src.CurrentFrame - src.StartFrame;
 				}
 			} else DrawQuad(transform, src.Color, entityID);
 		} else FL_CORE_ASSERT(false, "Sprite type not supported!");

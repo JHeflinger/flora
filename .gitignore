@@ -1,6 +1,10 @@
 # binaries
 **/bin/
 bin-int/
+**/Intermediates/
+**/Debug/
+**.dll
+**.pdb
 
 # VS files and folders
 .vs/
@@ -8,6 +12,8 @@ bin-int/
 **.vcxproj
 **.vcxproj.filters
 **.vcxproj.user
+**.cache
+**.csproj.AssemblyReference.cache
 
 # personal
 *.ini

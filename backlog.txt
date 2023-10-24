@@ -2,25 +2,35 @@ TODO:
 
 	- optimization: if something is not being affected for a while, stop simulating it
 
+	- stepframes: make it so step can step a certain customizeable amount of frames
+
 	- custom editor settings like color scheme, etc
 
-	- bug: there is some instability when dealing with entt handles between int to uint32_t conversions
+	- make it so you cannot change audio file while audio is playing in editor via dev play
+
+	- bug: there is some instability when dealing with entt handles between int to uint32_t conversions	
 
 	- integrate SPIR-V shaders
 
-	- implement projects
+	- all TODOs
+
+	- audio and texture dropboxes should always do relative, not absolute
 
 	- custom shaders, post processing, materials
 
-	- implement layers
-	
-	- c# scripting
+	- script choose popup reactor to include search, filter, namespace organization, etc
 
-	- reflection system (serialize values and show them in properties panel!)
+	- audio on separate thread and better clean up after playing sounds
+
+	- implement layers
+
+	- allow users to tweak the attenuation curve, etc (https://indiegamedev.net/2020/04/12/the-complete-guide-to-openal-with-c-part-3-positioning-sounds/)
 
 	- particle system
 
-	- gravity
+	- audio hard disk streaming support
+
+	- audio mp3 support
 
 	- vfx graph
 
@@ -30,58 +40,107 @@ TODO:
 
 	- layout system
 
-	- standalone runtime and standalone serialization
-
-	- audio
-
 	- networking
 
 	- optimization for multithreading!
 
-	- simplify popup menus (New __ options should be condensed into an expandable "New..")
-
 	- optick profiler
-
-	- support distrubution (custom formats)
 
 	- overhaul animations to include things like flags and extra functionality, or even calling functions on certain frames
 
-	- make native scripting more stable
-
-	- project settings?
-
-	- move some editor settings to scene settings (like editor camera) or separate it into a sceneEditorSetting file specific to scene
-
-	- content browser select multiple 
-
-	- copy and paste can select multiple files/entities
-
-	- move editor dependent assets into a protected assets folder
+	- content browser select multiple
 
 	- startup splash screen oooooo
-
-	- bug: gpu monitoring doesn't really work depending on graphics card
-
-	- add hardware monitoring error handling
-
-	- sprites should have the option to linear filter or not
-
-	- show hitbox option on collider body
 
 	- texture hot reloading
 
 	- more texture support
 
+	- label component
+
+	- multi-threaded auto saving
+
+	- circle physics collider visual consistent line width
+
+1.0 RELEASE:
+
+	- audio properly pause during scene simulation pause
+
+	- no paths ANYWHERE in code should be plain text, should be all dynamic and in variables
+
+	- open visual studio button
+
+	- content browser primary folders cannot be deleted
+
+	- refactor content browser panel popup
+
+	- simplify popup menus (New __ options should be condensed into an expandable "New..")
+
+	- support distrubution (custom formats)
+
+	- move some editor settings to scene settings (like editor camera) or separate it into a sceneEditorSetting file specific to scene
+
+	- move editor dependent assets into resources folder
+
+	- bug: gpu monitoring doesn't really work depending on graphics card
+
+	- sprites should have the option to linear filter or not
+
+	- bug: gpu not being detected in stats dynamically
+
 	- bug: moving rotation on subentities affects the scale
 
 	- bug: physics don't work perfectly when it comes to sub-entities - something is affecting scale
 
+	- bug: offset circle collider is kinda weird, are we sure we're using the body transform and not the entity transform during physics simulation?
+
+	- redo flpch
+
+	- openAL needs to be installed or else OpenAL32.dll not found error will appear
+
+	- redo includes, .h should be relative, everything else absolute
+
+	- get rid of all flora warnings
+
+	- refactor classes / reorder them to they're just neater and more readable
+
+	- documentation?
+
+	- should scripts be before or after physics calculations?
+
+	- refactor some things to use component group so we only have one place we need to add a new component to
+
+	- script component copy paste etc
+
+	- refine copy and paste
+
+	- update scripting engine with audio components
+
+	- modify project settings popup
+
+	- script hot reloading should detect when save file even on not runtime and update serialized fields in properties panel instantly!
+
+	- clean github
+
+	- optimize type dependent script field functionality (use switch case stuff, make it just easier to add in new)
+
+	- stabalize entity id to use uint32_t always, and 0 is an invalid entity
+
+	- make a public static activescene 
+
+	- scriptengine needs to reload and correct the assemblies whenever the project changes or even a new one is created
+
+	- scriptengine assembly needs to be created on load somehow
+
+	- renaming a project will cause opening the visual studio project to break since the visual studio project file needs to be renamed as well or rebuilt
+
+	- highlight selected entity probably shouldnt be white
+
+	- highlight selected entity doesnt take in account sub entities
+
+	- clicking on entity before pressing enter on a field can effect that entity despite it being supposed to be assigned to the entity prior to clicking on a new one
+
+
 IN PROGRESS:
-
-	- show camera view box
-
-	- label component
-
-	- serialize editor settings for physics collider lines on/off/and thickness
 
 IMPLEMENTED TICKETS:

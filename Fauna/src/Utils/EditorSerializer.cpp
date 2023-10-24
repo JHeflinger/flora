@@ -1,24 +1,30 @@
 #include "flpch.h"
 #include "EditorSerializer.h"
 #include "Flora/Utils/Serializer.h"
+#include "Flora/Project/Project.h"
+#include "Flora/Scripting/ScriptEngine.h"
 
 namespace Flora {
-	std::string EditorSerializer::Serialize(Ref<EditorParams> params) {
+	std::string EditorSerializer::Serialize(Ref<EditorParams> params, bool safeclose) {
 		int selectedEntity = -1;
 		if (params->SelectedEntity)
 			selectedEntity = (int)(uint32_t)params->SelectedEntity;
 
 		YAML::Emitter out;
 		out << YAML::BeginMap;
+		out << YAML::Key << "Crashed" << YAML::Value << !safeclose;
+		out << YAML::Key << "Project Filepath" << YAML::Value << params->ProjectFilepath;
 		out << YAML::Key << "Scene Filepath" << YAML::Value << params->ActiveScene->GetSceneFilepath();
 		out << YAML::Key << "Selected Entity" << YAML::Value << selectedEntity;
 		out << YAML::Key << "Current Gizmo" << YAML::Value << params->GizmoType;
 		out << YAML::Key << "Editor Camera Type" << YAML::Value << params->EditorCamera.GetCameraTypeString();
+		out << YAML::Key << "Visible Physics Colliders" << YAML::Value << params->VisibleColliders;
 
 		out << YAML::Key << "General Camera Settings" << YAML::Value;
 		out << YAML::BeginMap;
 		out << YAML::Key << "Position" << YAML::Value << params->EditorCamera.GetPosition();
 		out << YAML::Key << "Focal Point" << YAML::Value << params->EditorCamera.GetFocalPoint();
+		out << YAML::Key << "Camera Bound" << YAML::Value << *(params->EditorCamera.GetCameraBound());
 		out << YAML::EndMap;
 
 		out << YAML::Key << "Perspective Camera Settings" << YAML::Value;
@@ -75,7 +81,8 @@ namespace Flora {
 		strStream << stream.rdbuf();
 
 		YAML::Node data = YAML::Load(strStream.str());
-		if (!data["Scene Filepath"] ||
+		if (!data["Project Filepath"] ||
+			!data["Scene Filepath"] ||
 			!data["Current Gizmo"] ||
 			!data["Selected Entity"] ||
 			!data["Editor Camera Type"] ||
@@ -86,18 +93,40 @@ namespace Flora {
 			!data["Stat Panel Settings"])
 			return false;
 
-		// set up saved scene
-		std::string sceneFilepath = data["Scene Filepath"].as<std::string>();
-		params->ActiveScene->SetSceneFilepath(sceneFilepath);
-		bool success = Serializer::DeserializeScene(params->ActiveScene, sceneFilepath);
+		if (data["Crashed"])
+			params->Crashed = data["Crashed"].as<bool>();
+
+		// set up project
+		std::string projectFilepath = data["Project Filepath"].as<std::string>();
+		if (projectFilepath == "")
+			params->Project = Project::New();
+		else
+			params->Project = Project::Load(projectFilepath);
+		params->ProjectFilepath = projectFilepath;
+
+		// TODO: HORRIBLE SOLUTION RIGHT NOW... REFACTOR WHEN RESTRUCTURING SCENE SET UP SYSTEM LATER
+		if (!ScriptEngine::IsInitialized() && params->ProjectFilepath != "")
+			ScriptEngine::Init();
+
+		// set up saved scene if the project is valid
+		bool success = false;
+		if (params->ProjectFilepath != "") {
+			std::string sceneFilepath = data["Scene Filepath"].as<std::string>();
+			params->ActiveScene->SetSceneFilepath(sceneFilepath);
+			success = Serializer::DeserializeScene(params->ActiveScene, sceneFilepath);
+		}
 
 		// set closed panels
 		params->ClosedPanels = data["Closed Panels"].as<std::vector<std::string>>();
+
+		// set visible colliders
+		params->VisibleColliders = data["Visible Physics Colliders"].as<bool>();
 
 		// set camera settings
 		params->EditorCamera.SetCameraTypeWithString(data["Editor Camera Type"].as<std::string>());
 		params->EditorCamera.SetPosition(Serializer::GetNodeAsVec3(data["General Camera Settings"]["Position"]));
 		params->EditorCamera.SetFocalPoint(Serializer::GetNodeAsVec3(data["General Camera Settings"]["Focal Point"]));
+		*(params->EditorCamera.GetCameraBound()) = data["General Camera Settings"]["Camera Bound"].as<bool>();
 		params->EditorCamera.SetDistance(data["Perspective Camera Settings"]["Distance"].as<float>());
 		params->EditorCamera.SetPitch(data["Perspective Camera Settings"]["Pitch"].as<float>());
 		params->EditorCamera.SetYaw(data["Perspective Camera Settings"]["Yaw"].as<float>());

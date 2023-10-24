@@ -1,6 +1,5 @@
 #pragma once
 #include "Flora/Renderer/Shader.h"
-#include <glm/glm.hpp>
 
 // TODO: REMOVE!
 typedef unsigned int GLenum;

@@ -2,6 +2,7 @@
 #include "Flora/Scene/Scene.h"
 #include "Flora/Scene/Entity.h"
 #include "Flora/Core/Layer.h"
+#include "Flora/Project/Project.h"
 
 namespace Flora {
 	enum class Panels {
@@ -47,6 +48,7 @@ namespace Flora {
 		Ref<Scene> ActiveScene;
 		EditorCamera EditorCamera;
 		bool Resized = true;
+		bool VisibleColliders = false;
 		std::vector<std::string> ClosedPanels; //more runtime-efficient way to do this would be with a hashmap
 		float Time; // in seconds
 		Panels FocusedPanel = Panels::NONE;
@@ -54,6 +56,8 @@ namespace Flora {
 		Clipboard Clipboard;
 		SceneState SceneState = SceneState::EDIT;
 		std::string Error = "";
+		Ref<Project> Project;
+		std::string ProjectFilepath = "";
 		
 		// stats panel settings
 		float Timeframe = 5.0f;
@@ -61,5 +65,8 @@ namespace Flora {
 		float AxisMinimum = 0.0f;
 		bool ShowGraphKey = true;
 		std::map<Stats, bool> ShowStatMap;
+
+		// crash detection
+		bool Crashed = false;
 	};
 }

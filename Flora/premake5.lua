@@ -19,7 +19,7 @@ project "Flora"
 		"vendor/glm/glm/**.hpp",
 		"vendor/glm/glm/**.inl",
 		"vendor/ImGuizmo/ImGuizmo.h",
-		"vendor/ImGuizmo/ImGuizmo.cpp",
+		"vendor/ImGuizmo/ImGuizmo.cpp"
 	}
 
 	defines
@@ -41,7 +41,10 @@ project "Flora"
 		"%{IncludeDir.stb_image}",
 		"%{IncludeDir.entt}",
 		"%{IncludeDir.yaml_cpp}",
-		"%{IncludeDir.ImGuizmo}"
+		"%{IncludeDir.ImGuizmo}",
+		"%{IncludeDir.mono}",
+		"%{IncludeDir.filewatch}",
+		"%{IncludeDir.openAL}"
 	}
 
 	links
@@ -51,7 +54,8 @@ project "Flora"
 		"Glad",
 		"ImGui",
 		"yaml-cpp",
-		"opengl32.lib"
+		"opengl32.lib",
+		"%{Library.mono}"
 	}
 
 	filter "files:vendor/ImGuizmo/**.cpp"
@@ -62,6 +66,17 @@ project "Flora"
 
 		defines
 		{
+		}
+
+		links
+		{
+			"%{Library.WinSock}",
+			"%{Library.Winmm}",
+			"%{Library.WinVersion}",
+			"%{Library.WinBCrypt}",
+			"%{Library.openAL}",
+			"%{Library.efx}",
+			"%{Library.Shell32}",
 		}
 
 	filter "configurations:Debug"

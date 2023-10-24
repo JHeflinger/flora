@@ -23,6 +23,8 @@ project "Fauna"
 		"%{IncludeDir.ImGuizmo}",
 		"%{IncludeDir.yaml_cpp}",
 		"%{IncludeDir.Box2D}",
+		"%{IncludeDir.filewatch}",
+		"%{IncludeDir.openAL}"
 	}
 
 	links
@@ -32,6 +34,15 @@ project "Fauna"
 
 	filter "system:windows"
 		systemversion "latest"
+
+		defines
+		{
+		}
+
+		links
+		{
+			"%{Library.Shell32}",
+		}
 
 	filter "configurations:Debug"
 		defines "FL_DEBUG"

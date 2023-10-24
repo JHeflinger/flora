@@ -1,5 +1,5 @@
 #include "flpch.h"
-#include "Flora/Scene/Entity.h"
+#include "Entity.h"
 
 namespace Flora {
 	Entity::Entity(entt::entity handle, Scene* scene)

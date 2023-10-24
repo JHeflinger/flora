@@ -1,5 +1,4 @@
 #pragma once
-#include "Flora/Core/Base.h"
 
 namespace Flora {
 	class UniformBuffer {

@@ -1,0 +1,112 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x64</Platform>
+    <ProjectGuid>{23BC73A9-0FB5-92FB-38E7-7780243F7207}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>MS Paint Legends</RootNamespace>
+    <AssemblyName>MS Paint Legends</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x64' ">
+    <PlatformTarget>x64</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>Binaries\</OutputPath>
+    <BaseIntermediateOutputPath>Project Intermediates\MS Paint Legends\Debug\</BaseIntermediateOutputPath>
+    <IntermediateOutputPath>$(BaseIntermediateOutputPath)</IntermediateOutputPath>
+    <DefineConstants></DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x64' ">
+    <PlatformTarget>x64</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>Binaries\</OutputPath>
+    <BaseIntermediateOutputPath>Project Intermediates\MS Paint Legends\Release\</BaseIntermediateOutputPath>
+    <IntermediateOutputPath>$(BaseIntermediateOutputPath)</IntermediateOutputPath>
+    <DefineConstants></DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Dist|x64' ">
+    <PlatformTarget>x64</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>Binaries\</OutputPath>
+    <BaseIntermediateOutputPath>Project Intermediates\MS Paint Legends\Dist\</BaseIntermediateOutputPath>
+    <IntermediateOutputPath>$(BaseIntermediateOutputPath)</IntermediateOutputPath>
+    <DefineConstants></DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\..\..\..\MSPL\Assets\Scripts\ActionCard.cs">
+      <Link>MSPL\Assets\Scripts\ActionCard.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\..\..\MSPL\Assets\Scripts\Background.cs">
+      <Link>MSPL\Assets\Scripts\Background.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\..\..\MSPL\Assets\Scripts\Card.cs">
+      <Link>MSPL\Assets\Scripts\Card.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\..\..\MSPL\Assets\Scripts\Development.cs">
+      <Link>MSPL\Assets\Scripts\Development.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\..\..\MSPL\Assets\Scripts\Enemy.cs">
+      <Link>MSPL\Assets\Scripts\Enemy.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\..\..\MSPL\Assets\Scripts\EnemyHandler.cs">
+      <Link>MSPL\Assets\Scripts\EnemyHandler.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\..\..\MSPL\Assets\Scripts\Fireball.cs">
+      <Link>MSPL\Assets\Scripts\Fireball.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\..\..\MSPL\Assets\Scripts\Hand.cs">
+      <Link>MSPL\Assets\Scripts\Hand.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\..\..\MSPL\Assets\Scripts\MagicCard.cs">
+      <Link>MSPL\Assets\Scripts\MagicCard.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\..\..\MSPL\Assets\Scripts\Mana.cs">
+      <Link>MSPL\Assets\Scripts\Mana.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\..\..\MSPL\Assets\Scripts\PlayButton.cs">
+      <Link>MSPL\Assets\Scripts\PlayButton.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\..\..\MSPL\Assets\Scripts\Player.cs">
+      <Link>MSPL\Assets\Scripts\Player.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\..\..\MSPL\Assets\Scripts\Stamina.cs">
+      <Link>MSPL\Assets\Scripts\Stamina.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\..\..\MSPL\Assets\Scripts\Test.cs">
+      <Link>MSPL\Assets\Scripts\Test.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\..\..\MSPL\Assets\Scripts\VFX.cs">
+      <Link>MSPL\Assets\Scripts\VFX.cs</Link>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\Flora-ScriptCore\Flora-ScriptCore.csproj">
+      <Project>{649C3F2E-5095-5E80-79C7-4305651F3E8C}</Project>
+      <Name>Flora-ScriptCore</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

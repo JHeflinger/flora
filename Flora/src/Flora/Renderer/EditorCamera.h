@@ -1,9 +1,8 @@
 #pragma once
-#include "Camera.h"
+#include "Flora/Renderer/Camera.h"
 #include "Flora/Core/Timestep.h"
 #include "Flora/Events/Event.h"
 #include "Flora/Events/MouseEvent.h"
-#include <glm/glm.hpp>
 
 namespace Flora {
 	class EditorCamera : public Camera {
@@ -14,6 +13,7 @@ namespace Flora {
 		EditorCamera(float fov, float aspectRatio, float nearClip, float farClip);
 		void OnUpdate(Timestep ts, bool updateControl = true);
 		void OnEvent(Event& e);
+		inline float GetDependantDistance() const { if (m_ProjectionType == ProjectionType::Perspective) return m_Distance; else return 2.0f * m_OrthographicSize; }
 		inline float GetDistance() const { return m_Distance; }
 		inline void SetDistance(float distance) { m_Distance = distance; }
 		inline void SetViewportSize(float width, float height) { m_ViewportWidth = width; m_ViewportHeight = height; UpdateProjection(); }
@@ -36,6 +36,7 @@ namespace Flora {
 		glm::vec3 GetFocalPoint() const { return m_FocalPoint; }
 		void SetFocalPoint(glm::vec3 focalPoint) { m_FocalPoint = focalPoint; }
 		void ResetCamera();
+		bool* GetCameraBound() { return &m_BindCamera; }
 	private:
 		void UpdateProjection();
 		void UpdateView();
@@ -63,5 +64,6 @@ namespace Flora {
 		float m_OrthographicFar = 1000.0f;
 		//temp
 		bool m_ToggleEnable = true;
+		bool m_BindCamera = false;
 	};
 }

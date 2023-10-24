@@ -1,6 +1,5 @@
 #pragma once
 #include "Flora/Renderer/Buffer.h"
-#include <memory>
 
 namespace Flora {
 	class VertexArray {

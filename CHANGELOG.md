@@ -1,6 +1,53 @@
 # Change Log
 All notable changes to this project will be documented in this file as of Fauna Version 0.1.1 and Flora Version 0.1.1
 
+## Fauna [0.3.0] - 2023-10-24
+
+### Added
+
+- The project system can now be used to load and edit different game projects! Note that this feature is still experimental and under testing.
+- The script engine is now available! Developers can now use a pre configured C# visual studio project provided by Fauna to add scripts to their entities for custom behavior!
+- AudioListenerComponent and AudioSourceComponents are now in the editor! Note that these components are not yet supported in the script engine.
+- LabelComponent is now in the editor! Entites can now be labeled via pre set labels defined in the project settings.
+- Documentation is now available via the "Application" menu that documents how to use the script library!
+- Selected entities are now outlined!
+- Camera entities can now have a visible camera view box so developers can see the range of view for their cameras
+- Physics colliders can now be toggled visible
+- The editor camera can now be toggled on runtime to override the primary camera!
+
+### Changed
+
+- All asset paths are based off of the project directory now!
+- gizmo keybinds will only work when focused in the viewport
+- Native scripts are now unsupported in Fauna
+- ScriptManagerComponent is being temporarily removed for the transition to C# scripting
+- SpriteRendererComponent animations can now be paused via properties panel.
+
+### Fixed
+
+- Fixed issue where a simulated scene being stopped would also unselect a selected entity
+- Fixed issue where dragging the editor camera by mouse was far too sensitive
+
+## Flora [0.3.0] - 2023-10-24
+
+### Added
+
+- The project system backend can now be used to manage global settings for a game!
+- Audio listeners and sources are now valid components with editable properties and even surround sound! Note that the audio system only supports .wav files at the moment, and stereo will only work in .wav files that have been configured for stereo.
+- Labels are now available to categorize entities via the LabelComponent. Note that labels must be defined via the project settings in order to work.
+- Circle physics colliders are now available!
+- The script engine is now implemented to interface with the backend!
+
+### Changed
+
+- OpenAL and the .NET runtime 4.7.2 are now dependencies the user will now have to manually install. Note that it is planned for 1.0 to include these in an installer for the future.
+- Animations can now be paused
+
+### Fixed
+
+- the OnDestroy() function for scriptable entities now works when disposing of an entity via Scene.DestroyEntity()
+- Copy pasting entities is now more robust after testing and no longer crashes the engine at certain junctions.
+
 ## Fauna [0.2.1] - 2023-06-10
 
 ### Added

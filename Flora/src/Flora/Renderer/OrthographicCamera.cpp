@@ -1,5 +1,5 @@
 #include "flpch.h"
-#include "Flora/Renderer/OrthographicCamera.h"
+#include "OrthographicCamera.h"
 #include <glm/gtc/matrix_transform.hpp>
 
 namespace Flora {

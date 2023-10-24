@@ -1,6 +1,5 @@
 #include "flpch.h"
-#include "Platform/OpenGL/OpenGLShader.h"
-#include <fstream>
+#include "OpenGLShader.h"
 #include <glad/glad.h>
 #include <glm/gtc/type_ptr.hpp>
 

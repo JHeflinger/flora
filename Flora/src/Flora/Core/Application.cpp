@@ -1,10 +1,8 @@
 #include "flpch.h"
-#include "Flora/Core/Application.h"
-#include "Flora/Core/Log.h"
-#include "Flora/Core/Input.h"
+#include "Application.h"
+#include <glfw/glfw3.h>
 #include "Flora/Renderer/Renderer.h"
-
-#include <glfw/glfw3.h> //remove later
+#include "Flora/Scripting/ScriptEngine.h"
 
 namespace Flora {
 
@@ -29,7 +27,7 @@ namespace Flora {
 	}
 
 	Application::~Application() {
-
+		ScriptEngine::Shutdown();
 	}
 
 	void Application::PushLayer(Layer* layer) {
@@ -76,6 +74,8 @@ namespace Flora {
 					if (layer->ConfirmClose())
 						m_ProtectClose = false;
 
+			ExecuteMainThreadQueue();
+
 			if (!m_Minimized) {
 				{
 					FL_PROFILE_SCOPE("LayerStack OnUpdate");
@@ -102,6 +102,11 @@ namespace Flora {
 			layer->ProcessWindowClose();
 	}
 
+	void Application::SubmitToMainThread(const std::function<void()>& function) {
+		std::scoped_lock<std::mutex> lock(m_MainThreadQueueMutex);
+		m_MainThreadQueue.emplace_back(function);
+	}
+
 	bool Application::OnWindowClosed(WindowCloseEvent& e) {
 		Close();
 		return true;
@@ -118,5 +123,12 @@ namespace Flora {
 		Renderer::OnWindowResize(e.GetWidth(), e.GetHeight());
 
 		return false;
+	}
+
+	void Application::ExecuteMainThreadQueue() {
+		std::scoped_lock<std::mutex> lock(m_MainThreadQueueMutex);
+		for (auto& func : m_MainThreadQueue)
+			func();
+		m_MainThreadQueue.clear();
 	}
 }

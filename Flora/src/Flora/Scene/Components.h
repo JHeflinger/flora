@@ -1,13 +1,16 @@
 #pragma once
-#include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtx/quaternion.hpp>
 #include "Flora/Scene/SceneCamera.h"
 #include "Flora/Scene/ScriptableEntity.h"
 #include "Flora/Renderer/Texture.h"
-#include <glm/gtx/quaternion.hpp>
 #include "Flora/Utils/PhysicsUtils.h"
+#include "Flora/Project/Label.h"
+#include "Flora/Project/Project.h"
 
 namespace Flora {
+	enum class AudioState { NONE, PLAY, STOP, PAUSE, REWIND };
+
 	struct TagComponent {
 		std::string Tag;
 		TagComponent() = default;
@@ -36,6 +39,7 @@ namespace Flora {
 
 	struct SpriteRendererComponent {
 		enum class SpriteType {SINGLE = 0, SUBTEXTURE = 1, ANIMATION = 2};
+		bool Visible = true;
 		glm::vec4 Color{1.0f, 1.0f, 1.0f, 1.0f};
 		SpriteType Type = SpriteType::SINGLE;
 		float TilingFactor = 1.0f;
@@ -51,11 +55,14 @@ namespace Flora {
 		int CurrentFrame = 1;
 		int FPS = 1;
 		int FrameCounter = 0;
+		float Time = 0.0f;
+		bool Paused = false;
 		std::string Path = "NULL";
 		std::string Filename = "None Selected";
 		bool TextureInitialized = false;
 		SpriteRendererComponent() = default;
 		SpriteRendererComponent(const SpriteRendererComponent& other) {
+			Visible = other.Visible;
 			Color = other.Color;
 			Type = other.Type;
 			TilingFactor = other.TilingFactor;
@@ -96,6 +103,7 @@ namespace Flora {
 	struct CameraComponent {
 		SceneCamera Camera;
 		bool FixedAspectRatio = false;
+		bool ShowBorder = false; // TODO: move out of components since this is part of the debug overlay
 		CameraComponent() = default;
 		CameraComponent(const CameraComponent& other) {
 			Camera = other.Camera;
@@ -103,40 +111,20 @@ namespace Flora {
 		}
 	};
 
-	struct NativeScriptComponent {
-		ScriptableEntity* Instance = nullptr;
-		ScriptableEntity*(*InstantiateScript)();
-		void (*DestroyScript)(NativeScriptComponent*);
+	struct ScriptComponent {
+		std::string ClassName = "";
 
-		std::string Path = "NULL";
-		std::string Filename = "None Selected";
-
-		bool Bound = false;
-
-		template<typename T>
-		void Bind() {
-			Bound = true;
-			InstantiateScript = []() { return static_cast<ScriptableEntity*>(new T()); };
-			DestroyScript = [](NativeScriptComponent* nsc) { delete nsc->Instance; nsc->Instance = nullptr; };
-		}
-
-		NativeScriptComponent() = default;
-		NativeScriptComponent(const NativeScriptComponent& other) {
-			Path = other.Path;
-			Filename = other.Filename;
+		ScriptComponent() = default;
+		ScriptComponent(const ScriptComponent& other) {
+			ClassName = other.ClassName;
 		}
 	};
 
 	struct ScriptManagerComponent {
-		std::vector<NativeScriptComponent> NativeScripts;
+		std::vector<std::string> ClassNames;
 		ScriptManagerComponent() = default;
 		ScriptManagerComponent(const ScriptManagerComponent& other) {
-			for (int i = 0; i < other.NativeScripts.size(); i++) {
-				NativeScriptComponent nsc;
-				nsc.Path = other.NativeScripts[i].Path;
-				nsc.Filename = other.NativeScripts[i].Filename;
-				NativeScripts.emplace_back(nsc);
-			}
+			ClassNames = other.ClassNames;
 		}
 	};
 
@@ -156,11 +144,13 @@ namespace Flora {
 		Entity Parent;
 		bool InheritAll = true;
 		bool InheritTransform = true;
+		bool InheritSpriteProperties = true;
 		ParentComponent() = default;
 		ParentComponent(const ParentComponent& other) {
 			Parent = other.Parent;
 			InheritAll = other.InheritAll;
 			InheritTransform = other.InheritTransform;
+			InheritSpriteProperties = other.InheritSpriteProperties;
 		}
 	};
 
@@ -169,6 +159,7 @@ namespace Flora {
 		BodyType Type = BodyType::STATIC;
 		bool FixedRotation = false;
 		b2Body* RuntimeBody = nullptr;
+		int64_t Collision = -1;
 		RigidBody2DComponent() = default;
 		RigidBody2DComponent(const RigidBody2DComponent& other) {
 			Type = other.Type;
@@ -194,4 +185,97 @@ namespace Flora {
 			RestitutionThreshold = other.RestitutionThreshold;
 		}
 	};
+
+	struct CircleCollider2DComponent {
+		glm::vec2 Offset = { 0.0f, 0.0f };
+		float Radius = 0.5f;
+		float Density = 1.0f;
+		float Friction = 0.5;
+		float Restitution = 0.0f;
+		float RestitutionThreshold = 0.5f;
+		void* RuntimeFixture = nullptr;
+		CircleCollider2DComponent() = default;
+		CircleCollider2DComponent(const CircleCollider2DComponent& other) {
+			Offset = other.Offset;
+			Radius = other.Radius;
+			Density = other.Density;
+			Friction = other.Friction;
+			Restitution = other.Restitution;
+			RestitutionThreshold = other.RestitutionThreshold;
+		}
+	};
+
+	struct AudioSourceComponent {
+		float Scale = 1;
+		std::string AudioFile = "";
+		bool Loop = false;
+		float Pitch = 1.0f;
+		float Gain = 1.0f;
+		glm::vec3 Velocity = { 0.0f, 0.0f, 0.0f };
+		AudioState State = AudioState::NONE;
+		AudioSourceComponent() = default;
+		AudioSourceComponent(const AudioSourceComponent& other) {
+			Scale = other.Scale;
+			AudioFile = other.AudioFile;
+			Loop = other.Loop;
+			Pitch = other.Pitch;
+			Gain = other.Gain;
+			Velocity = other.Velocity;
+			State = other.State;
+		}
+	};
+
+	struct AudioListenerComponent {
+		glm::vec3 Velocity = { 0.0f, 0.0f, 0.0f };
+		float Gain = 1.0f;
+		AudioListenerComponent() = default;
+		AudioListenerComponent(const AudioListenerComponent& other) {
+			Velocity = other.Velocity;
+			Gain = other.Gain;
+		}
+	};
+
+	struct LabelComponent {
+	private:
+		std::set<std::string> Labels;
+	public:
+		LabelComponent() = default;
+		LabelComponent(const LabelComponent& other) {
+			for (auto label : other.Labels)
+				AddLabel(label);
+		}
+		bool AddLabel(std::string name, bool dangerous_override = false) {
+			if (dangerous_override)
+				Project::AddActiveLabel(name);
+			if (Project::ActiveLabelExists(name)) {
+				Labels.insert(name);
+				return true;
+			}
+			return false;
+		}
+		bool RemoveLabel(std::string name) {
+			if (Project::ActiveLabelExists(name)) {
+				Labels.erase(name);
+				return true;
+			}
+			return false;
+		}
+		bool HasLabel(std::string name) {
+			if (Project::ActiveLabelExists(name)) {
+				return Labels.find(name) != Labels.end();
+			}
+			return false;
+		}
+		std::set<std::string> GetLabels() { return Labels; }
+	};
+
+	template<typename... Component>
+	struct ComponentGroup{};
+
+	using AllComponents =
+		ComponentGroup<TagComponent, TransformComponent, SpriteRendererComponent,
+		CircleRendererComponent, CameraComponent, ScriptComponent,
+		ScriptManagerComponent, ChildComponent, ParentComponent, RigidBody2DComponent, 
+		BoxCollider2DComponent, CircleCollider2DComponent, AudioSourceComponent,
+		AudioListenerComponent, LabelComponent>;
 }

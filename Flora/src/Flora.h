@@ -30,3 +30,6 @@
 #include "Flora/Scene/Entity.h"
 #include "Flora/Scene/ScriptableEntity.h"
 #include "Flora/Scene/Components.h"
+
+// ---------PROJECT-----------
+#include "Flora/Project/Project.h"

@@ -7,7 +7,7 @@ namespace Flora {
 	class ContentBrowserPanel : public EditorPanel {
 	public:
 		ContentBrowserPanel();
-		virtual void Initialize() override {};
+		virtual void Initialize();
 		virtual void OnUpdate() override {};
 		void OnImGuiRender() override;
 	public:

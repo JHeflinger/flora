@@ -1,5 +1,5 @@
 #include "flpch.h"
-#include "Platform/OpenGL/OpenGLVertexArray.h"
+#include "OpenGLVertexArray.h"
 #include <glad/glad.h>
 
 namespace Flora {

@@ -5,15 +5,14 @@
 #include "Flora/Renderer/Camera.h"
 #include "Flora/Renderer/EditorCamera.h"
 #include "Flora/Scene/Components.h"
-#include "Flora/Renderer/AssetManager.h"
+#include "Flora/Core/AssetManager.h"
 
 namespace Flora {
 	class Renderer2D {
 	public:
 		static void Init();
 		static void Shutdown();
-		static void BeginScene(const OrthographicCamera& camera); //TODO: REMOVE
-		static void BeginScene(const EditorCamera& camera);
+		static void BeginScene(const glm::mat4 viewProjection);
 		static void BeginScene(const Camera& camera, const glm::mat4& transform);
 		static void EndScene();
 		static void Flush();
@@ -64,7 +63,7 @@ namespace Flora {
 							 int entityID = -1);
 		static void DrawRect(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color = { 1.0f, 1.0f, 1.0f, 1.0f }, float rotation = 0.0f, int entityID = -1);
 		static void DrawRect(const glm::mat4& transform, const glm::vec4& color = { 1.0f, 1.0f, 1.0f, 1.0f }, int entityID = -1);
-		static void DrawSprite(const glm::mat4& transform, SpriteRendererComponent& src, AssetManager* am, int entityID = -1);
+		static void DrawSprite(Timestep ts, const glm::mat4& transform, SpriteRendererComponent& src, int entityID = -1);
 		static void DrawCircle(const glm::mat4& transform, const glm::vec4& color = { 1.0f, 1.0f, 1.0f, 1.0f }, float thickness = 1.0f, float fade = 0.005f, int entityID = -1);
 		static void DrawLine(const glm::vec3& p1, const glm::vec3& p2, const glm::vec4& color = { 1.0f, 1.0f, 1.0f, 1.0f }, int entityID = -1);
 		static float GetLineWidth();

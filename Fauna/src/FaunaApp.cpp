@@ -8,6 +8,7 @@ namespace Flora {
 		Fauna(ApplicationCommandLineArgs args)
 			: Application("Fauna", args) {
 			PushLayer(new EditorLayer());
+			GetWindow().SetWindowIcon("Resources/Icons/Editor/Logo.png");
 		}
 
 		~Fauna() {

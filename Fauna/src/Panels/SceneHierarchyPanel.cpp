@@ -1,5 +1,6 @@
 #include "SceneHierarchyPanel.h"
 #include "Flora/Scene/Components.h"
+#include "../Utils/FileUtils.h"
 #include <imgui/imgui.h>
 
 namespace Flora {
@@ -28,10 +29,13 @@ namespace Flora {
 					if (m_EditorContext->SelectedEntity == m_EditorContext->Clipboard.Entity) {
 						m_EditorContext->SelectedEntity = {};
 					}
-					DeleteEntity(m_EditorContext->Clipboard.Entity);
+					m_EditorContext->ActiveScene->DestroyEntity(m_EditorContext->Clipboard.Entity);
 					m_EditorContext->Clipboard.Entity = {};
 					m_EditorContext->Clipboard.CutEntity = false;
 				}
+			}
+			if (ImGui::MenuItem("Import Entity")) {
+				FileUtils::ImportEntity(m_EditorContext);
 			}
 			ImGui::EndPopup();
 		}
@@ -109,10 +113,23 @@ namespace Flora {
 					if (m_EditorContext->SelectedEntity == m_EditorContext->Clipboard.Entity) {
 						m_EditorContext->SelectedEntity = {};
 					}
-					DeleteEntity(m_EditorContext->Clipboard.Entity);
+					m_EditorContext->ActiveScene->DestroyEntity(m_EditorContext->Clipboard.Entity);
 					m_EditorContext->Clipboard.Entity = {};
 					m_EditorContext->Clipboard.CutEntity = false;
 				}
+			}
+			if (ImGui::MenuItem("Import Entity")) {
+				Entity importedEntity = m_EditorContext->ActiveScene->GetEntityFromID((uint32_t)(*(FileUtils::ImportEntity(m_EditorContext))));
+				if (importedEntity) {
+					if (!m_EditorContext->SelectedEntity.HasComponent<ChildComponent>())
+						m_EditorContext->SelectedEntity.AddComponent<ChildComponent>();
+					m_EditorContext->SelectedEntity.GetComponent<ChildComponent>().AddChild(importedEntity);
+					importedEntity.AddComponent<ParentComponent>();
+					importedEntity.GetComponent<ParentComponent>().Parent = m_EditorContext->SelectedEntity;
+				}
+			}
+			if (ImGui::MenuItem("Export Entity")) {
+				FileUtils::ExportEntity(m_EditorContext->SelectedEntity);
 			}
 			ImGui::EndPopup();
 		}
@@ -127,22 +144,10 @@ namespace Flora {
 		}
 
 		if (entityDeleted) {
-			DeleteEntity(entity);
+			m_EditorContext->ActiveScene->DestroyEntity(entity);
 			if (m_EditorContext->SelectedEntity == entity) {
 				m_EditorContext->SelectedEntity = {};
 			}
 		}
-	}
-
-	void SceneHierarchyPanel::DeleteEntity(Entity entity) {
-		if (entity.HasComponent<ChildComponent>()) {
-			std::vector<Entity> children = entity.GetComponent<ChildComponent>().Children;
-			for (int i = 0; i < children.size(); i++) {
-				DeleteEntity(children[i]);
-			}
-		}
-		if (entity.HasComponent<ParentComponent>()) 
-			entity.GetComponent<ParentComponent>().Parent.GetComponent<ChildComponent>().RemoveChild(entity);
-		m_EditorContext->ActiveScene->DestroyEntity(entity);
 	}
 }

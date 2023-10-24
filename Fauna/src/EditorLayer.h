@@ -9,10 +9,13 @@
 #include "Panels/PhysicsPanel.h"
 #include "Flora/Renderer/EditorCamera.h"
 #include "Utils/Structures.h"
+#include "Flora/Events/KeyEvent.h"
 #include <map>
 
 namespace Flora {
-	enum class SavePromptType { NONE = 0, NORM = 1, FINAL = 2, OPEN = 3, NEW = 4, OPENPATH = 5};
+	enum class SavePromptType { NONE = 0, NORM = 1, FINAL = 2, OPEN = 3, NEW = 4, OPENPATH = 5 };
+	enum class ProjectPromptType { NONE = 0, NEW = 1, EDIT = 2, OPEN = 3 };
+	enum class SystemPromptType { NONE = 0, CRASH = 1 };
 
 	class EditorLayer : public Layer {
 	public:
@@ -33,18 +36,24 @@ namespace Flora {
 		void ResetEditorParams();
 		void InitializePanels();
 		void InitializeEditor();
+		void InitializeSystems();
 		void SetPanelContext();
 		void UpdatePanels(Timestep ts);
 		void RenderImGuiPanels();
+		void RenderSystemPrompt();
 		void UpdateEditor(Timestep ts);
 		void AutoSaveEditor(Timestep ts);
 		std::string GetLastSavedString();
 		void PromptSave(SavePromptType type) { m_SavePromptType = type; }
 		void RenderSavePrompt();
 		void RenderErrorPrompt();
+		void RenderProjectPrompt();
+		void RenderDebugOverlay();
 		void RenderUIBar();
 		void OnScenePlay();
 		void OnSceneStop();
+		void OnScenePause();
+		void OnSceneStep();
 	private:
 		void DevEvent();
 	private:
@@ -57,8 +66,10 @@ namespace Flora {
 		// OverrideEvent - temp solution
 		bool m_OverrideEventReady = true;
 
-		// save prompt vars
+		// prompt vars
 		SavePromptType m_SavePromptType = SavePromptType::NONE;
+		ProjectPromptType m_ProjectPromptType = ProjectPromptType::NONE;
+		SystemPromptType m_SystemPromptType = SystemPromptType::NONE;
 
 		// process before close var
 		bool m_ReadyToClose = false;
@@ -69,5 +80,7 @@ namespace Flora {
 		// Toolbar Icons
 		Ref<Texture2D> m_IconPlay;
 		Ref<Texture2D> m_IconStop;
+		Ref<Texture2D> m_IconPause;
+		Ref<Texture2D> m_IconStep;
 	};
 }

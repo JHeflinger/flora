@@ -1,9 +1,10 @@
 #include "flpch.h"
-#include "Platform/Windows/WindowsWindow.h"
+#include "WindowsWindow.h"
 #include "Flora/Events/KeyEvent.h"
 #include "Flora/Events/MouseEvent.h"
 #include "Flora/Events/ApplicationEvent.h"
 #include "Platform/OpenGL/OpenGLContext.h"
+#include "stb_image.h"
 
 namespace Flora {
 	static bool s_GLFWInitialized = false;
@@ -37,6 +38,9 @@ namespace Flora {
 			glfwSetErrorCallback(GLFWErrorCallback);
 			s_GLFWInitialized = true;
 		}
+
+		// uncomment for no title bar
+		//glfwWindowHint(GLFW_DECORATED, GLFW_FALSE);
 
 		m_Window = glfwCreateWindow((int)props.Width, (int)props.Height, m_Data.Title.c_str(), nullptr, nullptr);
 		if (m_Data.FullScreen)
@@ -132,5 +136,20 @@ namespace Flora {
 
 	bool WindowsWindow::IsVSync() const {
 		return m_Data.VSync;
+	}
+
+	void WindowsWindow::SetWindowIcon(const char* filepath) {
+		if (m_Window != nullptr) {
+			int width, height, channels;
+			unsigned char* pixels = stbi_load(filepath, &width, &height, &channels, 4);
+			GLFWimage images[1];
+			images[0].width = width;
+			images[0].height = height;
+			images[0].pixels = pixels;
+			glfwSetWindowIcon(m_Window, 1, images);
+		}
+		else {
+			FL_CORE_ERROR("No window to set icon to yet!");
+		}
 	}
 }

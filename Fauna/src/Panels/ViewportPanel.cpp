@@ -5,16 +5,14 @@
 #include "Flora/Core/Application.h"
 #include "Flora/Core/Input.h"
 #include "Flora/Math/Math.h"
+#include "Flora/Utils/VisualUtils.h"
 #include "../Utils/FileUtils.h"
-#include "../Utils/ComponentUtils.h"
+#include "Flora/Utils/ComponentUtils.h"
 #include <imgui/imgui.h>
 #include <glm/gtc/type_ptr.hpp>
 #include "ImGuizmo.h"
 
 namespace Flora {
-	//temp, remove when projects are implemented
-	extern const std::filesystem::path g_AssetPath;
-
 	void ViewportPanel::Initialize() {
 		FramebufferSpecification fbSpec;
 		fbSpec.Attachments = { FramebufferTextureFormat::RGBA8, FramebufferTextureFormat::RED_INTEGER, FramebufferTextureFormat::Depth };
@@ -60,7 +58,14 @@ namespace Flora {
 		if (mouseX >= 0 && mouseY >= 0 && mouseX < (int)viewportSize.x && mouseY < (int)viewportSize.y) {
 			int pixelData = m_Framebuffer->ReadPixel(1, mouseX, mouseY);
 			m_HoveredEntity = pixelData == -1 ? Entity() : Entity((entt::entity)pixelData, m_EditorContext->ActiveScene.get());
+			VisualUtils::SetHoveredEntity((int64_t)(uint32_t)m_HoveredEntity);
 		}
+
+		ViewportInfo& vi = VisualUtils::GetViewportInfo();
+		vi.width = m_ViewportSize.x;
+		vi.height = m_ViewportSize.y;
+		vi.mouseX = mx;
+		vi.mouseY = my;
 
 		// renderer "unsetup", move later
 		m_Framebuffer->Unbind();
@@ -89,7 +94,7 @@ namespace Flora {
 		if (ImGui::BeginDragDropTarget()) {
 			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM")) {
 				const wchar_t* path = (const wchar_t*)payload->Data;
-				std::filesystem::path scenePath = std::filesystem::path(g_AssetPath) / path;
+				std::filesystem::path scenePath = Project::GetAssetDirectory() / path;
 				if (scenePath.extension().string() != ".flora")
 					FL_CORE_ERROR("Not a valid scene file! Please upload a file ending with the .flora extension"); //convert later to popup maybe
 				else {
@@ -114,9 +119,8 @@ namespace Flora {
 
 			// Entity transform
 			auto& tc = selectedEntity.GetComponent<TransformComponent>();
-			glm::mat4 transform = tc.GetTransform();
+			glm::mat4 transform = ComponentUtils::GetWorldTransform(selectedEntity);
 			glm::mat4 parentTransform = ComponentUtils::GetParentTransform(selectedEntity);
-			transform = parentTransform * transform;
 
 			// Snapping
 			bool snap = Input::IsKeyPressed(Key::LeftControl);

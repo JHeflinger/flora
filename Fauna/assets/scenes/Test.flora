@@ -1,19 +1,90 @@
 Scene: Testing
-Primary Camera: -1
+Primary Camera: 15
+Primary Audio Listener: 16
 Physics:
-  Gravity: 9.80000019
+  Gravity: 34
   VelocityIterations: 6
   PositionIterations: 2
 Entities:
-  - Entity: 1
+  - Entity: 19
     TagComponent:
-      Tag: Square
+      Tag: Controllable Player
     TransformComponent:
-      Translation: [5.9000001, 0, 0]
+      Translation: [34.7155571, -8.6109314, -3.61065674]
       Rotation: [0, 0, 0]
-      Scale: [1, 1, 1]
+      Scale: [9.75839996, 9.75839996, 9.75839996]
     SpriteRendererComponent:
-      Color: [1, 0, 0, 1]
+      Color: [1, 1, 1, 1]
+      Path: assets\game\textures\comical-explosion.png
+      Filename: comical-explosion.png
+      Type: 2
+      TilingFactor: 1
+      Rows: 5
+      Columns: 10
+      RowCoordinate: 1
+      ColumnCoordinate: 1
+      SubtextureWidth: 1
+      SubtextureHeight: 1
+      Frames: 1
+      StartFrame: 1
+      EndFrame: 50
+      CurrentFrame: 1
+      FPS: 30
+    ScriptComponent:
+      ClassName: Sandbox.Doohickey
+      ScriptFields:
+        - Name: speed
+          Type: Float
+          Data: 54
+        - Name: variable_Vec3
+          Type: Vector3
+          Data: [0, -2.20000005, 0]
+        - Name: variable_Vec4
+          Type: Vector4
+          Data: [0.200000003, -1.20000005, 0.400000006, 2.29999995]
+        - Name: variable_bool
+          Type: Bool
+          Data: true
+        - Name: variable_byte
+          Type: Byte
+          Data: 21
+        - Name: variable_double
+          Type: Double
+          Data: 58.2983472983749
+        - Name: variable_float
+          Type: Float
+          Data: 6
+        - Name: variable_int
+          Type: Int
+          Data: 51
+        - Name: variable_short
+          Type: Short
+          Data: 195
+        - Name: variable_uint
+          Type: UInt
+          Data: 69
+        - Name: variable_vec2
+          Type: Vector2
+          Data: [1.79999995, 4.5999999]
+    ChildComponent:
+      - 14
+      - 13
+    AudioSourceComponent:
+      Scale: 1
+      AudioFile: D:\Dev\Flora\Fauna\Projects\Sandbox Studio\Assets\Audio\phone_wav.wav
+      Loop: true
+      Pitch: 1
+      Gain: 1
+      Velocity: [0, 0, 0]
+  - Entity: 18
+    TagComponent:
+      Tag: ground
+    TransformComponent:
+      Translation: [31.700079, -8.21304226, 9.29279804]
+      Rotation: [0, 0, -0.263376147]
+      Scale: [22.6991749, 0.999999106, 1]
+    SpriteRendererComponent:
+      Color: [0.109704301, 0.772200763, 0.0357776061, 1]
       Path: "NULL"
       Filename: None Selected
       Type: 0
@@ -29,15 +100,125 @@ Entities:
       EndFrame: 1
       CurrentFrame: 1
       FPS: 1
-  - Entity: 0
+    ChildComponent:
+      []
+    RigidBody2DComponent:
+      Type: 0
+      FixedRotation: false
+    BoxCollider2DComponent:
+      Offset: [0, 0]
+      Size: [0.5, 0.5]
+      Density: 1
+      Friction: 0.5
+      Restitution: 1.10000002
+      RestitutionThreshold: 0.5
+  - Entity: 17
     TagComponent:
-      Tag: Circle
+      Tag: ball
     TransformComponent:
-      Translation: [1.58518839, 0.795534432, 0.44665271]
-      Rotation: [0, 0.0506152734, 0]
-      Scale: [17.0999985, 17.1000004, 1.71000004]
+      Translation: [35.2040634, -2.55051994, 9.87065697]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
     CircleRendererComponent:
-      Color: [0, 1, 0.0154440403, 1]
+      Color: [1, 0, 0, 1]
       Radius: 0.5
-      Thickness: 0.389999986
-      Fade: 0.167999998
+      Thickness: 1
+      Fade: 0.00499999989
+    RigidBody2DComponent:
+      Type: 2
+      FixedRotation: false
+    CircleCollider2DComponent:
+      Offset: [0, 0]
+      Radius: 0.5
+      Density: 1
+      Friction: 0.5
+      Restitution: 0
+      RestitutionThreshold: 0.5
+    AudioSourceComponent:
+      Scale: 1
+      AudioFile: D:\Dev\Flora\Fauna\Projects\Sandbox Studio\Assets\Audio\cringe.wav
+      Loop: true
+      Pitch: 1
+      Gain: 1
+      Velocity: [0, 0, 0]
+  - Entity: 16
+    TagComponent:
+      Tag: ground
+    TransformComponent:
+      Translation: [38.4325333, -10.0283813, 8.48150635]
+      Rotation: [0.106140807, 0.0466156043, 0.247675568]
+      Scale: [22.6991425, 1, 0.999999881]
+    SpriteRendererComponent:
+      Color: [0, 0.177606106, 1, 1]
+      Path: "NULL"
+      Filename: None Selected
+      Type: 0
+      TilingFactor: 1
+      Rows: 1
+      Columns: 1
+      RowCoordinate: 1
+      ColumnCoordinate: 1
+      SubtextureWidth: 1
+      SubtextureHeight: 1
+      Frames: 1
+      StartFrame: 1
+      EndFrame: 1
+      CurrentFrame: 1
+      FPS: 1
+    RigidBody2DComponent:
+      Type: 0
+      FixedRotation: false
+    BoxCollider2DComponent:
+      Offset: [0, 0]
+      Size: [0.5, 0.5]
+      Density: 1
+      Friction: 4.4000001
+      Restitution: 0
+      RestitutionThreshold: 0.5
+    AudioListenerComponent:
+      Gain: 1
+      Velocity: [0.899999976, 0.600000024, 0.600000024]
+  - Entity: 15
+    TagComponent:
+      Tag: Camera
+    TransformComponent:
+      Translation: [34.8339119, -7.45363808, 6.16546631]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    CameraComponent:
+      Camera:
+        ProjectionType: 1
+        PerspectiveFOV: 0.785398185
+        PerspectiveNear: 0.00999999978
+        PerspectiveFar: 1000
+        OrthographicSize: 10
+        OrthographicNear: -16
+        OrthographicFar: 34
+      FixedAspectRatio: false
+      Visible Borders: true
+    ScriptComponent:
+      ClassName: Sandbox.Camera
+      ScriptFields:
+        []
+  - Entity: 14
+    TagComponent:
+      Tag: Child One
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    ParentComponent:
+      Parent: 19
+      InheritAll: true
+      InheritTransform: true
+  - Entity: 13
+    TagComponent:
+      Tag: Child Two
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    ParentComponent:
+      Parent: 19
+      InheritAll: true
+      InheritTransform: true

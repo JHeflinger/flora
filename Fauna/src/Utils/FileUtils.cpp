@@ -3,13 +3,37 @@
 #include "Flora/Utils/PlatformUtils.h"
 #include "EditorSerializer.h"
 #include "Flora/Utils/Serializer.h"
+#include "Flora/Project/Project.h"
+#include <shellapi.h>
+#include <locale>
+#include <codecvt>
 
 namespace Flora {
+	static std::string ConvertWCharToString(const wchar_t* wstr) {
+		int size = WideCharToMultiByte(CP_UTF8, 0, wstr, -1, nullptr, 0, nullptr, nullptr);
+		if (size == 0)
+			return "";
+
+		std::string utf8Str;
+		utf8Str.resize(size);
+		WideCharToMultiByte(CP_UTF8, 0, wstr, -1, &utf8Str[0], size, nullptr, nullptr);
+
+		return utf8Str;
+	}
+
 	void FileUtils::OpenScene(Ref<EditorParams> context){
 		std::string filepath = FileDialogs::OpenFile("Flora Scene (*.flora)\0*.flora\0");
 		if (!filepath.empty()) {
 			OpenScene(context, filepath);
 		}
+	}
+
+	Entity* FileUtils::ImportEntity(Ref<EditorParams> context) {
+		std::string filepath = FileDialogs::OpenFile("Flora Entity (*.flent)\0*.flent\0");
+		if (!filepath.empty()) {
+			return ImportEntity(context, filepath);
+		}
+		return nullptr;
 	}
 
 	void FileUtils::SaveSceneAs(Ref<EditorParams> context){
@@ -19,6 +43,15 @@ namespace Flora {
 			std::string sceneContent = Serializer::SerializeScene(context->ActiveScene);
 			Serializer::SerializeFile(sceneContent, filepath);
 			context->ActiveScene->SetSceneFilepath(filepath);
+		}
+	}
+
+	void FileUtils::ExportEntity(Entity entity) {
+		std::string filepath = FileDialogs::SaveFile("Flora Entity (*.flent)\0*.flent\0");
+		if (!filepath.empty()) {
+			if (std::filesystem::path(filepath).stem().extension().string() != ".flent") filepath = filepath + ".flent";
+			std::string entityContent = Serializer::SerializeEntity(entity);
+			Serializer::SerializeFile(entityContent, filepath);
 		}
 	}
 
@@ -35,17 +68,23 @@ namespace Flora {
 
 	void FileUtils::SaveTempScene(Ref<EditorParams> context) {
 		std::string sceneContent = Serializer::SerializeScene(context->ActiveScene);
-		Serializer::SerializeFile(sceneContent, "temp/tempScene.flora");
-		std::string editorContent = EditorSerializer::Serialize(context);
-		Serializer::SerializeFile(editorContent, "temp/tempEditorSettings.fnproj");
+		Serializer::SerializeFile(sceneContent, "Resources/Temp/tempScene.flora");
+		std::string editorContent = EditorSerializer::Serialize(context, false);
+		Serializer::SerializeFile(editorContent, "Resources/Temp/tempEditorSettings.fnproj");
 	}
 
 	void FileUtils::OpenTempScene(Ref<EditorParams> context) {
-		EditorSerializer::Deserialize(context, "temp/tempEditorSettings.fnproj");
+		bool entitySelected = context->SelectedEntity;
+		uint32_t selectedEntityID = context->SelectedEntity;
+		EditorSerializer::Deserialize(context, "Resources/Temp/tempEditorSettings.fnproj"); //TODO: should probably do a check to see if this exists just in case?
 		std::string sceneFilepath = context->ActiveScene->GetSceneFilepath();
 		NewScene(context);
 		context->ActiveScene->SetSceneFilepath(sceneFilepath);
-		Serializer::DeserializeScene(context->ActiveScene, "temp/tempscene.flora");
+		Serializer::DeserializeScene(context->ActiveScene, "Resources/Temp/tempscene.flora");
+		if (entitySelected)
+			context->SelectedEntity = Entity{ (entt::entity)selectedEntityID, &(*(context->ActiveScene)) };
+		else
+			context->SelectedEntity = Entity{};
 	}
 
 	void FileUtils::OpenScene(Ref<EditorParams> context, const std::filesystem::path& path){
@@ -53,8 +92,12 @@ namespace Flora {
 		context->ActiveScene->SetSceneFilepath(path.string());
 		context->SelectedEntity = {};
 		Serializer::DeserializeScene(context->ActiveScene, path.string());
-		std::string editorContent = EditorSerializer::Serialize(context);
-		Serializer::SerializeFile(editorContent, "assets/settings/fauna.fnproj");
+		std::string editorContent = EditorSerializer::Serialize(context, false);
+		Serializer::SerializeFile(editorContent, "Resources/Settings/fauna.fnproj");
+	}
+
+	Entity* FileUtils::ImportEntity(Ref<EditorParams> context, const std::filesystem::path& path) {
+		return Serializer::DeserializeEntity(context->ActiveScene, path.string());
 	}
 
 	void FileUtils::NewScene(Ref<EditorParams> context){
@@ -96,30 +139,34 @@ namespace Flora {
 
 	void FileUtils::CreateScript(const std::filesystem::path& directory) { //currently not stable for typical users
 		std::string templateContent = 
-			"#pragma once\n"
-			"#include \"Flora/Scene/ScriptableEntity.h\"\n"
+			"using System;\n"
+			"using Flora;\n"
 			"\n"
-			"namespace Flora {\n"
-			"\tclass TEMPLATE : public ScriptableEntity {\n"
-			"\tpublic:\n"
-			"\t\tvoid OnCreate() {\n"
+			"namespace Game\n"
+			"{\n"
+			"\tpublic class NewScript : Entity\n"
+			"\t{\n"
+			"\t\tvoid OnCreate()\n"
+			"\t\t{\n"
 			"\t\t\n"
 			"\t\t}\n"
 			"\n"
-			"\t\tvoid OnDestroy() {\n"
+			"\t\tvoid OnDestroy()\n"
+			"\t\t{\n"
 			"\t\t\n"
 			"\t\t}\n"
 			"\n"
-			"\t\tvoid OnUpdate(Timestep ts) {\n"
+			"\t\tvoid OnUpdate(float ts)\n"
+			"\t\t{\n"
 			"\t\t\n"
 			"\t\t}\n"
-			"\t};\n"
+			"\t}\n"
 			"}";
-		std::string newfilename = "New Script.h";
+		std::string newfilename = "New Script.cs";
 		int i = 0; 
 		while (std::filesystem::exists(directory / newfilename)) {
 			i++;
-			newfilename = "New Script (" + std::to_string(i) + ").h";
+			newfilename = "New Script (" + std::to_string(i) + ").cs";
 		}
 		std::ofstream outfile(directory / newfilename);
 		if (outfile.is_open()) {
@@ -127,6 +174,10 @@ namespace Flora {
 			outfile.close();
 		} else {
 			FL_CORE_ERROR("Unable to create file");
+		}
+
+		if (!Project::RegenerateScriptingProject()) {
+			FL_CORE_ERROR("Unable to reload script into project");
 		}
 	}
 	
@@ -146,11 +197,24 @@ namespace Flora {
 		}
 	}
 
-	void FileUtils::SaveEditor(Ref<EditorParams> context) {
-		Serializer::SerializeFile(EditorSerializer::Serialize(context), "assets/settings/fauna.fnproj"); 
+	void FileUtils::SaveEditor(Ref<EditorParams> context, bool safeclose) {
+		Serializer::SerializeFile(EditorSerializer::Serialize(context, safeclose), "Resources/Settings/fauna.fnproj"); 
 	}
 
 	void FileUtils::LoadEditor(Ref<EditorParams> context) {
 		EditorSerializer::Deserialize(context); 
+	}
+
+	int FileUtils::ShellOpen(const std::filesystem::path path) {
+		wchar_t winCurrDir[MAX_PATH];
+		GetCurrentDirectory(MAX_PATH, winCurrDir);
+		SetCurrentDirectory(winCurrDir);
+		std::string wcd = ConvertWCharToString(winCurrDir);
+		std::string project_path = path.string();
+		std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
+		std::wstring wideStr = converter.from_bytes(project_path);
+		wcscat(winCurrDir, wideStr.c_str());
+		HINSTANCE result = ShellExecute(nullptr, L"open", winCurrDir, nullptr, nullptr, SW_SHOWNORMAL);
+		return (int)result;
 	}
 }

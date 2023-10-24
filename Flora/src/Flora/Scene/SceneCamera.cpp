@@ -1,5 +1,5 @@
 #include "flpch.h"
-#include "Flora/Scene/SceneCamera.h"
+#include "SceneCamera.h"
 #include <glm/gtc/matrix_transform.hpp>
 
 namespace Flora {

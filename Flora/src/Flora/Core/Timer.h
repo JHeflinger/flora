@@ -2,7 +2,6 @@
 #include <chrono>
 
 namespace Flora {
-
 	class Timer {
 	public:
 		Timer() {

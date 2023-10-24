@@ -1,5 +1,5 @@
 #include "flpch.h"
-#include "Flora/Renderer/VertexArray.h"
+#include "VertexArray.h"
 #include "Flora/Renderer/Renderer.h"
 #include "Platform/OpenGL/OpenGLVertexArray.h"
 

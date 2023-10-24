@@ -5,30 +5,31 @@
 #include "../Utils/FileUtils.h"
 
 namespace Flora {
-	// TODO: change this when projects are implemented
-	extern const std::filesystem::path g_AssetPath = "assets";
+	ContentBrowserPanel::ContentBrowserPanel() {
+		m_DirectoryIcon = Texture2D::Create("Resources/Icons/ContentBrowser/DirectoryIcon.png");
+		m_FileIcon = Texture2D::Create("Resources/Icons/ContentBrowser/FileIcon.png");
+		m_BackIcon = Texture2D::Create("Resources/Icons/ContentBrowser/BackIcon.png");
+		m_UpIcon = Texture2D::Create("Resources/Icons/ContentBrowser/UpIcon.png");
+	}
 
-	ContentBrowserPanel::ContentBrowserPanel()
-		: m_CurrentDirectory(g_AssetPath) {
-		m_DirectoryIcon = Texture2D::Create("resources/icons/ContentBrowser/DirectoryIcon.png");
-		m_FileIcon = Texture2D::Create("resources/icons/ContentBrowser/FileIcon.png");
-		m_BackIcon = Texture2D::Create("resources/icons/ContentBrowser/BackIcon.png");
-		m_UpIcon = Texture2D::Create("resources/icons/ContentBrowser/UpIcon.png");
+	void ContentBrowserPanel::Initialize() {
+		m_CurrentDirectory = Project::GetAssetDirectory();
 	}
 
 	void ContentBrowserPanel::OnImGuiRender() {
 		ImGui::Begin("Content Browser", &m_Enabled);
+		if (m_EditorContext->ProjectFilepath == "") { ImGui::End(); return; }
 		if (ImGui::IsWindowHovered()) m_EditorContext->HoveredPanel = Panels::CONTENTBROWSER;
 		if (ImGui::IsWindowFocused()) m_EditorContext->FocusedPanel = Panels::CONTENTBROWSER;
 
-		if (m_CurrentDirectory != std::filesystem::path(g_AssetPath)) {
+		if (m_CurrentDirectory != std::filesystem::path(Project::GetAssetDirectory())) {
 			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 0));
 			if (ImGui::ImageButton((ImTextureID)m_BackIcon->GetRendererID(), { 20, 20 }, { 0, 1 }, { 1, 0 }))
 				m_CurrentDirectory = m_CurrentDirectory.parent_path();
 			if (ImGui::BeginDragDropTarget()) {
 				if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM")) {
 					const wchar_t* path = (const wchar_t*)payload->Data;
-					std::filesystem::path payloadPath = std::filesystem::path(g_AssetPath) / path;
+					std::filesystem::path payloadPath = std::filesystem::path(Project::GetAssetDirectory()) / path;
 					std::string newPath = payloadPath.parent_path().parent_path().string() + "/" + payloadPath.filename().string();
 					if (std::rename(payloadPath.string().c_str(), newPath.c_str()) != 0) FL_CORE_ERROR("Error moving file");
 				}
@@ -38,7 +39,7 @@ namespace Flora {
 			ImGui::SameLine(ImGui::GetWindowSize().x);
 			ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 30);
 			if (ImGui::ImageButton((ImTextureID)m_UpIcon->GetRendererID(), { 20, 20 }, { 0, 1 }, { 1, 0 }))
-				m_CurrentDirectory = std::filesystem::path(g_AssetPath);
+				m_CurrentDirectory = std::filesystem::path(Project::GetAssetDirectory());
 			ImGui::PopStyleColor();
 		}
 		else {
@@ -60,7 +61,7 @@ namespace Flora {
 			m_SelectedFile = "";
 		for (auto& directoryEntry : std::filesystem::directory_iterator(m_CurrentDirectory)) {
 			const auto& path = directoryEntry.path();
-			auto relativePath = std::filesystem::relative(path, g_AssetPath);
+			auto relativePath = std::filesystem::relative(path, Project::GetAssetDirectory());
 			std::string filenameString = relativePath.filename().string();
 
 			ImGui::PushID(filenameString.c_str());
@@ -76,6 +77,7 @@ namespace Flora {
 
 			if (ImGui::BeginDragDropSource()) {
 				const wchar_t* itemPath = relativePath.c_str();
+				FL_CORE_INFO(relativePath.string());
 				ImGui::SetDragDropPayload("CONTENT_BROWSER_ITEM", itemPath, (wcslen(itemPath) + 1) * sizeof(wchar_t), ImGuiCond_Once);
 				ImGui::EndDragDropSource();
 			}
@@ -84,7 +86,7 @@ namespace Flora {
 				if (ImGui::BeginDragDropTarget()) {
 					if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM")) {
 						const wchar_t* path = (const wchar_t*)payload->Data;
-						std::filesystem::path payloadPath = std::filesystem::path(g_AssetPath) / path;
+						std::filesystem::path payloadPath = std::filesystem::path(Project::GetAssetDirectory()) / path;
 						std::string newPath = payloadPath.parent_path().string() + "/" + filenameString + "/" + payloadPath.filename().string();
 						if (std::rename(payloadPath.string().c_str(), newPath.c_str()) != 0) FL_CORE_ERROR("Error moving file");
 					}
@@ -97,6 +99,12 @@ namespace Flora {
 					m_CurrentDirectory /= path.filename();
 				else if (path.extension().string() == ".flora")
 					RequestOpenScene(path.string());
+				else if (path.extension().string() == ".cs") {
+					m_EditorContext->Project->RegenerateScriptingProject();
+					std::string project_path = "\\scripting\\" + m_EditorContext->Project->GetConfig().Name + ".sln";
+					if (FileUtils::ShellOpen(project_path) <= 32)
+						FL_CORE_ERROR("Could not open associated visual studio project file \"" + project_path + "\"");
+				}
 			}
 
 			if (ImGui::BeginPopupContextItem()) {
@@ -133,6 +141,8 @@ namespace Flora {
 						m_FileToRename = "";
 						if (m_EditorContext->ActiveScene->GetSceneFilepath() == path.string().c_str())
 							m_EditorContext->ActiveScene->SetSceneFilepath(completeFilename);
+						if (!Project::RegenerateScriptingProject())
+							FL_CORE_ERROR("Unable to refresh script project");
 					} else FL_CORE_ERROR("Error renaming file");
 				}
 			} else {

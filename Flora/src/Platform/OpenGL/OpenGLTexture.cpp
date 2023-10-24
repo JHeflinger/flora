@@ -1,5 +1,5 @@
 #include "flpch.h"
-#include "Platform/OpenGL/OpenGLTexture.h"
+#include "OpenGLTexture.h"
 #include <glad/glad.h>
 #include "stb_image.h"
 

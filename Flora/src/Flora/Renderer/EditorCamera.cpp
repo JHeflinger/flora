@@ -1,9 +1,6 @@
 #include "flpch.h"
-#include "Flora/Renderer/EditorCamera.h"
+#include "EditorCamera.h"
 #include "Flora/Core/Input.h"
-#include "Flora/Core/KeyCodes.h"
-#include "Flora/Core/MouseCodes.h"
-#include <glfw/glfw3.h>
 #include <glm/gtx/quaternion.hpp>
 
 namespace Flora {
@@ -39,10 +36,10 @@ namespace Flora {
 	}
 
 	std::pair<float, float> EditorCamera::PanSpeed() const {
-		float x = std::min(m_ViewportWidth / 1000.0f, 2.4f); // max = 2.4f
+		float x = std::min(m_ViewportWidth / 10000.0f, 2.4f); // max = 2.4f
 		float xFactor = 0.0366f * (x * x) - 0.1778f * x + 0.3021f;
 
-		float y = std::min(m_ViewportHeight / 1000.0f, 2.4f); // max = 2.4f
+		float y = std::min(m_ViewportHeight / 10000.0f, 2.4f); // max = 2.4f
 		float yFactor = 0.0366f * (y * y) - 0.1778f * y + 0.3021f;
 
 		return { xFactor, yFactor };
@@ -61,11 +58,11 @@ namespace Flora {
 	}
 
 	void EditorCamera::OnUpdate(Timestep ts, bool updateControl) {
-		if (Input::IsKeyPressed(Key::Space) && updateControl) {
-			const glm::vec2& mouse{ Input::GetMouseX(), Input::GetMouseY() };
-			glm::vec2 delta = (mouse - m_InitialMousePosition) * 0.003f;
-			m_InitialMousePosition = mouse;
+		const glm::vec2& mouse{ Input::GetMouseX(), Input::GetMouseY() };
+		glm::vec2 delta = (mouse - m_InitialMousePosition) * 0.003f;
+		m_InitialMousePosition = mouse;
 
+		if (Input::IsKeyPressed(Key::Space) && updateControl) {
 			if (Input::IsMouseButtonPressed(Mouse::ButtonLeft))
 				MousePan(delta);
 			else if (Input::IsMouseButtonPressed(Mouse::ButtonRight))

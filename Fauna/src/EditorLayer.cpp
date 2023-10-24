@@ -1,5 +1,7 @@
 #include "EditorLayer.h"
+#include "flpch.h"
 #include "imgui/imgui.h"
+#include "imgui/imgui_internal.h"
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include "Platform/OpenGL/OpenGLShader.h"
@@ -8,11 +10,11 @@
 #include "Flora/Math/Math.h"
 #include "Utils/FileUtils.h"
 #include "ImGuizmo.h"
+#include "Flora/Audio/AudioCommand.h"
+#include "Flora/Scripting/ScriptEngine.h"
+#include "Flora/Utils/ComponentUtils.h"
 
 namespace Flora {
-	//temp, remove when projects are implemented
-	extern const std::filesystem::path g_AssetPath;
-
 	EditorLayer::EditorLayer()
 		: Layer("Editor") {
 		m_Panels["Stats"] = CreateScope<StatsPanel>();
@@ -28,14 +30,17 @@ namespace Flora {
 		// Set up editor params
 		ResetEditorParams();
 
-		// Initialize panels
-		InitializePanels();
+		// Initialize editor
+		InitializeEditor();
 
 		// Set panel context
 		SetPanelContext();
 
-		// Initialize editor
-		InitializeEditor();
+		// Initialize panels
+		InitializePanels();
+
+		// Initialize game systems
+		InitializeSystems();
 	}
 
 	void EditorLayer::OnDetatch() {
@@ -50,6 +55,9 @@ namespace Flora {
 
 		// Update editor params
 		UpdateEditor(ts);
+
+		// Render debug overlay
+		RenderDebugOverlay();
 
 		// Process viewport
 		GetSpecificPanel<ViewportPanel>("Viewport")->PostUpdate();
@@ -101,6 +109,19 @@ namespace Flora {
 		style.WindowMinSize.x = 32.0f;
 
 		if (ImGui::BeginMenuBar()) {
+			if (ImGui::BeginMenu("Project")) {
+				if (ImGui::MenuItem("New")) {
+					m_ProjectPromptType = ProjectPromptType::NEW;
+				}
+				if (ImGui::MenuItem("Open")) {
+					m_ProjectPromptType = ProjectPromptType::OPEN;
+				}
+				if (ImGui::MenuItem("Settings")) {
+					m_ProjectPromptType = ProjectPromptType::EDIT;
+				}
+				ImGui::EndMenu();
+			}
+
 			if (ImGui::BeginMenu("Scene")) {
 				if (ImGui::MenuItem("New", "Ctrl+N")) {
 					PromptSave(SavePromptType::NEW);
@@ -124,6 +145,8 @@ namespace Flora {
 			}
 
 			if (ImGui::BeginMenu("Application")) {
+				if (ImGui::MenuItem("Documentation"))
+					FileUtils::ShellOpen("\\docs\\html\\index.html");
 				if (ImGui::MenuItem("Exit")) Application::Get().Close();
 				ImGui::EndMenu();
 			}
@@ -146,8 +169,12 @@ namespace Flora {
 						m_EditorParams->EditorCamera.SetCameraTypeWithString("Orthographic");
 					}
 				}
+
 				if (ImGui::MenuItem("Reset Editor Camera", "Space+`"))
 					m_EditorParams->EditorCamera.ResetCamera();
+
+				ImGui::MenuItem("Bind Editor Camera", "Space+Ctrl", m_EditorParams->EditorCamera.GetCameraBound());
+
 				ImGui::EndMenu();
 			}
 
@@ -195,8 +222,14 @@ namespace Flora {
 		// Prompt Save
 		RenderSavePrompt();
 
+		// Prompt Project
+		RenderProjectPrompt();
+
 		// Prompt Errors
 		RenderErrorPrompt();
+
+		// Render system prompt
+		RenderSystemPrompt();
 
 		ImGui::End();
 	}
@@ -205,18 +238,28 @@ namespace Flora {
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, { 0, 2 });
 		ImGui::PushStyleVar(ImGuiStyleVar_ItemInnerSpacing, { 0, 0 });
 		ImGui::Begin("##Toolbar", nullptr, ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse);
-		Ref<Texture2D> icon = m_EditorParams->SceneState == SceneState::EDIT ? m_IconPlay : m_IconStop;
 		float size = ImGui::GetWindowHeight() - 4.0f;
 		ImGui::SameLine((ImGui::GetContentRegionMax().x * 0.5f) - (size * 0.5f));
 		ImGui::SetCursorPosY(ImGui::GetCursorPosY() - 2);
 		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 0));
 		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0, 0, 0, 0));
 		ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0, 0, 0, 0));
-		if (ImGui::ImageButton((ImTextureID)icon->GetRendererID(), {size, size})) {
-			if (m_EditorParams->SceneState == SceneState::EDIT) {
+		if (m_EditorParams->SceneState == SceneState::EDIT) {
+			if (ImGui::ImageButton((ImTextureID)m_IconPlay->GetRendererID(), { size, size }))
 				OnScenePlay();
-			}else if (m_EditorParams->SceneState == SceneState::PLAY) {
+		} else {
+			ImGui::SetCursorPosX(ImGui::GetCursorPosX() - size - 16);
+			if (ImGui::ImageButton((ImTextureID)m_IconStop->GetRendererID(), { size, size })) {
 				OnSceneStop();
+			}
+			ImGui::SameLine();
+			Ref<Texture2D> icon = m_EditorParams->ActiveScene->IsScenePaused() ? m_IconPlay : m_IconPause;
+			if (ImGui::ImageButton((ImTextureID)icon->GetRendererID(), { size, size })) {
+				OnScenePause();
+			}
+			ImGui::SameLine();
+			if (ImGui::ImageButton((ImTextureID)m_IconStep->GetRendererID(), { size, size })) {
+				OnSceneStep();
 			}
 		}
 		ImGui::PopStyleColor(3);
@@ -233,15 +276,30 @@ namespace Flora {
 		if (!m_EditorParams->ActiveScene->GetPrimaryCamera()) FL_WARN("No primary camera selected");
 	}
 
+	void EditorLayer::OnScenePause() {
+		if (m_EditorParams->ActiveScene->IsScenePaused())
+			m_EditorParams->ActiveScene->SetScenePaused(false);
+		else
+			m_EditorParams->ActiveScene->SetScenePaused(true);
+	}
+
+	void EditorLayer::OnSceneStep() {
+		m_EditorParams->ActiveScene->StepScene(1);
+	}
+
 	void EditorLayer::OnSceneStop() {
 		m_EditorParams->ActiveScene->OnRuntimeStop();
 		FileUtils::OpenTempScene(m_EditorParams);
 		m_EditorParams->SceneState = SceneState::EDIT;
+
+		// make sure selected entity still exists
+		if (!m_EditorParams->ActiveScene->EntityExists(m_EditorParams->SelectedEntity))
+			m_EditorParams->SelectedEntity = {};
 	}
 
 	void EditorLayer::ProcessWindowClose() {
 		// Save editor settings
-		FileUtils::SaveEditor(m_EditorParams);
+		FileUtils::SaveEditor(m_EditorParams, true);
 		FL_CORE_INFO("Saved editor settings");
 
 		// Prompt save
@@ -251,7 +309,7 @@ namespace Flora {
 	}
 
 	void EditorLayer::OnEvent(Event& e) {
-		if (m_EditorParams->FocusedPanel == Panels::VIEWPORT)
+		if (m_EditorParams->HoveredPanel == Panels::VIEWPORT)
 			m_EditorParams->EditorCamera.OnEvent(e);
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<KeyPressedEvent>(FL_BIND_EVENT_FN(EditorLayer::OnKeyPressed));
@@ -265,7 +323,7 @@ namespace Flora {
 			ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
 			if (ImGui::BeginPopupModal("ERROR", NULL, ImGuiWindowFlags_AlwaysAutoResize)) {
 				ImGui::SetItemDefaultFocus();
-				std::string message = m_EditorParams->Error.substr(10) + "\n\n";
+				std::string message = m_EditorParams->Error.substr(2) + "\n\n";
 				ImGui::Text(message.c_str());
 				ImGui::Separator();
 				ImGui::Dummy({ 0, 3 });
@@ -384,24 +442,312 @@ namespace Flora {
 		}
 	}
 
+	void EditorLayer::RenderSystemPrompt() {
+		if (m_SystemPromptType == SystemPromptType::CRASH) {
+			ImGui::OpenPopup("CRASH GUARD");
+			ImVec2 center = ImGui::GetMainViewport()->GetCenter();
+			ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
+			if (ImGui::BeginPopupModal("CRASH GUARD", NULL, ImGuiWindowFlags_AlwaysAutoResize)) {
+				ImGui::SetItemDefaultFocus();
+				ImGui::Text("Detected that previous session crashed during simulation.");
+				ImGui::Text("Would you like to restore the previously cached scene state?\n\n");
+				ImGui::Separator();
+				ImGui::Dummy({ 0, 3 });
+				if (ImGui::Button("YES", { 60, 25 })) {
+					FileUtils::OpenTempScene(m_EditorParams);
+					ImGui::CloseCurrentPopup();
+					m_SystemPromptType = SystemPromptType::NONE;
+				}
+				ImGui::SameLine();
+				if (ImGui::Button("NO", { 60, 25 })) {
+					ImGui::CloseCurrentPopup();
+					m_SystemPromptType = SystemPromptType::NONE;
+				}
+				ImGui::EndPopup();
+			}
+		}
+	}
+
+	void EditorLayer::RenderProjectPrompt() {
+		bool firstProject = m_EditorParams->ProjectFilepath == "";
+		if (firstProject || m_ProjectPromptType == ProjectPromptType::NEW) {
+			ImGui::OpenPopup("New Fauna Project");
+			ImVec2 center = ImGui::GetMainViewport()->GetCenter();
+			ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
+			if (ImGui::BeginPopupModal("New Fauna Project", NULL, ImGuiWindowFlags_AlwaysAutoResize)) {
+				static char filepath_buffer[1024];
+				static char name_buffer[1024];
+				float text_input_width = 300.0f;
+				ImGui::SetItemDefaultFocus();
+				ImGui::Text("Project Name");
+				ImGui::Dummy({ 0, 2 });
+				ImGui::SetNextItemWidth(text_input_width);
+				ImGui::InputText("##ProjectName", name_buffer, sizeof(name_buffer));
+				ImGui::Dummy({ 0, 10 });
+				ImGui::Text("Project Directory");
+				ImGui::Dummy({ 0, 2 });
+				if (ImGui::Button("Browse", {60, 25})) {
+					std::string filepath = FileDialogs::OpenFolder();
+					strcpy(filepath_buffer, filepath.c_str());
+				}
+				ImGui::SameLine();
+				ImGui::SetNextItemWidth(text_input_width - 67);
+				ImGui::InputText("##ProjectDir", filepath_buffer, sizeof(filepath_buffer));
+				ImGui::Dummy({ 0, 7 });
+				ImGui::SetCursorPosX(ImGui::GetContentRegionAvail().x - 53);
+				bool isvalid = std::strlen(name_buffer) != 0;
+				if (isvalid)
+					isvalid = std::filesystem::exists(filepath_buffer) && std::filesystem::is_directory(filepath_buffer);
+				if (!isvalid) {
+					ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
+					ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
+				}
+				if (ImGui::Button("OK", { 60, 25 })) {
+					Project::GenerateProjectDirectory(std::string(name_buffer), std::filesystem::path(filepath_buffer));
+					m_EditorParams->ProjectFilepath = std::string(filepath_buffer) + "/" + std::string(name_buffer) + ".flproj";
+					m_EditorParams->Project->GetConfig().AssetDirectory = std::filesystem::path(filepath_buffer) / "Assets";
+					m_EditorParams->Project->GetConfig().Name = std::string(name_buffer);
+					m_EditorParams->Project->SaveActive(std::filesystem::path(filepath_buffer) / (std::string(name_buffer) + ".flproj"));
+					GetSpecificPanel<ContentBrowserPanel>("Content Browser")->Initialize();
+					PromptSave(SavePromptType::NEW);
+					m_ProjectPromptType = ProjectPromptType::NONE;
+					ImGui::CloseCurrentPopup();
+				}
+				if (!isvalid) {
+					ImGui::PopItemFlag();
+					ImGui::PopStyleVar();
+				}
+				ImGui::EndPopup();
+			}
+		} else if (m_ProjectPromptType == ProjectPromptType::EDIT) {
+			ImGui::OpenPopup("Edit Project Settings");
+			ImVec2 center = ImGui::GetMainViewport()->GetCenter();
+			ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
+			static int popupstate = -1;
+			static std::string working_label = "";
+			static int selected = 0;
+			static char filepath_buffer[1024];
+			static char name_buffer[1024];
+			static char label_buffer[1024];
+			static char label_edit_buffer[1024];
+			if (name_buffer[0] == '\0') strncpy(name_buffer, m_EditorParams->Project->GetConfig().Name.c_str(), sizeof(name_buffer));
+			if (filepath_buffer[0] == '\0') strncpy(filepath_buffer, m_EditorParams->Project->GetConfig().StartScene.string().c_str(), sizeof(filepath_buffer));
+			if (ImGui::BeginPopupModal("Edit Project Settings", NULL, ImGuiWindowFlags_AlwaysAutoResize)) {
+				{
+					ImGui::BeginChild("LeftPane", ImVec2(250, 500));
+					{
+						ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(0.0f, 0.5f));
+						ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
+					}
+
+					#define BTN_HELPER(num, name) if (selected == num) {ImGui::PopStyleColor();}\
+												  if (ImGui::Button(name, { ImGui::GetContentRegionAvail().x, 0 }) && selected != num) { selected = num; }\
+												  else if (selected == num) {ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.0f, 0.0f, 0.0f, 0.0f));}\
+
+					{
+						BTN_HELPER(0, "General")
+						ImGui::Separator();
+						BTN_HELPER(1, "Labels")
+					}
+
+					#undef BTN_HELPER
+
+					{
+						ImGui::PopStyleVar();
+						ImGui::PopStyleColor();
+					}
+					ImGui::EndChild();
+				}
+				ImGui::SameLine();
+				{
+					ImGui::BeginChild("RightPane", ImVec2(500, 500), true);
+					{
+						if (selected == 0) {
+							float text_input_width = 300.0f;
+							ImGui::SetItemDefaultFocus();
+							ImGui::Text("Project Name");
+							ImGui::Dummy({ 0, 2 });
+							ImGui::SetNextItemWidth(text_input_width);
+							ImGui::InputText("##ProjectName", name_buffer, sizeof(name_buffer));
+							ImGui::Dummy({ 0, 10 });
+							ImGui::Text("Starting Scene");
+							ImGui::Dummy({ 0, 2 });
+							if (ImGui::Button("Browse", { 60, 25 })) {
+								std::string filepath = FileDialogs::OpenFile("Flora Scene (*.flora)\0*.flora\0");
+								strcpy(filepath_buffer, filepath.c_str());
+							}
+							ImGui::SameLine();
+							ImGui::SetNextItemWidth(text_input_width - 67);
+							ImGui::InputText("##scenefile", filepath_buffer, sizeof(filepath_buffer));
+							ImGui::Dummy({ 0, 7 });
+							ImGui::SetCursorPosX(ImGui::GetContentRegionAvail().x - 53);
+							bool isvalid = std::strlen(name_buffer) != 0;
+							if (isvalid)
+								isvalid = std::filesystem::exists(filepath_buffer) && !std::filesystem::is_directory(filepath_buffer);
+							if (!isvalid) {
+								ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
+								ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
+							}
+							if (!isvalid) {
+								ImGui::PopItemFlag();
+								ImGui::PopStyleVar();
+							}
+						} else if (selected == 1) {
+							ImGui::BeginChild("Current Labels", ImVec2(485, 455), true);
+							ImGui::Text("Label ID");
+							ImGui::SameLine();
+							ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 300);
+							ImGui::Text("Affected Entities");
+							ImGui::Separator();
+
+							ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(0.0f, 0.5f));
+							for (const auto& pair : m_EditorParams->Project->GetLabels()) {
+								if (ImGui::Button(pair.first.c_str(), { ImGui::GetContentRegionAvail().x, 0 })) {
+									ImGui::OpenPopup("Edit/Delete");
+								}
+								if (ImGui::BeginPopup("Edit/Delete")) {
+									if (ImGui::MenuItem("Edit")) {
+										popupstate = 0;
+										working_label = pair.first;
+										strncpy(label_edit_buffer, working_label.c_str(), sizeof(label_edit_buffer));
+									}
+									if (ImGui::MenuItem("Delete")) {
+										popupstate = 1;
+										working_label = pair.first;
+									}
+									ImGui::EndPopup();
+								}
+								ImGui::SameLine();
+								float endxpos = ImGui::GetCursorPosX();
+								ImGui::SetCursorPosX(endxpos - 120);
+
+								int count = 0;
+								auto view = m_EditorParams->ActiveScene->GetAllEntitiesWith<LabelComponent>();
+								for (auto entity : view) {
+									auto lc = view.get<LabelComponent>(entity);
+									if (lc.HasLabel(pair.first))
+										count++;
+								}
+								ImGui::Text(std::to_string(count).c_str());
+							}
+							ImGui::PopStyleVar();
+
+							ImGui::EndChild();
+							ImGui::PushItemWidth(ImGui::GetContentRegionAvail().x - 67);
+							ImGui::InputText("##createlabel", label_buffer, sizeof(label_buffer));
+							ImGui::PopItemWidth();
+							ImGui::SameLine();
+							if (ImGui::Button("Create", { 60, 25 })) {
+								m_EditorParams->Project->AddLabel(std::string(label_buffer));
+								memset(label_buffer, '\0', sizeof(label_buffer));
+							}
+
+
+							if (popupstate != -1) {
+								if (popupstate == 0) {
+									ImGui::OpenPopup("Edit Label");
+									ImVec2 center = ImGui::GetMainViewport()->GetCenter();
+									ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
+									if (ImGui::BeginPopupModal("Edit Label", NULL, ImGuiWindowFlags_AlwaysAutoResize)) {
+										ImGui::Text("Edit Label ID");
+										ImGui::PushItemWidth(300);
+										ImGui::InputText("##editlabelid", label_edit_buffer, sizeof(label_edit_buffer));
+										ImGui::PopItemWidth();
+										ImGui::Dummy({ 0, 30 });
+										ImGui::Separator();
+										ImGui::SetCursorPosX(ImGui::GetContentRegionAvail().x - 120);
+										if (ImGui::Button("CANCEL", { 60, 25 })) {
+											popupstate = -1;
+										}
+										ImGui::SameLine();
+										if (ImGui::Button("OK", { 60, 25 })) {
+											m_EditorParams->Project->RemoveLabel(working_label);
+											m_EditorParams->Project->AddLabel(label_edit_buffer);
+											popupstate = -1;
+										}
+										ImGui::EndPopup();
+									}
+								}
+								else if (popupstate == 1) {
+									ImGui::OpenPopup("Delete Label");
+									ImVec2 center = ImGui::GetMainViewport()->GetCenter();
+									ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
+									if (ImGui::BeginPopupModal("Delete Label", NULL, ImGuiWindowFlags_AlwaysAutoResize)) {
+										ImGui::Text("This action may have adverse effects on entities that");
+										ImGui::Text("use this label.Are you sure you want to delete the");
+										ImGui::Text(("label \"" + working_label + "\"?").c_str());
+										ImGui::Dummy({ 0, 30 });
+										ImGui::Separator();
+										ImGui::SetCursorPosX(ImGui::GetContentRegionAvail().x - 120);
+										if (ImGui::Button("YES", { 60, 25 })) {
+											m_EditorParams->Project->RemoveLabel(working_label);
+											popupstate = -1;
+										}
+										ImGui::SameLine();
+										if (ImGui::Button("NO", { 60, 25 })) {
+											popupstate = -1;
+										}
+										ImGui::EndPopup();
+									}
+								}
+							}
+						}
+					}
+					ImGui::EndChild();
+				}
+				ImGui::SetCursorPosX(ImGui::GetCursorPosX() + (ImGui::GetContentRegionAvail().x - ((60+6)*3)));
+				if (ImGui::Button("CANCEL", { 60, 25 })) {
+					m_ProjectPromptType = ProjectPromptType::NONE;
+				}
+				ImGui::SameLine();
+				if (ImGui::Button("APPLY", { 60, 25 })) {
+					m_EditorParams->Project->GetConfig().Name = std::string(name_buffer);
+					m_EditorParams->Project->GetConfig().StartScene = std::string(filepath_buffer);
+					Project::SaveActive(m_EditorParams->ProjectFilepath);
+					m_ProjectPromptType = ProjectPromptType::NONE;
+				}
+				ImGui::SameLine();
+				if (ImGui::Button("OK", { 60, 25 })) {
+					m_EditorParams->Project->GetConfig().Name = std::string(name_buffer);
+					m_EditorParams->Project->GetConfig().StartScene = std::string(filepath_buffer);
+					Project::SaveActive(m_EditorParams->ProjectFilepath);
+					m_ProjectPromptType = ProjectPromptType::NONE;
+					ImGui::CloseCurrentPopup();
+				}
+				ImGui::EndPopup();
+			}
+		} else if (m_ProjectPromptType == ProjectPromptType::OPEN) {
+			std::string filepath = FileDialogs::OpenFile("Flora Project (*.flproj)\0*.flproj\0");
+			if (!filepath.empty()) {
+				m_EditorParams->Project = Project::Load(filepath);
+				m_EditorParams->ProjectFilepath = filepath;
+			}
+			m_ProjectPromptType = ProjectPromptType::NONE;
+		}
+	}
+
 	bool EditorLayer::OnKeyPressed(KeyPressedEvent& e) {
 		// some shortcuts moved to OnOverrideEvent
-		if (e.GetRepeatCount() > 0) return false;
-		switch (e.GetKeyCode()) {
-		case Key::Q:
-			m_EditorParams->GizmoType = -1;
-			break;
-		case Key::W:
-			m_EditorParams->GizmoType = ImGuizmo::OPERATION::TRANSLATE;
-			break;
-		case Key::E:
-			m_EditorParams->GizmoType = ImGuizmo::OPERATION::ROTATE;
-			break;
-		case Key::R:
-			m_EditorParams->GizmoType = ImGuizmo::OPERATION::SCALE;
-			break;
-		default:
-			break;
+		if (m_EditorParams->SceneState == SceneState::EDIT) {
+			if (e.GetRepeatCount() > 0) return false;
+			if (m_EditorParams->FocusedPanel == Panels::VIEWPORT) {
+				switch (e.GetKeyCode()) {
+				case Key::Q:
+					m_EditorParams->GizmoType = -1;
+					break;
+				case Key::W:
+					m_EditorParams->GizmoType = ImGuizmo::OPERATION::TRANSLATE;
+					break;
+				case Key::E:
+					m_EditorParams->GizmoType = ImGuizmo::OPERATION::ROTATE;
+					break;
+				case Key::R:
+					m_EditorParams->GizmoType = ImGuizmo::OPERATION::SCALE;
+					break;
+				default:
+					break;
+				}
+			}
 		}
 	}
 
@@ -429,21 +775,31 @@ namespace Flora {
 			auto sceneFilePath = commandLineArgs[1];
 			Serializer::DeserializeScene(m_EditorParams->ActiveScene, sceneFilePath);
 		}
-		else FileUtils::LoadEditor(m_EditorParams);
+		else {
+			FileUtils::LoadEditor(m_EditorParams);
+			if (m_EditorParams->Crashed) m_SystemPromptType = SystemPromptType::CRASH;
+			FileUtils::SaveEditor(m_EditorParams); //note that we save editor here to default it to expecting a crash
+		}
 
 		// Close panels
 		for (int i = 0; i < m_EditorParams->ClosedPanels.size(); i++)
 			m_Panels[m_EditorParams->ClosedPanels[i]]->m_Enabled = false;
 
 		// Set icons
-		m_IconPlay = Texture2D::Create("resources/icons/Editor/PlayButton.png");
-		m_IconStop = Texture2D::Create("resources/icons/Editor/StopButton.png");
+		m_IconPlay = Texture2D::Create("Resources/Icons/Editor/PlayButton.png");
+		m_IconStop = Texture2D::Create("Resources/Icons/Editor/StopButton.png");
+		m_IconPause = Texture2D::Create("Resources/Icons/Editor/PauseButton.png");
+		m_IconStep = Texture2D::Create("Resources/Icons/Editor/StepButton.png");
 	}
 
 	void EditorLayer::InitializePanels() {
 		for (auto& panel : m_Panels) {
 			panel.second->Initialize();
 		}
+	}
+
+	void EditorLayer::InitializeSystems() {
+		AudioCommand::Init();
 	}
 
 	void EditorLayer::SetPanelContext() {
@@ -481,6 +837,162 @@ namespace Flora {
 			if (panel.second->m_Enabled)
 				panel.second->OnImGuiRender();
 		}
+	}
+
+	void EditorLayer::RenderDebugOverlay() {
+		switch (m_EditorParams->SceneState) {
+			case SceneState::EDIT:
+				Renderer2D::BeginScene(m_EditorParams->EditorCamera.GetViewProjection());
+
+				//highlight selected entity
+				if (m_EditorParams->SelectedEntity) {
+					glm::vec4 color = { 1.0f, 1.0f, 1.0f, 1.0f };
+					glm::mat4 transform = ComponentUtils::GetWorldTransform(m_EditorParams->SelectedEntity);
+					if (m_EditorParams->SelectedEntity.HasComponent<SpriteRendererComponent>()) {
+						glm::mat4 p1_mat = glm::translate(transform, { 1,  1, 0 });
+						glm::mat4 p2_mat = glm::translate(transform, { 1, -1, 0 });
+						glm::mat4 p3_mat = glm::translate(transform, { -1,  1, 0 });
+						glm::mat4 p4_mat = glm::translate(transform, { -1, -1, 0 });
+						glm::vec3 p1_coord, p2_coord, p3_coord, p4_coord;
+						glm::vec3 rotation, scale;
+						Math::DecomposeTransform(p1_mat, p1_coord, rotation, scale);
+						Math::DecomposeTransform(p2_mat, p2_coord, rotation, scale);
+						Math::DecomposeTransform(p3_mat, p3_coord, rotation, scale);
+						Math::DecomposeTransform(p4_mat, p4_coord, rotation, scale);
+						Renderer2D::DrawLine(p1_coord, p2_coord, color);
+						Renderer2D::DrawLine(p4_coord, p2_coord, color);
+						Renderer2D::DrawLine(p1_coord, p3_coord, color);
+						Renderer2D::DrawLine(p3_coord, p4_coord, color);
+					} else if (m_EditorParams->SelectedEntity.HasComponent<CircleRendererComponent>()) {
+						float thickness = 0.05f;
+						transform = glm::scale(transform, { 1.0f + thickness*2.0f, 1.0f + thickness*2.0f, 1.0f });
+						Renderer2D::DrawCircle(transform, color, thickness);
+					}
+				}
+
+				break;
+			case SceneState::PLAY:
+				if (*(m_EditorParams->EditorCamera.GetCameraBound())) {
+					Renderer2D::BeginScene(m_EditorParams->EditorCamera.GetViewProjection());
+				} else if (m_EditorParams->ActiveScene->GetPrimaryCamera() >= 0) {
+					Entity primaryCameraEntity = m_EditorParams->ActiveScene->GetEntityFromID((uint32_t)m_EditorParams->ActiveScene->GetPrimaryCamera());
+					if (m_EditorParams->ActiveScene->EntityExists(primaryCameraEntity)) {
+						Camera* primaryCamera = &(primaryCameraEntity.GetComponent<CameraComponent>().Camera);
+						glm::mat4 cameraTransform = primaryCameraEntity.GetComponent<TransformComponent>().GetTransform();
+						Renderer2D::BeginScene(primaryCamera->GetProjection() * glm::inverse(cameraTransform));
+					}
+				}
+				break;
+			default:
+				FL_CORE_ERROR("Invalid scene state detected!");
+				return;
+		}
+
+		if (m_EditorParams->VisibleColliders) {
+			// Circle collider visualizer
+			{
+				auto view = m_EditorParams->ActiveScene->GetAllEntitiesWith<TransformComponent, CircleCollider2DComponent>();
+				for (auto entity : view) {
+					auto [tc, cc2d] = view.get<TransformComponent, CircleCollider2DComponent>(entity);
+					glm::vec3 translation = tc.Translation + glm::vec3(cc2d.Offset, 0.0f);
+					float thickness = 0.05f; // TODO: make this look constant despite camera depth
+					glm::vec3 scale = tc.Scale * glm::vec3((cc2d.Radius) * 2.0f + thickness);
+					glm::mat4 transform = glm::translate(glm::mat4(1.0f), translation)
+						* glm::scale(glm::mat4(1.0f), scale);
+					Renderer2D::DrawCircle(transform, glm::vec4(0, 1, 0, 1), thickness);
+				}
+			}
+
+			// Box collider visualizer
+			{
+				auto view = m_EditorParams->ActiveScene->GetAllEntitiesWith<TransformComponent, BoxCollider2DComponent>();
+				for (auto entity : view) {
+					auto [tc, bc2d] = view.get<TransformComponent, BoxCollider2DComponent>(entity);
+					glm::vec3 translation = tc.Translation + glm::vec3(bc2d.Offset, 0.0f);
+					glm::vec3 scale = tc.Scale * glm::vec3(bc2d.Size * 2.0f, 1.0f);
+					glm::mat4 transform = glm::translate(glm::mat4(1.0f), translation)
+						* glm::rotate(glm::mat4(1.0f), tc.Rotation.z, glm::vec3(0.0f, 0.0f, 1.0f))
+						* glm::scale(glm::mat4(1.0f), scale);
+					Renderer2D::DrawRect(transform, glm::vec4(0, 1, 0, 1));
+				}
+			}
+		}
+
+		// camera borders
+		auto view = m_EditorParams->ActiveScene->GetAllEntitiesWith<TransformComponent, CameraComponent>();
+		for (auto entity : view) {
+			auto [tc, cc] = view.get<TransformComponent, CameraComponent>(entity);
+			if (cc.ShowBorder) {
+				glm::vec4 color = { 1, 1, 1, 0.7f };
+				if (cc.Camera.GetProjectionType() == SceneCamera::ProjectionType::Orthographic) {
+					float size = cc.Camera.GetOrthographicSize();
+					float nearBorder = cc.Camera.GetOrthographicNearClip() * -1.0f;
+					float farBorder =  (-1.0f * cc.Camera.GetOrthographicFarClip()) - nearBorder;
+					glm::mat4 transform = ComponentUtils::GetWorldTransform(m_EditorParams->ActiveScene->GetEntityFromID((uint32_t)entity));
+					glm::mat4 p1_mat = glm::translate(transform, { size,  size, nearBorder });
+					glm::mat4 p2_mat = glm::translate(transform, { size, -size, nearBorder });
+					glm::mat4 p3_mat = glm::translate(transform, { -size,  size, nearBorder });
+					glm::mat4 p4_mat = glm::translate(transform, { -size, -size, nearBorder });
+					glm::mat4 p5_mat = glm::translate(p1_mat, { 0, 0, farBorder });
+					glm::mat4 p6_mat = glm::translate(p2_mat, { 0, 0, farBorder });
+					glm::mat4 p7_mat = glm::translate(p3_mat, { 0, 0, farBorder });
+					glm::mat4 p8_mat = glm::translate(p4_mat, { 0, 0, farBorder });
+					glm::vec3 p1_coord, p2_coord, p3_coord, p4_coord, p5_coord, p6_coord, p7_coord, p8_coord;
+					glm::vec3 rotation, scale;
+					Math::DecomposeTransform(p1_mat, p1_coord, rotation, scale);
+					Math::DecomposeTransform(p2_mat, p2_coord, rotation, scale);
+					Math::DecomposeTransform(p3_mat, p3_coord, rotation, scale);
+					Math::DecomposeTransform(p4_mat, p4_coord, rotation, scale);
+					Math::DecomposeTransform(p5_mat, p5_coord, rotation, scale);
+					Math::DecomposeTransform(p6_mat, p6_coord, rotation, scale);
+					Math::DecomposeTransform(p7_mat, p7_coord, rotation, scale);
+					Math::DecomposeTransform(p8_mat, p8_coord, rotation, scale);
+
+					Renderer2D::DrawLine(p3_coord, p1_coord, color);
+					Renderer2D::DrawLine(p2_coord, p4_coord, color);
+					Renderer2D::DrawLine(p1_coord, p2_coord, color);
+					Renderer2D::DrawLine(p2_coord, p3_coord, color);
+					Renderer2D::DrawLine(p3_coord, p4_coord, color);
+					Renderer2D::DrawLine(p1_coord, p4_coord, color);
+					Renderer2D::DrawLine(p1_coord, p5_coord, color);
+					Renderer2D::DrawLine(p2_coord, p6_coord, color);
+					Renderer2D::DrawLine(p3_coord, p7_coord, color);
+					Renderer2D::DrawLine(p4_coord, p8_coord, color);
+					Renderer2D::DrawLine(p5_coord, p6_coord, color);
+					Renderer2D::DrawLine(p8_coord, p6_coord, color);
+					Renderer2D::DrawLine(p8_coord, p7_coord, color);
+					Renderer2D::DrawLine(p5_coord, p7_coord, color);
+				} else {
+					// -z direction
+					glm::mat4 transform = ComponentUtils::GetWorldTransform(m_EditorParams->ActiveScene->GetEntityFromID((uint32_t)entity));
+					glm::mat4 p1_mat = glm::translate(glm::rotate(transform, cc.Camera.GetPerspectiveVerticalFOV(), {1, 1, 0}), { 0, 0, -100 });
+					glm::mat4 p2_mat = glm::translate(glm::rotate(transform, cc.Camera.GetPerspectiveVerticalFOV(), { 1, -1, 0 }), { 0, 0, -100 });
+					glm::mat4 p3_mat = glm::translate(glm::rotate(transform, cc.Camera.GetPerspectiveVerticalFOV(), { -1, 1, 0 }), { 0, 0, -100 });
+					glm::mat4 p4_mat = glm::translate(glm::rotate(transform, cc.Camera.GetPerspectiveVerticalFOV(), { -1, -1, 0 }), { 0, 0, -100 });
+					glm::vec3 p1_coord, p2_coord, p3_coord, p4_coord;
+					glm::vec3 rotation, scale;
+					Math::DecomposeTransform(p1_mat, p1_coord, rotation, scale);
+					Math::DecomposeTransform(p2_mat, p2_coord, rotation, scale);
+					Math::DecomposeTransform(p3_mat, p3_coord, rotation, scale);
+					Math::DecomposeTransform(p4_mat, p4_coord, rotation, scale);
+
+					glm::vec3 translation, tmpr, tmps;
+					Math::DecomposeTransform(transform, translation, tmpr, tmps);
+					Renderer2D::DrawLine(p1_coord, tc.Translation, color);
+					Renderer2D::DrawLine(p2_coord, tc.Translation, color);
+					Renderer2D::DrawLine(p3_coord, tc.Translation, color);
+					Renderer2D::DrawLine(p4_coord, tc.Translation, color);
+					Renderer2D::DrawLine(p1_coord, p2_coord, color);
+					Renderer2D::DrawLine(p1_coord, p3_coord, color);
+					Renderer2D::DrawLine(p3_coord, p4_coord, color);
+					Renderer2D::DrawLine(p2_coord, p4_coord, color);
+					Renderer2D::DrawLine(p1_coord, p4_coord, color);
+					Renderer2D::DrawLine(p2_coord, p3_coord, color);
+				}
+			}
+		}
+
+		Renderer2D::EndScene();
 	}
 
 	void EditorLayer::UpdateEditor(Timestep ts) {
@@ -595,7 +1107,7 @@ namespace Flora {
 						if (m_EditorParams->SelectedEntity == m_EditorParams->Clipboard.Entity) {
 							m_EditorParams->SelectedEntity = {};
 						}
-						GetSpecificPanel<SceneHierarchyPanel>("Scene Hierarchy")->DeleteEntity(m_EditorParams->Clipboard.Entity);
+						m_EditorParams->ActiveScene->DestroyEntity(m_EditorParams->Clipboard.Entity);
 						m_EditorParams->Clipboard.Entity = {};
 						m_EditorParams->Clipboard.CutEntity = false;
 					}
@@ -609,7 +1121,7 @@ namespace Flora {
 						if (m_EditorParams->SelectedEntity == m_EditorParams->Clipboard.Entity) {
 							m_EditorParams->SelectedEntity = {};
 						}
-						GetSpecificPanel<SceneHierarchyPanel>("Scene Hierarchy")->DeleteEntity(m_EditorParams->Clipboard.Entity);
+						m_EditorParams->ActiveScene->DestroyEntity(m_EditorParams->Clipboard.Entity);
 						m_EditorParams->Clipboard.Entity = {};
 						m_EditorParams->Clipboard.CutEntity = false;
 					}
@@ -632,11 +1144,11 @@ namespace Flora {
 					GetSpecificPanel<ContentBrowserPanel>("Content Browser")->SetSelectedFile("");
 					break;
 				case Panels::VIEWPORT:
-					GetSpecificPanel<SceneHierarchyPanel>("Scene Hierarchy")->DeleteEntity(m_EditorParams->SelectedEntity);
+					m_EditorParams->ActiveScene->DestroyEntity(m_EditorParams->SelectedEntity);
 					m_EditorParams->SelectedEntity = {};
 					break;
 				case Panels::SCENEHIERARCHY:
-					GetSpecificPanel<SceneHierarchyPanel>("Scene Hierarchy")->DeleteEntity(m_EditorParams->SelectedEntity);
+					m_EditorParams->ActiveScene->DestroyEntity(m_EditorParams->SelectedEntity);
 					m_EditorParams->SelectedEntity = {};
 					break;
 				}
@@ -649,9 +1161,13 @@ namespace Flora {
 		// update params
 		m_EditorParams->EditorCamera.OnUpdate(ts, m_EditorParams->FocusedPanel == Panels::VIEWPORT);
 		if (m_EditorParams->SceneState == SceneState::EDIT)
-			m_EditorParams->ActiveScene->OnUpdateEditor(ts, m_EditorParams->EditorCamera);
-		else if (m_EditorParams->SceneState == SceneState::PLAY)
-			m_EditorParams->ActiveScene->OnUpdateRuntime(ts);
+			m_EditorParams->ActiveScene->OnUpdateEditor(ts, m_EditorParams->EditorCamera.GetViewProjection());
+		else if (m_EditorParams->SceneState == SceneState::PLAY) {
+			if (*(m_EditorParams->EditorCamera.GetCameraBound()))
+				m_EditorParams->ActiveScene->OnUpdateRuntime(ts, m_EditorParams->EditorCamera.GetViewProjection());
+			else
+				m_EditorParams->ActiveScene->OnUpdateRuntime(ts);
+		}
 		m_EditorParams->Time += ts.GetSeconds();
 		m_EditorParams->HoveredPanel = Panels::NONE;
 		m_EditorParams->FocusedPanel = Panels::NONE;
@@ -669,33 +1185,39 @@ namespace Flora {
 
 	void EditorLayer::OnOverrideEvent() {
 		// Shortcuts
-		if (m_OverrideEventReady) {
-			m_OverrideEventReady = false;
-			bool control = Input::IsKeyPressed(Key::LeftControl) || Input::IsKeyPressed(Key::RightControl);
-			bool shift = Input::IsKeyPressed(Key::LeftShift) || Input::IsKeyPressed(Key::RightShift);
-			if (control && shift && Input::IsKeyPressed(Key::S)) {
-				FileUtils::SaveSceneAs(m_EditorParams);
-				m_EditorParams->Time = 0;
-			} else if (control && Input::IsKeyPressed(Key::S)) {
-				FileUtils::SaveScene(m_EditorParams);
-				m_EditorParams->Time = 0;
-			} else if (control && Input::IsKeyPressed(Key::N)) {
-				PromptSave(SavePromptType::NEW);
-			} else if (control && Input::IsKeyPressed(Key::O)) {
-				PromptSave(SavePromptType::OPEN);
-			} else if (Input::IsKeyPressed(Key::Backslash)) {
-				DevEvent();
-			} else {
+		if (m_EditorParams->SceneState == SceneState::EDIT) {
+			if (m_OverrideEventReady) {
+				m_OverrideEventReady = false;
+				bool control = Input::IsKeyPressed(Key::LeftControl) || Input::IsKeyPressed(Key::RightControl);
+				bool shift = Input::IsKeyPressed(Key::LeftShift) || Input::IsKeyPressed(Key::RightShift);
+				if (control && shift && Input::IsKeyPressed(Key::S)) {
+					FileUtils::SaveSceneAs(m_EditorParams);
+					m_EditorParams->Time = 0;
+				}
+				else if (control && Input::IsKeyPressed(Key::S)) {
+					FileUtils::SaveScene(m_EditorParams);
+					m_EditorParams->Time = 0;
+				}
+				else if (control && Input::IsKeyPressed(Key::N)) {
+					PromptSave(SavePromptType::NEW);
+				}
+				else if (control && Input::IsKeyPressed(Key::O)) {
+					PromptSave(SavePromptType::OPEN);
+				}
+				else if (Input::IsKeyPressed(Key::Backslash)) {
+					DevEvent();
+				}
+				else {
+					m_OverrideEventReady = true;
+				}
+			}
+			else {
 				m_OverrideEventReady = true;
 			}
-		} else {
-			m_OverrideEventReady = true;
 		}
 	}
 
 	void EditorLayer::DevEvent() {
 		FL_CORE_INFO("DEV EVENT FIRED");
-		int entityHandle = (int)(uint32_t)m_EditorParams->SelectedEntity;
-		FL_CORE_INFO("Selected Entity ID: {0}", entityHandle);
 	}
 }
