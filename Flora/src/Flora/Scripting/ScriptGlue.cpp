@@ -841,6 +841,30 @@ namespace Flora {
 		scene->DestroyEntity(entity);
 	}
 
+	static bool LabelComponent_AddLabel(uint32_t eid, MonoString* name) {
+		char* string = mono_string_to_utf8(name);
+		Entity entity = GetValidatedEntityFromID(eid);
+		bool result = entity.GetComponent<LabelComponent>().AddLabel(string);
+		mono_free(string);
+		return result;
+	}
+
+	static bool LabelComponent_RemoveLabel(uint32_t eid, MonoString* name) {
+		char* string = mono_string_to_utf8(name);
+		Entity entity = GetValidatedEntityFromID(eid);
+		bool result = entity.GetComponent<LabelComponent>().RemoveLabel(string);
+		mono_free(string);
+		return result;
+	}
+
+	static bool LabelComponent_HasLabel(uint32_t eid, MonoString* name) {
+		char* string = mono_string_to_utf8(name);
+		Entity entity = GetValidatedEntityFromID(eid);
+		bool result = entity.GetComponent<LabelComponent>().HasLabel(string);
+		mono_free(string);
+		return result;
+	}
+
 	void ScriptGlue::RegisterFunctions() {
 		FL_ADD_INTERNAL_CALL(CoreTrace);
 		FL_ADD_INTERNAL_CALL(Input_IsKeyDown);
@@ -996,6 +1020,9 @@ namespace Flora {
 		FL_ADD_INTERNAL_CALL(CircleCollider2DComponent_SetRestitution);
 		FL_ADD_INTERNAL_CALL(CircleCollider2DComponent_GetRestitutionThreshold);
 		FL_ADD_INTERNAL_CALL(CircleCollider2DComponent_SetRestitutionThreshold);
+		FL_ADD_INTERNAL_CALL(LabelComponent_AddLabel);
+		FL_ADD_INTERNAL_CALL(LabelComponent_RemoveLabel);
+		FL_ADD_INTERNAL_CALL(LabelComponent_HasLabel);
 	}
 
 	template<typename... Component>

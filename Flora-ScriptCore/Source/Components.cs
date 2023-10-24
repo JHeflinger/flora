@@ -1189,4 +1189,39 @@ namespace Flora
         }
     }
 
+    /// <summary>
+    /// A component to interact with the labels assigned to an entity
+    /// </summary>
+    public class LabelComponent : Component
+    {
+        /// <summary>
+        /// Adds a label to an entity
+        /// </summary>
+        /// <param name="name">the name of the label</param>
+        /// <returns>False if the specified label does not exist</returns>
+        bool AddLabel(string name)
+        {
+            return InternalCalls.LabelComponent_AddLabel(Entity.ID, name);
+        }
+
+        /// <summary>
+        /// Removes a label from an entity
+        /// </summary>
+        /// <param name="name">the name of the label</param>
+        /// <returns>False if the specified label does not exist</returns>
+        bool RemoveLabel(string name)
+        {
+            return InternalCalls.LabelComponent_RemoveLabel(Entity.ID, name);
+        }
+
+        /// <summary>
+        /// Gets if the entity has a label
+        /// </summary>
+        /// <param name="name">the name of the label</param>
+        /// <returns>False the entity doesn't have this label</returns>
+        bool HasLabel(string name)
+        {
+            return InternalCalls.LabelComponent_HasLabel(Entity.ID, name);
+        }
+    }
 }

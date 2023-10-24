@@ -461,5 +461,14 @@ namespace Flora
 
 		[MethodImplAttribute(MethodImplOptions.InternalCall)]
 		internal extern static string Project_GetAssetDirectory();
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static bool LabelComponent_AddLabel(uint eid, string name);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static bool LabelComponent_RemoveLabel(uint eid, string name);
+
+		[MethodImplAttribute(MethodImplOptions.InternalCall)]
+		internal extern static bool LabelComponent_HasLabel(uint eid, string name);
 	}
 }
