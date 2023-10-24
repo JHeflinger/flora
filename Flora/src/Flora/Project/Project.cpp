@@ -245,8 +245,15 @@ namespace Flora {
 		return true;
 	}
 
+	Label* Project::GetLabel(std::string label) {
+		if (LabelExists(label)) {
+			return m_Labels[label];
+		}
+		return nullptr;
+	}
+
 	bool Project::AddLabel(std::string label) {
-		if (m_Labels.find(label) == m_Labels.end()) {
+		if (!LabelExists(label)) {
 			m_Labels[label] = new Label(label);
 			return true;
 		}
@@ -254,10 +261,14 @@ namespace Flora {
 	}
 
 	bool Project::RemoveLabel(std::string label) {
-		if (m_Labels.find(label) != m_Labels.end()) {
+		if (LabelExists(label)) {
 			m_Labels.erase(label);
 			return true;
 		}
 		return false;
+	}
+
+	bool Project::LabelExists(std::string label) {
+		return m_Labels.find(label) != m_Labels.end();
 	}
 }

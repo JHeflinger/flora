@@ -287,6 +287,14 @@ namespace Flora {
 			out << YAML::EndMap;
 		}
 
+		if (entity.HasComponent<LabelComponent>()) {
+			out << YAML::Key << "LabelComponent";
+			out << YAML::BeginSeq;
+			for (auto label : entity.GetComponent<LabelComponent>().GetLabels())
+				out << label;
+			out << YAML::EndSeq;
+		}
+
 		out << YAML::EndMap;
 	}
 
@@ -498,6 +506,13 @@ namespace Flora {
 			auto& alc = deserializedEntity.AddComponent<AudioListenerComponent>();
 			alc.Gain = audioListenerComponent["Gain"].as<float>();
 			alc.Velocity = audioListenerComponent["Velocity"].as<glm::vec3>();
+		}
+
+		auto labelComponent = data["LabelComponent"];
+		if (labelComponent) {
+			auto& lc = deserializedEntity.AddComponent<LabelComponent>();
+			for (auto label : labelComponent)
+				lc.AddLabel(label.as<std::string>());
 		}
 
 		return deserializedEntity;

@@ -18,6 +18,12 @@ namespace Flora {
 		out << YAML::Key << "StartScene" << YAML::Value << config.StartScene.string();
 		out << YAML::Key << "AssetDirectory" << YAML::Value << config.AssetDirectory.string();
 		out << YAML::EndMap;
+		out << YAML::Key << "Labels" << YAML::Value;
+		out << YAML::BeginSeq;
+		for (const auto& pair : m_Project->GetLabels())
+			out << pair.first;
+		out << YAML::EndSeq;
+		out << YAML::EndMap;
 		out << YAML::EndMap;
 		std::ofstream fout(filepath);
 		fout << out.c_str();
@@ -41,6 +47,12 @@ namespace Flora {
 		config.Name = projectNode["Name"].as<std::string>();
 		config.StartScene = projectNode["StartScene"].as<std::string>();
 		config.AssetDirectory = projectNode["AssetDirectory"].as<std::string>();
+
+		auto labelNode = data["Labels"];
+		if (labelNode)
+			for (auto label : labelNode)
+				m_Project->AddLabel(label.as<std::string>());
+
 		return true;
 	}
 

@@ -26,9 +26,16 @@ namespace Flora {
 		}
 	public:
 		ProjectConfig& GetConfig() { return m_Config; }
+		Label* GetLabel(std::string label);
 		bool AddLabel(std::string label);
 		bool RemoveLabel(std::string label);
+		bool LabelExists(std::string label);
+		static Label* GetActiveLabel(std::string label) { return s_ActiveProject->GetActiveLabel(label); }
+		static bool AddActiveLabel(std::string label) { return s_ActiveProject->AddLabel(label); }
+		static bool RemoveActiveLabel(std::string label) { return s_ActiveProject->RemoveLabel(label); }
+		static bool ActiveLabelExists(std::string label) { return s_ActiveProject->LabelExists(label); }
 		std::unordered_map<std::string, Label*> GetLabels() { return m_Labels; }
+		static std::unordered_map<std::string, Label*> GetActiveLabels() { return s_ActiveProject->GetLabels(); }
 		static Ref<Project> GetActive() { return s_ActiveProject; }
 		static Ref<Project> New();
 		static Ref<Project> Load(const std::filesystem::path& path);

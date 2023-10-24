@@ -620,7 +620,15 @@ namespace Flora {
 								ImGui::SameLine();
 								float endxpos = ImGui::GetCursorPosX();
 								ImGui::SetCursorPosX(endxpos - 120);
-								ImGui::Text(std::to_string(pair.second->Weight()).c_str());
+
+								int count = 0;
+								auto view = m_EditorParams->ActiveScene->GetAllEntitiesWith<LabelComponent>();
+								for (auto entity : view) {
+									auto lc = view.get<LabelComponent>(entity);
+									if (lc.HasLabel(pair.first))
+										count++;
+								}
+								ImGui::Text(std::to_string(count).c_str());
 							}
 							ImGui::PopStyleVar();
 

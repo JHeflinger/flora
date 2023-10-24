@@ -5,6 +5,8 @@
 #include "Flora/Scene/ScriptableEntity.h"
 #include "Flora/Renderer/Texture.h"
 #include "Flora/Utils/PhysicsUtils.h"
+#include "Flora/Project/Label.h"
+#include "Flora/Project/Project.h"
 
 namespace Flora {
 	enum class AudioState { NONE, PLAY, STOP, PAUSE, REWIND };
@@ -233,6 +235,40 @@ namespace Flora {
 		}
 	};
 
+	struct LabelComponent {
+	private:
+		std::set<std::string> Labels;
+	public:
+		LabelComponent() = default;
+		LabelComponent(const LabelComponent& other) {
+			for (auto label : other.Labels)
+				AddLabel(label);
+		}
+		bool AddLabel(std::string name, bool dangerous_override = false) {
+			if (dangerous_override)
+				Project::AddActiveLabel(name);
+			if (Project::ActiveLabelExists(name)) {
+				Labels.insert(name);
+				return true;
+			}
+			return false;
+		}
+		bool RemoveLabel(std::string name) {
+			if (Project::ActiveLabelExists(name)) {
+				Labels.erase(name);
+				return true;
+			}
+			return false;
+		}
+		bool HasLabel(std::string name) {
+			if (Project::ActiveLabelExists(name)) {
+				return Labels.find(name) != Labels.end();
+			}
+			return false;
+		}
+		std::set<std::string> GetLabels() { return Labels; }
+	};
+
 	template<typename... Component>
 	struct ComponentGroup{};
 
@@ -241,5 +277,5 @@ namespace Flora {
 		CircleRendererComponent, CameraComponent, ScriptComponent,
 		ScriptManagerComponent, ChildComponent, ParentComponent, RigidBody2DComponent, 
 		BoxCollider2DComponent, CircleCollider2DComponent, AudioSourceComponent,
-		AudioListenerComponent>;
+		AudioListenerComponent, LabelComponent>;
 }

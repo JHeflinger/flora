@@ -436,6 +436,7 @@ namespace Flora {
 			DrawAddComponentItem<CircleCollider2DComponent>("Circle Collider 2D", m_EditorContext->SelectedEntity);
 			DrawAddComponentItem<AudioSourceComponent>("Audio Source", m_EditorContext->SelectedEntity);
 			DrawAddComponentItem<AudioListenerComponent>("Audio Listener", m_EditorContext->SelectedEntity);
+			DrawAddComponentItem<LabelComponent>("Labels", m_EditorContext->SelectedEntity);
 			ImGui::EndPopup();
 		}
 		ImGui::PopItemWidth();
@@ -484,6 +485,55 @@ namespace Flora {
 			component.Rotation = glm::radians(rotation);
 			DrawVec3Control("Scale", component.Scale);
 		}, false);
+
+		DrawComponent<LabelComponent>("Labels", entity, [](auto& entity, auto& component) {
+			static bool selectlabel = false;
+			static char searchbuffer[1024];
+			ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(0.0f, 0.5f));
+			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
+			for (auto label : component.GetLabels()) {
+				float zero = ImGui::GetCursorPosX();
+				if (ImGui::Button(label.c_str(), { ImGui::GetContentRegionAvail().x, 0 })) {
+					component.RemoveLabel(label);
+				}
+				ImGui::BeginChild("dummy", { ImGui::GetContentRegionAvail().x, 1 });
+				ImGui::Separator();
+				ImGui::EndChild();
+			}
+			ImGui::PopStyleVar();
+			ImGui::PopStyleColor();
+			if (ImGui::Button(" Add Label... ")) {
+				selectlabel = true;
+				memset(searchbuffer, 0, sizeof(searchbuffer));
+			}
+			if (selectlabel) {
+				ImGui::OpenPopup("Select Label");
+				ImVec2 center = ImGui::GetMainViewport()->GetCenter();
+				ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
+				if (ImGui::BeginPopupModal("Select Label", NULL, ImGuiWindowFlags_AlwaysAutoResize)) {
+					ImGui::Text("Search: ");
+					ImGui::SameLine();
+					ImGui::PushItemWidth(300 - 64);
+					ImGui::InputText("##search", searchbuffer, sizeof(searchbuffer));
+					ImGui::PopItemWidth();
+					ImGui::BeginChild("##labels", {300, 500}, true);
+					ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(0.0f, 0.5f));
+					for (const auto& pair : Project::GetActiveLabels()) {
+						if (pair.first.find(std::string(searchbuffer)) != std::string::npos)
+							if (ImGui::Button(pair.first.c_str(), { 285, 0 })) {
+								selectlabel = false;
+								component.AddLabel(pair.first);
+							}
+					}
+					ImGui::PopStyleVar();
+					ImGui::EndChild();
+					if (ImGui::Button("CANCEL", { 300, 0 })) {
+						selectlabel = false;
+					}
+					ImGui::EndPopup();
+				}
+			}
+		});
 
 		DrawComponent<CameraComponent>("Camera", entity, [](auto& entity, auto& component) {
 			const char* projectionTypeStrings[] = { "Perspective", "Orthographic" };

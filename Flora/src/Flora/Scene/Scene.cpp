@@ -257,6 +257,7 @@ namespace Flora {
 		CopyComponent<CircleCollider2DComponent>(entity, newEntity);
 		CopyComponent<AudioSourceComponent>(entity, newEntity);
 		CopyComponent<AudioListenerComponent>(entity, newEntity);
+		CopyComponent<LabelComponent>(entity, newEntity);
 	}
 
 	static void UpdateAudioEntity(Entity entity) {
@@ -542,4 +543,7 @@ namespace Flora {
 
 	template<>
 	void Scene::OnComponentAdded<AudioListenerComponent>(Entity entity, AudioListenerComponent& component) {}
+
+	template<>
+	void Scene::OnComponentAdded<LabelComponent>(Entity entity, LabelComponent& component) {}
 }
