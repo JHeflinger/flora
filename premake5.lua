@@ -42,7 +42,3 @@ group ""
 group "Tools"
 	include "Fauna"
 group ""
-
-group "Misc"
-	include "Sandbox"
-group ""

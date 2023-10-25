@@ -11,17 +11,17 @@ namespace Flora {
 	class Project {
 	public:
 		static const std::filesystem::path& GetProjectDirectory() {
-			FL_CORE_ASSERT(s_ActiveProject);
+			if (!s_ActiveProject) return "";
 			return s_ActiveProject->m_ProjectDirectory;
 		}
 
 		static std::filesystem::path GetAssetDirectory() {
-			FL_CORE_ASSERT(s_ActiveProject);
+			if (!s_ActiveProject) return "";
 			return GetProjectDirectory() / s_ActiveProject->m_Config.AssetDirectory;
 		}
 
 		static std::filesystem::path GetAssetFileSystemPath(const std::filesystem::path& path) {
-			FL_CORE_ASSERT(s_ActiveProject);
+			if (!s_ActiveProject) return "";
 			return GetAssetDirectory() / path;
 		}
 	public:
