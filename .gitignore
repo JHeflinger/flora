@@ -16,7 +16,7 @@ bin-int/
 **.csproj.AssemblyReference.cache
 
 # personal
-*.ini
+#*.ini
 
 # Directories
 vendor/VulkanSDK/VulkanSDK.exe

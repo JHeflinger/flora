@@ -1,23 +1,24 @@
-Project Filepath: D:\Dev\ToI/Tower of Icarus.flproj
-Scene Filepath: D:\Dev\ToI\Assets\Scenes\TestCore.flora
-Selected Entity: 1
+Crashed: false
+Project Filepath: D:\Dev\Penis/Penis.flproj
+Scene Filepath: "NULL"
+Selected Entity: -1
 Current Gizmo: -1
-Editor Camera Type: Orthographic
+Editor Camera Type: Perspective
 Visible Physics Colliders: false
 General Camera Settings:
-  Position: [0, 0, 10]
+  Position: [0, 0, 11.4917917]
   Focal Point: [0, 0, 0]
   Camera Bound: false
 Perspective Camera Settings:
-  Distance: 10
+  Distance: 11.4917917
   Pitch: 0
   Yaw: 0
 Orthographic Camera Settings:
-  Size: 9.84179688
+  Size: 10
 Closed Panels:
-  - Physics
+  []
 Stat Panel Settings:
-  Timeframe: 2.95000005
+  Timeframe: 5
   Show Key: true
   Axis Scalar: 1
   Axis Minimum: 0
@@ -29,10 +30,10 @@ Stat Panel Settings:
     VERTICES: false
     INDICES: false
     FRAMETIME: false
-    FPS: true
+    FPS: false
     LOWEST_FPS: false
     HIGHEST_FPS: false
-    CPU_USAGE: true
+    CPU_USAGE: false
     GPU_USAGE: false
     MEM_USAGE: false
-    DISK_USAGE: true
+    DISK_USAGE: false

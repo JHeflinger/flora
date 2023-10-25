@@ -1,0 +1,1 @@
+This is where the editor settings are stored. Don't mess with unless you know what you're doing!
