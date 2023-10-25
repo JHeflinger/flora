@@ -1,25 +1,23 @@
 # binaries
-**/bin/
-bin-int/
-**/Intermediates/
-**/Debug/
-**.dll
-**.pdb
+#**/bin/
+#bin-int/
+#**/Intermediates/
+#**/Debug/
+#**.dll
+#**.pdb
 
 # VS files and folders
-.vs/
-**.sln
-**.vcxproj
-**.vcxproj.filters
-**.vcxproj.user
-**.cache
-**.csproj.AssemblyReference.cache
+#.vs/
+#**.sln
+#**.vcxproj
+#**.vcxproj.filters
+#**.vcxproj.user
+#**.cache
+#**.csproj.AssemblyReference.cache
 
 # personal
 #*.ini
 
 # Directories
-vendor/VulkanSDK/VulkanSDK.exe
-Fauna/assets/cache
-Flora/vendor/VulkanSDK
-scripts/__pycache__
+#Fauna/assets/cache
+#scripts/__pycache__
