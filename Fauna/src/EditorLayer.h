@@ -16,6 +16,7 @@ namespace Flora {
 	enum class SavePromptType { NONE = 0, NORM = 1, FINAL = 2, OPEN = 3, NEW = 4, OPENPATH = 5 };
 	enum class ProjectPromptType { NONE = 0, NEW = 1, EDIT = 2, OPEN = 3 };
 	enum class SystemPromptType { NONE = 0, CRASH = 1 };
+	enum class SettingsPromptType { NONE = 0, GRID = 1 };
 
 	class EditorLayer : public Layer {
 	public:
@@ -40,7 +41,6 @@ namespace Flora {
 		void SetPanelContext();
 		void UpdatePanels(Timestep ts);
 		void RenderImGuiPanels();
-		void RenderSystemPrompt();
 		void UpdateEditor(Timestep ts);
 		void AutoSaveEditor(Timestep ts);
 		std::string GetLastSavedString();
@@ -48,6 +48,8 @@ namespace Flora {
 		void RenderSavePrompt();
 		void RenderErrorPrompt();
 		void RenderProjectPrompt();
+		void RenderSystemPrompt();
+		void RenderSettingsPrompt();
 		void RenderDebugOverlay();
 		void RenderUIBar();
 		void OnScenePlay();
@@ -70,6 +72,7 @@ namespace Flora {
 		SavePromptType m_SavePromptType = SavePromptType::NONE;
 		ProjectPromptType m_ProjectPromptType = ProjectPromptType::NONE;
 		SystemPromptType m_SystemPromptType = SystemPromptType::NONE;
+		SettingsPromptType m_SettingsPromptType = SettingsPromptType::NONE;
 
 		// process before close var
 		bool m_ReadyToClose = false;

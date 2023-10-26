@@ -142,5 +142,6 @@ TODO:
 
 
 IN PROGRESS:
+	- show grid
 
 IMPLEMENTED TICKETS:

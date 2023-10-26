@@ -20,6 +20,18 @@ namespace Flora {
 		out << YAML::Key << "Editor Camera Type" << YAML::Value << params->EditorCamera.GetCameraTypeString();
 		out << YAML::Key << "Visible Physics Colliders" << YAML::Value << params->VisibleColliders;
 
+		out << YAML::Key << "Grid Settings" << YAML::Value;
+		out << YAML::BeginMap;
+		out << YAML::Key << "ShowGrid" << YAML::Value << params->ShowGrid;
+		out << YAML::Key << "ShowXAxis" << YAML::Value << params->ShowXAxis;
+		out << YAML::Key << "ShowYAxis" << YAML::Value << params->ShowYAxis;
+		out << YAML::Key << "ShowZAxis" << YAML::Value << params->ShowZAxis;
+		out << YAML::Key << "GridSize" << YAML::Value << params->GridSize;
+		out << YAML::Key << "UnitSize" << YAML::Value << params->UnitSize;
+		out << YAML::Key << "GridOrigin" << YAML::Value << params->GridOrigin;
+		out << YAML::Key << "GridMirrored" << YAML::Value << params->GridMirrored;
+		out << YAML::EndMap;
+
 		out << YAML::Key << "General Camera Settings" << YAML::Value;
 		out << YAML::BeginMap;
 		out << YAML::Key << "Position" << YAML::Value << params->EditorCamera.GetPosition();
@@ -93,8 +105,21 @@ namespace Flora {
 			!data["Stat Panel Settings"])
 			return false;
 
+		// set up crashed settings
 		if (data["Crashed"])
 			params->Crashed = data["Crashed"].as<bool>();
+
+		// set up grid settings
+		if (data["Grid Settings"]) {
+			params->GridMirrored = data["Grid Settings"]["GridMirrored"].as<bool>();
+			params->ShowGrid = data["Grid Settings"]["ShowGrid"].as<bool>();
+			params->ShowXAxis = data["Grid Settings"]["ShowXAxis"].as<bool>();
+			params->ShowYAxis = data["Grid Settings"]["ShowYAxis"].as<bool>();
+			params->ShowZAxis = data["Grid Settings"]["ShowZAxis"].as<bool>();
+			params->GridSize = data["Grid Settings"]["GridSize"].as<float>();
+			params->UnitSize = data["Grid Settings"]["UnitSize"].as<float>();
+			params->GridOrigin = Serializer::GetNodeAsVec3(data["Grid Settings"]["GridOrigin"]);
+		}
 
 		// set up project
 		std::string projectFilepath = data["Project Filepath"].as<std::string>();

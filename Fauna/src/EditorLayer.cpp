@@ -9,6 +9,7 @@
 #include "Flora/Utils/PlatformUtils.h"
 #include "Flora/Math/Math.h"
 #include "Utils/FileUtils.h"
+#include "Utils/ImGuiUtils.h"
 #include "ImGuizmo.h"
 #include "Flora/Audio/AudioCommand.h"
 #include "Flora/Scripting/ScriptEngine.h"
@@ -159,21 +160,31 @@ namespace Flora {
 			}
 
 			if (ImGui::BeginMenu("Editor")) {
-				if (m_EditorParams->EditorCamera.GetCameraTypeString() == "Orthographic") {
-					if (ImGui::MenuItem("Switch to perspective", "Space+Alt")) {
-						m_EditorParams->EditorCamera.SetCameraTypeWithString("Perspective");
+				if (ImGui::BeginMenu("Camera")) {
+					if (m_EditorParams->EditorCamera.GetCameraTypeString() == "Orthographic") {
+						if (ImGui::MenuItem("Switch to perspective", "Space+Alt")) {
+							m_EditorParams->EditorCamera.SetCameraTypeWithString("Perspective");
+						}
 					}
-				}
-				else {
-					if (ImGui::MenuItem("Switch to orthographic", "Space+Alt")) {
-						m_EditorParams->EditorCamera.SetCameraTypeWithString("Orthographic");
+					else {
+						if (ImGui::MenuItem("Switch to orthographic", "Space+Alt")) {
+							m_EditorParams->EditorCamera.SetCameraTypeWithString("Orthographic");
+						}
 					}
+
+					if (ImGui::MenuItem("Reset Editor Camera", "Space+`"))
+						m_EditorParams->EditorCamera.ResetCamera();
+
+					ImGui::MenuItem("Bind Editor Camera", "Space+Ctrl", m_EditorParams->EditorCamera.GetCameraBound());
+
+					ImGui::EndMenu();
 				}
 
-				if (ImGui::MenuItem("Reset Editor Camera", "Space+`"))
-					m_EditorParams->EditorCamera.ResetCamera();
-
-				ImGui::MenuItem("Bind Editor Camera", "Space+Ctrl", m_EditorParams->EditorCamera.GetCameraBound());
+				if (ImGui::BeginMenu("Grid")) {
+					ImGui::MenuItem("Toggle Grid", 0, &(m_EditorParams->ShowGrid));
+					if (ImGui::MenuItem("Grid Settings")) m_SettingsPromptType = SettingsPromptType::GRID;
+					ImGui::EndMenu();
+				}
 
 				ImGui::EndMenu();
 			}
@@ -231,7 +242,43 @@ namespace Flora {
 		// Render system prompt
 		RenderSystemPrompt();
 
+		// Render settings prompt
+		RenderSettingsPrompt();
+
 		ImGui::End();
+	}
+
+	void EditorLayer::RenderSettingsPrompt() {
+		if (m_SettingsPromptType == SettingsPromptType::GRID) {
+			ImGui::OpenPopup("Grid Settings");
+			ImVec2 center = ImGui::GetMainViewport()->GetCenter();
+			ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
+			if (ImGui::BeginPopupModal("Grid Settings", NULL, ImGuiWindowFlags_AlwaysAutoResize)) {
+				ImGui::Dummy({ 0, 5 });
+				ImGui::Checkbox("Mirror Grid", &(m_EditorParams->GridMirrored));
+				ImGui::Dummy({ 0, 5 });
+				ImGui::Separator();
+				ImGui::Dummy({ 0, 5 });
+				ImGui::Checkbox("Show X Axis", &(m_EditorParams->ShowXAxis));
+				ImGui::SameLine();
+				ImGui::Checkbox("Show Y Axis", &(m_EditorParams->ShowYAxis));
+				ImGui::SameLine();
+				ImGui::Checkbox("Show Z Axis", &(m_EditorParams->ShowZAxis));
+				ImGui::Dummy({ 0, 5 });
+				ImGui::Separator();
+				ImGui::Dummy({ 0, 5 });
+				ImGui::DragFloat("Grid Size", &(m_EditorParams->GridSize), 0.1f, 0.0f, FLT_MAX);
+				ImGui::DragFloat("Unit Size", &(m_EditorParams->UnitSize), 0.1f, 0.0f, FLT_MAX);
+				ImGui::Dummy({ 0, 5 });
+				ImGui::Separator();
+				ImGui::Dummy({ 0, 5 });
+				ImGuiUtils::DrawVec3Control("Origin", m_EditorParams->GridOrigin);
+				ImGui::Dummy({ 0, 10 });
+				ImGui::SetCursorPosX(ImGui::GetCursorPosX() + ImGui::GetContentRegionAvail().x - 70);
+				if (ImGui::Button("OK", { 65, 25 })) m_SettingsPromptType = SettingsPromptType::NONE;
+				ImGui::EndPopup();
+			}
+		}
 	}
 
 	void EditorLayer::RenderUIBar() {
@@ -988,6 +1035,72 @@ namespace Flora {
 					Renderer2D::DrawLine(p2_coord, p4_coord, color);
 					Renderer2D::DrawLine(p1_coord, p4_coord, color);
 					Renderer2D::DrawLine(p2_coord, p3_coord, color);
+				}
+			}
+		}
+
+		if (m_EditorParams->ShowGrid) {
+			glm::vec4 blue = { 0.2f, 0.3f, 0.9f, 1.0f };
+			glm::vec4 red = { 0.9f, 0.3f, 0.2f, 1.0f };
+			glm::vec4 green = { 0.3f, 0.9f, 0.2f, 1.0f };
+			glm::vec4 grey = {1.0f, 1.0f, 1.0f, 0.3f};
+			if (m_EditorParams->ShowXAxis)
+				Renderer2D::DrawLine(m_EditorParams->GridOrigin, { m_EditorParams->GridOrigin.x + m_EditorParams->GridSize, m_EditorParams->GridOrigin.y, m_EditorParams->GridOrigin.z }, red);
+			if (m_EditorParams->ShowYAxis)
+				Renderer2D::DrawLine(m_EditorParams->GridOrigin, { m_EditorParams->GridOrigin.x, m_EditorParams->GridOrigin.y + m_EditorParams->GridSize, m_EditorParams->GridOrigin.z }, green);
+			if (m_EditorParams->ShowZAxis)
+				Renderer2D::DrawLine(m_EditorParams->GridOrigin, { m_EditorParams->GridOrigin.x, m_EditorParams->GridOrigin.y, m_EditorParams->GridOrigin.z + m_EditorParams->GridSize }, blue);
+			if (m_EditorParams->UnitSize > 0.0f) {
+				if (m_EditorParams->ShowXAxis && m_EditorParams->ShowYAxis) {
+					float count = m_EditorParams->GridMirrored ? -1.0f * m_EditorParams->GridSize : 0.0f;
+					float mirrorfactor = count;
+					while (count < m_EditorParams->GridSize) {
+						count += m_EditorParams->UnitSize;
+						Renderer2D::DrawLine(
+							{ m_EditorParams->GridOrigin.x + count, m_EditorParams->GridOrigin.y + mirrorfactor, m_EditorParams->GridOrigin.z },
+							{ m_EditorParams->GridOrigin.x + count, m_EditorParams->GridOrigin.y + m_EditorParams->GridSize, m_EditorParams->GridOrigin.z },
+							grey
+						);
+						Renderer2D::DrawLine(
+							{ m_EditorParams->GridOrigin.x + mirrorfactor, m_EditorParams->GridOrigin.y + count, m_EditorParams->GridOrigin.z },
+							{ m_EditorParams->GridOrigin.x + m_EditorParams->GridSize, m_EditorParams->GridOrigin.y + count, m_EditorParams->GridOrigin.z },
+							grey
+						);
+					}
+				}
+				if (m_EditorParams->ShowXAxis && m_EditorParams->ShowZAxis) {
+					float count = m_EditorParams->GridMirrored ? -1.0f * m_EditorParams->GridSize : 0.0f;
+					float mirrorfactor = count;
+					while (count < m_EditorParams->GridSize) {
+						count += m_EditorParams->UnitSize;
+						Renderer2D::DrawLine(
+							{ m_EditorParams->GridOrigin.x + count, m_EditorParams->GridOrigin.y, m_EditorParams->GridOrigin.z + mirrorfactor },
+							{ m_EditorParams->GridOrigin.x + count, m_EditorParams->GridOrigin.y, m_EditorParams->GridOrigin.z + m_EditorParams->GridSize },
+							grey
+						);
+						Renderer2D::DrawLine(
+							{ m_EditorParams->GridOrigin.x + mirrorfactor, m_EditorParams->GridOrigin.y, m_EditorParams->GridOrigin.z + count },
+							{ m_EditorParams->GridOrigin.x + m_EditorParams->GridSize, m_EditorParams->GridOrigin.y, m_EditorParams->GridOrigin.z + count },
+							grey
+						);
+					}
+				}
+				if (m_EditorParams->ShowYAxis && m_EditorParams->ShowZAxis) {
+					float count = m_EditorParams->GridMirrored ? -1.0f * m_EditorParams->GridSize : 0.0f;
+					float mirrorfactor = count;
+					while (count < m_EditorParams->GridSize) {
+						count += m_EditorParams->UnitSize;
+						Renderer2D::DrawLine(
+							{ m_EditorParams->GridOrigin.x, m_EditorParams->GridOrigin.y + count, m_EditorParams->GridOrigin.z + mirrorfactor },
+							{ m_EditorParams->GridOrigin.x, m_EditorParams->GridOrigin.y + count, m_EditorParams->GridOrigin.z + m_EditorParams->GridSize },
+							grey
+						);
+						Renderer2D::DrawLine(
+							{ m_EditorParams->GridOrigin.x, m_EditorParams->GridOrigin.y + mirrorfactor, m_EditorParams->GridOrigin.z + count },
+							{ m_EditorParams->GridOrigin.x, m_EditorParams->GridOrigin.y + m_EditorParams->GridSize, m_EditorParams->GridOrigin.z + count },
+							grey
+						);
+					}
 				}
 			}
 		}

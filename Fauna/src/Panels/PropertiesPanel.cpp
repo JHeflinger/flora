@@ -3,6 +3,7 @@
 #include "Flora/Utils/PlatformUtils.h"
 #include "Flora/Scripting/ScriptEngine.h"
 #include "../Utils/FileUtils.h"
+#include "../Utils/ImGuiUtils.h"
 #include <imgui/imgui_internal.h>
 #include <filesystem>
 #include <glm/gtc/type_ptr.hpp>
@@ -55,226 +56,6 @@ namespace Flora {
 				ImGui::CloseCurrentPopup();
 			}
 		}
-	}
-
-	static bool DrawVec3Control(const std::string& label, glm::vec3& values, float resetValue = 0.0f, float columnWidth = 100.0f) {
-		ImGuiIO& io = ImGui::GetIO();
-		auto boldFont = io.Fonts->Fonts[0];
-		bool changed = false;
-
-		ImGui::PushID(label.c_str());
-
-		ImGui::Columns(2);
-		ImGui::SetColumnWidth(0, columnWidth);
-		ImGui::Text(label.c_str());
-		ImGui::NextColumn();
-
-		ImGui::PushMultiItemsWidths(3, ImGui::CalcItemWidth());
-		ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2{ 0, 0 });
-
-		float lineHeight = GImGui->Font->FontSize + GImGui->Style.FramePadding.y * 2.0f;
-		ImVec2 buttonSize = { lineHeight + 3.0f, lineHeight };
-
-		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.8f, 0.2f, 0.3f, 1.0f });
-		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.9f, 0.2f, 0.2f, 1.0f });
-		ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.7f, 0.1f, 0.1f, 1.0f });
-		ImGui::PushFont(boldFont);
-		if (ImGui::Button("X", buttonSize)) {
-			values.x = resetValue;
-			changed = true;
-		}
-		ImGui::PopStyleColor(3);
-		ImGui::PopFont();
-
-		ImGui::SameLine();
-		if (ImGui::DragFloat("##X", &values.x, 0.1f, 0.0f, 0.0f, "%.2f")) changed = true;
-		ImGui::PopItemWidth();
-		ImGui::SameLine();
-
-		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.1f, 0.7f, 0.2f, 1.0f });
-		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.1f, 0.8f, 0.1f, 1.0f });
-		ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.0f, 0.6f, 0.0f, 1.0f });
-		ImGui::PushFont(boldFont);
-		if (ImGui::Button("Y", buttonSize)) {
-			values.y = resetValue;
-			changed = true;
-		}
-		ImGui::PopStyleColor(3);
-		ImGui::PopFont();
-
-		ImGui::SameLine();
-		if (ImGui::DragFloat("##Y", &values.y, 0.1f, 0.0f, 0.0f, "%.2f")) changed = true;
-		ImGui::PopItemWidth();
-		ImGui::SameLine();
-
-		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.2f, 0.3f, 0.8f, 1.0f });
-		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.2f, 0.2f, 0.9f, 1.0f });
-		ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.1f, 0.1f, 0.7f, 1.0f });
-		ImGui::PushFont(boldFont);
-		if (ImGui::Button("Z", buttonSize)) {
-			values.z = resetValue;
-			changed = true;
-		}
-		ImGui::PopStyleColor(3);
-		ImGui::PopFont();
-
-		ImGui::SameLine();
-		if (ImGui::DragFloat("##Z", &values.z, 0.1f, 0.0f, 0.0f, "%.2f")) changed = true;
-		ImGui::PopItemWidth();
-
-		ImGui::PopStyleVar();
-		ImGui::Columns(1);
-		ImGui::PopID();
-
-		return changed;
-	}
-
-	static bool DrawVec2Control(const std::string& label, glm::vec2& values, float resetValue = 0.0f, float columnWidth = 100.0f) {
-		ImGuiIO& io = ImGui::GetIO();
-		auto boldFont = io.Fonts->Fonts[0];
-		bool changed = false;
-
-		ImGui::PushID(label.c_str());
-
-		ImGui::Columns(2);
-		ImGui::SetColumnWidth(0, columnWidth);
-		ImGui::Text(label.c_str());
-		ImGui::NextColumn();
-
-		ImGui::PushMultiItemsWidths(2, ImGui::CalcItemWidth());
-		ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2{ 0, 0 });
-
-		float lineHeight = GImGui->Font->FontSize + GImGui->Style.FramePadding.y * 2.0f;
-		ImVec2 buttonSize = { lineHeight + 3.0f, lineHeight };
-
-		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.8f, 0.2f, 0.3f, 1.0f });
-		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.9f, 0.2f, 0.2f, 1.0f });
-		ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.7f, 0.1f, 0.1f, 1.0f });
-		ImGui::PushFont(boldFont);
-		if (ImGui::Button("X", buttonSize)) {
-			values.x = resetValue;
-			changed = true;
-		}
-		ImGui::PopStyleColor(3);
-		ImGui::PopFont();
-
-		ImGui::SameLine();
-		if (ImGui::DragFloat("##X", &values.x, 0.1f, 0.0f, 0.0f, "%.2f")) changed = true;
-		ImGui::PopItemWidth();
-		ImGui::SameLine();
-
-		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.1f, 0.7f, 0.2f, 1.0f });
-		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.1f, 0.8f, 0.1f, 1.0f });
-		ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.0f, 0.6f, 0.0f, 1.0f });
-		ImGui::PushFont(boldFont);
-		if (ImGui::Button("Y", buttonSize)) {
-			values.y = resetValue;
-			changed = true;
-		}
-		ImGui::PopStyleColor(3);
-		ImGui::PopFont();
-
-		ImGui::SameLine();
-		if (ImGui::DragFloat("##Y", &values.y, 0.1f, 0.0f, 0.0f, "%.2f")) changed = true;
-		ImGui::PopItemWidth();
-		ImGui::SameLine();
-
-		ImGui::PopStyleVar();
-		ImGui::Columns(1);
-		ImGui::PopID();
-
-		return changed;
-	}
-
-	static bool DrawVec4Control(const std::string& label, glm::vec4& values, float resetValue = 0.0f, float columnWidth = 100.0f) {
-		ImGuiIO& io = ImGui::GetIO();
-		auto boldFont = io.Fonts->Fonts[0];
-		bool changed = false;
-
-		ImGui::PushID(label.c_str());
-
-		ImGui::Columns(2);
-		ImGui::SetColumnWidth(0, columnWidth);
-		ImGui::Dummy(ImVec2(0, 10.0f));
-		ImGui::Text(label.c_str());
-		ImGui::NextColumn();
-
-		ImGui::PushMultiItemsWidths(2, ImGui::CalcItemWidth());
-		ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2{ 0, 0 });
-
-		float lineHeight = GImGui->Font->FontSize + GImGui->Style.FramePadding.y * 2.0f;
-		ImVec2 buttonSize = { lineHeight + 3.0f, lineHeight };
-
-		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.8f, 0.2f, 0.3f, 1.0f });
-		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.9f, 0.2f, 0.2f, 1.0f });
-		ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.7f, 0.1f, 0.1f, 1.0f });
-		ImGui::PushFont(boldFont);
-		if (ImGui::Button("X", buttonSize)) {
-			values.x = resetValue;
-			changed = true;
-		}
-		ImGui::PopStyleColor(3);
-		ImGui::PopFont();
-
-		ImGui::SameLine();
-		if (ImGui::DragFloat("##X", &values.x, 0.1f, 0.0f, 0.0f, "%.2f")) changed = true;
-		ImGui::PopItemWidth();
-		ImGui::SameLine();
-
-		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.1f, 0.7f, 0.2f, 1.0f });
-		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.1f, 0.8f, 0.1f, 1.0f });
-		ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.0f, 0.6f, 0.0f, 1.0f });
-		ImGui::PushFont(boldFont);
-		if (ImGui::Button("Y", buttonSize)) {
-			values.y = resetValue;
-			changed = true;
-		}
-		ImGui::PopStyleColor(3);
-		ImGui::PopFont();
-
-		ImGui::SameLine();
-		if (ImGui::DragFloat("##Y", &values.y, 0.1f, 0.0f, 0.0f, "%.2f")) changed = true;
-		ImGui::PopItemWidth();
-
-		ImGui::PushMultiItemsWidths(2, ImGui::CalcItemWidth());
-
-		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.2f, 0.3f, 0.8f, 1.0f });
-		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.2f, 0.2f, 0.9f, 1.0f });
-		ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.1f, 0.1f, 0.7f, 1.0f });
-		ImGui::PushFont(boldFont);
-		if (ImGui::Button("Z", buttonSize)) {
-			values.z = resetValue;
-			changed = true;
-		}
-		ImGui::PopStyleColor(3);
-		ImGui::PopFont();
-
-		ImGui::SameLine();
-		if (ImGui::DragFloat("##Z", &values.z, 0.1f, 0.0f, 0.0f, "%.2f")) changed = true;
-		ImGui::PopItemWidth();
-		ImGui::SameLine();
-
-		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 1.0f, 0.9f, 0.1f, 1.0f });
-		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 1.0f, 1.0f, 0.2f, 1.0f });
-		ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.9f, 0.9f, 0.0f, 1.0f });
-		ImGui::PushFont(boldFont);
-		if (ImGui::Button("W", buttonSize)) {
-			values.w = resetValue;
-			changed = true;
-		}
-		ImGui::PopStyleColor(3);
-		ImGui::PopFont();
-
-		ImGui::SameLine();
-		if (ImGui::DragFloat("##W", &values.w, 0.1f, 0.0f, 0.0f, "%.2f")) changed = true;
-		ImGui::PopItemWidth();
-
-		ImGui::PopStyleVar();
-		ImGui::Dummy({ 0, 2 });
-		ImGui::Columns(1);
-		ImGui::PopID();
-
-		return changed;
 	}
 
 	static void DrawTextureDropbox(const std::string& label, SpriteRendererComponent& component, ImVec2 buttonSize) {
@@ -479,11 +260,11 @@ namespace Flora {
 		}, false);
 
 		DrawComponent<TransformComponent>("Transform", entity, [](auto& entity, auto& component) {
-			DrawVec3Control("Translation", component.Translation);
+			ImGuiUtils::DrawVec3Control("Translation", component.Translation);
 			glm::vec3 rotation = glm::degrees(component.Rotation);
-			DrawVec3Control("Rotation", rotation);
+			ImGuiUtils::DrawVec3Control("Rotation", rotation);
 			component.Rotation = glm::radians(rotation);
-			DrawVec3Control("Scale", component.Scale);
+			ImGuiUtils::DrawVec3Control("Scale", component.Scale, 1.0f);
 		}, false);
 
 		DrawComponent<LabelComponent>("Labels", entity, [](auto& entity, auto& component) {
@@ -1003,17 +784,17 @@ namespace Flora {
 						ImGui::Columns(1);
 						break;
 					case ScriptFieldType::Vector2:
-						if (DrawVec2Control(name, data_vec2))
+						if (ImGuiUtils::DrawVec2Control(name, data_vec2))
 							UPDATE_DATA(data_vec2);
 						ImGui::Dummy(ImVec2(0, linespacing));
 						break;
 					case ScriptFieldType::Vector3:
-						if (DrawVec3Control(name, data_vec3))
+						if (ImGuiUtils::DrawVec3Control(name, data_vec3))
 							UPDATE_DATA(data_vec3);
 						ImGui::Dummy(ImVec2(0, linespacing));
 						break;
 					case ScriptFieldType::Vector4:
-						if (DrawVec4Control(name, data_vec4))
+						if (ImGuiUtils::DrawVec4Control(name, data_vec4))
 							UPDATE_DATA(data_vec4);
 						ImGui::Dummy(ImVec2(0, linespacing));
 						break;
@@ -1410,7 +1191,7 @@ namespace Flora {
 				ImGui::Columns(1);
 				ImGui::Dummy({ 0, 2 });
 
-				DrawVec3Control("Velocity", component.Velocity);
+				ImGuiUtils::DrawVec3Control("Velocity", component.Velocity);
 				ImGui::TreePop();
 			}
 		});
@@ -1447,7 +1228,7 @@ namespace Flora {
 				ImGui::Columns(1);
 				ImGui::Dummy({ 0, 2 });
 
-				DrawVec3Control("Velocity", component.Velocity);
+				ImGuiUtils::DrawVec3Control("Velocity", component.Velocity);
 				ImGui::TreePop();
 			}
 		});
