@@ -14,7 +14,7 @@
 
 namespace Flora {
 	enum class SavePromptType { NONE = 0, NORM = 1, FINAL = 2, OPEN = 3, NEW = 4, OPENPATH = 5 };
-	enum class ProjectPromptType { NONE = 0, NEW = 1, EDIT = 2, OPEN = 3 };
+	enum class ProjectPromptType { NONE = 0, NEW = 1, EDIT = 2, OPEN = 3, BUILD = 4 };
 	enum class SystemPromptType { NONE = 0, CRASH = 1 };
 	enum class SettingsPromptType { NONE = 0, GRID = 1 };
 

@@ -111,26 +111,23 @@ namespace Flora {
 
 		if (ImGui::BeginMenuBar()) {
 			if (ImGui::BeginMenu("Project")) {
-				if (ImGui::MenuItem("New")) {
+				if (ImGui::MenuItem("New"))
 					m_ProjectPromptType = ProjectPromptType::NEW;
-				}
-				if (ImGui::MenuItem("Open")) {
+				if (ImGui::MenuItem("Open"))
 					m_ProjectPromptType = ProjectPromptType::OPEN;
-				}
-				if (ImGui::MenuItem("Settings")) {
+				if (ImGui::MenuItem("Build"))
+					m_ProjectPromptType = ProjectPromptType::BUILD;
+				if (ImGui::MenuItem("Settings"))
 					m_ProjectPromptType = ProjectPromptType::EDIT;
-				}
 				ImGui::EndMenu();
 			}
 
 			if (ImGui::BeginMenu("Scene")) {
-				if (ImGui::MenuItem("New", "Ctrl+N")) {
+				if (ImGui::MenuItem("New", "Ctrl+N"))
 					PromptSave(SavePromptType::NEW);
-				}
 
-				if (ImGui::MenuItem("Open...", "Ctrl+O")) {
+				if (ImGui::MenuItem("Open...", "Ctrl+O"))
 					PromptSave(SavePromptType::OPEN);
-				}
 
 				if (ImGui::MenuItem("Save As...", "Ctrl+Shift+S")) {
 					FileUtils::SaveSceneAs(m_EditorParams);
@@ -770,6 +767,69 @@ namespace Flora {
 				m_EditorParams->ProjectFilepath = filepath;
 			}
 			m_ProjectPromptType = ProjectPromptType::NONE;
+		} else if (m_ProjectPromptType == ProjectPromptType::BUILD) {
+			ImGui::OpenPopup("Build");
+			ImVec2 center = ImGui::GetMainViewport()->GetCenter();
+			ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
+			static char app_name_buffer[1024];
+			static char output_path_buffer[1024];
+			static char icon_path_buffer[1024];
+			static bool win_build = true;
+			static bool linux_build = false;
+			static bool mac_build = false;
+			static int win_width = 300;
+			static int win_height = 200;
+			static bool full_screen = false;
+			if (ImGui::BeginPopupModal("Build", NULL, ImGuiWindowFlags_AlwaysAutoResize)) {
+				ImGui::BeginChild("settings", ImVec2(400, 300), true);
+
+				ImGui::Text("Game Name        ");
+				ImGui::SameLine();
+				ImGui::InputText("##Game Name", app_name_buffer, sizeof(app_name_buffer));
+
+				ImGui::Text("Icon             ");
+				ImGui::SameLine();
+				ImGui::InputText("##Icon", icon_path_buffer, sizeof(icon_path_buffer));
+				ImGui::SameLine();
+				ImGui::Button("...");
+
+				ImGui::Text("Output Directory ");
+				ImGui::SameLine();
+				ImGui::InputText("##Output Directory", output_path_buffer, sizeof(output_path_buffer));
+				ImGui::SameLine();
+				ImGui::Button("...");
+
+				ImGui::Separator();
+
+				ImGui::Text("Build Platform");
+				ImGui::Checkbox("Windows", &win_build);
+				ImGui::SameLine();
+				ImGui::Checkbox("Linux", &linux_build);
+				ImGui::SameLine();
+				ImGui::Checkbox("Mac", &mac_build);
+
+				ImGui::Separator();
+
+				ImGui::Text("Default Window Size");
+				ImGui::Checkbox("Fullscreen", &full_screen);
+				ImGui::DragInt("##win_width", &win_width);
+				ImGui::SameLine();
+				ImGui::Text(" pixels by ");
+				ImGui::SameLine();
+				ImGui::DragInt("##win_height", &win_height);
+				ImGui::SameLine();
+				ImGui::Text(" pixels");
+
+				ImGui::Button("GENERATE");
+
+				ImGui::EndChild();
+				ImGui::SameLine();
+				ImGui::BeginChild("output", ImVec2(200, 300), true);
+				ImGui::Text("Progress: 0%");
+				ImGui::EndChild();
+				ImGui::Button("CLOSE");
+				ImGui::EndPopup();
+			}
 		}
 	}
 
