@@ -10,6 +10,7 @@
 #include "Flora/Math/Math.h"
 #include "Utils/FileUtils.h"
 #include "Utils/ImGuiUtils.h"
+#include "Build/Builder.h"
 #include "ImGuizmo.h"
 #include "Flora/Audio/AudioCommand.h"
 #include "Flora/Scripting/ScriptEngine.h"
@@ -853,7 +854,18 @@ namespace Flora {
 
 				ImGui::Dummy({ 0, 10 });
 				ImGui::SetCursorPosX(xbegin + (ImGui::GetContentRegionAvail().x / 2) - 75);
-				ImGui::Button("GENERATE", {150, 0});
+				if (ImGui::Button("GENERATE", { 150, 0 })) {
+					BuildConfig bconfig;
+					bconfig.Name = std::string(app_name_buffer);
+					bconfig.IconPath = std::string(icon_path_buffer);
+					bconfig.OutputDirectory = std::string(output_path_buffer);
+					bconfig.Fullscreen = full_screen;
+					bconfig.AppHeight = win_height;
+					bconfig.AppWidth = win_width;
+					bconfig.WinBuild = win_build;
+					bconfig.LinBuild = linux_build;
+					bconfig.MacBuild = mac_build;
+				}
 
 				ImGui::EndChild();
 				ImGui::SameLine();
