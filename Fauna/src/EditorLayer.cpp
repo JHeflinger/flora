@@ -780,54 +780,88 @@ namespace Flora {
 			static int win_width = 300;
 			static int win_height = 200;
 			static bool full_screen = false;
+			if (app_name_buffer[0] == '\0')
+				strcpy(app_name_buffer, Project::GetActive()->GetConfig().Name.c_str());
 			if (ImGui::BeginPopupModal("Build", NULL, ImGuiWindowFlags_AlwaysAutoResize)) {
-				ImGui::BeginChild("settings", ImVec2(400, 300), true);
+				ImGui::BeginChild("settings", ImVec2(500, 350), true);
 
-				ImGui::Text("Game Name        ");
+				ImGui::Text("General");
+				ImGui::Dummy({ 0, 10 });
+				float xbegin = ImGui::GetCursorPosX();
+				ImGui::Text("Game Name");
 				ImGui::SameLine();
+				ImGui::SetCursorPosX(xbegin + 120);
 				ImGui::InputText("##Game Name", app_name_buffer, sizeof(app_name_buffer));
 
-				ImGui::Text("Icon             ");
+				ImGui::Text("Icon");
 				ImGui::SameLine();
+				ImGui::SetCursorPosX(xbegin + 120);
 				ImGui::InputText("##Icon", icon_path_buffer, sizeof(icon_path_buffer));
 				ImGui::SameLine();
-				ImGui::Button("...");
+				if (ImGui::Button("...##.0")) {
+					std::string filepath = FileDialogs::OpenFile("PNG Icon (*.png)\0*.png\0");
+					strcpy(icon_path_buffer, filepath.c_str());
+				}
 
-				ImGui::Text("Output Directory ");
+				ImGui::Text("Output Directory");
 				ImGui::SameLine();
+				ImGui::SetCursorPosX(xbegin + 120);
 				ImGui::InputText("##Output Directory", output_path_buffer, sizeof(output_path_buffer));
 				ImGui::SameLine();
-				ImGui::Button("...");
+				if (ImGui::Button("...##.1")) {
+					std::string filepath = FileDialogs::OpenFolder();
+					strcpy(output_path_buffer, filepath.c_str());
+				}
 
+				ImGui::Dummy({ 0, 5 });
 				ImGui::Separator();
+				ImGui::Dummy({ 0, 5 });
 
 				ImGui::Text("Build Platform");
+				ImGui::Dummy({ 0, 10 });
 				ImGui::Checkbox("Windows", &win_build);
 				ImGui::SameLine();
 				ImGui::Checkbox("Linux", &linux_build);
 				ImGui::SameLine();
 				ImGui::Checkbox("Mac", &mac_build);
 
+				ImGui::Dummy({ 0, 5 });
 				ImGui::Separator();
+				ImGui::Dummy({ 0, 5 });
 
 				ImGui::Text("Default Window Size");
-				ImGui::Checkbox("Fullscreen", &full_screen);
+				ImGui::Dummy({ 0, 10 });
+
+				ImGui::PushItemFlag(ImGuiItemFlags_Disabled, !full_screen);
+				ImGui::PushStyleVar(ImGuiStyleVar_Alpha, full_screen ? 0.5f : 1.0f);
+
+				ImGui::SetNextItemWidth(70);
 				ImGui::DragInt("##win_width", &win_width);
 				ImGui::SameLine();
-				ImGui::Text(" pixels by ");
+				ImGui::Text(" by ");
 				ImGui::SameLine();
+				ImGui::SetNextItemWidth(70);
 				ImGui::DragInt("##win_height", &win_height);
 				ImGui::SameLine();
-				ImGui::Text(" pixels");
+				ImGui::Text(" pixels         ");
 
-				ImGui::Button("GENERATE");
+				ImGui::PopItemFlag();
+				ImGui::PopStyleVar();
+
+				ImGui::SameLine();
+				ImGui::Checkbox("Fullscreen", &full_screen);
+
+				ImGui::Dummy({ 0, 10 });
+				ImGui::SetCursorPosX(xbegin + (ImGui::GetContentRegionAvail().x / 2) - 75);
+				ImGui::Button("GENERATE", {150, 0});
 
 				ImGui::EndChild();
 				ImGui::SameLine();
-				ImGui::BeginChild("output", ImVec2(200, 300), true);
+				ImGui::BeginChild("output", ImVec2(200, 350), true);
 				ImGui::Text("Progress: 0%");
 				ImGui::EndChild();
-				ImGui::Button("CLOSE");
+				ImGui::SetCursorPosX(ImGui::GetCursorPosX() + ImGui::GetContentRegionAvail().x - 65);
+				if (ImGui::Button("CLOSE", { 65, 25 })) m_ProjectPromptType = ProjectPromptType::NONE;
 				ImGui::EndPopup();
 			}
 		}
