@@ -41,4 +41,5 @@ group ""
 
 group "Tools"
 	include "Fauna"
+	include "SandboxBuild"
 group ""
