@@ -3,7 +3,7 @@
 #include "Flora/Events/ApplicationEvent.h"
 
 namespace Flora {
-	class FLORA_API ImGuiLayer : public Layer {
+	class ImGuiLayer : public Layer {
 	public:
 		ImGuiLayer();
 		~ImGuiLayer();

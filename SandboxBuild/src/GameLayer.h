@@ -1,5 +1,7 @@
 #pragma once
 #include "Flora.h"
+#include "Flora/Core/Layer.h"
+#include "SceneManager/SceneManager.h"
 
 namespace Flora {
 	class GameLayer : public Layer {
@@ -14,5 +16,7 @@ namespace Flora {
 		void OnUpdate(Timestep ts) override;
 		virtual void OnImGuiRender() override;
 		void OnEvent(Event& e) override;
+	private:
+		SceneManager m_SceneManager;
 	};
 }

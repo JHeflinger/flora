@@ -3,7 +3,7 @@
 #include "Flora/Core/MouseCodes.h"
 
 namespace Flora {
-	class FLORA_API Input {
+	class Input {
 	public:
 		static bool IsKeyPressed(KeyCode key);
 		static bool IsMouseButtonPressed(MouseCode button);

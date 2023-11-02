@@ -16,5 +16,13 @@ namespace Flora {
 	class Builder {
 	public:
 		static std::vector<std::string> VerifyConfig(BuildConfig config);
+		static std::string StepBuild();
+	private:
+		static void FinishSceneHeader();
+		static void ResetSceneHeader();
+		static bool WriteSceneHeader();
+		static void GetScenes();
+		static bool CompressScene(std::filesystem::path filepath);
+		static std::pair<bool, std::string> FileToString(std::filesystem::path filepath);
 	};
 }
