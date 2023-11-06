@@ -1,6 +1,7 @@
 #pragma once
 #include "Flora.h"
 #include "Flora/Core/Layer.h"
+#include "Flora/Scene/Scene.h"
 #include "SceneManager/SceneManager.h"
 
 namespace Flora {
@@ -18,5 +19,6 @@ namespace Flora {
 		void OnEvent(Event& e) override;
 	private:
 		SceneManager m_SceneManager;
+		Ref<Scene> m_ActiveScene;
 	};
 }
