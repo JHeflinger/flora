@@ -583,18 +583,14 @@ namespace Flora {
 		return "";
 	}
 
-	bool Serializer::DeserializeScene(Ref<Scene>& scene, const std::string& filepath) {
-		std::ifstream stream(filepath);
-		std::stringstream strStream;
-		strStream << stream.rdbuf();
-
-		YAML::Node data = YAML::Load(strStream.str());
+	bool Serializer::DeserializeRawScene(Ref<Scene>& scene, const std::string& scenedata) {
+		YAML::Node data = YAML::Load(scenedata);
 		if (!data["Scene"])
 			return false;
 
 		std::string sceneName = data["Scene"].as<std::string>();
-		scene->SetSceneName(sceneName);
 		FL_CORE_TRACE("Deserializing scene '{0}'", sceneName);
+		scene->SetSceneName(sceneName);
 
 		scene->SetPrimaryCamera(data["Primary Camera"].as<int>());
 		scene->SetPrimaryAudioListener(data["Primary Audio Listener"].as<int>());
@@ -610,6 +606,13 @@ namespace Flora {
 				DeserializeEntityYAML(entity, scene, uidmap);
 
 		return true;
+	}
+
+	bool Serializer::DeserializeScene(Ref<Scene>& scene, const std::string& filepath) {
+		std::ifstream stream(filepath);
+		std::stringstream strStream;
+		strStream << stream.rdbuf();
+		return DeserializeRawScene(scene, strStream.str());
 	}
 
 	Entity* Serializer::DeserializeEntity(Ref<Scene>& scene, const std::string& filepath) {

@@ -1,5 +1,7 @@
 #include "flpch.h"
 #include "GameLayer.h"
+#include "Flora/Utils/Serializer.h"
+#include "Flora/Scripting/ScriptEngine.h"
 
 namespace Flora {
 
@@ -7,7 +9,9 @@ namespace Flora {
 
 	GameLayer::GameLayer()
 		: Layer("Game") {
-
+		ScriptEngine::Init();
+		m_ActiveScene = CreateRef<Scene>();
+		FL_CORE_INFO(Serializer::DeserializeRawScene(m_ActiveScene, m_SceneManager.GetStartingScene()));
 	}
 
 	void GameLayer::OnAttatch() {

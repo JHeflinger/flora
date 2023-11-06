@@ -150,6 +150,10 @@ Entities:
           Data: 50)";
 	}
 
+    std::string SceneManager::GetStartingScene() {
+        return m_SceneMap["D:/Dev/FOL/Assets/Scenes/Core.flora"];
+    }
+
 	std::string SceneManager::GetScene(std::string scene) {
 		std::replace(scene.begin(), scene.end(), '\\', '/');
 		if (m_SceneMap.find(scene) == m_SceneMap.end()) return "";
