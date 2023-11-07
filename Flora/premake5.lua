@@ -44,6 +44,8 @@ project "Flora"
 		"%{IncludeDir.ImGuizmo}",
 		"%{IncludeDir.mono}",
 		"%{IncludeDir.filewatch}",
+		"%{IncludeDir.msdfgen}",
+		"%{IncludeDir.msdfatlas}",
 		"%{IncludeDir.openAL}"
 	}
 
@@ -53,6 +55,7 @@ project "Flora"
 		"GLFW",
 		"Glad",
 		"ImGui",
+		"msdf-atlas-gen",
 		"yaml-cpp",
 		"opengl32.lib",
 		"%{Library.mono}"
