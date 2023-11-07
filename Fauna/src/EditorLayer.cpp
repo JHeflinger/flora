@@ -33,7 +33,7 @@ namespace Flora {
 		//DELETEME
 		{
 			Font font("resources/Fonts/OpenSans/OpenSans-Regular.ttf");
-			//FL_CORE_INFO("Finished!");
+			std::exit(0);
 		}
 
 		// Set up editor params
