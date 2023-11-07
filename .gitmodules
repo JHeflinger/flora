@@ -23,3 +23,6 @@
 [submodule "Flora/vendor/box2D"]
 	path = Flora/vendor/box2D
 	url = git@github.com:JHeflinger/box2D.git
+[submodule "Flora/vendor/msdf-atlas-gen"]
+	path = Flora/vendor/msdf-atlas-gen
+	url = git@github.com:JHeflinger/msdf-atlas-gen.git
