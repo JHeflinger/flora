@@ -15,6 +15,7 @@
 #include "Flora/Audio/AudioCommand.h"
 #include "Flora/Scripting/ScriptEngine.h"
 #include "Flora/Utils/ComponentUtils.h"
+#include "Flora/Renderer/Font.h"
 
 namespace Flora {
 	EditorLayer::EditorLayer()
@@ -29,6 +30,12 @@ namespace Flora {
 	}
 
 	void EditorLayer::OnAttatch() {
+		//DELETEME
+		{
+			Font font("resources/Fonts/OpenSans/OpenSans-Regular.ttf");
+			//FL_CORE_INFO("Finished!");
+		}
+
 		// Set up editor params
 		ResetEditorParams();
 
