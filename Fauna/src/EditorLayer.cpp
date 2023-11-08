@@ -18,6 +18,7 @@
 #include "Flora/Renderer/Font.h"
 
 namespace Flora {
+
 	EditorLayer::EditorLayer()
 		: Layer("Editor") {
 		m_Panels["Stats"] = CreateScope<StatsPanel>();
@@ -30,11 +31,6 @@ namespace Flora {
 	}
 
 	void EditorLayer::OnAttatch() {
-		//DELETEME
-		{
-			Font font("resources/Fonts/OpenSans/OpenSans-Regular.ttf");
-			std::exit(0);
-		}
 
 		// Set up editor params
 		ResetEditorParams();
