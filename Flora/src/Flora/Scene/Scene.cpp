@@ -426,6 +426,14 @@ namespace Flora {
 			}
 		}
 
+		//DELETEME TEST
+		Renderer2D::DrawString(
+			R"(Flora Text Test!
+	Huge indented text
+This
+		is actually quite unbelieveable)", Font::GetDefault(), glm::mat4(1.0f), glm::vec4(1.0f));
+		//https://www.youtube.com/watch?v=9jdHSczGMCo
+
 		Renderer2D::EndScene();
 	}
 

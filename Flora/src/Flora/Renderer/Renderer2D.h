@@ -4,6 +4,7 @@
 #include "Flora/Renderer/SubTexture2D.h"
 #include "Flora/Renderer/Camera.h"
 #include "Flora/Renderer/EditorCamera.h"
+#include "Flora/Renderer/Font.h"
 #include "Flora/Scene/Components.h"
 #include "Flora/Core/AssetManager.h"
 
@@ -66,6 +67,7 @@ namespace Flora {
 		static void DrawSprite(Timestep ts, const glm::mat4& transform, SpriteRendererComponent& src, int entityID = -1);
 		static void DrawCircle(const glm::mat4& transform, const glm::vec4& color = { 1.0f, 1.0f, 1.0f, 1.0f }, float thickness = 1.0f, float fade = 0.005f, int entityID = -1);
 		static void DrawLine(const glm::vec3& p1, const glm::vec3& p2, const glm::vec4& color = { 1.0f, 1.0f, 1.0f, 1.0f }, int entityID = -1);
+		static void DrawString(const std::string& string, Ref<Font> font, const glm::mat4& transform, const glm::vec4& color);
 		static float GetLineWidth();
 		static void SetLineWidth(float width);
 
