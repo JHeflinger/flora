@@ -647,22 +647,63 @@ namespace Flora {
 		const auto& metrics = geometry.getMetrics();
 		Ref<Texture2D> fontAtlas = font->GetAtlasTexture();
 		s_Data.FontAtlasTexture = fontAtlas;
-		double x = 0.0;
-		double y = 0.0;
+
 		double fsScale = 1.0 / (metrics.ascenderY - metrics.descenderY);
 		float kerningOffset = config.Kerning;
 		float lineSpacing = config.LineSpacing;
 		auto spaceGlyph = geometry.getGlyph(' ');
+		int numlines = 1;
+		for (size_t i = 0; i < config.TextString.size(); i++)
+			if (config.TextString[i] == '\n') numlines++;
+
+		std::vector<double> startpos(numlines, 0);
+		int startposind = 0;
+		if (config.Alignment != FontAlignment::LEFT) {
+			int lineind = 0;
+			double advance;
+			for (size_t i = 0; i < config.TextString.size(); i++) {
+				if (config.TextString[i] == '\n') {
+					lineind++;
+					continue;
+				}
+				if (config.TextString[i] == '\r') continue;
+				if (config.TextString[i] == '\t') {
+					advance = spaceGlyph->getAdvance();
+					startpos[lineind] -= 4 * (fsScale * advance + kerningOffset);
+				}
+				else if (config.TextString[i] == ' ' && i < config.TextString.size() - 1) {
+					geometry.getAdvance(advance, config.TextString[i], config.TextString[i + 1]);
+					startpos[lineind] -= fsScale * advance + kerningOffset;
+				}
+				else if (i < config.TextString.size() - 1) {
+					auto glyph = geometry.getGlyph(config.TextString[i]);
+					if (!glyph) glyph = geometry.getGlyph('?');
+					if (!glyph) return;
+					advance = glyph->getAdvance();
+					char nextCharacter = config.TextString[i + 1];
+					geometry.getAdvance(advance, config.TextString[i], nextCharacter);
+					startpos[lineind] -= fsScale * advance + kerningOffset;
+				}
+			}
+			if (config.Alignment == FontAlignment::MIDDLE) {
+				for (auto& pos : startpos)
+					pos += ((-1.0 * pos) / 2.0);
+			}
+		}
+
+		double x = startpos[startposind];
+		double y = 0.0;
 
 		for (size_t i = 0; i < config.TextString.size(); i++) {
 			char character = config.TextString[i];
 			if (character == '\r') continue;
 			if (character == '\n') {
-				x = 0;
+				startposind++;
+				x = startpos[startposind];
 				y -= fsScale * metrics.lineHeight + lineSpacing;
 				continue;
 			}
-			if (character == ' ') {
+			if (character == ' ' && i < config.TextString.size() - 1) {
 				double advance;
 				char nextCharacter = config.TextString[i + 1];
 				geometry.getAdvance(advance, character, nextCharacter);
