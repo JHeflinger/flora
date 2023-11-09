@@ -4,6 +4,7 @@
 #include "Flora/Renderer/Shader.h"
 #include "Flora/Renderer/RenderCommand.h"
 #include "Flora/Core/HiddenStructs.h"
+#include "Flora/Math/Math.h"
 #include <glm/gtc/matrix_transform.hpp>
 
 namespace Flora {
@@ -620,7 +621,28 @@ namespace Flora {
 		DrawLine(lineVertices[3], lineVertices[0], color);
 	}
 
-	void Renderer2D::DrawString(const std::string& string, Ref<Font> font, const glm::mat4& transform, const glm::vec4& color) {
+	void Renderer2D::DrawString(TextComponent& tc, Entity entity) {
+		if (!tc.FontInitialized) {
+			AssetManager::AddFont(tc.FontFilePath);
+			tc.FontInitialized = true;
+		}
+		TextConfig conf;
+		TransformComponent tfc = entity.GetComponent<TransformComponent>();
+		conf.TextString = tc.TextString;
+		conf.Kerning = tc.Kerning;
+		conf.LineSpacing = tc.LineSpacing;
+		conf.Color = tc.Color;
+		conf.Translation = tfc.Translation + tc.Translation;
+		conf.Rotation = tfc.Rotation + tc.Rotation;
+		conf.Scale = { tfc.Scale.x * tc.Scale.x, tfc.Scale.y * tc.Scale.y, tfc.Scale.z * tc.Scale.z };
+		conf.Alignment = tc.Alignment;
+		conf.EntityID = (int)(uint32_t)entity;
+		conf.Font = AssetManager::GetFont(tc.FontFilePath);
+		DrawString(conf);
+	}
+
+	void Renderer2D::DrawString(const TextConfig& config) {
+		Ref<Font> font = config.Font ? config.Font : Font::GetDefault();
 		const auto& geometry = font->GetFontData()->Geometry;
 		const auto& metrics = geometry.getMetrics();
 		Ref<Texture2D> fontAtlas = font->GetAtlasTexture();
@@ -628,22 +650,33 @@ namespace Flora {
 		double x = 0.0;
 		double y = 0.0;
 		double fsScale = 1.0 / (metrics.ascenderY - metrics.descenderY);
-		float lineHeightOffset = 0.0f;
+		float kerningOffset = config.Kerning;
+		float lineSpacing = config.LineSpacing;
+		auto spaceGlyph = geometry.getGlyph(' ');
 
-		for (size_t i = 0; i < string.size(); i++) {
-			char character = string[i];
+		for (size_t i = 0; i < config.TextString.size(); i++) {
+			char character = config.TextString[i];
 			if (character == '\r') continue;
 			if (character == '\n') {
 				x = 0;
-				y -= fsScale * metrics.lineHeight + lineHeightOffset;
+				y -= fsScale * metrics.lineHeight + lineSpacing;
+				continue;
+			}
+			if (character == ' ') {
+				double advance;
+				char nextCharacter = config.TextString[i + 1];
+				geometry.getAdvance(advance, character, nextCharacter);
+				x += fsScale * advance + kerningOffset;
+				continue;
+			}
+			if (character == '\t') {
+				double advance = spaceGlyph->getAdvance();
+				x += 4*(fsScale * advance + kerningOffset);
 				continue;
 			}
 			auto glyph = geometry.getGlyph(character);
 			if (!glyph) glyph = geometry.getGlyph('?');
 			if (!glyph) return;
-
-			if (character == '\t')
-				glyph = geometry.getGlyph(' ');
 
 			double al, ab, ar, at;
 			glyph->getQuadAtlasBounds(al, ab, ar, at);
@@ -665,39 +698,40 @@ namespace Flora {
 			texCoordMax *= glm::vec2(texelWidth, texelHeight);
 
 			// rendering time
+			glm::mat4 transform = Math::ComposeTransform(config.Translation, config.Rotation, config.Scale);
+
 			s_Data.TextVertexBufferPtr->Position = transform * glm::vec4(quadMin, 0.0f, 1.0f);
-			s_Data.TextVertexBufferPtr->Color = color;
+			s_Data.TextVertexBufferPtr->Color = config.Color;
 			s_Data.TextVertexBufferPtr->TexCoord = texCoordMin;
-			s_Data.TextVertexBufferPtr->EntityID = 0; //TODO
+			s_Data.TextVertexBufferPtr->EntityID = config.EntityID;
 			s_Data.TextVertexBufferPtr++;
 
 			s_Data.TextVertexBufferPtr->Position = transform * glm::vec4(quadMin.x, quadMax.y, 0.0f, 1.0f);
-			s_Data.TextVertexBufferPtr->Color = color;
+			s_Data.TextVertexBufferPtr->Color = config.Color;
 			s_Data.TextVertexBufferPtr->TexCoord = { texCoordMin.x, texCoordMax.y };
-			s_Data.TextVertexBufferPtr->EntityID = 0; //TODO
+			s_Data.TextVertexBufferPtr->EntityID = config.EntityID;
 			s_Data.TextVertexBufferPtr++;
 
 			s_Data.TextVertexBufferPtr->Position = transform * glm::vec4(quadMax, 0.0f, 1.0f);
-			s_Data.TextVertexBufferPtr->Color = color;
+			s_Data.TextVertexBufferPtr->Color = config.Color;
 			s_Data.TextVertexBufferPtr->TexCoord = texCoordMax;
-			s_Data.TextVertexBufferPtr->EntityID = 0; //TODO
+			s_Data.TextVertexBufferPtr->EntityID = config.EntityID;
 			s_Data.TextVertexBufferPtr++;
 
 			s_Data.TextVertexBufferPtr->Position = transform * glm::vec4(quadMax.x, quadMin.y, 0.0f, 1.0f);
-			s_Data.TextVertexBufferPtr->Color = color;
+			s_Data.TextVertexBufferPtr->Color = config.Color;
 			s_Data.TextVertexBufferPtr->TexCoord = { texCoordMax.x, texCoordMin.y };
-			s_Data.TextVertexBufferPtr->EntityID = 0; //TODO
+			s_Data.TextVertexBufferPtr->EntityID = config.EntityID;
 			s_Data.TextVertexBufferPtr++;
 
 			s_Data.TextIndexCount += 6;
 			s_Data.Stats.QuadCount++;
 
-			if (i < string.size() - 1) {
+			if (i < config.TextString.size() - 1) {
 				double advance = glyph->getAdvance();
-				char nextCharacter = string[i + 1];
+				char nextCharacter = config.TextString[i + 1];
 				geometry.getAdvance(advance, character, nextCharacter);
 
-				float kerningOffset = 0.0f;
 				x += fsScale * advance + kerningOffset;
 			}
 		}

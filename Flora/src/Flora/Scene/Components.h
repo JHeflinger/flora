@@ -7,9 +7,11 @@
 #include "Flora/Utils/PhysicsUtils.h"
 #include "Flora/Project/Label.h"
 #include "Flora/Project/Project.h"
+#include "Flora/Renderer/Font.h"
 
 namespace Flora {
 	enum class AudioState { NONE, PLAY, STOP, PAUSE, REWIND };
+	enum class FontAlignment { LEFT = 0, MIDDLE = 1, RIGHT = 2 };
 
 	struct TagComponent {
 		std::string Tag;
@@ -269,6 +271,20 @@ namespace Flora {
 		std::set<std::string> GetLabels() { return Labels; }
 	};
 
+	struct TextComponent {
+		std::string TextString;
+		float Kerning = 0.0f;
+		float LineSpacing = 0.0f;
+		glm::vec4 Color{ 1.0f, 1.0f, 1.0f, 1.0f };
+		glm::vec3 Translation = { 0.0f, 0.0f, 0.0f };
+		glm::vec3 Rotation = { 0.0f, 0.0f, 0.0f };
+		glm::vec3 Scale = { 1.0f, 1.0f, 1.0f };
+		FontAlignment Alignment = FontAlignment::LEFT;
+		std::string FontFilePath = "";
+		std::string FontName = "";
+		bool FontInitialized = false;
+	};
+
 	template<typename... Component>
 	struct ComponentGroup{};
 
@@ -277,5 +293,5 @@ namespace Flora {
 		CircleRendererComponent, CameraComponent, ScriptComponent,
 		ScriptManagerComponent, ChildComponent, ParentComponent, RigidBody2DComponent, 
 		BoxCollider2DComponent, CircleCollider2DComponent, AudioSourceComponent,
-		AudioListenerComponent, LabelComponent>;
+		AudioListenerComponent, LabelComponent, TextComponent>;
 }

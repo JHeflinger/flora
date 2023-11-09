@@ -1,5 +1,6 @@
 #pragma once
 #include "Flora/Renderer/Texture.h"
+#include "Flora/Renderer/Font.h"
 #include "Flora/Audio/AudioCommand.h"
 
 namespace Flora {
@@ -16,5 +17,10 @@ namespace Flora {
 		static void RemoveAudio(std::string audioPath);
 		static void ClearAudios();
 		static Ref<Audio> GetAudio(std::string audioPath);
+	public:
+		static bool AddFont(std::string fontPath);
+		static void RemoveFont(std::string fontPath);
+		static void ClearFonts();
+		static Ref<Font> GetFont(std::string fontPath);
 	};
 }
