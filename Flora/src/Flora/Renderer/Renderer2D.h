@@ -9,6 +9,19 @@
 #include "Flora/Core/AssetManager.h"
 
 namespace Flora {
+	struct TextConfig {
+		std::string TextString;
+		float Kerning = 0.0f;
+		float LineSpacing = 0.0f;
+		glm::vec4 Color{ 1.0f, 1.0f, 1.0f, 1.0f };
+		glm::vec3 Translation = { 0.0f, 0.0f, 0.0f };
+		glm::vec3 Rotation = { 0.0f, 0.0f, 0.0f };
+		glm::vec3 Scale = { 1.0f, 1.0f, 1.0f };
+		FontAlignment Alignment = FontAlignment::LEFT;
+		Ref<Font> Font = nullptr;
+		int EntityID = -1;
+	};
+
 	class Renderer2D {
 	public:
 		static void Init();
@@ -67,7 +80,8 @@ namespace Flora {
 		static void DrawSprite(Timestep ts, const glm::mat4& transform, SpriteRendererComponent& src, int entityID = -1);
 		static void DrawCircle(const glm::mat4& transform, const glm::vec4& color = { 1.0f, 1.0f, 1.0f, 1.0f }, float thickness = 1.0f, float fade = 0.005f, int entityID = -1);
 		static void DrawLine(const glm::vec3& p1, const glm::vec3& p2, const glm::vec4& color = { 1.0f, 1.0f, 1.0f, 1.0f }, int entityID = -1);
-		static void DrawString(const std::string& string, Ref<Font> font, const glm::mat4& transform, const glm::vec4& color);
+		static void DrawString(const TextConfig& config);
+		static void DrawString(TextComponent& tc, Entity entity);
 		static float GetLineWidth();
 		static void SetLineWidth(float width);
 

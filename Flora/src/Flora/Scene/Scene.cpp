@@ -426,13 +426,14 @@ namespace Flora {
 			}
 		}
 
-		//DELETEME TEST
-		Renderer2D::DrawString(
-			R"(Flora Text Test!
-	Huge indented text
-This
-		is actually quite unbelieveable)", Font::GetDefault(), glm::mat4(1.0f), glm::vec4(1.0f));
-		//https://www.youtube.com/watch?v=9jdHSczGMCo
+		//text
+		{
+			auto view = m_Registry.view<TransformComponent, TextComponent>();
+			for (auto entity : view) {
+				auto [transform, text] = view.get<TransformComponent, TextComponent>(entity);
+				Renderer2D::DrawString(text, Entity{ entity, this });
+			}
+		}
 
 		Renderer2D::EndScene();
 	}
@@ -482,7 +483,7 @@ This
 
 	void Scene::OnUpdateRuntime(Timestep ts, glm::mat4 viewProjection) {
 
-		// Render 2D Sprites
+		// Render 2D Sprites and Text
 		RenderRuntime(ts, viewProjection); // important: this needs to run first or else the camera lags behind a frame
 
 		if (!m_Paused || m_StepFrames > 0) {
@@ -554,4 +555,7 @@ This
 
 	template<>
 	void Scene::OnComponentAdded<LabelComponent>(Entity entity, LabelComponent& component) {}
+
+	template<>
+	void Scene::OnComponentAdded<TextComponent>(Entity entity, TextComponent& component) {}
 }
