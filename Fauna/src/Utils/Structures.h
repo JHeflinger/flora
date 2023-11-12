@@ -59,6 +59,16 @@ namespace Flora {
 		Ref<Project> Project;
 		std::string ProjectFilepath = "";
 		
+		// grid settings
+		bool ShowGrid = true;
+		bool ShowXAxis = true;
+		bool ShowYAxis = true;
+		bool ShowZAxis = true;
+		bool GridMirrored = false;
+		float GridSize = 10.0f;
+		float UnitSize = 1.0f;
+		glm::vec3 GridOrigin = { 0.0f, 0.0f, 0.0f };
+
 		// stats panel settings
 		float Timeframe = 5.0f;
 		float AxisScale = 1.0f;

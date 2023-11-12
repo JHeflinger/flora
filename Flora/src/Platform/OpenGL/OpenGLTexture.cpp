@@ -4,18 +4,38 @@
 #include "stb_image.h"
 
 namespace Flora {
-	OpenGLTexture2D::OpenGLTexture2D(uint32_t width, uint32_t height) 
-		: m_Width(width), m_Height(height) {
+	namespace Utils {
+		static GLenum ConvertFormatToGLFormat(ImageFormat format) {
+			switch (format) {
+			case ImageFormat::RGB8: return GL_RGB;
+			case ImageFormat::RGBA8: return GL_RGBA;
+			}
+			FL_CORE_ERROR("Unsupported texture format detected");
+			return 0;
+		}
+
+		static GLenum ConvertFormatToGLInternalFormat(ImageFormat format) {
+			switch (format) {
+			case ImageFormat::RGB8: return GL_RGB8;
+			case ImageFormat::RGBA8: return GL_RGBA8;
+			}
+			FL_CORE_ERROR("Unsupported texture format detected");
+			return 0;
+		}
+	}
+
+	OpenGLTexture2D::OpenGLTexture2D(const TextureSpecification& spec)
+		: m_Specification(spec), m_Width(spec.Width), m_Height(spec.Height) {
 		FL_PROFILE_FUNCTION();
 
-		m_InternalFormat = GL_RGBA8;
-		m_DataFormat = GL_RGBA;
+		m_InternalFormat = Utils::ConvertFormatToGLInternalFormat(m_Specification.Format);
+		m_DataFormat = Utils::ConvertFormatToGLFormat(m_Specification.Format);
 
 		glCreateTextures(GL_TEXTURE_2D, 1, &m_RendererID);
 		glTextureStorage2D(m_RendererID, 1, m_InternalFormat, m_Width, m_Height);
 
 		glTextureParameteri(m_RendererID, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTextureParameteri(m_RendererID, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		glTextureParameteri(m_RendererID, GL_TEXTURE_MAG_FILTER, m_Specification.Filter == ImageFilter::NEAREST ? GL_NEAREST : GL_LINEAR);
 
 		glTextureParameteri(m_RendererID, GL_TEXTURE_WRAP_S, GL_REPEAT);
 		glTextureParameteri(m_RendererID, GL_TEXTURE_WRAP_T, GL_REPEAT);
@@ -54,7 +74,7 @@ namespace Flora {
 		glTextureStorage2D(m_RendererID, 1, internalFormat, m_Width, m_Height);
 		
 		glTextureParameteri(m_RendererID, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTextureParameteri(m_RendererID, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		glTextureParameteri(m_RendererID, GL_TEXTURE_MAG_FILTER, m_Specification.Filter == ImageFilter::NEAREST ? GL_NEAREST : GL_LINEAR);
 
 		glTextureParameteri(m_RendererID, GL_TEXTURE_WRAP_S, GL_REPEAT);
 		glTextureParameteri(m_RendererID, GL_TEXTURE_WRAP_T, GL_REPEAT);

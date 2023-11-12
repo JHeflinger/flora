@@ -2,7 +2,7 @@
 #include "Flora/Events/Event.h"
 
 namespace Flora {
-	class FLORA_API MouseMovedEvent : public Event {
+	class MouseMovedEvent : public Event {
 	public:
 		MouseMovedEvent(float x, float y)
 			: m_MouseX(x), m_MouseY(y) {}
@@ -19,7 +19,7 @@ namespace Flora {
 		float m_MouseX, m_MouseY;
 	};
 
-	class FLORA_API MouseScrolledEvent : public Event {
+	class MouseScrolledEvent : public Event {
 	public:
 		MouseScrolledEvent(float xOffset, float yOffset)
 			: m_XOffset(xOffset), m_YOffset(yOffset) {}
@@ -36,7 +36,7 @@ namespace Flora {
 		float m_XOffset, m_YOffset;
 	};
 
-	class FLORA_API MouseButtonEvent : public Event {
+	class MouseButtonEvent : public Event {
 	public:
 		inline int GetMouseButton() const { return m_Button; }
 		EVENT_CLASS_CATEGORY(EventCategoryMouse | EventCategoryInput)
@@ -46,7 +46,7 @@ namespace Flora {
 		int m_Button;
 	};
 
-	class FLORA_API MouseButtonPressedEvent : public MouseButtonEvent {
+	class MouseButtonPressedEvent : public MouseButtonEvent {
 	public:
 		MouseButtonPressedEvent(int button)
 			: MouseButtonEvent(button) {}
@@ -58,7 +58,7 @@ namespace Flora {
 		EVENT_CLASS_TYPE(MouseButtonPressed)
 	};
 
-	class FLORA_API MouseButtonReleasedEvent : public MouseButtonEvent {
+	class MouseButtonReleasedEvent : public MouseButtonEvent {
 	public:
 		MouseButtonReleasedEvent(int button)
 			: MouseButtonEvent(button) {}

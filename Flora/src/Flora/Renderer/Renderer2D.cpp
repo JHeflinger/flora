@@ -3,6 +3,8 @@
 #include "Flora/Renderer/VertexArray.h"
 #include "Flora/Renderer/Shader.h"
 #include "Flora/Renderer/RenderCommand.h"
+#include "Flora/Core/HiddenStructs.h"
+#include "Flora/Math/Math.h"
 #include <glm/gtc/matrix_transform.hpp>
 
 namespace Flora {
@@ -36,6 +38,15 @@ namespace Flora {
 		int EntityID;
 	};
 
+	struct TextVertex {
+		glm::vec3 Position;
+		glm::vec4 Color;
+		glm::vec2 TexCoord;
+
+		// Editor-only
+		int EntityID;
+	};
+
 	struct Renderer2DData {
 		static const uint32_t MaxQuads = 20000;
 		static const uint32_t MaxVertices = MaxQuads * 4;
@@ -51,6 +62,10 @@ namespace Flora {
 		Ref<VertexBuffer> CircleVertexBuffer;
 		Ref<Shader> CircleShader;
 
+		Ref<VertexArray> TextVertexArray;
+		Ref<VertexBuffer> TextVertexBuffer;
+		Ref<Shader> TextShader;
+
 		Ref<VertexArray> LineVertexArray;
 		Ref<VertexBuffer> LineVertexBuffer;
 		Ref<Shader> LineShader;
@@ -63,6 +78,10 @@ namespace Flora {
 		CircleVertex* CircleVertexBufferBase = nullptr;
 		CircleVertex* CircleVertexBufferPtr = nullptr;
 
+		uint32_t TextIndexCount = 0;
+		TextVertex* TextVertexBufferBase = nullptr;
+		TextVertex* TextVertexBufferPtr = nullptr;
+
 		uint32_t LineVertexCount = 0;
 		LineVertex* LineVertexBufferBase = nullptr;
 		LineVertex* LineVertexBufferPtr = nullptr;
@@ -70,6 +89,8 @@ namespace Flora {
 
 		std::array<Ref<Texture2D>, MaxTextureSlots> TextureSlots;
 		uint32_t TextureSlotIndex = 1; // 0 is the white texture
+
+		Ref<Texture2D> FontAtlasTexture;
 
 		glm::vec4 QuadVertexPositions[4];
 
@@ -113,7 +134,7 @@ namespace Flora {
 		s_Data.QuadVertexArray->SetIndexBuffer(quadIB);
 		delete[] quadIndices;
 
-		s_Data.WhiteTexture = Texture2D::Create(1, 1);
+		s_Data.WhiteTexture = Texture2D::Create(TextureSpecification());
 		uint32_t whiteTextureData = 0xffffffff;
 		s_Data.WhiteTexture->SetData(&whiteTextureData, sizeof(uint32_t));
 
@@ -125,6 +146,7 @@ namespace Flora {
 		s_Data.TextureShader = Shader::Create("Resources/Shaders/Texture.glsl");
 		s_Data.CircleShader = Shader::Create("Resources/Shaders/Circle.glsl");
 		s_Data.LineShader = Shader::Create("Resources/Shaders/Line.glsl");
+		s_Data.TextShader = Shader::Create("Resources/Shaders/Text.glsl");
 		s_Data.TextureShader->Bind();
 		s_Data.TextureShader->SetIntArray("u_Textures", samplers, s_Data.MaxTextureSlots);
 
@@ -156,6 +178,20 @@ namespace Flora {
 		s_Data.LineVertexArray->AddVertexBuffer(s_Data.LineVertexBuffer);
 		s_Data.LineVertexBufferBase = new LineVertex[s_Data.MaxVertices];
 
+		// text
+		s_Data.TextVertexArray = VertexArray::Create();
+
+		s_Data.TextVertexBuffer = VertexBuffer::Create(s_Data.MaxVertices * sizeof(TextVertex));
+		s_Data.TextVertexBuffer->SetLayout({
+			{ ShaderDataType::Float3, "a_Position" },
+			{ ShaderDataType::Float4, "a_Color" },
+			{ ShaderDataType::Float2, "a_TexCoord" },
+			{ ShaderDataType::Int, "a_EntityID" }
+		});
+		s_Data.TextVertexArray->AddVertexBuffer(s_Data.TextVertexBuffer);
+		s_Data.TextVertexArray->SetIndexBuffer(quadIB); // using quad ib on purpose
+		s_Data.TextVertexBufferBase = new TextVertex[s_Data.MaxVertices];
+
 		s_Data.TextureSlots[0] = s_Data.WhiteTexture;
 
 		s_Data.QuadVertexPositions[0] = { -0.5f, -0.5f, 0.0f, 1.0f };
@@ -175,6 +211,9 @@ namespace Flora {
 
 		s_Data.CircleShader->Bind();
 		s_Data.CircleShader->SetMat4("u_ViewProjection", viewProjection);
+
+		s_Data.TextShader->Bind();
+		s_Data.TextShader->SetMat4("u_ViewProjection", viewProjection);
 
 		s_Data.LineShader->Bind();
 		s_Data.LineShader->SetMat4("u_ViewProjection", viewProjection);
@@ -202,6 +241,9 @@ namespace Flora {
 		s_Data.CircleIndexCount = 0;
 		s_Data.CircleVertexBufferPtr = s_Data.CircleVertexBufferBase;
 
+		s_Data.TextIndexCount = 0;
+		s_Data.TextVertexBufferPtr = s_Data.TextVertexBufferBase;
+
 		s_Data.LineVertexCount = 0;
 		s_Data.LineVertexBufferPtr = s_Data.LineVertexBufferBase;
 	}
@@ -226,6 +268,17 @@ namespace Flora {
 
 			s_Data.CircleShader->Bind();
 			RenderCommand::DrawIndexed(s_Data.CircleVertexArray, s_Data.CircleIndexCount);
+			drawCall = true;
+		}
+
+		if (s_Data.TextIndexCount) {
+			uint32_t dataSize = (uint32_t)((uint8_t*)s_Data.TextVertexBufferPtr - (uint8_t*)s_Data.TextVertexBufferBase);
+			s_Data.TextVertexBuffer->SetData(s_Data.TextVertexBufferBase, dataSize);
+
+			// Bind textures
+			s_Data.FontAtlasTexture->Bind(0);
+			s_Data.TextShader->Bind();
+			RenderCommand::DrawIndexed(s_Data.TextVertexArray, s_Data.TextIndexCount);
 			drawCall = true;
 		}
 
@@ -566,6 +619,163 @@ namespace Flora {
 		DrawLine(lineVertices[1], lineVertices[2], color);
 		DrawLine(lineVertices[2], lineVertices[3], color);
 		DrawLine(lineVertices[3], lineVertices[0], color);
+	}
+
+	void Renderer2D::DrawString(TextComponent& tc, Entity entity) {
+		if (!tc.FontInitialized) {
+			AssetManager::AddFont(tc.FontFilePath);
+			tc.FontInitialized = true;
+		}
+		TextConfig conf;
+		TransformComponent tfc = entity.GetComponent<TransformComponent>();
+		conf.TextString = tc.TextString;
+		conf.Kerning = tc.Kerning;
+		conf.LineSpacing = tc.LineSpacing;
+		conf.Color = tc.Color;
+		conf.Translation = tfc.Translation + tc.Translation;
+		conf.Rotation = tfc.Rotation + tc.Rotation;
+		conf.Scale = { tfc.Scale.x * tc.Scale.x, tfc.Scale.y * tc.Scale.y, tfc.Scale.z * tc.Scale.z };
+		conf.Alignment = tc.Alignment;
+		conf.EntityID = (int)(uint32_t)entity;
+		conf.Font = AssetManager::GetFont(tc.FontFilePath);
+		DrawString(conf);
+	}
+
+	void Renderer2D::DrawString(const TextConfig& config) {
+		Ref<Font> font = config.Font ? config.Font : Font::GetDefault();
+		const auto& geometry = font->GetFontData()->Geometry;
+		const auto& metrics = geometry.getMetrics();
+		Ref<Texture2D> fontAtlas = font->GetAtlasTexture();
+		s_Data.FontAtlasTexture = fontAtlas;
+
+		double fsScale = 1.0 / (metrics.ascenderY - metrics.descenderY);
+		float kerningOffset = config.Kerning;
+		float lineSpacing = config.LineSpacing;
+		auto spaceGlyph = geometry.getGlyph(' ');
+		int numlines = 1;
+		for (size_t i = 0; i < config.TextString.size(); i++)
+			if (config.TextString[i] == '\n') numlines++;
+
+		std::vector<double> startpos(numlines, 0);
+		int startposind = 0;
+		if (config.Alignment != FontAlignment::LEFT) {
+			int lineind = 0;
+			double advance;
+			for (size_t i = 0; i < config.TextString.size(); i++) {
+				if (config.TextString[i] == '\n') {
+					lineind++;
+					continue;
+				}
+				if (config.TextString[i] == '\r') continue;
+				if (config.TextString[i] == '\t') {
+					advance = spaceGlyph->getAdvance();
+					startpos[lineind] -= 4 * (fsScale * advance + kerningOffset);
+				}
+				else if (config.TextString[i] == ' ' && i < config.TextString.size() - 1) {
+					geometry.getAdvance(advance, config.TextString[i], config.TextString[i + 1]);
+					startpos[lineind] -= fsScale * advance + kerningOffset;
+				}
+				else if (i < config.TextString.size() - 1) {
+					auto glyph = geometry.getGlyph(config.TextString[i]);
+					if (!glyph) glyph = geometry.getGlyph('?');
+					if (!glyph) return;
+					advance = glyph->getAdvance();
+					char nextCharacter = config.TextString[i + 1];
+					geometry.getAdvance(advance, config.TextString[i], nextCharacter);
+					startpos[lineind] -= fsScale * advance + kerningOffset;
+				}
+			}
+			if (config.Alignment == FontAlignment::MIDDLE) {
+				for (auto& pos : startpos)
+					pos += ((-1.0 * pos) / 2.0);
+			}
+		}
+
+		double x = startpos[startposind];
+		double y = 0.0;
+
+		for (size_t i = 0; i < config.TextString.size(); i++) {
+			char character = config.TextString[i];
+			if (character == '\r') continue;
+			if (character == '\n') {
+				startposind++;
+				x = startpos[startposind];
+				y -= fsScale * metrics.lineHeight + lineSpacing;
+				continue;
+			}
+			if (character == ' ' && i < config.TextString.size() - 1) {
+				double advance;
+				char nextCharacter = config.TextString[i + 1];
+				geometry.getAdvance(advance, character, nextCharacter);
+				x += fsScale * advance + kerningOffset;
+				continue;
+			}
+			if (character == '\t') {
+				double advance = spaceGlyph->getAdvance();
+				x += 4*(fsScale * advance + kerningOffset);
+				continue;
+			}
+			auto glyph = geometry.getGlyph(character);
+			if (!glyph) glyph = geometry.getGlyph('?');
+			if (!glyph) return;
+
+			double al, ab, ar, at;
+			glyph->getQuadAtlasBounds(al, ab, ar, at);
+			glm::vec2 texCoordMin((float)al, (float)ab);
+			glm::vec2 texCoordMax((float)ar, (float)at);
+
+			double pl, pb, pr, pt;
+			glyph->getQuadPlaneBounds(pl, pb, pr, pt);
+			glm::vec2 quadMin((float)pl, (float)pb);
+			glm::vec2 quadMax((float)pr, (float)pt);
+
+			quadMin *= fsScale, quadMax *= fsScale;
+			quadMin += glm::vec2(x, y);
+			quadMax += glm::vec2(x, y);
+
+			float texelWidth = 1.0f / fontAtlas->GetWidth();
+			float texelHeight = 1.0f / fontAtlas->GetHeight();
+			texCoordMin *= glm::vec2(texelWidth, texelHeight);
+			texCoordMax *= glm::vec2(texelWidth, texelHeight);
+
+			// rendering time
+			glm::mat4 transform = Math::ComposeTransform(config.Translation, config.Rotation, config.Scale);
+
+			s_Data.TextVertexBufferPtr->Position = transform * glm::vec4(quadMin, 0.0f, 1.0f);
+			s_Data.TextVertexBufferPtr->Color = config.Color;
+			s_Data.TextVertexBufferPtr->TexCoord = texCoordMin;
+			s_Data.TextVertexBufferPtr->EntityID = config.EntityID;
+			s_Data.TextVertexBufferPtr++;
+
+			s_Data.TextVertexBufferPtr->Position = transform * glm::vec4(quadMin.x, quadMax.y, 0.0f, 1.0f);
+			s_Data.TextVertexBufferPtr->Color = config.Color;
+			s_Data.TextVertexBufferPtr->TexCoord = { texCoordMin.x, texCoordMax.y };
+			s_Data.TextVertexBufferPtr->EntityID = config.EntityID;
+			s_Data.TextVertexBufferPtr++;
+
+			s_Data.TextVertexBufferPtr->Position = transform * glm::vec4(quadMax, 0.0f, 1.0f);
+			s_Data.TextVertexBufferPtr->Color = config.Color;
+			s_Data.TextVertexBufferPtr->TexCoord = texCoordMax;
+			s_Data.TextVertexBufferPtr->EntityID = config.EntityID;
+			s_Data.TextVertexBufferPtr++;
+
+			s_Data.TextVertexBufferPtr->Position = transform * glm::vec4(quadMax.x, quadMin.y, 0.0f, 1.0f);
+			s_Data.TextVertexBufferPtr->Color = config.Color;
+			s_Data.TextVertexBufferPtr->TexCoord = { texCoordMax.x, texCoordMin.y };
+			s_Data.TextVertexBufferPtr->EntityID = config.EntityID;
+			s_Data.TextVertexBufferPtr++;
+
+			s_Data.TextIndexCount += 6;
+			s_Data.Stats.QuadCount++;
+
+			if (i < config.TextString.size() - 1) {
+				double advance = glyph->getAdvance();
+				char nextCharacter = config.TextString[i + 1];
+				geometry.getAdvance(advance, character, nextCharacter);
+
+				x += fsScale * advance + kerningOffset;
+			}
+		}
 	}
 
 	Renderer2D::Statistics Renderer2D::GetStats() {

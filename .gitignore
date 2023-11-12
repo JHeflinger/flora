@@ -3,6 +3,7 @@
 bin-int/
 **/Intermediates/
 **/Debug/
+**/Binaries/
 **.dll
 **.pdb
 
@@ -16,7 +17,10 @@ bin-int/
 **.csproj.AssemblyReference.cache
 
 # personal
-*.ini
+**.ini
+**.fnproj
+**.flora
+**.csproj
 
 # Directories
 Fauna/assets/cache

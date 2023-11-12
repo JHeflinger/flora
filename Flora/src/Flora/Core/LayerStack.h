@@ -2,7 +2,7 @@
 #include "Flora/Core/Layer.h"
 
 namespace Flora {
-	class FLORA_API LayerStack {
+	class LayerStack {
 	public:
 		LayerStack();
 		~LayerStack();

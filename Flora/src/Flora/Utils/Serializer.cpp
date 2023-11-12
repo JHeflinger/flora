@@ -295,6 +295,23 @@ namespace Flora {
 			out << YAML::EndSeq;
 		}
 
+		if (entity.HasComponent<TextComponent>()) {
+			out << YAML::Key << "TextComponent";
+			auto& textComponent = entity.GetComponent<TextComponent>();
+			out << YAML::BeginMap;
+			out << YAML::Key << "TextString" << YAML::Value << textComponent.TextString;
+			out << YAML::Key << "Kerning" << YAML::Value << textComponent.Kerning;
+			out << YAML::Key << "LineSpacing" << YAML::Value << textComponent.LineSpacing;
+			out << YAML::Key << "Color" << YAML::Value << textComponent.Color;
+			out << YAML::Key << "Translation" << YAML::Value << textComponent.Translation;
+			out << YAML::Key << "Rotation" << YAML::Value << textComponent.Rotation;
+			out << YAML::Key << "Scale" << YAML::Value << textComponent.Scale;
+			out << YAML::Key << "Alignment" << YAML::Value << (int)textComponent.Alignment;
+			out << YAML::Key << "FontFilePath" << YAML::Value << textComponent.FontFilePath;
+			out << YAML::Key << "FontName" << YAML::Value << textComponent.FontName;
+			out << YAML::EndMap;
+		}
+
 		out << YAML::EndMap;
 	}
 
@@ -515,6 +532,21 @@ namespace Flora {
 				lc.AddLabel(label.as<std::string>());
 		}
 
+		auto textComponent = data["TextComponent"];
+		if (textComponent) {
+			auto& tc = deserializedEntity.AddComponent<TextComponent>();
+			tc.TextString = textComponent["TextString"].as<std::string>();
+			tc.Kerning = textComponent["Kerning"].as<float>();
+			tc.LineSpacing = textComponent["LineSpacing"].as<float>();
+			tc.Color = textComponent["Color"].as<glm::vec4>();
+			tc.Translation = textComponent["Translation"].as<glm::vec3>();
+			tc.Scale = textComponent["Scale"].as<glm::vec3>();
+			tc.Rotation = textComponent["Rotation"].as<glm::vec3>();
+			tc.Alignment = (FontAlignment)textComponent["Alignment"].as<int>();
+			tc.FontFilePath = textComponent["FontFilePath"].as<std::string>();
+			tc.FontName = textComponent["FontName"].as<std::string>();
+		}
+
 		return deserializedEntity;
 	}
 
@@ -583,18 +615,14 @@ namespace Flora {
 		return "";
 	}
 
-	bool Serializer::DeserializeScene(Ref<Scene>& scene, const std::string& filepath) {
-		std::ifstream stream(filepath);
-		std::stringstream strStream;
-		strStream << stream.rdbuf();
-
-		YAML::Node data = YAML::Load(strStream.str());
+	bool Serializer::DeserializeRawScene(Ref<Scene>& scene, const std::string& scenedata) {
+		YAML::Node data = YAML::Load(scenedata);
 		if (!data["Scene"])
 			return false;
 
 		std::string sceneName = data["Scene"].as<std::string>();
-		scene->SetSceneName(sceneName);
 		FL_CORE_TRACE("Deserializing scene '{0}'", sceneName);
+		scene->SetSceneName(sceneName);
 
 		scene->SetPrimaryCamera(data["Primary Camera"].as<int>());
 		scene->SetPrimaryAudioListener(data["Primary Audio Listener"].as<int>());
@@ -610,6 +638,13 @@ namespace Flora {
 				DeserializeEntityYAML(entity, scene, uidmap);
 
 		return true;
+	}
+
+	bool Serializer::DeserializeScene(Ref<Scene>& scene, const std::string& filepath) {
+		std::ifstream stream(filepath);
+		std::stringstream strStream;
+		strStream << stream.rdbuf();
+		return DeserializeRawScene(scene, strStream.str());
 	}
 
 	Entity* Serializer::DeserializeEntity(Ref<Scene>& scene, const std::string& filepath) {

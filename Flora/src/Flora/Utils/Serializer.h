@@ -10,6 +10,7 @@ namespace Flora {
 		static std::string SerializeEntity(Entity entity);
 		static std::string SerializeRuntime();
 		static bool DeserializeScene(Ref<Scene>& scene, const std::string& filepath);
+		static bool DeserializeRawScene(Ref<Scene>& scene, const std::string& scenedata);
 		static Entity* DeserializeEntity(Ref<Scene>& scene, const std::string& filepath);
 		static bool DeserializeRuntime();
 		static bool IsSceneSaved(Ref<Scene>& scene);

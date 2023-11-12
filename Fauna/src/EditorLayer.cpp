@@ -9,12 +9,16 @@
 #include "Flora/Utils/PlatformUtils.h"
 #include "Flora/Math/Math.h"
 #include "Utils/FileUtils.h"
+#include "Utils/ImGuiUtils.h"
+#include "Build/Builder.h"
 #include "ImGuizmo.h"
 #include "Flora/Audio/AudioCommand.h"
 #include "Flora/Scripting/ScriptEngine.h"
 #include "Flora/Utils/ComponentUtils.h"
+#include "Flora/Renderer/Font.h"
 
 namespace Flora {
+
 	EditorLayer::EditorLayer()
 		: Layer("Editor") {
 		m_Panels["Stats"] = CreateScope<StatsPanel>();
@@ -27,6 +31,7 @@ namespace Flora {
 	}
 
 	void EditorLayer::OnAttatch() {
+
 		// Set up editor params
 		ResetEditorParams();
 
@@ -110,26 +115,23 @@ namespace Flora {
 
 		if (ImGui::BeginMenuBar()) {
 			if (ImGui::BeginMenu("Project")) {
-				if (ImGui::MenuItem("New")) {
+				if (ImGui::MenuItem("New"))
 					m_ProjectPromptType = ProjectPromptType::NEW;
-				}
-				if (ImGui::MenuItem("Open")) {
+				if (ImGui::MenuItem("Open"))
 					m_ProjectPromptType = ProjectPromptType::OPEN;
-				}
-				if (ImGui::MenuItem("Settings")) {
+				if (ImGui::MenuItem("Build"))
+					m_ProjectPromptType = ProjectPromptType::BUILD;
+				if (ImGui::MenuItem("Settings"))
 					m_ProjectPromptType = ProjectPromptType::EDIT;
-				}
 				ImGui::EndMenu();
 			}
 
 			if (ImGui::BeginMenu("Scene")) {
-				if (ImGui::MenuItem("New", "Ctrl+N")) {
+				if (ImGui::MenuItem("New", "Ctrl+N"))
 					PromptSave(SavePromptType::NEW);
-				}
 
-				if (ImGui::MenuItem("Open...", "Ctrl+O")) {
+				if (ImGui::MenuItem("Open...", "Ctrl+O"))
 					PromptSave(SavePromptType::OPEN);
-				}
 
 				if (ImGui::MenuItem("Save As...", "Ctrl+Shift+S")) {
 					FileUtils::SaveSceneAs(m_EditorParams);
@@ -159,21 +161,31 @@ namespace Flora {
 			}
 
 			if (ImGui::BeginMenu("Editor")) {
-				if (m_EditorParams->EditorCamera.GetCameraTypeString() == "Orthographic") {
-					if (ImGui::MenuItem("Switch to perspective", "Space+Alt")) {
-						m_EditorParams->EditorCamera.SetCameraTypeWithString("Perspective");
+				if (ImGui::BeginMenu("Camera")) {
+					if (m_EditorParams->EditorCamera.GetCameraTypeString() == "Orthographic") {
+						if (ImGui::MenuItem("Switch to perspective", "Space+Alt")) {
+							m_EditorParams->EditorCamera.SetCameraTypeWithString("Perspective");
+						}
 					}
-				}
-				else {
-					if (ImGui::MenuItem("Switch to orthographic", "Space+Alt")) {
-						m_EditorParams->EditorCamera.SetCameraTypeWithString("Orthographic");
+					else {
+						if (ImGui::MenuItem("Switch to orthographic", "Space+Alt")) {
+							m_EditorParams->EditorCamera.SetCameraTypeWithString("Orthographic");
+						}
 					}
+
+					if (ImGui::MenuItem("Reset Editor Camera", "Space+`"))
+						m_EditorParams->EditorCamera.ResetCamera();
+
+					ImGui::MenuItem("Bind Editor Camera", "Space+Ctrl", m_EditorParams->EditorCamera.GetCameraBound());
+
+					ImGui::EndMenu();
 				}
 
-				if (ImGui::MenuItem("Reset Editor Camera", "Space+`"))
-					m_EditorParams->EditorCamera.ResetCamera();
-
-				ImGui::MenuItem("Bind Editor Camera", "Space+Ctrl", m_EditorParams->EditorCamera.GetCameraBound());
+				if (ImGui::BeginMenu("Grid")) {
+					ImGui::MenuItem("Toggle Grid", 0, &(m_EditorParams->ShowGrid));
+					if (ImGui::MenuItem("Grid Settings")) m_SettingsPromptType = SettingsPromptType::GRID;
+					ImGui::EndMenu();
+				}
 
 				ImGui::EndMenu();
 			}
@@ -231,7 +243,43 @@ namespace Flora {
 		// Render system prompt
 		RenderSystemPrompt();
 
+		// Render settings prompt
+		RenderSettingsPrompt();
+
 		ImGui::End();
+	}
+
+	void EditorLayer::RenderSettingsPrompt() {
+		if (m_SettingsPromptType == SettingsPromptType::GRID) {
+			ImGui::OpenPopup("Grid Settings");
+			ImVec2 center = ImGui::GetMainViewport()->GetCenter();
+			ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
+			if (ImGui::BeginPopupModal("Grid Settings", NULL, ImGuiWindowFlags_AlwaysAutoResize)) {
+				ImGui::Dummy({ 0, 5 });
+				ImGui::Checkbox("Mirror Grid", &(m_EditorParams->GridMirrored));
+				ImGui::Dummy({ 0, 5 });
+				ImGui::Separator();
+				ImGui::Dummy({ 0, 5 });
+				ImGui::Checkbox("Show X Axis", &(m_EditorParams->ShowXAxis));
+				ImGui::SameLine();
+				ImGui::Checkbox("Show Y Axis", &(m_EditorParams->ShowYAxis));
+				ImGui::SameLine();
+				ImGui::Checkbox("Show Z Axis", &(m_EditorParams->ShowZAxis));
+				ImGui::Dummy({ 0, 5 });
+				ImGui::Separator();
+				ImGui::Dummy({ 0, 5 });
+				ImGui::DragFloat("Grid Size", &(m_EditorParams->GridSize), 0.1f, 0.0f, FLT_MAX);
+				ImGui::DragFloat("Unit Size", &(m_EditorParams->UnitSize), 0.1f, 0.0f, FLT_MAX);
+				ImGui::Dummy({ 0, 5 });
+				ImGui::Separator();
+				ImGui::Dummy({ 0, 5 });
+				ImGuiUtils::DrawVec3Control("Origin", m_EditorParams->GridOrigin);
+				ImGui::Dummy({ 0, 10 });
+				ImGui::SetCursorPosX(ImGui::GetCursorPosX() + ImGui::GetContentRegionAvail().x - 70);
+				if (ImGui::Button("OK", { 65, 25 })) m_SettingsPromptType = SettingsPromptType::NONE;
+				ImGui::EndPopup();
+			}
+		}
 	}
 
 	void EditorLayer::RenderUIBar() {
@@ -723,6 +771,149 @@ namespace Flora {
 				m_EditorParams->ProjectFilepath = filepath;
 			}
 			m_ProjectPromptType = ProjectPromptType::NONE;
+		} else if (m_ProjectPromptType == ProjectPromptType::BUILD) {
+			ImGui::OpenPopup("Build");
+			ImVec2 center = ImGui::GetMainViewport()->GetCenter();
+			ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
+			static char app_name_buffer[1024];
+			static char output_path_buffer[1024];
+			static char icon_path_buffer[1024];
+			static bool win_build = true;
+			static bool linux_build = false;
+			static bool mac_build = false;
+			static int win_width = 300;
+			static int win_height = 200;
+			static bool full_screen = false;
+			static std::vector<std::string> output;
+			if (app_name_buffer[0] == '\0')
+				strcpy(app_name_buffer, Project::GetActive()->GetConfig().Name.c_str());
+
+			//DELETE THIS LATER AFTER TESTING
+			{
+				strcpy(output_path_buffer, "D:\\Dev\\Flora\\SandboxBuild\\src\\SceneManager");
+			}
+
+			if (ImGui::BeginPopupModal("Build", NULL, ImGuiWindowFlags_AlwaysAutoResize)) {
+				ImGui::BeginChild("settings", ImVec2(500, 350), true);
+
+				ImGui::Text("General");
+				ImGui::Dummy({ 0, 10 });
+				float xbegin = ImGui::GetCursorPosX();
+				ImGui::Text("Game Name");
+				ImGui::SameLine();
+				ImGui::SetCursorPosX(xbegin + 120);
+				ImGui::InputText("##Game Name", app_name_buffer, sizeof(app_name_buffer));
+
+				ImGui::Text("Icon");
+				ImGui::SameLine();
+				ImGui::SetCursorPosX(xbegin + 120);
+				ImGui::InputText("##Icon", icon_path_buffer, sizeof(icon_path_buffer));
+				ImGui::SameLine();
+				if (ImGui::Button("...##.0")) {
+					std::string filepath = FileDialogs::OpenFile("PNG Icon (*.png)\0*.png\0");
+					strcpy(icon_path_buffer, filepath.c_str());
+				}
+
+				ImGui::Text("Output Directory");
+				ImGui::SameLine();
+				ImGui::SetCursorPosX(xbegin + 120);
+				ImGui::InputText("##Output Directory", output_path_buffer, sizeof(output_path_buffer));
+				ImGui::SameLine();
+				if (ImGui::Button("...##.1")) {
+					std::string filepath = FileDialogs::OpenFolder();
+					strcpy(output_path_buffer, filepath.c_str());
+				}
+
+				ImGui::Dummy({ 0, 5 });
+				ImGui::Separator();
+				ImGui::Dummy({ 0, 5 });
+
+				ImGui::Text("Build Platform");
+				ImGui::Dummy({ 0, 10 });
+				ImGui::Checkbox("Windows", &win_build);
+				ImGui::SameLine();
+
+				{ // DISABLED UNTIL CROSS PLATFORM IS READY
+					ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
+					ImGui::PushStyleVar(ImGuiStyleVar_Alpha, 0.5f);
+					ImGui::Checkbox("Linux", &linux_build);
+					ImGui::SameLine();
+					ImGui::Checkbox("Mac", &mac_build);
+					ImGui::PopItemFlag();
+					ImGui::PopStyleVar();
+				}
+
+				ImGui::Dummy({ 0, 5 });
+				ImGui::Separator();
+				ImGui::Dummy({ 0, 5 });
+
+				ImGui::Text("Default Window Size");
+				ImGui::Dummy({ 0, 10 });
+
+				ImGui::PushItemFlag(ImGuiItemFlags_Disabled, !full_screen);
+				ImGui::PushStyleVar(ImGuiStyleVar_Alpha, full_screen ? 0.5f : 1.0f);
+
+				ImGui::SetNextItemWidth(70);
+				ImGui::DragInt("##win_width", &win_width);
+				ImGui::SameLine();
+				ImGui::Text(" by ");
+				ImGui::SameLine();
+				ImGui::SetNextItemWidth(70);
+				ImGui::DragInt("##win_height", &win_height);
+				ImGui::SameLine();
+				ImGui::Text(" pixels         ");
+
+				ImGui::PopItemFlag();
+				ImGui::PopStyleVar();
+
+				ImGui::SameLine();
+				ImGui::Checkbox("Fullscreen", &full_screen);
+
+				ImGui::Dummy({ 0, 10 });
+				ImGui::SetCursorPosX(xbegin + (ImGui::GetContentRegionAvail().x / 2) - 75);
+				static bool generate_now = false;
+				static bool errored = false;
+				if (ImGui::Button("GENERATE", { 150, 0 })) {
+					BuildConfig bconfig;
+					bconfig.Name = std::string(app_name_buffer);
+					bconfig.IconPath = std::string(icon_path_buffer);
+					bconfig.OutputDirectory = std::string(output_path_buffer);
+					bconfig.Fullscreen = full_screen;
+					bconfig.AppHeight = win_height;
+					bconfig.AppWidth = win_width;
+					bconfig.WinBuild = win_build;
+					bconfig.LinBuild = linux_build;
+					bconfig.MacBuild = mac_build;
+					output = Builder::VerifyConfig(bconfig);
+					generate_now = true;
+					errored = false;
+				}
+
+				ImGui::EndChild();
+				ImGui::SameLine();
+				ImGui::BeginChild("output", ImVec2(400, 350), true, ImGuiWindowFlags_HorizontalScrollbar);
+				for (std::string message : output) {
+					if (message == "INFO >> Finished building!") generate_now = false;
+					if (message[0] == 'E') {
+						ImGui::TextColored({0.9f, 0.3f, 0.2f, 1.0f}, message.c_str());
+						errored = true;
+					}
+					else if (message[0] == 'I') {
+						ImGui::TextColored({ 0.2f, 0.9f, 0.3f, 1.0f }, message.c_str());
+					}
+					else ImGui::Text(message.c_str());
+				}
+				if (generate_now) {
+					if (errored) generate_now = false;
+					else {
+						output.push_back(Builder::StepBuild());
+					}
+				}
+				ImGui::EndChild();
+				ImGui::SetCursorPosX(ImGui::GetCursorPosX() + ImGui::GetContentRegionAvail().x - 65);
+				if (ImGui::Button("CLOSE", { 65, 25 })) m_ProjectPromptType = ProjectPromptType::NONE;
+				ImGui::EndPopup();
+			}
 		}
 	}
 
@@ -988,6 +1179,72 @@ namespace Flora {
 					Renderer2D::DrawLine(p2_coord, p4_coord, color);
 					Renderer2D::DrawLine(p1_coord, p4_coord, color);
 					Renderer2D::DrawLine(p2_coord, p3_coord, color);
+				}
+			}
+		}
+
+		if (m_EditorParams->ShowGrid) {
+			glm::vec4 blue = { 0.2f, 0.3f, 0.9f, 1.0f };
+			glm::vec4 red = { 0.9f, 0.3f, 0.2f, 1.0f };
+			glm::vec4 green = { 0.3f, 0.9f, 0.2f, 1.0f };
+			glm::vec4 grey = {1.0f, 1.0f, 1.0f, 0.3f};
+			if (m_EditorParams->ShowXAxis)
+				Renderer2D::DrawLine(m_EditorParams->GridOrigin, { m_EditorParams->GridOrigin.x + m_EditorParams->GridSize, m_EditorParams->GridOrigin.y, m_EditorParams->GridOrigin.z }, red);
+			if (m_EditorParams->ShowYAxis)
+				Renderer2D::DrawLine(m_EditorParams->GridOrigin, { m_EditorParams->GridOrigin.x, m_EditorParams->GridOrigin.y + m_EditorParams->GridSize, m_EditorParams->GridOrigin.z }, green);
+			if (m_EditorParams->ShowZAxis)
+				Renderer2D::DrawLine(m_EditorParams->GridOrigin, { m_EditorParams->GridOrigin.x, m_EditorParams->GridOrigin.y, m_EditorParams->GridOrigin.z + m_EditorParams->GridSize }, blue);
+			if (m_EditorParams->UnitSize > 0.0f) {
+				if (m_EditorParams->ShowXAxis && m_EditorParams->ShowYAxis) {
+					float count = m_EditorParams->GridMirrored ? -1.0f * m_EditorParams->GridSize : 0.0f;
+					float mirrorfactor = count;
+					while (count < m_EditorParams->GridSize) {
+						count += m_EditorParams->UnitSize;
+						Renderer2D::DrawLine(
+							{ m_EditorParams->GridOrigin.x + count, m_EditorParams->GridOrigin.y + mirrorfactor, m_EditorParams->GridOrigin.z },
+							{ m_EditorParams->GridOrigin.x + count, m_EditorParams->GridOrigin.y + m_EditorParams->GridSize, m_EditorParams->GridOrigin.z },
+							grey
+						);
+						Renderer2D::DrawLine(
+							{ m_EditorParams->GridOrigin.x + mirrorfactor, m_EditorParams->GridOrigin.y + count, m_EditorParams->GridOrigin.z },
+							{ m_EditorParams->GridOrigin.x + m_EditorParams->GridSize, m_EditorParams->GridOrigin.y + count, m_EditorParams->GridOrigin.z },
+							grey
+						);
+					}
+				}
+				if (m_EditorParams->ShowXAxis && m_EditorParams->ShowZAxis) {
+					float count = m_EditorParams->GridMirrored ? -1.0f * m_EditorParams->GridSize : 0.0f;
+					float mirrorfactor = count;
+					while (count < m_EditorParams->GridSize) {
+						count += m_EditorParams->UnitSize;
+						Renderer2D::DrawLine(
+							{ m_EditorParams->GridOrigin.x + count, m_EditorParams->GridOrigin.y, m_EditorParams->GridOrigin.z + mirrorfactor },
+							{ m_EditorParams->GridOrigin.x + count, m_EditorParams->GridOrigin.y, m_EditorParams->GridOrigin.z + m_EditorParams->GridSize },
+							grey
+						);
+						Renderer2D::DrawLine(
+							{ m_EditorParams->GridOrigin.x + mirrorfactor, m_EditorParams->GridOrigin.y, m_EditorParams->GridOrigin.z + count },
+							{ m_EditorParams->GridOrigin.x + m_EditorParams->GridSize, m_EditorParams->GridOrigin.y, m_EditorParams->GridOrigin.z + count },
+							grey
+						);
+					}
+				}
+				if (m_EditorParams->ShowYAxis && m_EditorParams->ShowZAxis) {
+					float count = m_EditorParams->GridMirrored ? -1.0f * m_EditorParams->GridSize : 0.0f;
+					float mirrorfactor = count;
+					while (count < m_EditorParams->GridSize) {
+						count += m_EditorParams->UnitSize;
+						Renderer2D::DrawLine(
+							{ m_EditorParams->GridOrigin.x, m_EditorParams->GridOrigin.y + count, m_EditorParams->GridOrigin.z + mirrorfactor },
+							{ m_EditorParams->GridOrigin.x, m_EditorParams->GridOrigin.y + count, m_EditorParams->GridOrigin.z + m_EditorParams->GridSize },
+							grey
+						);
+						Renderer2D::DrawLine(
+							{ m_EditorParams->GridOrigin.x, m_EditorParams->GridOrigin.y + mirrorfactor, m_EditorParams->GridOrigin.z + count },
+							{ m_EditorParams->GridOrigin.x, m_EditorParams->GridOrigin.y + m_EditorParams->GridSize, m_EditorParams->GridOrigin.z + count },
+							grey
+						);
+					}
 				}
 			}
 		}

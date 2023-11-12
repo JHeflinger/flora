@@ -5,6 +5,7 @@
 namespace Flora {
 	std::map<std::string, Ref<Texture2D>> s_TextureMap;
 	std::map<std::string, Ref<Audio>> s_AudioMap;
+	std::map<std::string, Ref<Font>> s_FontMap;
 
 	static std::string GetTruePath(std::string texPath) {
 		if (texPath.size() > 0)
@@ -16,6 +17,7 @@ namespace Flora {
 	void AssetManager::Init() {
 		ClearAudios();
 		ClearTextures();
+		ClearFonts();
 	}
 
 	bool AssetManager::AddTexture(std::string texPath) {
@@ -59,5 +61,30 @@ namespace Flora {
 
 	Ref<Audio> AssetManager::GetAudio(std::string audioPath) {
 		return s_AudioMap[audioPath];
+	}
+
+	bool AssetManager::AddFont(std::string fontPath) {
+		if (s_FontMap.find(fontPath) != s_FontMap.end()) return false;
+		fontPath = GetTruePath(fontPath);
+		std::ifstream file(fontPath);
+		if (!file)
+			s_FontMap[fontPath] = Font::GetDefault();
+		else
+			s_FontMap[fontPath] = CreateRef<Font>(fontPath);
+		return true;
+	}
+
+	void AssetManager::RemoveFont(std::string fontPath) {
+		fontPath = GetTruePath(fontPath);
+		s_FontMap.erase(fontPath);
+	}
+
+	void AssetManager::ClearFonts() {
+		s_FontMap.clear();
+	}
+
+	Ref<Font> AssetManager::GetFont(std::string fontPath) {
+		fontPath = GetTruePath(fontPath);
+		return s_FontMap[fontPath];
 	}
 }

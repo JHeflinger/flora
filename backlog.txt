@@ -56,8 +56,6 @@ TODO:
 
 	- more texture support
 
-	- label component
-
 	- multi-threaded auto saving
 
 	- circle physics collider visual consistent line width
@@ -69,8 +67,6 @@ TODO:
 	- no paths ANYWHERE in code should be plain text, should be all dynamic and in variables
 
 	- open visual studio button
-
-	- content browser primary folders cannot be deleted
 
 	- refactor content browser panel popup
 
@@ -110,13 +106,9 @@ TODO:
 
 	- refactor some things to use component group so we only have one place we need to add a new component to
 
-	- script component copy paste etc
-
 	- refine copy and paste
 
 	- update scripting engine with audio components
-
-	- modify project settings popup
 
 	- script hot reloading should detect when save file even on not runtime and update serialized fields in properties panel instantly!
 
@@ -144,3 +136,4 @@ TODO:
 IN PROGRESS:
 
 IMPLEMENTED TICKETS:
+	- show grid
