@@ -1,6 +1,26 @@
 # Change Log
 All notable changes to this project will be documented in this file as of Fauna Version 0.1.1 and Flora Version 0.1.1
 
+## Fauna [0.3.1] - 2023-10-24
+
+### Added
+
+- Added TextComponent into the properties panel
+- Grid options were added
+- Build system template was added
+
+## Flora [0.3.1] - 2023-10-24
+
+### Added
+
+- Font class can take .ttf files and render font
+- DrawString was added to Renderer2D to draw strings with a font
+- Added MSDF font rendering
+
+### Fixed
+
+- Removed FLORA_API declspec declarations
+
 ## Fauna [0.3.0] - 2023-10-24
 
 ### Added
