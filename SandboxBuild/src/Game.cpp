@@ -5,8 +5,8 @@
 namespace Flora {
 	class Game : public Application {
 	public:
-		Game(ApplicationCommandLineArgs args)
-			: Application("<INSERT GAME NAME HERE>", args) {
+		Game(const WindowProps& props, ApplicationCommandLineArgs args)
+			: Application(props, "<INSERT GAME NAME HERE>", args) {
 			PushLayer(new GameLayer());
 			//GetWindow().SetWindowIcon("Resources/Icons/Editor/Logo.png");
 		}
@@ -17,6 +17,11 @@ namespace Flora {
 	};
 
 	Application* CreateApplication(ApplicationCommandLineArgs args) {
-		return new Game(args);
+		WindowProps props;
+		props.Title = "INSERT";
+		props.Width = 1600;
+		props.Height = 900;
+		props.Fullscreen = false;
+		return new Game(props, args);
 	}
 }
