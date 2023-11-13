@@ -17,6 +17,7 @@ namespace Flora {
 	class Application {
 	public:
 		Application(const std::string& name = "Flora App", ApplicationCommandLineArgs args = ApplicationCommandLineArgs());
+		Application(const WindowProps& props, const std::string& name = "Flora App", ApplicationCommandLineArgs args = ApplicationCommandLineArgs());
 		virtual ~Application();
 		void Run();
 		void OnEvent(Event& e);

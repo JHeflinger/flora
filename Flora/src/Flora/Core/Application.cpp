@@ -10,6 +10,22 @@ namespace Flora {
 
 	Application* Application::s_Instance = nullptr;
 
+	Application::Application(const WindowProps& props, const std::string& name, ApplicationCommandLineArgs args)
+		: m_CommandLineArgs(args) {
+		FL_PROFILE_FUNCTION();
+
+		FL_CORE_ASSERT(!s_Instance, "Application already exists!");
+		s_Instance = this;
+
+		m_Window = Window::Create(props);
+		m_Window->SetEventCallback(BIND_EVENT_FN(OnEvent));
+
+		Renderer::Init();
+
+		m_ImGuiLayer = new ImGuiLayer();
+		PushOverlay(m_ImGuiLayer);
+	}
+
 	Application::Application(const std::string& name, ApplicationCommandLineArgs args)
 		: m_CommandLineArgs(args) {
 		FL_PROFILE_FUNCTION();
