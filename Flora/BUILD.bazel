@@ -1,0 +1,14 @@
+cc_library(
+    name = "flpch",
+    hdrs = ["src/flpch.h"],
+    includes = ["src"],
+    visibility = ["//visibility:public"]
+)
+
+cc_library(
+    name = "Flora",
+    deps = [
+        ":flpch"
+    ],
+    visibility = ["//visibility:public"]
+)

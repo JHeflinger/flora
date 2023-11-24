@@ -1,0 +1,147 @@
+cc_library(
+    name = "glm",
+    hdrs = glob([
+        "glm/glm/*.hpp",
+        "glm/glm/**/*.hpp",
+        "glm/glm/**/*.h",
+    ]),
+    includes = ["glm"],
+    textual_hdrs = glob(["glm/glm/**/*.inl"]),
+    visibility = ["//visibility:public"],
+)
+
+cc_library(
+    name = "spdlog",
+    hdrs = glob([
+        "spdlog/include/**/*.h",
+    ]),
+    srcs = glob([
+        "spdlog/src/*.cpp"
+    ]),
+    includes = ["spdlog/include"],
+    copts = ["-DSPDLOG_COMPILED_LIB"],
+    visibility = ["//visibility:public"],
+)
+
+cc_library(
+    name = "entt",
+    hdrs = ["entt/include/entt.hpp"],
+    includes = ["entt/include"],
+    visibility = ["//visibility:public"],
+)
+
+cc_library(
+    name = "openAL",
+    hdrs = glob(["openAL/include/*.h"]),
+    includes = ["openAL/include"],
+    visibility = ["//visibility:public"],
+)
+
+cc_library(
+    name = "glad",
+    hdrs = glob(["Glad/**/*.h"]),
+    includes = ["Glad/include"],
+    srcs = glob(["Glad/**/*.c"]),
+    visibility = ["//visibility:public"],
+)
+
+cc_library(
+    name = "box2d",
+    hdrs = glob([
+        "box2D/src/**/*.hpp",
+        "box2D/src/**/*.h",
+        "box2D/include/**/*.h"
+    ]),
+    includes = ["box2D/include"],
+    srcs = glob(["box2D/src/**/*.cpp"]),
+    visibility = ["//visibility:public"]
+)
+
+cc_library(
+    name = "glfw",
+    hdrs = glob([
+        "GLFW/include/**/*.h",
+        "GLFW/src/*.h",
+    ]),
+    includes = ["GLFW/include"],
+    srcs = glob([
+        "GLFW/include/**/*.c",
+        "GLFW/src/*.c",
+    ]),
+    deps = [":glad"],
+    linkopts = ["-lGL"],
+    copts = ["-D_GLFW_X11"],
+    visibility = ["//visibility:public"]
+)
+
+cc_library(
+    name = "imgui_backend",
+    hdrs = [
+        "imgui/backends/imgui_impl_glfw.h",
+        "imgui/backends/imgui_impl_opengl3.h",
+        "imgui/backends/imgui_impl_opengl3_loader.h"
+    ],
+    includes = ["imgui/backends"],
+    srcs = [
+        "imgui/backends/imgui_impl_glfw.cpp",
+        "imgui/backends/imgui_impl_opengl3.cpp"
+    ],
+    deps = [
+        ":glfw",
+        ":imgui"
+    ],
+    visibility = ["//visibility:public"]
+)
+
+cc_library(
+    name = "imgui",
+    hdrs = glob(["imgui/*.h"]),
+    includes = ["imgui"],
+    srcs = glob(["imgui/*.cpp"]),
+    deps = [":glfw"],
+    visibility = ["//visibility:public"]
+)
+
+cc_library(
+    name = "yaml-cpp",
+    hdrs = glob([
+        "yaml-cpp/include/**/*.h",
+        "yaml-cpp/src/*.h",
+        "yaml-cpp/src/**/*.h",
+    ]),
+    includes = ["yaml-cpp/include/yaml-cpp"],
+    srcs = glob([
+        "yaml-cpp/util/*.cpp",
+        "yaml-cpp/src/**/*.cpp",
+        "yaml-cpp/src/*.cpp",
+    ]),
+    visibility = ["//visibility:public"]
+)
+
+cc_library(
+    name = "imguizmo",
+    hdrs = glob(["ImGuizmo/*.h"]),
+    includes = ["ImGuizmo"],
+    srcs = glob(["ImGuizmo/*.cpp"]),
+    deps = [":imgui"],
+    visibility = ["//visibility:public"]
+)
+
+cc_library(
+    name = "filewatch",
+    hdrs = ["filewatch/FileWatch.h"],
+    includes = ["filewatch"],
+    visibility = ["//visibility:public"]
+)
+
+cc_library(
+    name = "stbimage",
+    hdrs = ["stb_image/stb_image.h"],
+    srcs = ["stb_image/stb_image.cpp"],
+    includes = ["stb_image"],
+    deps = [
+        "//Flora:flpch",
+        ":glm",
+    ],
+    visibility = ["//visibility:public"]
+)
