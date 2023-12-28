@@ -50,18 +50,9 @@ namespace Flora {
 		std::string GetSceneName() { return m_SceneName; }
 	public:
 		template<typename T, typename LoopFunction>
-		void ForAllComponents(LoopFunction loopFunction) {
-			auto view = m_Registry.view<T>();
-			for (auto entity : view) {
-				auto component = view.get<T>(entity);
-				Entity realEntity = { entity, this };
-				loopFunction(realEntity, component);
-			}
-		}
+		void ForAllComponents(LoopFunction loopFunction);
 		template<typename... Components>
-		auto GetAllEntitiesWith() {
-			return m_Registry.view<Components...>();
-		}
+		auto GetAllEntitiesWith();
 	public:
 		float GetGravity() { return m_Gravity; }
 		int32_t GetVelocityIterations() { return m_PhysicsVelocityIterations; }

@@ -1,0 +1,68 @@
+cc_library(
+    name = "flpch",
+    includes = ["src"],
+    hdrs = [
+        "src/flpch.h",
+        "src/Flora/Core/Base.h",
+        "src/Flora/Core/Log.h",
+        "src/Flora/Debug/Instrumentor.h"
+    ],
+    srcs = [
+        "src/flpch.cpp",
+        "src/Flora/Core/Log.cpp"
+    ],
+    deps = [
+        "//Flora/vendor:spdlog",
+    ],
+    visibility = ["//visibility:public"]
+)
+
+cc_library(
+    name = "Flora",
+    hdrs = glob([
+        "src/**/*.h"
+    ],
+    exclude = [
+        "src/flpch.h",
+        "src/Flora/Core/HiddenStructs.h",
+        "src/Flora/Renderer/Font.h",
+    ]),
+    srcs = glob([
+        "src/**/*.cpp"
+    ],
+    exclude = [
+        "src/Platform/Windows/WindowsPlatformUtils.cpp",
+        "src/Flora/Renderer/Font.cpp",
+    ]),
+    linkopts = [
+        "-lglfw",
+        "-lvulkan",
+        "-ldl",
+        "-lpthread",
+        "-lX11",
+        "-lXxf86vm",
+        "-lXrandr",
+        "-lXi",
+    ],
+    deps = [
+        "//Flora:flpch",
+        "//Flora/vendor:entt",
+        "//Flora/vendor:openAL",
+        "//Flora/vendor:glad",
+        "//Flora/vendor:box2d",
+        "//Flora/vendor:imgui",
+        "//Flora/vendor:imgui_backend",
+        "//Flora/vendor:yaml-cpp",
+        "//Flora/vendor:imguizmo",
+        "//Flora/vendor:filewatch",
+        "//Flora/vendor:stbimage",
+    ]
+)
+
+cc_binary(
+    name = "Test",
+    srcs = ["src/main.cpp"],
+    deps = [
+        "//Flora/vendor:yaml-cpp",
+    ],
+)

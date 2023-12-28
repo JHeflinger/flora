@@ -30,6 +30,7 @@ namespace Flora {
 		return false;
 	}
 
+#ifdef WIN_BUILD_ONLY
 	bool Project::GenerateProjectDirectory(const std::string name, const std::filesystem::path& path) {
 		std::filesystem::path assetFolder = path / "Assets";
 		std::filesystem::path textureFolder = assetFolder / "Textures";
@@ -244,6 +245,7 @@ namespace Flora {
 
 		return true;
 	}
+	#endif
 
 	Label* Project::GetLabel(std::string label) {
 		if (LabelExists(label)) {

@@ -25,3 +25,9 @@ bin-int/
 # Directories
 Fauna/assets/cache
 scripts/__pycache__
+
+# Bazel
+/bazel-*
+
+# vscode
+/.vscode*

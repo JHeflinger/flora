@@ -24,7 +24,6 @@
 	#error "Android is not supported!"
 #elif defined(__linux__)
 	#define FL_PLATFORM_LINUX
-	#error "Linux is not supported!"
 #else
 	#error "Unknown platform!"
 #endif
@@ -40,8 +39,6 @@
 	#else
 		#define FLORA_API
 	#endif
-#else
-	#error Flora only supports Windows!
 #endif
 
 //#ifdef FL_DEBUG

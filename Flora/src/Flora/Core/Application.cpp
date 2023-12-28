@@ -1,6 +1,6 @@
 #include "flpch.h"
 #include "Application.h"
-#include <glfw/glfw3.h>
+#include <GLFW/glfw3.h>
 #include "Flora/Renderer/Renderer.h"
 #include "Flora/Scripting/ScriptEngine.h"
 

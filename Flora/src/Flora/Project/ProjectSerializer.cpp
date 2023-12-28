@@ -1,6 +1,6 @@
 #include "flpch.h"
 #include "ProjectSerializer.h"
-#include <yaml-cpp/yaml.h>
+#include "yaml.h"
 
 namespace Flora {
 

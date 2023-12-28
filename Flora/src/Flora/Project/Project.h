@@ -40,8 +40,10 @@ namespace Flora {
 		static Ref<Project> New();
 		static Ref<Project> Load(const std::filesystem::path& path);
 		static bool SaveActive(const std::filesystem::path& path);
+		#ifdef WIN_BUILD_ONLY
 		static bool GenerateProjectDirectory(const std::string name, const std::filesystem::path& path);
 		static bool RegenerateScriptingProject();
+		#endif
 	private:
 		ProjectConfig m_Config;
 		std::filesystem::path m_ProjectDirectory;
