@@ -28,6 +28,18 @@ namespace Flora {
 		return nullptr;
 	}
 
+	Ref<Shader> Shader::Create(const std::string& content, const std::string& name) {
+		switch (Renderer::GetAPI()) {
+		case RendererAPI::API::None:
+			FL_CORE_ASSERT(false, "RendererAPI::None is currently not supported!");
+			return nullptr;
+		case RendererAPI::API::OpenGL:
+			return std::make_shared<OpenGLShader>(content, name);
+		}
+		FL_CORE_ASSERT(false, "Unknown RendererAPI!");
+		return nullptr;
+	}
+
 	void  ShaderLibrary::Add(const std::string& name, const Ref<Shader>& shader) {
 		FL_CORE_ASSERT(!Exists(name), "Shader already exists");
 		m_Shaders[name] = shader;

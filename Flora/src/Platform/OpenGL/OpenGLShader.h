@@ -9,6 +9,7 @@ namespace Flora {
 	public:
 		OpenGLShader(const std::string& name, const std::string& vertexSrc, const std::string& fragmentSrc);
 		OpenGLShader(const std::string& filepath);
+		OpenGLShader(const std::string& content, const std::string& name);
 		virtual ~OpenGLShader();
 		virtual void Bind() const override;
 		virtual void Unbind() const override;

@@ -3,6 +3,7 @@
 #include "Flora/Renderer/VertexArray.h"
 #include "Flora/Renderer/Shader.h"
 #include "Flora/Renderer/RenderCommand.h"
+#include "Flora/Renderer/StaticShaders.h"
 #ifdef WIN_BUILD_ONLY
 #include "Flora/Core/HiddenStructs.h"
 #endif
@@ -145,10 +146,10 @@ namespace Flora {
 			samplers[i] = i;
 		}
 
-		s_Data.TextureShader = Shader::Create("Resources/Shaders/Texture.glsl");
-		s_Data.CircleShader = Shader::Create("Resources/Shaders/Circle.glsl");
-		s_Data.LineShader = Shader::Create("Resources/Shaders/Line.glsl");
-		s_Data.TextShader = Shader::Create("Resources/Shaders/Text.glsl");
+		s_Data.TextureShader = Shader::Create(StaticShaders::TextureGLSL(), "Texture");
+		s_Data.CircleShader = Shader::Create(StaticShaders::CircleGLSL(), "Circle");
+		s_Data.LineShader = Shader::Create(StaticShaders::LineGLSL(), "Line");
+		s_Data.TextShader = Shader::Create(StaticShaders::TextGLSL(), "Text");
 		s_Data.TextureShader->Bind();
 		s_Data.TextureShader->SetIntArray("u_Textures", samplers, s_Data.MaxTextureSlots);
 

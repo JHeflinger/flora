@@ -69,5 +69,6 @@ cc_library(
         "//Flora/vendor:filewatch",
         "//Flora/vendor:stbimage",
     ],
+    copts = ["-DBAZEL_BUILD"],
     visibility = ["//visibility:public"]
 )
