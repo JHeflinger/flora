@@ -54,6 +54,7 @@ cc_library(
         "-lGL",
         "-lGLU",
         "-lglut",
+        "-lopenal",
     ],
     deps = [
         "//Flora:flpch",
@@ -67,26 +68,6 @@ cc_library(
         "//Flora/vendor:imguizmo",
         "//Flora/vendor:filewatch",
         "//Flora/vendor:stbimage",
-    ]
-)
-
-cc_binary(
-    name = "Test",
-    srcs = ["src/main.cpp"],
-    deps = [
-        "//Flora/vendor:yaml-cpp",
     ],
-    linkopts = [
-        "-lglfw",
-        "-lvulkan",
-        "-ldl",
-        "-lpthread",
-        "-lX11",
-        "-lXxf86vm",
-        "-lXrandr",
-        "-lXi",
-        "-lGL",
-        "-lGLU",
-        "-lglut",
-    ],
+    visibility = ["//visibility:public"]
 )

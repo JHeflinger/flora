@@ -24,8 +24,10 @@ namespace Flora {
 
 		Renderer::Init();
 
+		#ifdef WIN_BUILD_ONLY
 		m_ImGuiLayer = new ImGuiLayer();
 		PushOverlay(m_ImGuiLayer);
+		#endif
 	}
 
 	Application::Application(const std::string& name, ApplicationCommandLineArgs args)
@@ -34,14 +36,17 @@ namespace Flora {
 
 		FL_CORE_ASSERT(!s_Instance, "Application already exists!");
 		s_Instance = this;
+		
 
 		m_Window = Window::Create(WindowProps(name));
 		m_Window->SetEventCallback(BIND_EVENT_FN(OnEvent));
 
 		Renderer::Init();
 
+		#ifdef WIN_BUILD_ONLY
 		m_ImGuiLayer = new ImGuiLayer();
 		PushOverlay(m_ImGuiLayer);
+		#endif
 	}
 
 	Application::~Application() {
@@ -104,6 +109,7 @@ namespace Flora {
 				}
 			}
 
+			#ifdef WIN_BUILD_ONLY
 			{
 				FL_PROFILE_SCOPE("ImguiLayer OnUpdate");
 				m_ImGuiLayer->Begin();
@@ -111,6 +117,7 @@ namespace Flora {
 					layer->OnImGuiRender();
 				m_ImGuiLayer->End();
 			}
+			#endif
 
 			m_Window->OnUpdate();
 		}

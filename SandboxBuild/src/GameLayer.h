@@ -2,7 +2,6 @@
 #include "Flora.h"
 #include "Flora/Core/Layer.h"
 #include "Flora/Scene/Scene.h"
-#include "SceneManager/SceneManager.h"
 
 namespace Flora {
 	class GameLayer : public Layer {
@@ -17,8 +16,5 @@ namespace Flora {
 		void OnUpdate(Timestep ts) override;
 		virtual void OnImGuiRender() override;
 		void OnEvent(Event& e) override;
-	private:
-		SceneManager m_SceneManager;
-		Ref<Scene> m_ActiveScene;
 	};
 }

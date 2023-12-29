@@ -1,0 +1,7 @@
+cc_binary(
+    name = "Sandbox",
+    srcs = ["src/Game.cpp", "src/GameLayer.cpp", "src/GameLayer.h"],
+    deps = [
+        "//Flora:Flora",
+    ],
+)
