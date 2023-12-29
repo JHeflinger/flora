@@ -26,6 +26,7 @@ cc_library(
         "src/flpch.h",
         "src/Flora/Core/HiddenStructs.h",
         "src/Flora/Renderer/Font.h",
+        "src/Flora/Project/ProjectSerializer.h",
     ]),
     srcs = glob([
         "src/**/*.cpp"
@@ -33,6 +34,7 @@ cc_library(
     exclude = [
         "src/Platform/Windows/WindowsPlatformUtils.cpp",
         "src/Flora/Renderer/Font.cpp",
+        "src/Flora/Project/ProjectSerializer.cpp",
     ]),
     linkopts = [
         "-lglfw",

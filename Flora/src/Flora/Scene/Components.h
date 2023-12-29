@@ -7,7 +7,9 @@
 #include "Flora/Utils/PhysicsUtils.h"
 #include "Flora/Project/Label.h"
 #include "Flora/Project/Project.h"
+#ifdef WIN_BUILD_ONLY
 #include "Flora/Renderer/Font.h"
+#endif
 
 namespace Flora {
 	enum class AudioState { NONE, PLAY, STOP, PAUSE, REWIND };

@@ -5,7 +5,9 @@
 namespace Flora {
 	std::map<std::string, Ref<Texture2D>> s_TextureMap;
 	std::map<std::string, Ref<Audio>> s_AudioMap;
+	#ifdef WIN_BUILD_ONLY
 	std::map<std::string, Ref<Font>> s_FontMap;
+	#endif
 
 	static std::string GetTruePath(std::string texPath) {
 		if (texPath.size() > 0)
@@ -17,7 +19,9 @@ namespace Flora {
 	void AssetManager::Init() {
 		ClearAudios();
 		ClearTextures();
+		#ifdef WIN_BUILD_ONLY
 		ClearFonts();
+		#endif
 	}
 
 	bool AssetManager::AddTexture(std::string texPath) {
@@ -63,6 +67,7 @@ namespace Flora {
 		return s_AudioMap[audioPath];
 	}
 
+	#ifdef WIN_BUILD_ONLY
 	bool AssetManager::AddFont(std::string fontPath) {
 		if (s_FontMap.find(fontPath) != s_FontMap.end()) return false;
 		fontPath = GetTruePath(fontPath);
@@ -87,4 +92,5 @@ namespace Flora {
 		fontPath = GetTruePath(fontPath);
 		return s_FontMap[fontPath];
 	}
+	#endif
 }

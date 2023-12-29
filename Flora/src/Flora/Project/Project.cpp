@@ -1,6 +1,8 @@
 #include "flpch.h"
 #include "Project.h"
+#ifdef SERIAL_ENABLED
 #include "Flora/Project/ProjectSerializer.h"
+#endif
 
 namespace Flora { 
 	Ref<Project> Project::New() {
@@ -9,6 +11,7 @@ namespace Flora {
 	}
 
 	Ref<Project> Project::Load(const std::filesystem::path& path) {
+		#ifdef SERIAL_ENABLED
 		Ref<Project> project = CreateRef<Project>();
 		ProjectSerializer serializer(project);
 		if (serializer.Deserialize(path)) {
@@ -16,16 +19,19 @@ namespace Flora {
 			s_ActiveProject = project;
 			return s_ActiveProject;
 		}
+		#endif
 
 		return nullptr;
 	}
 
 	bool Project::SaveActive(const std::filesystem::path& path) {
+		#ifdef SERIAL_ENABLED
 		ProjectSerializer serializer(s_ActiveProject);
 		if (serializer.Serialize(path)) {
 			s_ActiveProject->m_ProjectDirectory = path.parent_path();
 			return true;
 		}
+		#endif
 
 		return false;
 	}

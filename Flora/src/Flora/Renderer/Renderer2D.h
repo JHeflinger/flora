@@ -4,11 +4,14 @@
 #include "Flora/Renderer/SubTexture2D.h"
 #include "Flora/Renderer/Camera.h"
 #include "Flora/Renderer/EditorCamera.h"
+#ifdef WIN_BUILD_ONLY
 #include "Flora/Renderer/Font.h"
+#endif
 #include "Flora/Scene/Components.h"
 #include "Flora/Core/AssetManager.h"
 
 namespace Flora {
+	#ifdef WIN_BUILD_ONLY
 	struct TextConfig {
 		std::string TextString;
 		float Kerning = 0.0f;
@@ -21,6 +24,7 @@ namespace Flora {
 		Ref<Font> Font = nullptr;
 		int EntityID = -1;
 	};
+	#endif
 
 	class Renderer2D {
 	public:
@@ -80,8 +84,10 @@ namespace Flora {
 		static void DrawSprite(Timestep ts, const glm::mat4& transform, SpriteRendererComponent& src, int entityID = -1);
 		static void DrawCircle(const glm::mat4& transform, const glm::vec4& color = { 1.0f, 1.0f, 1.0f, 1.0f }, float thickness = 1.0f, float fade = 0.005f, int entityID = -1);
 		static void DrawLine(const glm::vec3& p1, const glm::vec3& p2, const glm::vec4& color = { 1.0f, 1.0f, 1.0f, 1.0f }, int entityID = -1);
+		#ifdef WIN_BUILD_ONLY
 		static void DrawString(const TextConfig& config);
 		static void DrawString(TextComponent& tc, Entity entity);
+		#endif
 		static float GetLineWidth();
 		static void SetLineWidth(float width);
 

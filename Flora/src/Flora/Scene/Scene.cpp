@@ -540,7 +540,7 @@ namespace Flora {
 	void Scene::ForAllComponents(LoopFunction loopFunction) {
 		auto view = m_Registry.view<T>();
 		for (auto entity : view) {
-			auto component = view.get<T>(entity);
+			auto component = view.template get<T>(entity);
 			Entity realEntity = { entity, this };
 			loopFunction(realEntity, component);
 		}

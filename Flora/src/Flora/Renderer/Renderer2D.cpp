@@ -3,7 +3,9 @@
 #include "Flora/Renderer/VertexArray.h"
 #include "Flora/Renderer/Shader.h"
 #include "Flora/Renderer/RenderCommand.h"
+#ifdef WIN_BUILD_ONLY
 #include "Flora/Core/HiddenStructs.h"
+#endif
 #include "Flora/Math/Math.h"
 #include <glm/gtc/matrix_transform.hpp>
 
@@ -621,6 +623,7 @@ namespace Flora {
 		DrawLine(lineVertices[3], lineVertices[0], color);
 	}
 
+	#ifdef WIN_BUILD_ONLY
 	void Renderer2D::DrawString(TextComponent& tc, Entity entity) {
 		if (!tc.FontInitialized) {
 			AssetManager::AddFont(tc.FontFilePath);
@@ -777,6 +780,7 @@ namespace Flora {
 			}
 		}
 	}
+	#endif
 
 	Renderer2D::Statistics Renderer2D::GetStats() {
 		return s_Data.Stats;
