@@ -16,7 +16,9 @@ namespace Flora {
 		~Scene();
 		Entity CreateEntity(const std::string& name = std::string());
 		Entity CreateEntity(uint32_t id, const std::string& name = std::string());
+		#ifdef WIN_BUILD_ONLY
 		Entity CreateScriptEntity(const std::string& scriptName, const std::string& name = std::string());
+		#endif
 		Entity GetEntityFromID(uint32_t id);
 		Entity CopyEntity(Entity entity);
 		Entity CopyEntity(Entity entity, Entity parent);
@@ -34,7 +36,9 @@ namespace Flora {
 		void OnUpdateRuntime(Timestep ts, glm::mat4 viewProjection);
 		void OnUpdateEditor(Timestep ts, glm::mat4 viewProjection);
 		void StartPhysics();
+		#ifdef WIN_BUILD_ONLY
 		void UpdateScripts(Timestep ts);
+		#endif
 		void UpdatePhysics(Timestep ts);
 		void UpdateAudio();
 		void RenderRuntime(Timestep ts, glm::mat4 viewProjection);

@@ -4,7 +4,9 @@
 #include "Flora/Scene/Entity.h"
 #include "Flora/Scene/Components.h"
 #include "Flora/Math/Math.h"
+#ifdef WIN_BUILD_ONLY
 #include "Flora/Scripting/ScriptEngine.h"
+#endif
 #include "Flora/Utils/ComponentUtils.h"
 
 namespace Flora {
@@ -155,6 +157,7 @@ namespace Flora {
 		m_Running = true;
 		StartPhysics();
 
+		#ifdef WIN_BUILD_ONLY
 		// Scripting
 		if (ScriptEngine::IsInitialized()) {
 			ScriptEngine::OnRuntimeStart(this);
@@ -169,6 +172,7 @@ namespace Flora {
 				}
 			}
 		}
+		#endif
 
 		m_Paused = false;
 		m_StepFrames = 0;
@@ -177,8 +181,10 @@ namespace Flora {
 	void Scene::OnRuntimeStop() {
 		delete m_PhysicsWorld;
 		m_PhysicsWorld = nullptr;
+		#ifdef WIN_BUILD_ONLY
 		if (ScriptEngine::IsInitialized())
 			ScriptEngine::OnRuntimeStop();
+		#endif
 
 		//stop audio
 		auto view = m_Registry.view<AudioSourceComponent>();
@@ -213,6 +219,7 @@ namespace Flora {
 		return entity;
 	}
 
+	#ifdef WIN_BUILD_ONLY
 	Entity Scene::CreateScriptEntity(const std::string& scriptName, const std::string& name) {
 		Entity entity(m_Registry.create(), this);
 		entity.AddComponent<TransformComponent>();
@@ -229,6 +236,7 @@ namespace Flora {
 		}
 		return entity;
 	}
+	#endif
 
 	Entity Scene::CreateEntity(uint32_t id, const std::string& name) {
 		Entity entity(m_Registry.create((entt::entity)id), this);
@@ -320,6 +328,7 @@ namespace Flora {
 		}
 
 		// instantiate copied script if needed
+		#ifdef WIN_BUILD_ONLY
 		if (m_Running && newEntity.HasComponent<ScriptComponent>()) {
 			try { //TODO: remove try catch for release builds
 				ScriptEngine::CreateEntity(newEntity);
@@ -327,6 +336,7 @@ namespace Flora {
 				FL_CORE_ERROR("Script creation execution attempt failed for entity \"{}\"", newEntity.GetComponent<TagComponent>().Tag);
 			}
 		}
+		#endif
 
 		return newEntity;
 	}
@@ -345,6 +355,7 @@ namespace Flora {
 		}
 
 		// instantiate copied script if needed
+		#ifdef WIN_BUILD_ONLY
 		if (m_Running && newEntity.HasComponent<ScriptComponent>()) {
 			try { //TODO: remove try catch for release builds
 				ScriptEngine::CreateEntity(newEntity);
@@ -352,6 +363,7 @@ namespace Flora {
 				FL_CORE_ERROR("Script creation execution attempt failed for entity \"{}\"", newEntity.GetComponent<TagComponent>().Tag);
 			}
 		}
+		#endif
 
 		// modify parent based on parameter
 		if (!parent.HasComponent<ChildComponent>()) parent.AddComponent<ChildComponent>();
@@ -374,8 +386,10 @@ namespace Flora {
 		if (entity.HasComponent<CircleCollider2DComponent>()) m_Fixturemap.erase((b2Fixture*)entity.GetComponent<CircleCollider2DComponent>().RuntimeFixture);
 		if (entity.HasComponent<ParentComponent>())
 			entity.GetComponent<ParentComponent>().Parent.GetComponent<ChildComponent>().RemoveChild(entity);
+		#ifdef WIN_BUILD_ONLY
 		if (entity.HasComponent<ScriptComponent>() && m_Running)
 			ScriptEngine::DestroyEntity(entity);
+		#endif
 		m_Registry.destroy(entity);
 	}
 
@@ -383,6 +397,7 @@ namespace Flora {
 		return m_Registry.valid((entt::entity)entityID);
 	}
 
+	#ifdef WIN_BUILD_ONLY
 	void Scene::UpdateScripts(Timestep ts) {
 		// script manager
 		//TODO
@@ -400,6 +415,7 @@ namespace Flora {
 			}
 		}
 	}
+	#endif
 
 	void Scene::RenderRuntime(Timestep ts, glm::mat4 viewProjection) {
 		Renderer2D::BeginScene(viewProjection);
@@ -427,6 +443,7 @@ namespace Flora {
 		}
 
 		//text
+		#ifdef WIN_BUILD_ONLY
 		{
 			auto view = m_Registry.view<TransformComponent, TextComponent>();
 			for (auto entity : view) {
@@ -434,6 +451,7 @@ namespace Flora {
 				Renderer2D::DrawString(text, Entity{ entity, this });
 			}
 		}
+		#endif
 
 		Renderer2D::EndScene();
 	}
@@ -487,8 +505,10 @@ namespace Flora {
 		RenderRuntime(ts, viewProjection); // important: this needs to run first or else the camera lags behind a frame
 
 		if (!m_Paused || m_StepFrames > 0) {
+			#ifdef WIN_BUILD_ONLY
 			// Update Scripts
 			UpdateScripts(ts);
+			#endif
 
 			// Update Physics
 			UpdatePhysics(ts);

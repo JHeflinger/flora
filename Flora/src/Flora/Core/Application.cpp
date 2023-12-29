@@ -2,7 +2,9 @@
 #include "Application.h"
 #include <GLFW/glfw3.h>
 #include "Flora/Renderer/Renderer.h"
+#ifdef WIN_BUILD_ONLY
 #include "Flora/Scripting/ScriptEngine.h"
+#endif
 
 namespace Flora {
 
@@ -43,7 +45,9 @@ namespace Flora {
 	}
 
 	Application::~Application() {
+		#ifdef WIN_BUILD_ONLY
 		ScriptEngine::Shutdown();
+		#endif
 	}
 
 	void Application::PushLayer(Layer* layer) {

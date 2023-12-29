@@ -27,6 +27,9 @@ cc_library(
         "src/Flora/Core/HiddenStructs.h",
         "src/Flora/Renderer/Font.h",
         "src/Flora/Project/ProjectSerializer.h",
+        "src/Flora/Scripting/ScriptEngine.h",
+        "src/Flora/Scripting/ScriptGlue.h",
+        "src/Flora/Utils/Serializer.h",
     ]),
     srcs = glob([
         "src/**/*.cpp"
@@ -35,6 +38,9 @@ cc_library(
         "src/Platform/Windows/WindowsPlatformUtils.cpp",
         "src/Flora/Renderer/Font.cpp",
         "src/Flora/Project/ProjectSerializer.cpp",
+        "src/Flora/Scripting/ScriptEngine.cpp",
+        "src/Flora/Scripting/ScriptGlue.cpp",
+        "src/Flora/Utils/Serializer.cpp",
     ]),
     linkopts = [
         "-lglfw",
