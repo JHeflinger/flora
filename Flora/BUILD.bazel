@@ -51,6 +51,9 @@ cc_library(
         "-lXxf86vm",
         "-lXrandr",
         "-lXi",
+        "-lGL",
+        "-lGLU",
+        "-lglut",
     ],
     deps = [
         "//Flora:flpch",
@@ -72,5 +75,18 @@ cc_binary(
     srcs = ["src/main.cpp"],
     deps = [
         "//Flora/vendor:yaml-cpp",
+    ],
+    linkopts = [
+        "-lglfw",
+        "-lvulkan",
+        "-ldl",
+        "-lpthread",
+        "-lX11",
+        "-lXxf86vm",
+        "-lXrandr",
+        "-lXi",
+        "-lGL",
+        "-lGLU",
+        "-lglut",
     ],
 )
