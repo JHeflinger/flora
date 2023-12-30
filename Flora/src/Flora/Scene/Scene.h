@@ -54,9 +54,18 @@ namespace Flora {
 		std::string GetSceneName() { return m_SceneName; }
 	public:
 		template<typename T, typename LoopFunction>
-		void ForAllComponents(LoopFunction loopFunction);
+		void ForAllComponents(LoopFunction loopFunction) {
+			auto view = m_Registry.view<T>();
+			for (auto entity : view) {
+				auto component = view.template get<T>(entity);
+				Entity realEntity = { entity, this };
+				loopFunction(realEntity, component);
+			}
+		}
 		template<typename... Components>
-		auto GetAllEntitiesWith();
+		auto GetAllEntitiesWith() {
+			return m_Registry.view<Components...>();
+		}
 	public:
 		float GetGravity() { return m_Gravity; }
 		int32_t GetVelocityIterations() { return m_PhysicsVelocityIterations; }
@@ -98,3 +107,4 @@ namespace Flora {
 		friend class Serializer;
 	};
 }
+

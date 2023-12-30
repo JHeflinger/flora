@@ -554,22 +554,6 @@ namespace Flora {
 	void Scene::OnComponentAdded(Entity entity, T& component) {
 		static_assert(true);
 	}
-
-
-	template<typename T, typename LoopFunction>
-	void Scene::ForAllComponents(LoopFunction loopFunction) {
-		auto view = m_Registry.view<T>();
-		for (auto entity : view) {
-			auto component = view.template get<T>(entity);
-			Entity realEntity = { entity, this };
-			loopFunction(realEntity, component);
-		}
-	}
-
-	template<typename... Components>
-	auto Scene::GetAllEntitiesWith() {
-		return m_Registry.view<Components...>();
-	}
 	
 	template<>
 	void Scene::OnComponentAdded<CircleRendererComponent>(Entity entity, CircleRendererComponent& component) { }
