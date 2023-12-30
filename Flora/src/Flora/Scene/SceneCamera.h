@@ -5,6 +5,7 @@ namespace Flora {
 	class SceneCamera : public Camera {
 	public:
 		enum class ProjectionType { Perspective = 0, Orthographic = 1};
+		enum class OrthographicBinding { Vertical = 0, Horizontal = 1};
 	public:
 		SceneCamera();
 		virtual ~SceneCamera() = default;
@@ -28,10 +29,14 @@ namespace Flora {
 		
 		void SetProjectionType(ProjectionType type) { m_ProjectionType = type; RecalculateProjection(); }
 		ProjectionType GetProjectionType() const { return m_ProjectionType; }
+
+		void SetBinding(OrthographicBinding type) { m_Binding = type; RecalculateProjection(); }
+		OrthographicBinding GetBinding() const { return m_Binding; }
 	private:
 		void RecalculateProjection();
 	private:
 		ProjectionType m_ProjectionType = ProjectionType::Orthographic;
+		OrthographicBinding m_Binding = OrthographicBinding::Vertical;
 		float m_OrthographicSize = 10.0f;
 		float m_OrthographicNear = -1.0f;
 		float m_OrthographicFar = 1.0f;
