@@ -137,3 +137,7 @@ IN PROGRESS:
 
 IMPLEMENTED TICKETS:
 	- show grid
+	
+	
+IMPORTANT:
+	- compose transform doesn't work perfectly unless rotation is EXPLICITLY defined as 0.0f, 0.0f, 0.0f instead of just an empty initialized glmvec3
