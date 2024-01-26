@@ -1,5 +1,8 @@
 #pragma once
 
+// enable glm experimental globally
+#define GLM_ENABLE_EXPERIMENTAL
+
 #ifdef _WIN32
 	#ifdef _WIN64
 		#define FL_PLATFORM_WINDOWS
